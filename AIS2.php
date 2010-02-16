@@ -57,10 +57,79 @@ Copyright (c) 2010 Martin Králik
 		const NACITAJ_ZAPISNE_LISTY_DATA = '<request> <serial>###SERIAL###</serial> <events> <ev> <dlgName>VSES017_StudentZapisneListyDlg0</dlgName> <compName>nacitatDataAction</compName> <event class=\'avc.ui.event.AVCActionEvent\'></event> </ev> </events> <changedProps> <changedProperties><objName>app</objName><propertyValues> <nameValue><name>activeDlgName</name><value>VSES017_StudentZapisneListyDlg0</value></nameValue> </propertyValues></changedProperties> <changedProperties><objName>VSES017_StudentZapisneListyDlg0</objName> <propertyValues> <nameValue> <name>x</name> <value>-4</value> </nameValue> <nameValue> <name>y</name> <value>-4</value> </nameValue> <nameValue> <name>focusedComponent</name> <value>nacitatButton</value> </nameValue> </propertyValues> <embObjChProps> <changedProperties> <objName>studiaTable</objName> <propertyValues> <nameValue>  <name>dataView</name>  <isXml>true</isXml>  <value><![CDATA[  <root>  <selection>  <activeIndex>###STUDIUM###</activeIndex>  <selectedIndexes>###STUDIUM###</selectedIndexes>  </selection>  </root>  ]]></value> </nameValue><nameValue> <name>editMode</name>  <isXml>false</isXml>  <value>false</value></nameValue></propertyValues> <embObjChProps isNull=\'true\'/> </changedProperties> </embObjChProps> </changedProperties> </changedProps> </request>';
 		const NACITAJ_PREDEMTY_ZAPISNEHO_LISTU = '<request><serial>###SERIAL###</serial><events><ev><dlgName>VSES017_StudentZapisneListyDlg0</dlgName><compName>terminyHodnoteniaAction</compName><event class=\'avc.ui.event.AVCActionEvent\'></event></ev></events><changedProps><changedProperties><objName>app</objName><propertyValues><nameValue><name>activeDlgName</name><value>VSES017_StudentZapisneListyDlg0</value></nameValue></propertyValues></changedProperties><changedProperties><objName>VSES017_StudentZapisneListyDlg0</objName><propertyValues><nameValue><name>x</name><value>-4</value></nameValue><nameValue><name>y</name><value>-4</value></nameValue><nameValue><name>focusedComponent</name><value>zapisneListyTable</value></nameValue></propertyValues><embObjChProps><changedProperties><objName>zapisneListyTable</objName><propertyValues><nameValue><name>dataView</name><isXml>true</isXml><value><![CDATA[<root><selection><activeIndex>###LIST###</activeIndex><selectedIndexes>###LIST###</selectedIndexes></selection></root>]]></value></nameValue><nameValue><name>editMode</name><isXml>false</isXml><value>false</value></nameValue></propertyValues><embObjChProps isNull=\'true\'/></changedProperties></embObjChProps></changedProperties></changedProps></request>';
 		
-		const TABULKA_ZOZNAM_STUDII = '@\<tr id\=\'row_(?P<index>[^\']*)\' rid\=\'[^\']*\'\>\<td style\=\' text\-align\:center; \'\>\<div\>(?P<rocnik>[^<]*)\</div\>\</td\>\<td\>\<div\>(?P<skratka>[^<]*)\</div\>\</td\>\<td style\=\' text\-align\:center; \'\>\<div\>(?P<kod>[^<]*)\</div\>\</td\>\<td\>\<div\>(?P<studijnyProgram>[^<]*)\</div\>\</td\>\<td\>\<div\>(?P<doplnujuceUdaje>[^<]*)\</div\>\</td\>\<td style\=\' text\-align\:center; \'\>\<div\>(?P<zaciatokStudia>[^<]*)\</div\>\</td\>\<td style\=\' text\-align\:center; \'\>\<div\>(?P<koniecStudia>[^<]*)\</div\>\</td\>\<td style\=\' text\-align\:right; \'\>\<div\>(?P<dlzkaVSemestroch>[^<]*)\</div\>\</td\>\<td style\=\' text\-align\:right; \'\>\<div\>(?P<dlzkaStudia>[^<]*)\</div\>\</td\>\<td\>\<div\>(?P<cisloDiplomu>[^<]*)\</div\>\</td\>\<td\>\<div\>(?P<cisloZMatriky>[^<]*)\</div\>\</td\>\<td\>\<div\>(?P<cisloVysvedcenia>[^<]*)\</div\>\</td\>\<td\>\<div\>(?P<cisloDodatku>[^<]*)\</div\>\</td\>\<td style\=\' text\-align\:center; \'\>\<div\>(?P<priznak>[^<]*)\</div\>\</td\>\<td style\=\' text\-align\:center; \'\>\<div\>(?P<rokStudia>[^<]*)\</div\>\</td\>\</tr\>@';
-		const TABULKA_ZOZNAM_ZAPISNYCH_LISTOV = '@\<tr id\=\'row_(?P<index>[^\']*)\' rid\=\'[^\']*\'\>\<td style\=\' text\-align\:center; \'\>\<div\>(?P<akademickyRok>[^<]*)\</div\>\</td\>\<td style\=\' text\-align\:center; \'\>\<div\>(?P<rocnik>[^<]*)\</div\>\</td\>\<td\>\<div\>(?P<studProgramSkratka>[^<]*)\</div\>\</td\>\<td\>\<div\>(?P<studijnyProgram>[^<]*)\</div\>\</td\>\<td\>\<div\>(?P<doplnujuceUdaje>[^<]*)\</div\>\</td\>\<td style\=\' text\-align\:center; \'\>\<div\>(?P<datumZapisu>[^<]*)\</div\>\</td\>\<td style\=\' text\-align\:center; \'\>\<div\>(?P<potvrdenyZapis>[^<]*)\</div\>\</td\>\<td style\=\' text\-align\:center; \'\>\<div\>(?P<podmienecnyZapis>[^<]*)\</div\>\</td\>\<td style\=\' text\-align\:right; \'\>\<div\>(?P<dlzkaVSemestroch>[^<]*)\</div\>\</td\>\<td style\=\' text\-align\:center; \'\>\<div\>(?P<datumSplnenia>[^<]*)\</div\>\</td\>\<td style\=\' text\-align\:center; \'\>\<div\>(?P<priznak>[^<]*)\</div\>\</td\>\<td\>\<div\>(?P<typFinacovania>[^<]*)\</div\>\</td\>\<td\>\<div\>(?P<skratkaTypuFinacovania>[^<]*)\</div\>\</td\>\</tr\>@';
-		const TABULKA_PREDMETY_ZAPISNEHO_LISTU = '@\<tr id\=\'row_(?P<index>[^\']*)\' rid\=\'[^\']*\'\>\<td style\=\' text\-align\:center; \'\>\<div\>(?P<kodCastStPlanu>[^<]*)\</div\>\</td\>\<td style\=\' text\-align\:center; \'\>\<div\>(?P<kodTypVyucby>[^<]*)\</div\>\</td\>\<td\>\<div\>(?P<skratka>[^<]*)\</div\>\</td\>\<td\>\<div\>(?P<nazov>[^<]*)\</div\>\</td\>\<td style\=\' text\-align\:center; \'\>\<div\>(?P<kredit>[^<]*)\</div\>\</td\>\<td style\=\' text\-align\:center; \'\>\<div\>(?P<semester>[^<]*)\</div\>\</td\>\<td style\=\' text\-align\:center; \'\>\<div\>(?P<sposobUkoncenia>[^<]*)\</div\>\</td\>\<td style\=\' text\-align\:right; \'\>\<div\>(?P<pocetTerminov>[^<]*)\</div\>\</td\>\<td style\=\' text\-align\:right; \'\>\<div\>(?P<pocetAktualnychTerminov>[^<]*)\</div\>\</td\>\<td\>\<div\>(?P<aktualnost>[^<]*)\</div\>\</td\>\</tr\>@';
-		const TABULKA_TERMINY_HODNOTENIA = '@\<tr id\=\'row_(?P<index>[^\']*)\' rid\=\'[^\']*\'\>\<td style\=\' text\-align\:center; \'\>\<div\>(?P<prihlaseny>[^<]*)\</div\>\</td\>\<td style\=\' text\-align\:center; \'\>\<div\>(?P<faza>[^<]*)\</div\>\</td\>\<td style\=\' text\-align\:center; \'\>\<div\>(?P<datum>[^<]*)\</div\>\</td\>\<td style\=\' text\-align\:center; \'\>\<div\>(?P<cas>[^<]*)\</div\>\</td\>\<td\>\<div\>(?P<miestnosti>[^<]*)\</div\>\</td\>\<td style\=\' text\-align\:center; \'\>\<div\>(?P<pocetPrihlasenych>[^<]*)\</div\>\</td\>\<td style\=\' text\-align\:center; \'\>\<div\>(?P<datumPrihlasenia>[^<]*)\</div\>\</td\>\<td style\=\' text\-align\:center; \'\>\<div\>(?P<datumOdhlasenia>[^<]*)\</div\>\</td\>\<td\>\<div\>(?P<zapisal>[^<]*)\</div\>\</td\>\<td style\=\' text\-align\:center; \'\>\<div\>(?P<pocetHodnotiacich>[^<]*)\</div\>\</td\>\<td\>\<div\>(?P<hodnotiaci>[^<]*)\</div\>\</td\>\<td style\=\' text\-align\:center; \'\>\<div\>(?P<maxPocet>[^<]*)\</div\>\</td\>\<td style\=\' text\-align\:center; \'\>\<div\>(?P<znamka>[^<]*)\</div\>\</td\>\<td style\=\' text\-align\:center; \'\>\<div\>(?P<prihlasovanie>[^<]*)\</div\>\</td\>\<td style\=\' text\-align\:center; \'\>\<div\>(?P<odhlasovanie>[^<]*)\</div\>\</td\>\<td\>\<div\>(?P<poznamka>[^<]*)\</div\>\</td\>\<td\>\<div\>(?P<zaevidoval>[^<]*)\</div\>\</td\>\<td style\=\'visibility\:hidden\'\>\<div\>(?P<mozeOdhlasit>[^<]*)\</div\>\</td\>\<td\>\<div\>(?P<skratkaPredmetu>[^<]*)\</div\>\</td\>\<td\>\<div\>(?P<predmet>[^<]*)\</div\>\</td\>\</tr\>@';
+		private static $tabulka_zoznam_studii = array(
+			array('name' => 'rocnik',              'title' => 'ročník',               'order' => '0'),
+			array('name' => 'skratka',             'title' => 'skratka',              'order' => '0'),
+			array('name' => 'kruzok',              'title' => 'krúžok',               'order' => '0'),
+			array('name' => 'studijnyProgram',     'title' => 'študijný program',     'order' => '0'),
+			array('name' => 'doplnujuceUdaje',     'title' => 'doplňujúce údaje',     'order' => '0'),
+			array('name' => 'zaciatokStudia',      'title' => 'začiatok štúdia',      'order' => '0'),
+			array('name' => 'koniecStudia',        'title' => 'koniec štúdia',        'order' => '0'),
+			array('name' => 'dlzkaVSemestroch',    'title' => 'dĺžka v semestroch',   'order' => '0'),
+			array('name' => 'dlzkaStudia',         'title' => 'dĺžka štúdia',         'order' => '0'),
+			array('name' => 'cisloDiplomu',        'title' => 'číslo diplomu',        'order' => '0'),
+			array('name' => 'cisloZMatriky',       'title' => 'číslo z matriky',      'order' => '0'),
+			array('name' => 'cisloVysvedcenia',    'title' => 'číslo vysvedčenia',    'order' => '0'),
+			array('name' => 'cisloDodatku',        'title' => 'číslo dodatku',        'order' => '0'),
+			array('name' => 'cisloEVI',            'title' => 'číslo EVI',            'order' => '0'),
+			array('name' => 'cisloProgramu',       'title' => 'číslo programu',       'order' => '0'),
+			array('name' => 'priznak',             'title' => 'príznak',              'order' => '0'),
+			array('name' => 'organizacnaJednotka', 'title' => 'organizačná jednotka', 'order' => '0'),
+			array('name' => 'rokStudia',           'title' => 'rok štúdia',           'order' => '0'),
+		);	
+		private static $tabulka_zoznam_zapisnych_listov = array(
+			array('name' => 'akademickyRok',          'title' => 'akademický rok',           'order' => '0'),
+			array('name' => 'rocnik',                 'title' => 'ročník',                   'order' => '0'),
+			array('name' => 'studProgramSkratka',     'title' => 'krúžok',                   'order' => '0'),
+			array('name' => 'studijnyProgram',        'title' => 'skratka',                  'order' => '0'),
+			array('name' => 'doplnujuceUdaje',        'title' => 'doplňujúce údaje',         'order' => '0'),
+			array('name' => 'datumZapisu',            'title' => 'dátum zápisu',             'order' => '0'),
+			array('name' => 'potvrdenyZapis',         'title' => 'potvrdený zápis',          'order' => '0'),
+			array('name' => 'podmienecnyZapis',       'title' => 'podmienečný zápis',        'order' => '0'),
+			array('name' => 'dlzkaVSemestroch',       'title' => 'dĺžka v semestroch',       'order' => '0'),
+			array('name' => 'cisloEVI',               'title' => 'číslo EVI',                'order' => '0'),
+			array('name' => 'cisloProgramu',          'title' => 'číslo programu',           'order' => '0'),
+			array('name' => 'datumSplnenia',          'title' => 'dátum splnenia',           'order' => '0'),
+			array('name' => 'priznak',                'title' => 'príznak',                  'order' => '0'),
+			array('name' => 'organizacnaJednotka',    'title' => 'organizačná jednotka',     'order' => '0'),
+			array('name' => 'typFinacovania',         'title' => 'typ financovania',         'order' => '0'),
+			array('name' => 'skratkaTypuFinacovania', 'title' => 'skratka typu finacovania', 'order' => '0'),
+		);
+		private static $tabulka_predmety_zapisneho_listu = array(
+			array('name' => 'kodCastStPlanu',          'title' => 'kód časti študijného plánu', 'order' => '0'),
+			array('name' => 'kodTypVyucby',            'title' => 'kód typu výučby',            'order' => '0'),
+			array('name' => 'skratka',                 'title' => 'skratka',                    'order' => '0'),
+			array('name' => 'nazov',                   'title' => 'názov',                      'order' => '0'),
+			array('name' => 'kredit',                  'title' => 'kredit',                     'order' => '0'),
+			array('name' => 'semester',                'title' => 'semester',                   'order' => '0'),
+			array('name' => 'sposobUkoncenia',         'title' => 'spôsob ukončenia',           'order' => '0'),
+			array('name' => 'pocetTerminov',           'title' => 'počet termínov',             'order' => '0'),
+			array('name' => 'pocetAktualnychTerminov', 'title' => 'počet aktuálnych termínov',  'order' => '0'),
+			array('name' => 'aktualnost',              'title' => 'aktuálnosť',                 'order' => '0'),
+		);
+		private static $tabulka_terminy_hodnotenia = array(
+			array('name' => 'prihlaseny',          'title' => 'prihlásený', 'order' => '0'),
+			array('name' => 'faza',            'title' => 'fáza',            'order' => '0'),
+			array('name' => 'datum',            'title' => 'dátum',            'order' => '0'),
+			array('name' => 'cas',            'title' => 'čas',            'order' => '0'),
+			array('name' => 'miestnosti',            'title' => 'miestnosti',            'order' => '0'),
+			array('name' => 'pocetPrihlasenych', 'title' => 'počet prihlásených',            'order' => '0'),
+			array('name' => 'datumPrihlasenia', 'title' => 'dátum prihlásenia',            'order' => '0'),
+			array('name' => 'datumOdhlasenia', 'title' => 'dátum odhlásenia',    'order' => '0'),
+			array('name' => 'zapisal', 'title' => 'zapísal',    'order' => '0'),
+			array('name' => 'pocetHodnotiacich', 'title' => 'počet hodnotiacich',    'order' => '0'),
+			array('name' => 'hodnotiaci', 'title' => 'hodnotiaci',    'order' => '0'),
+			array('name' => 'maxPocet', 'title' => 'maximálny počet',    'order' => '0'),
+			array('name' => 'znamka', 'title' => 'známka',    'order' => '0'),
+			array('name' => 'prihlasovanie', 'title' => 'prihlasovanie',    'order' => '0'),
+			array('name' => 'odhlasovanie', 'title' => 'odhlasovanie',    'order' => '0'),
+			array('name' => 'poznamka', 'title' => 'poznámka',    'order' => '0'),
+			array('name' => 'zaevidoval', 'title' => 'zaevidoval',    'order' => '0'),
+			array('name' => 'mozeOdhlasit', 'title' => 'može odhlásiť',    'order' => '0'),
+			array('name' => 'skratkaPredmetu', 'title' => 'skratka predmetu',    'order' => '0'),
+			array('name' => 'predmet', 'title' => 'predmet',    'order' => '0'),
+
+		);
 		
 		public static $inputParameters = array();
 		
@@ -159,8 +228,8 @@ Copyright (c) 2010 Martin Králik
 			if ($generateHtml)
 			{
 				$data = pluck($data, self::DATA_PATTERN);
-				$table = pluckAll($data, self::TABULKA_ZOZNAM_STUDII);
-
+				$table = pluckAll($data, generatePattern(self::$tabulka_zoznam_studii));
+				
 				return DisplayManager::generateHtmlTable($table, 'Zoznam štúdií', 'studium');
 			}
 			else return true;	
@@ -176,7 +245,7 @@ Copyright (c) 2010 Martin Králik
 				$data = pluck($data, self::DATA_PATTERN);
 				if ($data)
 				{
-					$table = pluckAll($data, self::TABULKA_ZOZNAM_ZAPISNYCH_LISTOV);
+					$table = pluckAll($data, generatePattern(self::$tabulka_zoznam_zapisnych_listov));
 					return DisplayManager::generateHtmlTable($table, 'Zoznam zápisných listov', 'list', array('studium'));
 				}
 				else throw new Exception('getStudentZapisneListy @ data extraction');
@@ -207,10 +276,10 @@ Copyright (c) 2010 Martin Králik
 			{
 				$data = pluckAll($data, self::DATA_PATTERN);
 
-				$predmety = pluckAll($data[0][1], self::TABULKA_PREDMETY_ZAPISNEHO_LISTU);
+				$predmety = pluckAll($data[0][1], generatePattern(self::$tabulka_predmety_zapisneho_listu));
 				$table1 = DisplayManager::generateHtmlTable($predmety, 'Predmety zápisného listu', null, array('studium', 'list'));
 				
-				$terminy = pluckAll($data[1][1], self::TABULKA_TERMINY_HODNOTENIA);
+				$terminy = pluckAll($data[1][1], generatePattern(self::$tabulka_terminy_hodnotenia));
 				$table2 = DisplayManager::generateHtmlTable($terminy, 'Termíny hodnotenia', null, array('studium', 'list'));
 
 				return $table1.$table2;
@@ -234,7 +303,7 @@ Copyright (c) 2010 Martin Králik
 				if ($login !== null && $krbpwd !== null)
 				{
 					$data = self::download(self::COSIGN_LOGIN, array('ref' => self::LOGIN, 'login'=> $login, 'krbpwd' => $krbpwd));
-					if (!preg_match('@\<base href\="https://ais2\.uniba\.sk/ais/portal/pages/index\.jsp"\>@', $data)) throw new Exception('Nepodarilo sa prihlásiť.');
+					if (!preg_match('@\<base href\="https://ais2\.uniba\.sk/ais/portal/pages/portal_layout\.jsp"\>@', $data)) throw new Exception('Nepodarilo sa prihlásiť.');
 					$_SESSION['cosignLogin'] = true;
 					redirect();
 					return true;

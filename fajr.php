@@ -59,7 +59,7 @@ Copyright (c) 2010 Martin Králik
 	}
 	catch (Exception $e)
 	{
-		DisplayManager::addContent('<h2>ERROR!</h2><div class="error">'.$e->getMessage()).'</div>';
+		DisplayManager::addContent('<h2>ERROR!</h2><div class="error">'.$e->getMessage().'<br/>'.$e->getTraceAsString().'</div>');
 	}
 	AIS2::disconnect(); //zavrieme aj poslednu "aplikaciu"
 	

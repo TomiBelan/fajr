@@ -66,6 +66,17 @@ Copyright (c) 2010 Martin Králik
 	{
 		return dirname(__FILE__).DIRECTORY_SEPARATOR.'cookies'.DIRECTORY_SEPARATOR.session_id();
 	}
+	
+	function generatePattern($tableDefinition)
+	{
+		$pattern = '@\<tr id\=\'row_(?P<index>[^\']*)\' rid\=\'[^\']*\'\>';
+		foreach ($tableDefinition as $column)
+		{
+			$pattern .= '\<td[^>]*\>\<div\>(?P<'.$column['name'].'>[^<]*)\</div\>\</td\>';
+		}
+		$pattern .= '\</tr\>@';
+		return $pattern;
+	}
 
 	
 ?>
