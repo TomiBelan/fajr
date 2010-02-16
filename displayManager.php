@@ -127,7 +127,7 @@ pretože s tým bol problém (nemali).
 </p>
 <p>
 Táto aplikácia nerobí nič zlé. Ale ak jej aj tak nedôverujete, môžete si ju rozbehnúť u seba.
-Stačí vám k tomu webserver, PHP a jej <a href="fajr.source.zip">zdrojové kódy</a>.
+Stačí vám k tomu webserver, PHP a jej <a href="http://code.google.com/p/fajr/source/checkout">zdrojové kódy</a>.
 </p>
 </div>
 ',
