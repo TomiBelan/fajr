@@ -1,0 +1,23 @@
+.increase-line-height {
+	line-height:1.5;
+}
+
+tr:hover {
+	background-color: lightyellow;
+}
+
+tr.clickable { 
+	cursor: pointer;
+}
+
+tr.clickable:hover {
+	background-color: #90EE90;
+}
+
+th {
+	background-color: #FFFFE0;
+}
+
+th.forwardSort, th.reverseSort { 
+	background-color: yellow;
+}
