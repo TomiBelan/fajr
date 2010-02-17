@@ -28,6 +28,7 @@ Copyright (c) 2010 Martin Králik
 	
 	require_once 'displayManager.php';
 	require_once 'AIS2.php';
+        require_once 'changelog.php';
  
 	try
 	{
@@ -51,6 +52,7 @@ Copyright (c) 2010 Martin Králik
 		}
 		else
 		{
+                        DisplayManager::addContent(Changelog::getChangelog(), false);
 			DisplayManager::addContent('credits', true);
 			DisplayManager::addContent('warnings', true);
 			DisplayManager::addContent('loginBox', true);
