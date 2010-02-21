@@ -49,7 +49,7 @@ Copyright (c) 2010 Martin Králik
 			$this->serial = 0;
 			$location = 'https://ais2.uniba.sk/ais/servlets/WebUIServlet?appClassName='.$appClassName.$identifiers.'&viewer=web&antiCache='.random();
 			$response = AIS2Utils::request($location);
-			$this->setAppId($reponse);
+			$this->setAppId($response);
 
 			$response = AIS2Utils::request($this->getXmlInterfaceLocation(), array('xml_spec' => '<request><serial>'.$this->getSerial().'</serial><events><ev><event class=\'avc.ui.event.AVCComponentEvent\'><command>INIT</command></event></ev></events></request>'));
 			$this->setFormName($response);
@@ -99,7 +99,7 @@ Copyright (c) 2010 Martin Králik
 			$matches = array();
 			if (preg_match('@dialogManager\.openMainDialog\("(?P<formName>[^"]*)","(?P<name>[^"]*)","(?P<formId>[^"]*)",[0-9]*,[^,]*,[^,]*,[^,]*,[^,]*,[^,]*,[^,]*,[^,]*,[^,]*\);@', $response, $matches))
 			{
-				$this->formName = $matches['name'];
+				$this->formName = $matches['formName'];
 			}
 			else throw new Exception('Neviem nájsť formName v odpovedi vo fáze inicializácie triedy '.__CLASS__.'!');
 		}

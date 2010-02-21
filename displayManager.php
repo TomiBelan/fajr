@@ -23,7 +23,6 @@ Copyright (c) 2010 Martin Králik
  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  OTHER DEALINGS IN THE SOFTWARE.
 */
-	require_once 'AIS2.php'; // kvoli jednej metode
 
  	class DisplayManager
 	{
@@ -155,48 +154,7 @@ a <a href="http://www.famfamfam.com/lab/icons/silk/">Silk icons</a>.
 			$html = self::$predefinedContent['header'] . $html . self::$predefinedContent['footer'];
 			return $html;
 		}
-		
-		
-		public static	function generateHtmlTable($matches, $name = '', $newKey = null, $setParams = array())
-		{
-			$params = array();
-			foreach ($setParams as $param) $params[$param] = AIS2::getInputParameter($param); // tato zavislost na triede AIS2 by tu nemala byt
-			
-			$table = '';
-			if ($name) $table .= '<h2>'.$name.'</h2>';
-			if (!is_array($matches) || empty($matches[0]))
-			{
-				$table .= 'Dáta pre túto tabuľku neboli nájdené.<hr class="space" />';
-			}
-			else
-			{
-				$table .= '<table class="colstyle-sorting"><thead><tr>';
-				$columns = array();
-				foreach ($matches[0] as $key => $value) if (is_string($key))
-				{
-					$columns[] = $key;
-					$table .= '<th class="sortable">'.$key.'</th>';
-				}
-				$table .= '</tr></thead><tbody>';
-				foreach ($matches as $match)
-				{
-					if ($newKey) $link = '?'.http_build_query(array_merge($params, array($newKey => $match['index'])));
-					$table .= '<tr>';
-					foreach ($columns as $key => $column)
-					{
-						$table .= '<td>';
-						if ($newKey && $key == 'index') $table .= '<a href="'.htmlspecialchars($link, ENT_QUOTES, 'UTF-8').'">';
-						$table .= $match[$column];
-						if ($newKey && $key == 'index') $table .= '</a>';
-						$table .= '</td>';
-					}
-					$table .= '</tr>';
-				}
-				$table .= '</tbody></table>';
-			}
-			return $table;
-		}
-		
+				
 	}
 	
 ?>

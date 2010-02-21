@@ -25,34 +25,47 @@ Copyright (c) 2010 Martin Králik
 */
 
 	session_start(); 
-	
+
+	require_once 'Input.php';
 	require_once 'displayManager.php';
-	require_once 'AIS2.php';
-        require_once 'changelog.php';
+	require_once 'AIS2Utils.php';
+  require_once 'changelog.php';
+	require_once 'AIS2AdministraciaStudiaScreen.php';
+	require_once 'AIS2TerminyHodnoteniaScreen.php';
  
 	try
 	{
-		AIS2::prepareInputParameters();
+		Input::prepare();
 		
-		if (AIS2::getInputParameter('logout') !== null) AIS2::cosignLogout();
+		if (Input::get('logout') !== null) AIS2Utils::cosignLogout();
 		
-		if (AIS2::connect())
+		if (AIS2Utils::connect())
 		{
-			DisplayManager::addContent(AIS2::getStudentZoznamStudii());
-			if (AIS2::getInputParameter('studium') !== null)
+			$adminStudia = new AIS2AdministraciaStudiaScreen();
+			DisplayManager::addContent($adminStudia->getZoznamStudii()->getHtml());
+			if (Input::get('studium') !== null)
 			{
-				DisplayManager::addContent(AIS2::getStudentZapisneListy());
-				if (AIS2::getInputParameter('list') !== null)
+				DisplayManager::addContent($adminStudia->getZapisneListy(Input::get('studium'))->getHtml());
+				if (Input::get('list') !== null)
 				{
-					DisplayManager::addContent(AIS2::getPredmetyZapisnehoListu());
+					$list = Input::get('list');
+					$skusky = new AIS2TerminyHodnoteniaScreen($adminStudia->getIdZapisnyList($list), $adminStudia->getIdStudium($list));
+
+					$terminyHodnotenia = $skusky->getTerminyHodnotenia();
+					$terminyHodnotenia->setParams(array('studium' => Input::get('studium'), 'list' => $list));
+					DisplayManager::addContent($terminyHodnotenia->getHtml());
+
+					$predmetyZapisnehoListu = $skusky->getPredmetyZapisnehoListu();
+					$predmetyZapisnehoListu->setParams(array('studium' => Input::get('studium'), 'list' => $list));
+					DisplayManager::addContent($predmetyZapisnehoListu->getHtml());
 				}
 			}
 			
-			DisplayManager::addContent(AIS2::$identity.' | <a href="?logout">odhlásiť</a><hr/>');
+			DisplayManager::addContent('<a href="?logout">odhlásiť</a><hr/>');
 		}
 		else
 		{
-                        DisplayManager::addContent(Changelog::getChangelog(), false);
+			DisplayManager::addContent(Changelog::getChangelog(), false);
 			DisplayManager::addContent('credits', true);
 			DisplayManager::addContent('warnings', true);
 			DisplayManager::addContent('loginBox', true);
@@ -63,7 +76,6 @@ Copyright (c) 2010 Martin Králik
 	{
 		DisplayManager::addContent('<h2>ERROR!</h2><div class="error">'.$e->getMessage().'<br/>'.$e->getTraceAsString().'</div>');
 	}
-	AIS2::disconnect(); //zavrieme aj poslednu "aplikaciu"
 	
 	echo DisplayManager::display();
 	

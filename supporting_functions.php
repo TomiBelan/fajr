@@ -38,17 +38,21 @@ Copyright (c) 2010 Martin Králik
 		return $matches[1];
 	}
 	
-	function pluckAll($haystack, $pattern)
+	function pluckAll($haystack, $pattern, $singleMatch = false)
 	{
 		$matches = array();
 		if (!preg_match_all($pattern, $haystack, $matches, PREG_SET_ORDER)) return false;
-		else return $matches;
+		else
+		{
+			if ($singleMatch == false) return $matches;
+			else return $matches[0];
+		}
 	}
 	
 	function dump($s)
 	{
 		if (is_array($s)) foreach ($s as $value) dump($value);
-		else echo '<pre>'.htmlspecialchars($s).'</pre><hr/>';
+		else echo '<pre>'.hescape($s).'</pre><hr/>';
 	}
 	
 	function gzdecode($data)
@@ -67,16 +71,46 @@ Copyright (c) 2010 Martin Králik
 		return dirname(__FILE__).DIRECTORY_SEPARATOR.'cookies'.DIRECTORY_SEPARATOR.session_id();
 	}
 	
-	function generatePattern($tableDefinition)
+	function download($url, $post = null, $xWwwFormUrlencoded = true)
 	{
-		$pattern = '@\<tr id\=\'row_(?P<index>[^\']*)\' rid\=\'[^\']*\'\>';
-		foreach ($tableDefinition as $column)
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_HEADER, false);
+		curl_setopt($ch, CURLOPT_COOKIEFILE, getCookieFile());
+		curl_setopt($ch, CURLOPT_COOKIEJAR, getCookieFile());
+		curl_setopt ($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; sk; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7');
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_VERBOSE, false);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // AIS2 nema koser certifikat
+
+		if (is_array($post))
 		{
-			$pattern .= '\<td[^>]*\>\<div\>(?P<'.$column['name'].'>[^<]*)\</div\>\</td\>';
+				curl_setopt($ch, CURLOPT_POST, true);
+				if ($xWwwFormUrlencoded === true)
+				{
+					$newPost = '';
+					foreach ($post as $key => $value) $newPost .= urlencode($key).'='.urlencode($value).'&';
+					$post = substr($newPost, 0, -1);
+				}
+				curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
 		}
-		$pattern .= '\</tr\>@';
-		return $pattern;
+
+		$output = curl_exec($ch);
+		if (curl_errno($ch)) echo curl_error($ch);
+
+		if (strpos($output, "\x1f\x8b\x08\x00\x00\x00\x00\x00") === 0) $output = gzdecode($output); //ak to zacina ako gzip, tak to odzipujeme
+		curl_close($ch);
+		return $output;
+	}
+	
+	function hescape($string)
+	{
+		return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
 	}
 
+	function random()
+	{
+		return rand(100000,999999);
+	}
 	
 ?>
