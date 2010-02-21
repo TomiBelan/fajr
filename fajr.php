@@ -67,6 +67,7 @@ Copyright (c) 2010 Martin Králik
 		{
 			DisplayManager::addContent(Changelog::getChangelog(), false);
 			DisplayManager::addContent('credits', true);
+			DisplayManager::addContent('terms', true);
 			DisplayManager::addContent('warnings', true);
 			DisplayManager::addContent('loginBox', true);
 		}

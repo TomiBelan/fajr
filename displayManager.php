@@ -138,6 +138,12 @@ Stránka mohla vzniknúť vďaka
 <a href="http://www.frequency-decoder.com/2006/09/16/unobtrusive-table-sort-script-revisited">Unobtrusive Table Sort Script</a>
 a <a href="http://www.famfamfam.com/lab/icons/silk/">Silk icons</a>.
 </p></div>
+',
+		'terms' => '
+<div class="span-21 prepend-1 last increase-line-height"><p>
+Prihlásením do systému Fajr súhlasíte s 
+<a href="terms_of_use.php">Podmienkami používania</a>
+</p></div>
 '
 		);
 		
