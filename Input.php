@@ -71,8 +71,14 @@ Copyright (c) 2010 Martin Králik
 		public static function get($key = null)
 		{
 			if ($key === null) return self::$inputParameters;
-			if (!isset(self::$inputParameters[$key])) return null;
-			else return self::$inputParameters[$key];
+			if (!isset(self::$inputParameters[$key]))
+			{
+				return null;
+			}
+			else
+			{
+				return self::$inputParameters[$key];
+			}
 		}
 	}
 ?>
