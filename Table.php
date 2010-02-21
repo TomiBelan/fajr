@@ -55,11 +55,6 @@ class Table
 		$this->params = $params;
 	}
 
-	public function __toString()
-	{
-		return $this->getHtml();
-	}
-
 	public function setName($name)
 	{
 		$this->name = $name;
@@ -118,7 +113,7 @@ class Table
 
 /**
  * Vráti regulárny výraz použitý na matchovanie tabuľky v HTML výstupe z AISu.
- * Na jeho konštrukciu sa pouŽíva definícia tabuľky.
+ * Na jeho konštrukciu sa používa definícia tabuľky.
  * @return string Regulárny výraz.
  */
 	public function getPattern()
