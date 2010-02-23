@@ -21,3 +21,30 @@ th {
 th.forwardSort, th.reverseSort { 
 	background-color: yellow;
 }
+
+.selected {background-color:yellow;}
+
+.tab_header {
+	border-bottom: 1px solid green;
+  padding: 6px;
+	margin: 10px;
+}
+
+.tab:hover, .tab_selected:hover {
+	background-color: lightgreen;
+}
+
+.tab, .tab_selected{
+	margin-left: 15px;
+	padding: 4px;
+	border: 1px solid green;
+}
+
+.tab_selected {
+	background-color:yellow;
+}
+
+div.table {
+	border: 1px solid darkgray;
+	margin: 5px;
+}
