@@ -75,7 +75,9 @@ Copyright (c) 2010 Martin Králik
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/prototype/1.6.1.0/prototype.js"></script>
 	<script type="text/javascript" src="scripts/fajr.js"></script>
+	<script type="text/javascript" src="scripts/toggleVisibility.js"></script>
 	<script type="text/javascript" src="scripts/tablesort.min.js"></script>
+	<script type="text/javascript" src="scripts/tabs.js"></script>
 	<link rel="stylesheet" href="css/screen.css" type="text/css" media="screen, projection" />
 	<link rel="stylesheet" href="css/plugins/buttons/screen.css" type="text/css" media="screen, projection" />
 	<link rel="stylesheet" href="css/custom.css" type="text/css" media="screen, projection" />
@@ -156,7 +158,7 @@ Prihlásením do systému Fajr súhlasíte s
 		public static function display()
 		{
 			$html = '';
-			foreach (self::$content as $item) $html = $item . $html;
+			foreach (self::$content as $item) $html .= $item;
 			$html = self::$predefinedContent['header'] . $html . self::$predefinedContent['footer'];
 			return $html;
 		}

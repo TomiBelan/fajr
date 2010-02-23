@@ -32,6 +32,7 @@ Copyright (c) 2010 Martin Králik
   require_once 'changelog.php';
 	require_once 'AIS2AdministraciaStudiaScreen.php';
 	require_once 'AIS2TerminyHodnoteniaScreen.php';
+	require_once 'TabManager.php';
  
 	try
 	{
@@ -41,35 +42,46 @@ Copyright (c) 2010 Martin Králik
 		
 		if (AIS2Utils::connect())
 		{
+			DisplayManager::addContent('<a href="?logout">odhlásiť</a><hr/>');
 			$adminStudia = new AIS2AdministraciaStudiaScreen();
-			DisplayManager::addContent($adminStudia->getZoznamStudii()->getHtml());
+			
+			$zoznamStudiiTable = $adminStudia->getZoznamStudii();
+			$zoznamStudiiTable->setOption('selected_key',Input::get('studium'));
+			$zoznamStudiiTable->setOption('collapsed', Input::get('studium') !== null);
+			DisplayManager::addContent($zoznamStudiiTable->getHtml());
 			if (Input::get('studium') !== null)
 			{
-				DisplayManager::addContent($adminStudia->getZapisneListy(Input::get('studium'))->getHtml());
+				$zapisneListy = $adminStudia->getZapisneListy(Input::get('studium'));
+				$zapisneListy->setOption('selected_key', Input::get('list'));
+				$zapisneListy->setOption('collapsed', Input::get('list') !== null);
+				DisplayManager::addContent($zapisneListy->getHtml());
 				if (Input::get('list') !== null)
 				{
 					$list = Input::get('list');
 					$skusky = new AIS2TerminyHodnoteniaScreen($adminStudia->getIdZapisnyList($list), $adminStudia->getIdStudium($list));
-
+					$tabs = new TabManager('akcie');
+					
 					$terminyHodnotenia = $skusky->getTerminyHodnotenia();
-					$terminyHodnotenia->setParams(array('studium' => Input::get('studium'), 'list' => $list));
-					DisplayManager::addContent($terminyHodnotenia->getHtml());
+					$terminyHodnotenia->setUrlParams(array('studium' => Input::get('studium'), 'list' => $list));
+					$tabs->addTab('TerminyHodnotenia', 'Termíny hodnotenia', $terminyHodnotenia->getHtml());
 
 					$predmetyZapisnehoListu = $skusky->getPredmetyZapisnehoListu();
-					$predmetyZapisnehoListu->setParams(array('studium' => Input::get('studium'), 'list' => $list));
-					DisplayManager::addContent($predmetyZapisnehoListu->getHtml());
+					$predmetyZapisnehoListu->setUrlParams(array('studium' => Input::get('studium'), 'list' => $list));
+					
+					$tabs->addTab('ZapisnyList', 'Zápisný list', $predmetyZapisnehoListu->getHtml());
+					
+					DisplayManager::addContent($tabs->getHtml());
 				}
 			}
 			
-			DisplayManager::addContent('<a href="?logout">odhlásiť</a><hr/>');
 		}
 		else
 		{
-			DisplayManager::addContent(Changelog::getChangelog(), false);
-			DisplayManager::addContent('credits', true);
-			DisplayManager::addContent('terms', true);
+			DisplayManager::addContent('loginBox', true);	
 			DisplayManager::addContent('warnings', true);
-			DisplayManager::addContent('loginBox', true);
+			DisplayManager::addContent('terms', true);
+			DisplayManager::addContent('credits', true);
+			DisplayManager::addContent(Changelog::getChangelog(), false);
 		}
 		
 	}

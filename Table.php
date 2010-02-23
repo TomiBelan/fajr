@@ -35,7 +35,8 @@ class Table
 	protected $data = null;
 	protected $name = null;
 	protected $newKey = null;
-	protected $params = array();
+	protected $urlParams = array();
+	protected $options = null;
 
 /**
  * Konštruktor.
@@ -44,15 +45,15 @@ class Table
  * @param string $html HTML z AISu.
  * @param string $name Názov tabuľky.
  * @param string|null $newKey Názov nového parametru v url, ktorého hodnota bude závisieť od riadku tabuľky.
- * @param array $params Zvyšné už nastavené parametre pre url.
+ * @param array $urlParams Zvyšné už nastavené parametre pre url.
  */
-	public function  __construct($definition, $html, $name = '', $newKey = null, $params = array())
+	public function  __construct($definition, $html, $name = '', $newKey = null, $urlParams = array())
 	{
 		$this->definition = $definition;
 		$this->data = pluckAll($html, $this->getPattern());
 		$this->name = $name;
 		$this->newKey = $newKey;
-		$this->params = $params;
+		$this->urlParams = $urlParams;
 	}
 
 	public function setName($name)
@@ -65,9 +66,25 @@ class Table
 		$this->newKey = $newKey;
 	}
 
-	public function setParams($params)
+	public function setUrlParams($urlParams)
 	{
-		$this->params = $params;
+		$this->urlParams = $urlParams;
+	}
+	
+	public function setOptions($options)
+	{
+		$this->options = $options;
+	}
+	
+	public function setOption($name, $value) {
+		$this->options[$name] = $value;	
+	}
+	
+	public function getOption($name) {
+		if (isset($this->options[$name])) {
+			return $this->options[$name];
+		}
+		return null;
 	}
 
 	/**
@@ -76,38 +93,55 @@ class Table
 	 */
 	public function getHtml()
 	{
-		$table = '';
-		if ($this->name) $table .= '<h2>'.$this->name.'</h2>';
+		$id = rand(); // FIXME: rozumny id generator
+		
+		$table = "<!-- ******* Table:{$this->name} ****** -->\n";
+		$table .= "<div class='table'>\n";
+		if ($this->name) $table .= '<h2> <img id=\'toggle'.$id.'\' src=\'images/toggle.png\' onClick=\'toggleVisibility('.$id.');\'> '.$this->name.'</h2>'."\n";
 		if (!is_array($this->data) || empty($this->data[0]))
 		{
 			$table .= 'Dáta pre túto tabuľku neboli nájdené.<hr class="space" />';
 		}
 		else
 		{
-			$table .= '<table class="colstyle-sorting"><thead><tr>';
+			$table .= '<table id=\''.$id."'class='colstyle-sorting'>\n<thead>\n<tr>\n";
 			$columns = array();
 			foreach ($this->data[0] as $key => $value) if (is_string($key))
 			{
 				$columns[] = $key;
-				$table .= '<th class="sortable">'.$key.'</th>';
+				$table .= '    <th class="sortable">'.$key."</th>\n";
 			}
-			$table .= '</tr></thead><tbody>';
+			$table .= "</tr>\n</thead>\n<tbody>\n";
 			foreach ($this->data as $row)
 			{
-				if ($this->newKey) $link = '?'.http_build_query(array_merge($this->params, array($this->newKey => $row['index'])));
-				$table .= '<tr>';
+				if ($this->newKey) $link = '?'.http_build_query(array_merge($this->urlParams, array($this->newKey => $row['index'])));
+				if (isset($this->options['selected_key'])
+				    &&($this->options['selected_key'] == $row['index']))
+				{
+					$table .= "<tr class='selected'>\n";
+				}
+				else
+				{
+					$table .= "<tr>\n";
+				}
+				
 				foreach ($columns as $key => $column)
 				{
-					$table .= '<td>';
+					$table .= '    <td>';
 					if ($this->newKey && $key == 'index') $table .= '<a href="'.hescape($link).'">';
 					$table .= $row[$column];
 					if ($this->newKey && $key == 'index') $table .= '</a>';
-					$table .= '</td>';
+					$table .= "</td>\n";
 				}
-				$table .= '</tr>';
+				$table .= "</tr>\n";
 			}
-			$table .= '</tbody></table>';
+			$table .= "</tbody></table>\n";
 		}
+		if ($this->getOption('collapsed')) {
+			$table .= '<script type="text/javascript"> toggleVisibility('.
+								$id.") </script>\n";
+		}
+		$table .= "</div>\n\n\n";
 		return $table;
 	}
 
