@@ -60,7 +60,18 @@ Copyright (c) 2010 Martin Králik
 				if ($login !== null && $krbpwd !== null)
 				{
 					$data = download(self::COSIGN_LOGIN, array('ref' => self::LOGIN, 'login'=> $login, 'krbpwd' => $krbpwd));
-					if (!preg_match('@\<base href\="https://ais2\.uniba\.sk/ais/portal/pages/portal_layout\.jsp"\>@', $data)) throw new Exception('Nepodarilo sa prihlásiť.');
+
+					if (!preg_match('@\<base href\="https://ais2\.uniba\.sk/ais/portal/pages/portal_layout\.jsp"\>@', $data))
+					{
+						if (preg_match('@Pri pokuse o prihlásenie sa vyskytol problém:@', $data))
+						{
+							if ($reason = pluck($data, '@\<div style\="color:#FF0000;"\>\<b\>([^<]*)\<\/b\>@'))
+							{
+								throw new Exception('Nepodarilo sa prihlásiť, dôvod: <b>'.$reason.'</b>');
+							}
+						}
+						throw new Exception('Nepodarilo sa prihlásiť.');
+					}
 					$_SESSION['cosignLogin'] = true;
 					redirect();
 					return true;
