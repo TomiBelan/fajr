@@ -86,6 +86,20 @@ class Table
 		}
 		return null;
 	}
+	
+	public function getColumns() {
+		$data=array();
+		foreach ($this->definition as $key => $value) {
+			if (!$value['visible']) continue; // skip invisible cells
+			$data[] = array($value['col']+0, $key);
+		}
+		sort($data);
+		$columns=array();
+		foreach ($data as $row) {
+			$columns[$row[1]] = $row[1];
+		}
+		return $columns;
+	}
 
 	/**
 	 * Pomocou nastavených atribútov vygeneruje tabuľku v HTML formáte aj s linkami.
@@ -105,12 +119,10 @@ class Table
 		}
 		
 		$table .= '<table id=\''.$id."'class='colstyle-sorting'>\n<thead>\n<tr>\n";
-		$columns = array();
+		$columns = $this->getColumns();
 		
-		foreach ($this->definition as $key => $value) {
-			if (! $value['visible']) continue; // skip invisible cells
-			$columns[$key] = $value['aisname'];
-			$table .= '    <th class="sortable">'.$value['title']."</th>\n";
+		foreach ($columns as $key => $value) {
+			$table .= '    <th class="sortable">'.$this->definition[$value]['title']."</th>\n";
 		}
 		
 		$table .= "</tr>\n";
@@ -132,7 +144,7 @@ class Table
 			{
 				$table .= '    <td>';
 				if ($this->newKey && $key == 'index') $table .= '<a href="'.hescape($link).'">';
-				$table .= $row[$column];
+				$table .= $row[$this->definition[$column]['aisname']];
 				if ($this->newKey && $key == 'index') $table .= '</a>';
 				$table .= "</td>\n";
 			}

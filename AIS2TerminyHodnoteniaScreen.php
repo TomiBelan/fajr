@@ -50,9 +50,10 @@ require_once 'Table.php';
 			      'sortorder' => '0',
 			      'visible' => true),
 			array('aisname' => 'nazov',
-			      'title' => 'názov',
+			      'title' => 'názov predmetu',
 			      'sortorder' => '0',
-			      'visible' => true),
+			      'visible' => true,
+			      'col' => -1),
 			array('aisname' => 'kredit',
 			      'title' => 'kredit',
 			      'sortorder' => '0',
@@ -98,7 +99,7 @@ require_once 'Table.php';
 			      'sortorder' => '0',
 			      'visible' => true),
 			array('aisname' => 'miestnosti',
-			      'title' => 'miestnosti',
+			      'title' => 'miestnosť',
 			      'sortorder' => '0',
 			      'visible' => true),
 			array('aisname' => 'pocetPrihlasenych',
@@ -160,7 +161,8 @@ require_once 'Table.php';
 			array('aisname' => 'predmet',
 			      'title' => 'predmet',
 			      'sortorder' => '0',
-			      'visible' => true),
+			      'visible' => true,
+			      'col' => -1),
 			// }}}
 		);
 
