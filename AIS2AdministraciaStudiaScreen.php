@@ -1,5 +1,5 @@
 <?php
-/*
+/* {{{
 Copyright (c) 2010 Martin Králik
 
  Permission is hereby granted, free of charge, to any person
@@ -22,9 +22,10 @@ Copyright (c) 2010 Martin Králik
  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  OTHER DEALINGS IN THE SOFTWARE.
-*/
+}}} */
 
 require_once 'AIS2AbstractScreen.php';
+require_once 'AIS2TableParser.php';
 require_once 'Table.php';
 
 /**
@@ -35,42 +36,150 @@ require_once 'Table.php';
 class AIS2AdministraciaStudiaScreen extends AIS2AbstractScreen
 {
 	protected $tabulka_zoznam_studii = array(
-		array('name' => 'rocnik',              'title' => 'ročník',               'order' => '0'),
-		array('name' => 'skratka',             'title' => 'skratka',              'order' => '0'),
-		array('name' => 'kruzok',              'title' => 'krúžok',               'order' => '0'),
-		array('name' => 'studijnyProgram',     'title' => 'študijný program',     'order' => '0'),
-		array('name' => 'doplnujuceUdaje',     'title' => 'doplňujúce údaje',     'order' => '0'),
-		array('name' => 'zaciatokStudia',      'title' => 'začiatok štúdia',      'order' => '0'),
-		array('name' => 'koniecStudia',        'title' => 'koniec štúdia',        'order' => '0'),
-		array('name' => 'dlzkaVSemestroch',    'title' => 'dĺžka v semestroch',   'order' => '0'),
-		array('name' => 'dlzkaStudia',         'title' => 'dĺžka štúdia',         'order' => '0'),
-		array('name' => 'cisloDiplomu',        'title' => 'číslo diplomu',        'order' => '0'),
-		array('name' => 'cisloZMatriky',       'title' => 'číslo z matriky',      'order' => '0'),
-		array('name' => 'cisloVysvedcenia',    'title' => 'číslo vysvedčenia',    'order' => '0'),
-		array('name' => 'cisloDodatku',        'title' => 'číslo dodatku',        'order' => '0'),
-		array('name' => 'cisloEVI',            'title' => 'číslo EVI',            'order' => '0'),
-		array('name' => 'cisloProgramu',       'title' => 'číslo programu',       'order' => '0'),
-		array('name' => 'priznak',             'title' => 'príznak',              'order' => '0'),
-		array('name' => 'organizacnaJednotka', 'title' => 'organizačná jednotka', 'order' => '0'),
-		array('name' => 'rokStudia',           'title' => 'rok štúdia',           'order' => '0'),
+		// {{{
+		array('aisname' => 'rocnik',
+		      'title' => 'ročník',
+		      'sortorder' => '0',
+		      'visible' => true),
+		array('aisname' => 'skratka',
+		      'title' => 'skratka',
+		      'sortorder' => '0',
+		      'visible' => true),
+		array('aisname' => 'kruzok',
+		      'title' => 'krúžok',
+		      'sortorder' => '0',
+		      'visible' => false),
+		array('aisname' => 'studijnyProgram',
+		      'title' => 'študijný program',
+		      'sortorder' => '0',
+		      'visible'=>true),
+		array('aisname' => 'doplnujuceUdaje',
+		      'title' => 'doplňujúce údaje',
+		      'sortorder' => '0',
+		      'visible' => true),
+		array('aisname' => 'zaciatokStudia',
+		      'title' => 'začiatok štúdia',
+		      'sortorder' => '0',
+		      'visible' => true),
+		array('aisname' => 'koniecStudia',
+		      'title' => 'koniec štúdia',
+		      'sortorder' => '0',
+		      'visible' => true),
+		array('aisname' => 'dlzkaVSemestroch',
+		      'title' => 'dĺžka v semestroch',
+		      'sortorder' => '0',
+		      'visible' => true),
+		array('aisname' => 'dlzkaStudia',
+		      'title' => 'dĺžka štúdia',
+		      'sortorder' => '0',
+		      'visible' => true),
+		array('aisname' => 'cisloDiplomu',
+		      'title' => 'číslo diplomu',
+		      'sortorder' => '0',
+		      'visible' => false),
+		array('aisname' => 'cisloZMatriky',
+		      'title' => 'číslo z matriky',
+		      'sortorder' => '0',
+		      'visible' => false),
+		array('aisname' => 'cisloVysvedcenia',
+		      'title' => 'číslo vysvedčenia',
+		      'sortorder' => '0',
+		      'visible' => false),
+		array('aisname' => 'cisloDodatku',
+		      'title' => 'číslo dodatku',
+		      'sortorder' => '0',
+		      'visible' => false),
+		array('aisname' => 'cisloEVI',
+		      'title' => 'číslo EVI',
+		      'sortorder' => '0',
+		      'visible' => false),
+		array('aisname' => 'cisloProgramu',
+		      'title' => 'číslo programu',
+		      'sortorder' => '0',
+		      'visible' => true),
+		array('aisname' => 'priznak',
+		      'title' => 'príznak',
+		      'sortorder' => '0',
+		      'visible' => true),
+		array('aisname' => 'organizacnaJednotka',
+		      'title' => 'organizačná jednotka',
+		      'sortorder' => '0',
+		      'visible' => true),
+		array('aisname' => 'rokStudia',
+		      'title' => 'rok štúdia',
+		      'sortorder' => '0',
+		      'visible' => true),
+		// }}}
 	);
+
+
 	protected $tabulka_zoznam_zapisnych_listov = array(
-		array('name' => 'akademickyRok',          'title' => 'akademický rok',           'order' => '0'),
-		array('name' => 'rocnik',                 'title' => 'ročník',                   'order' => '0'),
-		array('name' => 'studProgramSkratka',     'title' => 'krúžok',                   'order' => '0'),
-		array('name' => 'studijnyProgram',        'title' => 'skratka',                  'order' => '0'),
-		array('name' => 'doplnujuceUdaje',        'title' => 'doplňujúce údaje',         'order' => '0'),
-		array('name' => 'datumZapisu',            'title' => 'dátum zápisu',             'order' => '0'),
-		array('name' => 'potvrdenyZapis',         'title' => 'potvrdený zápis',          'order' => '0'),
-		array('name' => 'podmienecnyZapis',       'title' => 'podmienečný zápis',        'order' => '0'),
-		array('name' => 'dlzkaVSemestroch',       'title' => 'dĺžka v semestroch',       'order' => '0'),
-		array('name' => 'cisloEVI',               'title' => 'číslo EVI',                'order' => '0'),
-		array('name' => 'cisloProgramu',          'title' => 'číslo programu',           'order' => '0'),
-		array('name' => 'datumSplnenia',          'title' => 'dátum splnenia',           'order' => '0'),
-		array('name' => 'priznak',                'title' => 'príznak',                  'order' => '0'),
-		array('name' => 'organizacnaJednotka',    'title' => 'organizačná jednotka',     'order' => '0'),
-		array('name' => 'typFinacovania',         'title' => 'typ financovania',         'order' => '0'),
-		array('name' => 'skratkaTypuFinacovania', 'title' => 'skratka typu finacovania', 'order' => '0'),
+		// {{{
+		array('aisname' => 'akademickyRok',
+		      'title' => 'akademický rok',
+		      'sortorder' => '0',
+		      'visible' => true),
+		array('aisname' => 'rocnik',
+		      'title' => 'ročník',
+		      'sortorder' => '0',
+		      'visible' => true),
+		array('aisname' => 'studProgramSkratka',
+		      'title' => 'krúžok',
+		      'sortorder' => '0',
+		      'visible' => true),
+		array('aisname' => 'studijnyProgram',
+		      'title' => 'skratka',
+		      'sortorder' => '0',
+		      'visible' => true),
+		array('aisname' => 'doplnujuceUdaje',
+		      'title' => 'doplňujúce údaje',
+		      'sortorder' => '0',
+		      'visible' => true),
+		array('aisname' => 'datumZapisu',
+		      'title' => 'dátum zápisu',
+		      'sortorder' => '0',
+		      'visible' => true),
+		array('aisname' => 'potvrdenyZapis',
+		      'title' => 'potvrdený zápis',
+		      'sortorder' => '0',
+		      'visible' => true),
+		array('aisname' => 'podmienecnyZapis',
+		      'title' => 'podmienečný zápis',
+		      'sortorder' => '0',
+		      'visible' => true),
+		array('aisname' => 'dlzkaVSemestroch',
+		      'title' => 'dĺžka v semestroch',
+		      'sortorder' => '0',
+		      'visible' => true),
+		array('aisname' => 'cisloEVI',
+		      'title' => 'číslo EVI',
+		      'sortorder' => '0',
+		      'visible' => true),
+		array('aisname' => 'cisloProgramu',
+		      'title' => 'číslo programu',
+		      'sortorder' => '0',
+		      'visible' => true),
+		array('aisname' => 'datumSplnenia',
+		      'title' => 'dátum splnenia',
+		      'sortorder' => '0',
+		      'visible' => true),
+		array('aisname' => 'priznak',
+		      'title' => 'príznak',
+		      'sortorder' => '0',
+		      'visible' => true),
+		array('aisname' => 'organizacnaJednotka',
+		      'title' => 'organizačná jednotka',
+		      'sortorder' => '0',
+		      'visible' => true),
+		array('aisname' => 'typFinacovania',
+		      'title' => 'typ financovania',
+		      'sortorder' => '0',
+		      'visible' => true),
+		array('aisname' => 'skratkaTypuFinacovania',
+		      'title' => 'skratka typu finacovania',
+		      'sortorder' => '0',
+		      'visible' => true),
+		// }}}
 	);
 
 	protected $idCache = array();
@@ -82,8 +191,11 @@ class AIS2AdministraciaStudiaScreen extends AIS2AbstractScreen
 
 	public function getZoznamStudii()
 	{
-		$data = pluck($this->data, AIS2Utils::DATA_PATTERN);
-		return new Table($this->tabulka_zoznam_studii, $data, 'Zoznam štúdií', 'studium');
+		$data = match($this->data, AIS2Utils::DATA_PATTERN);
+		$tableParser = new
+			AIS2TableParser($this->tabulka_zoznam_studii);
+		$tableData = $tableParser->parseHtml($data);
+		return new Table($this->tabulka_zoznam_studii, $tableData, 'Zoznam štúdií', 'studium');
 	}
 
 	public function getZapisneListy($studiumIndex)
@@ -134,8 +246,11 @@ class AIS2AdministraciaStudiaScreen extends AIS2AbstractScreen
 		</changedProperties>
 	</changedProps>
 </request>'));
-		$data = pluck($data, AIS2Utils::DATA_PATTERN);
-		return new Table($this->tabulka_zoznam_zapisnych_listov, $data, 'Zoznam zápisných listov', 'list', array('studium' => $studiumIndex));
+		$data = match($data, AIS2Utils::DATA_PATTERN);
+		$tableParser = new
+			AIS2TableParser($this->tabulka_zoznam_zapisnych_listov);
+		$tableData = $tableParser->parseHtml($data);
+		return new Table($this->tabulka_zoznam_zapisnych_listov, $tableData, 'Zoznam zápisných listov', 'list', array('studium' => $studiumIndex));
 	}
 
 	public function getIdZapisnyList($zapisnyListIndex)
@@ -198,8 +313,9 @@ class AIS2AdministraciaStudiaScreen extends AIS2AbstractScreen
 		</changedProperties>
 	</changedProps>
 </request>'));
-			$data = pluckAll($data, AIS2Utils::APP_LOCATION_PATTERN, true);
-			$data = pluckAll($data[2], '@&idZapisnyList\=(?P<idZapisnyList>[0-9]*)&idStudium\=(?P<idStudium>[0-9]*)@', true);
+			// FIXME: toto tunak spravit nejak krajsie
+			$data = matchAll($data, AIS2Utils::APP_LOCATION_PATTERN, true);
+			$data = matchAll($data[2], '@&idZapisnyList\=(?P<idZapisnyList>[0-9]*)&idStudium\=(?P<idStudium>[0-9]*)@', true);
 			foreach (array_keys($data) as $key) if (is_numeric($key)) unset($data[$key]);
 			$this->idCache[$zapisnyListIndex] = $data;
 		}

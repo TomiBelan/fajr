@@ -47,10 +47,10 @@ class Table
  * @param string|null $newKey Názov nového parametru v url, ktorého hodnota bude závisieť od riadku tabuľky.
  * @param array $urlParams Zvyšné už nastavené parametre pre url.
  */
-	public function  __construct($definition, $html, $name = '', $newKey = null, $urlParams = array())
+	public function  __construct($definition, $data, $name = '', $newKey = null, $urlParams = array())
 	{
 		$this->definition = $definition;
-		$this->data = pluckAll($html, $this->getPattern());
+		$this->data = $data;
 		$this->name = $name;
 		$this->newKey = $newKey;
 		$this->urlParams = $urlParams;
@@ -95,70 +95,57 @@ class Table
 	{
 		$id = rand(); // FIXME: rozumny id generator
 		
-		$table = "<!-- ******* Table:{$this->name} ****** -->\n";
+		$table = "\n<!-- ******* Table:{$this->name} ****** -->\n";
 		$table .= "<div class='table'>\n";
 		if ($this->name) $table .= '<h2> <img id=\'toggle'.$id.'\' src=\'images/toggle.png\' onClick=\'toggleVisibility('.$id.');\'> '.$this->name.'</h2>'."\n";
-		if (!is_array($this->data) || empty($this->data[0]))
+		if (!is_array($this->data) || empty($this->data[0])) {
+			$table .= '<font color="red"> Dáta pre túto tabuľku neboli nájdené.</font><hr class="space" />';
+			$table .= "</div>\n";
+			return $table;
+		}
+		
+		$table .= '<table id=\''.$id."'class='colstyle-sorting'>\n<thead>\n<tr>\n";
+		$columns = array();
+		
+		foreach ($this->definition as $key => $value) {
+			if (! $value['visible']) continue; // skip invisible cells
+			$columns[$key] = $value['aisname'];
+			$table .= '    <th class="sortable">'.$value['title']."</th>\n";
+		}
+		
+		$table .= "</tr>\n";
+		$table .= "\n</thead>\n<tbody>\n";
+		foreach ($this->data as $row)
 		{
-			$table .= 'Dáta pre túto tabuľku neboli nájdené.<hr class="space" />';
-		}
-		else
-		{
-			$table .= '<table id=\''.$id."'class='colstyle-sorting'>\n<thead>\n<tr>\n";
-			$columns = array();
-			foreach ($this->data[0] as $key => $value) if (is_string($key))
+			if ($this->newKey) $link = '?'.http_build_query(array_merge($this->urlParams, array($this->newKey => $row['index'])));
+			if (isset($this->options['selected_key'])
+					&&($this->options['selected_key'] == $row['index']))
 			{
-				$columns[] = $key;
-				$table .= '    <th class="sortable">'.$key."</th>\n";
+				$table .= "<tr class='selected'>\n";
 			}
-			$table .= "</tr>\n</thead>\n<tbody>\n";
-			foreach ($this->data as $row)
+			else
 			{
-				if ($this->newKey) $link = '?'.http_build_query(array_merge($this->urlParams, array($this->newKey => $row['index'])));
-				if (isset($this->options['selected_key'])
-				    &&($this->options['selected_key'] == $row['index']))
-				{
-					$table .= "<tr class='selected'>\n";
-				}
-				else
-				{
-					$table .= "<tr>\n";
-				}
-				
-				foreach ($columns as $key => $column)
-				{
-					$table .= '    <td>';
-					if ($this->newKey && $key == 'index') $table .= '<a href="'.hescape($link).'">';
-					$table .= $row[$column];
-					if ($this->newKey && $key == 'index') $table .= '</a>';
-					$table .= "</td>\n";
-				}
-				$table .= "</tr>\n";
+				$table .= "<tr>\n";
 			}
-			$table .= "</tbody></table>\n";
+			
+			foreach ($columns as $key => $column)
+			{
+				$table .= '    <td>';
+				if ($this->newKey && $key == 'index') $table .= '<a href="'.hescape($link).'">';
+				$table .= $row[$column];
+				if ($this->newKey && $key == 'index') $table .= '</a>';
+				$table .= "</td>\n";
+			}
+			$table .= "</tr>\n";
 		}
-		if ($this->getOption('collapsed')) {
-			$table .= '<script type="text/javascript"> toggleVisibility('.
-								$id.") </script>\n";
-		}
-		$table .= "</div>\n\n\n";
-		return $table;
+	$table .= "</tbody></table>\n";
+	if ($this->getOption('collapsed')) {
+		$table .= '<script type="text/javascript"> toggleVisibility('.
+							$id.") </script>\n";
+	}
+	$table .= "</div>\n\n\n";
+	return $table;
 	}
 
-/**
- * Vráti regulárny výraz použitý na matchovanie tabuľky v HTML výstupe z AISu.
- * Na jeho konštrukciu sa používa definícia tabuľky.
- * @return string Regulárny výraz.
- */
-	public function getPattern()
-	{
-		$pattern = '@\<tr id\=\'row_(?P<index>[^\']*)\' rid\=\'[^\']*\'\>';
-		foreach ($this->definition as $column)
-		{
-			$pattern .= '\<td[^>]*\>\<div\>(?P<'.$column['name'].'>[^<]*)\</div\>\</td\>';
-		}
-		$pattern .= '\</tr\>@';
-		return $pattern;
-	}
 }
 ?>

@@ -31,14 +31,22 @@ Copyright (c) 2010 Martin Králik
 		exit();
 	}
 	
-	function pluck($haystack, $pattern)
+	/**
+	 * Function that searchs haystack for perl-like pattern and
+	 * returns first sub-match from pattern.
+	 * I.e. If the pattern is "example:(.*)",
+	 * the full match is example:something and this
+	 * function returns "something"
+	 */
+	function match($haystack, $pattern)
 	{
 		$matches = array();
 		if (!preg_match($pattern, $haystack, $matches)) return false;
+		assert(isset($matches[1]));
 		return $matches[1];
 	}
 	
-	function pluckAll($haystack, $pattern, $singleMatch = false)
+	function matchAll($haystack, $pattern, $singleMatch = false)
 	{
 		$matches = array();
 		if (!preg_match_all($pattern, $haystack, $matches, PREG_SET_ORDER)) return false;

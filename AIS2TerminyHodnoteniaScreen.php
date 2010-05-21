@@ -36,38 +36,132 @@ require_once 'Table.php';
 	class AIS2TerminyHodnoteniaScreen extends AIS2AbstractScreen
 	{
 		protected $tabulka_predmety_zapisneho_listu = array(
-			array('name' => 'kodCastStPlanu',          'title' => 'kód časti študijného plánu', 'order' => '0'),
-			array('name' => 'kodTypVyucby',            'title' => 'kód typu výučby',            'order' => '0'),
-			array('name' => 'skratka',                 'title' => 'skratka',                    'order' => '0'),
-			array('name' => 'nazov',                   'title' => 'názov',                      'order' => '0'),
-			array('name' => 'kredit',                  'title' => 'kredit',                     'order' => '0'),
-			array('name' => 'semester',                'title' => 'semester',                   'order' => '0'),
-			array('name' => 'sposobUkoncenia',         'title' => 'spôsob ukončenia',           'order' => '0'),
-			array('name' => 'pocetTerminov',           'title' => 'počet termínov',             'order' => '0'),
-			array('name' => 'pocetAktualnychTerminov', 'title' => 'počet aktuálnych termínov',  'order' => '0'),
-			array('name' => 'aktualnost',              'title' => 'aktuálnosť',                 'order' => '0'),
+			// {{{
+			array('aisname' => 'kodCastStPlanu',
+			      'title' => 'kód časti študijného plánu',
+			      'sortorder' => '0',
+			      'visible' => false),
+			array('aisname' => 'kodTypVyucby',
+			      'title' => 'kód typu výučby',
+			      'sortorder' => '0',
+			      'visible' => true),
+			array('aisname' => 'skratka',
+			      'title' => 'skratka',
+			      'sortorder' => '0',
+			      'visible' => true),
+			array('aisname' => 'nazov',
+			      'title' => 'názov',
+			      'sortorder' => '0',
+			      'visible' => true),
+			array('aisname' => 'kredit',
+			      'title' => 'kredit',
+			      'sortorder' => '0',
+			      'visible' => true),
+			array('aisname' => 'semester',
+			      'title' => 'semester',
+			      'sortorder' => '0',
+			      'visible' => true),
+			array('aisname' => 'sposobUkoncenia',
+			      'title' => 'spôsob ukončenia',
+			      'sortorder' => '0',
+			      'visible' => false),
+			array('aisname' => 'pocetTerminov',
+			      'title' => 'počet termínov',
+			      'sortorder' => '0',
+			      'visible' => false),
+			array('aisname' => 'pocetAktualnychTerminov',
+			      'title' => 'počet aktuálnych termínov',
+			      'sortorder' => '0',
+			      'visible' => false),
+			array('aisname' => 'aktualnost',
+			      'title' => 'aktuálnosť',
+			      'sortorder' => '0',
+			      'visible' => false),
+			// }}}
 		);
 		protected $tabulka_terminy_hodnotenia = array(
-			array('name' => 'prihlaseny',        'title' => 'prihlásený',         'order' => '0'),
-			array('name' => 'faza',              'title' => 'fáza',               'order' => '0'),
-			array('name' => 'datum',             'title' => 'dátum',              'order' => '0'),
-			array('name' => 'cas',               'title' => 'čas',                'order' => '0'),
-			array('name' => 'miestnosti',        'title' => 'miestnosti',         'order' => '0'),
-			array('name' => 'pocetPrihlasenych', 'title' => 'počet prihlásených', 'order' => '0'),
-			array('name' => 'datumPrihlasenia',  'title' => 'dátum prihlásenia',  'order' => '0'),
-			array('name' => 'datumOdhlasenia',   'title' => 'dátum odhlásenia',   'order' => '0'),
-			array('name' => 'zapisal',           'title' => 'zapísal',            'order' => '0'),
-			array('name' => 'pocetHodnotiacich', 'title' => 'počet hodnotiacich', 'order' => '0'),
-			array('name' => 'hodnotiaci',        'title' => 'hodnotiaci',         'order' => '0'),
-			array('name' => 'maxPocet',          'title' => 'maximálny počet',    'order' => '0'),
-			array('name' => 'znamka',            'title' => 'známka',             'order' => '0'),
-			array('name' => 'prihlasovanie',     'title' => 'prihlasovanie',      'order' => '0'),
-			array('name' => 'odhlasovanie',      'title' => 'odhlasovanie',       'order' => '0'),
-			array('name' => 'poznamka',          'title' => 'poznámka',           'order' => '0'),
-			array('name' => 'zaevidoval',        'title' => 'zaevidoval',         'order' => '0'),
-			array('name' => 'mozeOdhlasit',      'title' => 'može odhlásiť',      'order' => '0'),
-			array('name' => 'skratkaPredmetu',   'title' => 'skratka predmetu',   'order' => '0'),
-			array('name' => 'predmet',           'title' => 'predmet',            'order' => '0'),
+			// {{{
+			array('aisname' => 'prihlaseny',
+			      'title' => 'prihlásený',
+			      'sortorder' => '0',
+			      'visible' => true),
+			array('aisname' => 'faza',
+			      'title' => 'fáza',
+			      'sortorder' => '0',
+			      'visible' => false),
+			array('aisname' => 'datum',
+			      'title' => 'dátum',
+			      'sortorder' => '0',
+			      'visible' => true),
+			array('aisname' => 'cas',
+			      'title' => 'čas',
+			      'sortorder' => '0',
+			      'visible' => true),
+			array('aisname' => 'miestnosti',
+			      'title' => 'miestnosti',
+			      'sortorder' => '0',
+			      'visible' => true),
+			array('aisname' => 'pocetPrihlasenych',
+			      'title' => 'počet prihlásených',
+			      'sortorder' => '0',
+			      'visible' => true),
+			array('aisname' => 'datumPrihlasenia',
+			      'title' => 'dátum prihlásenia',
+			      'sortorder' => '0',
+			      'visible' => false),
+			array('aisname' => 'datumOdhlasenia',
+			      'title' => 'dátum odhlásenia',
+			      'sortorder' => '0',
+			      'visible' => false),
+			array('aisname' => 'zapisal',
+			      'title' => 'zapísal',
+			      'sortorder' => '0',
+			      'visible' => false),
+			array('aisname' => 'pocetHodnotiacich',
+			      'title' => 'počet hodnotiacich',
+			      'sortorder' => '0',
+			      'visible' => false),
+			array('aisname' => 'hodnotiaci',
+			      'title' => 'hodnotiaci',
+			      'sortorder' => '0',
+			      'visible' => true),
+			array('aisname' => 'maxPocet',
+			      'title' => 'maximálny počet',
+			      'sortorder' => '0',
+			      'visible' => true),
+			array('aisname' => 'znamka',
+			      'title' => 'známka',
+			      'sortorder' => '0',
+			      'visible' => false),
+			array('aisname' => 'prihlasovanie',
+			      'title' => 'prihlasovanie',
+			      'sortorder' => '0',
+			      'visible' => true),
+			array('aisname' => 'odhlasovanie',
+			      'title' => 'odhlasovanie',
+			      'sortorder' => '0',
+			      'visible' => true),
+			array('aisname' => 'poznamka',
+			      'title' => 'poznámka',
+			      'sortorder' => '0',
+			      'visible' => true),
+			array('aisname' => 'zaevidoval',
+			      'title' => 'zaevidoval',
+			      'sortorder' => '0',
+			      'visible' => false),
+			array('aisname' => 'mozeOdhlasit',
+			      'title' => 'može odhlásiť',
+			      'sortorder' => '0',
+			      'visible' => true),
+			array('aisname' => 'skratkaPredmetu',
+			      'title' => 'skratka predmetu',
+			      'sortorder' => '0',
+			      'visible' => false),
+			array('aisname' => 'predmet',
+			      'title' => 'predmet',
+			      'sortorder' => '0',
+			      'visible' => true),
+			// }}}
 		);
 
 		public function __construct($idZapisnyList, $idStudium)
@@ -77,14 +171,20 @@ require_once 'Table.php';
 
 		public function getPredmetyZapisnehoListu()
 		{
-			$data = pluckAll($this->data, AIS2Utils::DATA_PATTERN);
-			return new Table($this->tabulka_predmety_zapisneho_listu, $data[0][1], 'Predmety zápisného listu');
+			$data = matchAll($this->data, AIS2Utils::DATA_PATTERN);
+			$tableParser = new
+				AIS2TableParser($this->tabulka_predmety_zapisneho_listu);
+			$tableData = $tableParser->parseHtml($data[0][1]);
+			return new Table($this->tabulka_predmety_zapisneho_listu, $tableData, 'Predmety zápisného listu');
 		}
 
 		public function getTerminyHodnotenia()
 		{
-			$data = pluckAll($this->data, AIS2Utils::DATA_PATTERN);
-			return new Table($this->tabulka_terminy_hodnotenia, $data[1][1], 'Termíny hodnotenia', null, array('studium', 'list'));
+			$data = matchAll($this->data, AIS2Utils::DATA_PATTERN);
+			$tableParser = new
+				AIS2TableParser($this->tabulka_terminy_hodnotenia);
+			$tableData = $tableParser->parseHtml($data[1][1]);
+			return new Table($this->tabulka_terminy_hodnotenia, $tableData, 'Termíny hodnotenia', null, array('studium', 'list'));
 		}
 
 	}
