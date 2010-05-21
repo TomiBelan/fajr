@@ -71,8 +71,10 @@ Copyright (c) 2010 Martin Králik
 			
 			$terminyHodnotenia = $skusky->getTerminyHodnotenia();
 			$terminyHodnotenia->setUrlParams(array('studium' => Input::get('studium'), 'list' => $list));
-			$tabs->addTab('TerminyHodnotenia', 'Termíny hodnotenia', $terminyHodnotenia->getHtml());
+			$tabs->addTab('TerminyHodnotenia', 'Moje skúšky', $terminyHodnotenia->getHtml());
 
+			$tabs->addTab('ZapisSkusok', 'Prihlásenie na skúšky', '');
+			
 			$predmetyZapisnehoListu = $skusky->getPredmetyZapisnehoListu();
 			$predmetyZapisnehoListu->setUrlParams(array('studium' => Input::get('studium'), 'list' => $list));
 			

@@ -2,8 +2,11 @@
 	line-height:1.5;
 }
 
+td,th {
+	border-bottom: 1px solid #999;
+}
 tr:hover {
-	background-color: lightyellow;
+	background-color: #fdc;
 }
 
 tr.clickable { 
