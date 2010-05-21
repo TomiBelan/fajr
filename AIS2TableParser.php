@@ -50,7 +50,7 @@ class AIS2TableParser {
 		$pattern = '@\<tr id\=\'row_(?P<index>[^\']*)\' rid\=\'[^\']*\'\>';
 		foreach ($this->definition as $column)
 		{
-			$pattern .= '\<td[^>]*\>\<div\>(?P<'.$column['aisname'].'>[^<]*)\</div\>\</td\>';
+			$pattern .= '\<td[^>]*\>\<div\>(?P<'.substr($column['aisname'],0,32).'>[^<]*)\</div\>\</td\>';
 		}
 		$pattern .= '\</tr\>@';
 		return $pattern;

@@ -144,7 +144,7 @@ class Table
 			{
 				$table .= '    <td>';
 				if ($this->newKey && $key == 'index') $table .= '<a href="'.hescape($link).'">';
-				$table .= $row[$this->definition[$column]['aisname']];
+				$table .= $row[substr($this->definition[$column]['aisname'], 0, 32)];
 				if ($this->newKey && $key == 'index') $table .= '</a>';
 				$table .= "</td>\n";
 			}

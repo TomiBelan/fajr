@@ -32,6 +32,7 @@ Copyright (c) 2010 Martin Králik
   require_once 'changelog.php';
 	require_once 'AIS2AdministraciaStudiaScreen.php';
 	require_once 'AIS2TerminyHodnoteniaScreen.php';
+	require_once 'AIS2HodnoteniaPriemeryScreen.php';
 	require_once 'TabManager.php';
  
 	try
@@ -79,6 +80,12 @@ Copyright (c) 2010 Martin Králik
 			$predmetyZapisnehoListu->setUrlParams(array('studium' => Input::get('studium'), 'list' => $list));
 			
 			$tabs->addTab('ZapisnyList', 'Zápisný list', $predmetyZapisnehoListu->getHtml());
+			
+			$skusky = new AIS2HodnoteniaPriemeryScreen($adminStudia->getIdZapisnyList($list));
+			$hodnotenia = $skusky->getHodnotenia();
+			$tabs->addTab('Hodnotenia', 'Hodnotenia', $hodnotenia->getHtml());
+			$priemery = $skusky->getPriemery();
+			$tabs->addTab('Priemery', 'Priemery', $priemery->getHtml());
 			
 			DisplayManager::addContent($tabs->getHtml());
 			
