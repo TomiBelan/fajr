@@ -48,29 +48,30 @@ Copyright (c) 2010 Martin Králik
 			DisplayManager::addContent('<a href="?logout">odhlásiť</a><hr/>');
 			$adminStudia = new AIS2AdministraciaStudiaScreen();
 			
-			$zoznamStudii = $adminStudia->getZoznamStudii();
-			$zoznamStudiiTable = new Table($zoznamStudii, 'Zoznam štúdií', 'studium');
-			$zoznamStudiiTable->setOption('selected_key',Input::get('studium'));
-			$zoznamStudiiTable->setOption('collapsed', Input::get('studium') !== null);
-			DisplayManager::addContent($zoznamStudiiTable->getHtml());
-			
 			if (Input::get('studium') !== null) {
 				$studium_id = Input::get('studium');
 			} else {
 				$studium_id = 0;	
 			}
+			$zoznamStudii = $adminStudia->getZoznamStudii();
+			$zoznamStudiiTable = new Table($zoznamStudii, 'Zoznam štúdií', 'studium');
+			$zoznamStudiiTable->setOption('selected_key',$studium_id);
+			$zoznamStudiiTable->setOption('collapsed', Input::get('studium') !== null);
+			DisplayManager::addContent($zoznamStudiiTable->getHtml());
+			
 			
 			$zapisneListy = $adminStudia->getZapisneListy($studium_id);
-			$zapisneListyTable = new Table($zapisneListy, 'Zoznam zápisných listov', 'list', array('studium' => $studium_id));
-			$zapisneListyTable->setOption('selected_key', Input::get('list'));
-			$zapisneListyTable->setOption('collapsed', Input::get('list') !== null);
-			DisplayManager::addContent($zapisneListyTable->getHtml());
-			
 			if (Input::get('list') !== null) {
 				$list = Input::get('list');
 			} else {
 				$list = 0;
 			}
+			
+			$zapisneListyTable = new Table($zapisneListy, 'Zoznam zápisných listov', 'list', array('studium' => $studium_id));
+			$zapisneListyTable->setOption('selected_key', $list);
+			$zapisneListyTable->setOption('collapsed', Input::get('list') !== null);
+			DisplayManager::addContent($zapisneListyTable->getHtml());
+			
 			$skusky = new AIS2TerminyHodnoteniaScreen($adminStudia->getIdZapisnyList($list), $adminStudia->getIdStudium($list));
 			$tabs = new TabManager('akcie');
 			
@@ -94,7 +95,7 @@ Copyright (c) 2010 Martin Králik
 			$priemeryTable = new Table($priemery, 'Priemery');
 			
 			$tabs->addTab('Hodnotenia', 'Hodnotenia/Priemery',
-			              $priemeryTable->getHtml().$hodnoteniaTable->getHtml());
+			              $hodnoteniaTable->getHtml().$priemeryTable->getHtml());
 			
 			DisplayManager::addContent($tabs->getHtml());
 			
