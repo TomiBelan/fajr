@@ -76,6 +76,7 @@ Copyright (c) 2010 Martin Králik
 				redirect();
 				return true;
 			}
+			$_SESSION['cosignLogin'] = true;
 			return true;
 		}
 		
