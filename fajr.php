@@ -180,7 +180,8 @@ Copyright (c) 2010 Martin Králik
 			if (Input::get('studium') === null) Input::set('studium',0);
 			
 			$zoznamStudii = $adminStudia->getZoznamStudii();
-			$zoznamStudiiTable = new Table(TableDefinitions::zoznamStudii(), 'Zoznam štúdií', 'studium');
+			$zoznamStudiiTable = new Table(TableDefinitions::zoznamStudii(),
+					'Zoznam štúdií', 'studium', array('tab' => Input::get('tab')));
 			$zoznamStudiiTable->addRows($zoznamStudii->getData());
 			$zoznamStudiiTable->setOption('selected_key', Input::get('studium'));
 			$zoznamStudiiTable->setOption('collapsed', true);
@@ -192,7 +193,8 @@ Copyright (c) 2010 Martin Králik
 			
 			$zapisneListyTable = new
 				Table(TableDefinitions::zoznamZapisnychListov(), 'Zoznam zápisných listov',
-					'list', array('studium' => Input::get('studium')));
+					'list', array('studium' => Input::get('studium'),
+						'tab'=>Input::get('tab')));
 			
 			$zapisneListyTable->addRows($zapisneListy->getData());
 			$zapisneListyTable->setOption('selected_key', Input::get('list'));
