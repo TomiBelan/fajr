@@ -89,7 +89,7 @@ Copyright (c) 2010 Martin Králik
 	
 </head>
 <body>
-<div class="container"><h1>FAJR beta</h1>
+<div class="container"><h1><img src=\'images/fajr_small.png\' class=\'logo\'> FAJR beta</h1>
 ',
 
 			'footer' => '
