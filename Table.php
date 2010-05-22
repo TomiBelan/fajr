@@ -62,10 +62,15 @@ class TableRow
 		$colno = 0;
 		foreach ($columns as $key => $column)
 		{
+			$cell_value = $this->data[substr($key, 0, 32)];
+			if ($cell_value=="") $cell_value="&nbsp;";
+				
 			$cell = '    <td>';
-			if ($table->newKey && $colno==0) $cell .= '<a href="'.hescape($link).'">';
-			$cell .= $this->data[substr($key, 0, 32)];
-			if ($table->newKey && $colno==0) $cell .= '</a>';
+			if ($table->newKey && $colno==0) {
+				$cell .= '<a href="'.hescape($link).'">'.$cell_value."</a>";
+			} else {
+				$cell .= $cell_value;
+			}
 			$cell .= "</td>\n";
 			
 			$row .= $cell;
