@@ -23,18 +23,18 @@ Copyright (c) 2010 Martin Králik
  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  OTHER DEALINGS IN THE SOFTWARE.
 */
-
+	error_reporting(E_ALL | E_STRICT);
 	session_start();
 	$startTime = microtime(true);
 
 	require_once 'Input.php';
-	require_once 'displayManager.php';
-	require_once 'AIS2Utils.php';
-  require_once 'changelog.php';
-	require_once 'AIS2AdministraciaStudiaScreen.php';
-	require_once 'AIS2TerminyHodnoteniaScreen.php';
-	require_once 'AIS2HodnoteniaPriemeryScreen.php';
+	require_once 'DisplayManager.php';
 	require_once 'TabManager.php';
+  require_once 'Changelog.php';
+	require_once 'libfajr/AIS2Utils.php';
+	require_once 'libfajr/AIS2AdministraciaStudiaScreen.php';
+	require_once 'libfajr/AIS2TerminyHodnoteniaScreen.php';
+	require_once 'libfajr/AIS2HodnoteniaPriemeryScreen.php';
  
 	try
 	{

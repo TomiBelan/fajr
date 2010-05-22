@@ -24,6 +24,8 @@ Copyright (c) 2010 Martin Králik
  OTHER DEALINGS IN THE SOFTWARE.
 */
 
+	define('USER_AGENT', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; sk; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7');
+
 	function redirect($url = null)
 	{
 		if ($url === null) $url = 'fajr.php';
@@ -85,7 +87,7 @@ Copyright (c) 2010 Martin Králik
 		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_COOKIEFILE, getCookieFile());
 		curl_setopt($ch, CURLOPT_COOKIEJAR, getCookieFile());
-		curl_setopt ($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; sk; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7');
+		curl_setopt($ch, CURLOPT_USERAGENT, USER_AGENT);
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_VERBOSE, false);
