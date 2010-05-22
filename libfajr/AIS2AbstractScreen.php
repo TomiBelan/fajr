@@ -52,6 +52,10 @@ Copyright (c) 2010 Martin Králik
 			$this->setAppId($response);
 
 			$response = AIS2Utils::request($this->getXmlInterfaceLocation(), array('xml_spec' => '<request><serial>'.$this->getSerial().'</serial><events><ev><event class=\'avc.ui.event.AVCComponentEvent\'><command>INIT</command></event></ev></events></request>'));
+			if (preg_match("/Neautorizovaný prístup!/", $response)) {
+				throw new Exception("AIS hlási neautorizovaný prístup -
+					pravdepodobne vypršala platnosť cookie");
+			}
 			$this->setFormName($response);
 
 			$this->data = AIS2Utils::request('https://ais2.uniba.sk/ais/servlets/WebUIServlet?appId='.$this->appId.'&form='.$this->formName.'&antiCache='.random());
