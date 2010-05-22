@@ -6,6 +6,7 @@ class Changelog {
         array('2010-02-16', '0.1', 'AIS2 sa upgradol, prestali fungovať  niektoré veci'),
         array('2010-05-22', '0.2', 'Pribudli nové tabuľky, skryli sme
               zbytočné stĺpce a celkovo vylepšili vzhľad'),
+        array('2010-05-23', '0.2', 'Fajr prešiel na beta testing :-)'),
         );
 
     private static $limit = 6;

@@ -77,7 +77,6 @@ Copyright (c) 2010 Martin Králik
 	<script type="text/javascript" src="scripts/fajr.js"></script>
 	<script type="text/javascript" src="scripts/toggleVisibility.js"></script>
 	<script type="text/javascript" src="scripts/tablesort.min.js"></script>
-	<script type="text/javascript" src="scripts/tabs.js"></script>
 	<link rel="stylesheet" href="css/screen.css" type="text/css" media="screen, projection" />
 	<link rel="stylesheet" href="css/plugins/buttons/screen.css" type="text/css" media="screen, projection" />
 	<link rel="stylesheet" href="css/custom.css" type="text/css" media="screen, projection" />
@@ -123,11 +122,11 @@ Pomocou cookie.<br/>
 Tento postup je náročnejší, ale bezpečnejší a preto <strong>odporúčaný</strong>.
 Funguje to tak, že sa normálne prihlásite do <a href="https://ais2.uniba.sk/">AISu</a>.
 Po prihlásení si poziete nastavené cookies.
-Hodnotu tej s názvom "cosign-filter-ais2.uniba.sk" skopírujete do ľavého formulára "<em>Prihlásenie cez cookie</em>".
+Hodnotu tej s názvom "cosign-filter-ais2.uniba.sk" skopírujete do pravého formulára "<em>Prihlásenie cez cookie</em>".
 </li>
 <li>
 Pomocou mena a hesla.<br/>
-Do pravého formulára "<em>Prihlásenie cez Cosign</em>" vyplníte svoje meno a heslo, rovnaké ako keď sa prihlasujete do <a href="https://ais2.uniba.sk/">AISu</a>.
+Do ľavého formulára "<em>Prihlásenie cez Cosign</em>" vyplníte svoje meno a heslo, rovnaké ako keď sa prihlasujete do <a href="https://ais2.uniba.sk/">AISu</a>.
 Tento postup <strong>nie je odporúčaný</strong>.
 </li>
 </ol>
@@ -142,6 +141,7 @@ pretože s tým bol problém (nemali).
 <p>
 Táto aplikácia nerobí nič zlé. Ale ak jej aj tak nedôverujete, môžete si ju rozbehnúť u seba.
 Stačí vám k tomu webserver, PHP a jej <a href="http://code.google.com/p/fajr/source/checkout">zdrojové kódy</a>.
+Ak jej ani tak nedôverujete, používajte AIS ;-).
 </p>
 </div>
 ',
