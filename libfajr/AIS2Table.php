@@ -38,6 +38,7 @@ class AIS2Table {
 	public function __construct($tableDefinition, $html) {
 		$this->definition = $tableDefinition;
 		$this->data = matchAll($html, $this->getPattern());
+		if ($this->data === false) $this->data = array();
 	}
 	
 	public function getData() {
@@ -58,7 +59,7 @@ class AIS2Table {
 		$pattern = '@\<tr id\=\'row_(?P<index>[^\']*)\' rid\=\'[^\']*\'\>';
 		foreach ($this->definition as $column)
 		{
-			$pattern .= '\<td[^>]*\>\<div\>(?P<'.substr($column['aisname'],0,32).'>[^<]*)\</div\>\</td\>';
+			$pattern .= '\<td[^>]*\>\<div\>(?P<'.substr($column,0,32).'>[^<]*)\</div\>\</td\>';
 		}
 		$pattern .= '\</tr\>@';
 		return $pattern;

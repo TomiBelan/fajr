@@ -26,6 +26,59 @@ Copyright (c) 2010 Martin Králik
 
 require_once 'libfajr/AIS2Table.php';
 
+class TableRow
+{
+	private $data = null;
+	private $options = null;
+	
+	public function __construct($table, $rowData, $options = null) {
+		assert(isset($rowData['index'])); // row should have index
+		$this->data = $rowData;
+		$this->options = $options;
+		$this->table = $table;
+	}
+	
+	public function getData() {
+		return $this->data;
+	}
+	
+	public function getHtml() {
+		$table = $this->table;
+		$columns = $table->getColumns();
+		$class='';
+		if ($table->GetOption('selected_key') == $this->data['index']) {
+			$class = 'selected';
+		} else if (isset($this->options['class'])) {
+			$class=$this->options['class'];
+		}
+		
+		$row = "<tr class='$class'>";
+		
+		if ($table->newKey) {
+			$link = '?'.http_build_query(array_merge($table->urlParams,
+						array($table->newKey => $this->data['index'])));
+		}
+		
+		$colno = 0;
+		foreach ($columns as $key => $column)
+		{
+			$cell = '    <td>';
+			if ($table->newKey && $colno==0) $cell .= '<a href="'.hescape($link).'">';
+			$cell .= $this->data[substr($key, 0, 32)];
+			if ($table->newKey && $colno==0) $cell .= '</a>';
+			$cell .= "</td>\n";
+			
+			$row .= $cell;
+			$colno++;
+		}
+		$row .= "</tr>\n";
+		
+		return $row;
+	}
+	
+}
+
+
 /**
  * Trieda na vygenerovanie tabulky z jej definície a vstupného HTML.
  *
@@ -34,10 +87,10 @@ require_once 'libfajr/AIS2Table.php';
 class Table
 {
 	protected $definition = null;
-	protected $data = null;
+	protected $data = array();
 	protected $name = null;
-	protected $newKey = null;
-	protected $urlParams = array();
+	public $newKey = null;
+	public $urlParams = array();
 	protected $options = null;
 
 /**
@@ -49,13 +102,22 @@ class Table
  * @param string|null $newKey Názov nového parametru v url, ktorého hodnota bude závisieť od riadku tabuľky.
  * @param array $urlParams Zvyšné už nastavené parametre pre url.
  */
-	public function  __construct(AIS2Table $aisTable, $name = '', $newKey = null, $urlParams = array())
+	public function  __construct($definition, $name = '', $newKey = null, $urlParams = array())
 	{
-		$this->definition = $aisTable->getTableDefinition();
-		$this->data = $aisTable->getData();
+		$this->definition = $definition;
 		$this->name = $name;
 		$this->newKey = $newKey;
 		$this->urlParams = $urlParams;
+	}
+	
+	public function addRows($data) {
+		foreach ($data as $row) {
+				$this->addRow($row, null);
+		}
+	}
+	
+	public function addRow($rowData, $rowOptions) {
+		$this->data[] = new TableRow($this, $rowData, $rowOptions);
 	}
 
 	public function setName($name)
@@ -97,13 +159,11 @@ class Table
 			if (isset($value['col'])) $colNum=$value['col'];
 			$data[] = array($colNum, $key);
 		}
-
 		sort($data);
 		$columns=array();
 		foreach ($data as $row) {
-			$columns[$row[1]] = $row[1];
+			$columns[$row[1]] = $this->definition[$row[1]];
 		}
-
 		return $columns;
 	}
 
@@ -126,37 +186,16 @@ class Table
 		
 		$table .= '<table id=\''.$id."'class='colstyle-sorting'>\n<thead>\n<tr>\n";
 		$columns = $this->getColumns();
-
-		foreach ($columns as $key => $value) {
-			$table .= '    <th class="sortable">'.$this->definition[$value]['title']."</th>\n";
+		
+		foreach ($columns as $key=>$value) {
+			$table .= '    <th class="sortable">'.$value['title']."</th>\n";
 		}
 		
 		$table .= "</tr>\n";
 		$table .= "\n</thead>\n<tbody>\n";
 		foreach ($this->data as $row)
 		{
-			if ($this->newKey) $link = '?'.http_build_query(array_merge($this->urlParams, array($this->newKey => $row['index'])));
-			if (isset($this->options['selected_key'])
-					&&($this->options['selected_key'] == $row['index']))
-			{
-				$table .= "<tr class='selected'>\n";
-			}
-			else
-			{
-				$table .= "<tr>\n";
-			}
-			
-			$first = true;
-			foreach ($columns as $key => $column)
-			{
-				$table .= '    <td>';
-				if ($this->newKey && $first) $table .= '<a href="'.hescape($link).'">';
-				$table .= $row[substr($this->definition[$column]['aisname'], 0, 32)];
-				if ($this->newKey && $first) $table .= '</a>';
-				$table .= "</td>\n";
-				$first = false;
-			}
-			$table .= "</tr>\n";
+			$table .= $row->getHtml();
 		}
 	$table .= "</tbody></table>\n";
 	if ($this->getOption('collapsed')) {
