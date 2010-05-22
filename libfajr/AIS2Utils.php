@@ -80,20 +80,18 @@ Copyright (c) 2010 Martin Králik
 		
 		public static function loginViaCookie($cosignCookie)
 		{
+			assert($cosignCookie !== null);
+			$_SESSION['cosignLogin'] = false;
+			
+			$cookieFile = getCookieFile();
+			$fh = fopen($cookieFile, 'a');
+			if (!$fh) throw new Exception('Neviem otvoriť súbor s cookies.');
+			fwrite($fh, "ais2.uniba.sk	FALSE	/	TRUE	0	cosign-filter-ais2.uniba.sk	".str_replace(' ', '+', $cosignCookie));
+			fclose($fh);
 			$data = download(self::LOGIN);
 			if (preg_match('@\<title\>IIKS \- Prihlásenie\</title\>@', $data))
-			{
-				assert($cosignCookie !== null);
-				$_SESSION['cosignLogin'] = false;
-				
-				$cookieFile = getCookieFile();
-				$fh = fopen($cookieFile, 'a');
-				if (!$fh) throw new Exception('Neviem otvoriť súbor s cookies.');
-				fwrite($fh, "ais2.uniba.sk	FALSE	/	TRUE	0	cosign-filter-ais2.uniba.sk	".str_replace(' ', '+', $cosignCookie));
-				fclose($fh);
-				redirect();
-			}
-			return true;
+				return false;
+			redirect();
 		}
 
 		/**
