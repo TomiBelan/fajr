@@ -43,8 +43,18 @@ Copyright (c) 2010 Martin Králik
 		
 		if (Input::get('logout') !== null) AIS2Utils::cosignLogout();
 		
-		if (AIS2Utils::connect())
-		{
+		$login = Input::get('login');
+		$krbpwd = Input::get('krbpwd');
+		$cosignCookie = Input::get('cosignCookie');
+		if ($login !== null && $krbpwd !== null) {
+			$loggedIn = AIS2Utils::loginViaCosign($login, $krbpwd);
+		} else if ($cosignCookie !== null) {
+			$loggedIn = AIS2Utils::loginViaCookie($cosignCookie);
+		} else {
+			$loggedIn = isset($_SESSION['cosignLogin']);
+		}
+
+		if ($loggedIn) {
 			DisplayManager::addContent('<a href="?logout">odhlásiť</a><hr/>');
 			$adminStudia = new AIS2AdministraciaStudiaScreen();
 			
