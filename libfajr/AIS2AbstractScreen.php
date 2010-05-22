@@ -116,7 +116,72 @@ Copyright (c) 2010 Martin Králik
 		{
 			return 'https://ais2.uniba.sk/ais/servlets/WebUIServlet?appId='.$this->appId.'&antiCache='.random().'&viewer=web&viewer=web';
 		}
+		
+		/**
+		* Experimentalna funkcia snažiaca sa zovšeobecniť dodatočné requesty jednotlivých AIS aplikácií.
+		* Je veľmi pravdepodobné, že sa bude meniť.
+		*/
+		protected function requestData($dlgName, $compName, $embObjName, $appProperties = array(), $objProperties = array(), $embObjDataView = array(), $visibleBuffers = null, $loadedBuffers = null)
+		{
+			if (!isset($appProperties['activeDlgName'])) $appProperties['activeDlgName'] = $dlgName;
+			$xml_spec = '
+<request>
+	<serial>'.$this->getSerial().'</serial>
+	<events><ev>
+		<dlgName>'.$dlgName.'</dlgName>
+		<compName>'.$compName.'</compName>
+		<event class=\'avc.ui.event.AVCActionEvent\'></event>
+	</ev></events>
+	<changedProps>
+		<changedProperties>
+			<objName>app</objName>
+			<propertyValues>';
+			foreach ($appProperties as $name => $value) $xml_spec .= '<nameValue><name>'.$name.'</name><value>'.$value.'</value></nameValue>';
+			$xml_spec .= '
+			</propertyValues>
+		</changedProperties>
+		<changedProperties>
+			<objName>'.$dlgName.'</objName>
+			<propertyValues>';
+			foreach ($objProperties as $name => $value) $xml_spec .= '<nameValue><name>'.$name.'</name><value>'.$value.'</value></nameValue>';
+			$xml_spec .= '
+			</propertyValues>
+			<embObjChProps><changedProperties>
+				<objName>'.$embObjName.'</objName>
+				<propertyValues>
+					<nameValue>
+						<name>dataView</name>
+						<isXml>true</isXml>
+						<value><![CDATA[
+							<root><selection>';
+			foreach ($embObjDataView as $name => $value) $xml_spec .= '<'.$name.'>'.$value.'</'.$name.'>';
+			$xml_spec .= '
+							</selection>';
+			if ($visibleBuffers !== null) $xml_spec .= '<visibleBuffers>'.$visibleBuffers.'</visibleBuffers>';
+			if ($loadedBuffers !== null) $xml_spec .= '<loadedBuffers>'.$loadedBuffers.'</loadedBuffers>';
+			$xml_spec .= '
+							</root>
+						]]></value>
+					</nameValue>
+					<nameValue>
+						<name>editMode</name>
+						<isXml>false</isXml>
+						<value>false</value>
+					</nameValue>
+				</propertyValues>
+				<embObjChProps isNull=\'true\'/>
+			</changedProperties></embObjChProps>
+		</changedProperties>
+	</changedProps>
+</request>';
 
+			return AIS2Utils::request($this->getXmlInterfaceLocation(), array('xml_spec' => $xml_spec));
+		}
+
+		protected function getDialogName($response)
+		{
+			return match($response, AIS2Utils::DIALOG_NAME_PATTERN);
+		}
 	}
 	
 ?>

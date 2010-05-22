@@ -42,6 +42,7 @@ Copyright (c) 2010 Martin Králik
 
 		const INTERNAL_ERROR_PATTERN = '@^function main\(\) { (?:alert|webui\.onAppClosedOnServer)\(\'([^\']*)\'\);? }$@m';
 		const APP_LOCATION_PATTERN = '@webui\.startApp\("([^"]+)","([^"]+)"\);@';
+		const DIALOG_NAME_PATTERN = '@dialogManager\.openDialog\("([^"]+)",@';
 		const DATA_PATTERN = '@\<tbody id\=\'dataTabBody0\'\>(.*?)\</tbody\>@s';
 
 		public static $requests=0;

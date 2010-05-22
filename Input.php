@@ -46,6 +46,12 @@ Copyright (c) 2010 Martin Králik
 				if (!ctype_digit($_GET['list'])) throw new Exception('Vstupný parameter "list" musí byť typu integer.');
 				self::$inputParameters['list'] = $_GET['list'];
 			}
+			
+			if (isset($_GET['predmet']))
+			{
+				if (!ctype_digit($_GET['predmet'])) throw new Exception('Vstupný parameter "predmet" musí byť typu integer.');
+				self::$inputParameters['predmet'] = $_GET['predmet'];
+			}
 
 			if (isset($_POST['login']))
 			{
@@ -79,6 +85,11 @@ Copyright (c) 2010 Martin Králik
 			{
 				return self::$inputParameters[$key];
 			}
+		}
+		
+		public static function set($key, $value)
+		{
+			self::$inputParameters[$key] = $value;
 		}
 	}
 ?>

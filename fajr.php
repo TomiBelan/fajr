@@ -58,56 +58,62 @@ Copyright (c) 2010 Martin Králik
 			DisplayManager::addContent('<a href="?logout">odhlásiť</a><hr/>');
 			$adminStudia = new AIS2AdministraciaStudiaScreen();
 			
-			if (Input::get('studium') !== null) {
-				$studium_id = Input::get('studium');
-			} else {
-				$studium_id = 0;	
-			}
+			if (Input::get('studium') === null) Input::set('studium', 0);
+			
 			$zoznamStudii = $adminStudia->getZoznamStudii();
 			$zoznamStudiiTable = new Table($zoznamStudii, 'Zoznam štúdií', 'studium');
-			$zoznamStudiiTable->setOption('selected_key',$studium_id);
+			$zoznamStudiiTable->setOption('selected_key',Input::get('studium'));
 			$zoznamStudiiTable->setOption('collapsed', Input::get('studium') !== null);
 			DisplayManager::addContent($zoznamStudiiTable->getHtml());
 			
 			
-			$zapisneListy = $adminStudia->getZapisneListy($studium_id);
-			if (Input::get('list') !== null) {
-				$list = Input::get('list');
-			} else {
-				$list = 0;
-			}
+			$zapisneListy = $adminStudia->getZapisneListy(Input::get('studium'));
+			if (Input::get('list') === null) Input::set('list', 0);
 			
-			$zapisneListyTable = new Table($zapisneListy, 'Zoznam zápisných listov', 'list', array('studium' => $studium_id));
-			$zapisneListyTable->setOption('selected_key', $list);
+			$zapisneListyTable = new Table($zapisneListy, 'Zoznam zápisných listov', 'list', array('studium' => Input::get('studium')));
+			$zapisneListyTable->setOption('selected_key', Input::get('list'));
 			$zapisneListyTable->setOption('collapsed', Input::get('list') !== null);
 			DisplayManager::addContent($zapisneListyTable->getHtml());
 			
-			$skusky = new AIS2TerminyHodnoteniaScreen($adminStudia->getIdZapisnyList($list), $adminStudia->getIdStudium($list));
+			$skusky = new AIS2TerminyHodnoteniaScreen($adminStudia->getIdZapisnyList(Input::get('list')), $adminStudia->getIdStudium(Input::get('list')));
 			$tabs = new TabManager('akcie');
 			
 			$terminyHodnotenia = $skusky->getTerminyHodnotenia();
 			$terminyHodnoteniaTable =  new Table($terminyHodnotenia, 'Termíny hodnotenia', null, array('studium', 'list'));
-			$terminyHodnoteniaTable->setUrlParams(array('studium' => Input::get('studium'), 'list' => $list));
+			$terminyHodnoteniaTable->setUrlParams(array('studium' => Input::get('studium'), 'list' => Input::get('list')));
 			$tabs->addTab('TerminyHodnotenia', 'Moje skúšky', $terminyHodnoteniaTable->getHtml());
 
 			$tabs->addTab('ZapisSkusok', 'Prihlásenie na skúšky', '');
 			
 			$predmetyZapisnehoListu = $skusky->getPredmetyZapisnehoListu();
-			$predmetyZapisnehoListuTable = new Table($predmetyZapisnehoListu, 'Predmety zápisného listu');
-			$predmetyZapisnehoListuTable->setUrlParams(array('studium' => Input::get('studium'), 'list' => $list));
+			$predmetyZapisnehoListuTable = new Table($predmetyZapisnehoListu, 'Predmety zápisného listu', 'predmet');
+			$predmetyZapisnehoListuTable->setOption('selected_key', Input::get('predmet'));
+			$predmetyZapisnehoListuTable->setUrlParams(array('studium' => Input::get('studium'), 'list' => Input::get('list')));
 			
 			$tabs->addTab('ZapisnyList', 'Zápisný list', $predmetyZapisnehoListuTable->getHtml());
 			
-			$skusky = new AIS2HodnoteniaPriemeryScreen($adminStudia->getIdZapisnyList($list));
-			$hodnotenia = $skusky->getHodnotenia();
+			$hodnoteniaPriemery = new AIS2HodnoteniaPriemeryScreen($adminStudia->getIdZapisnyList(Input::get('list')));
+			$hodnotenia = $hodnoteniaPriemery->getHodnotenia();
 			$hodnoteniaTable = new Table($hodnotenia, 'Hodnotenia');
-			$priemery = $skusky->getPriemery();
+			$priemery = $hodnoteniaPriemery->getPriemery();
 			$priemeryTable = new Table($priemery, 'Priemery');
 			
 			$tabs->addTab('Hodnotenia', 'Hodnotenia/Priemery',
 			              $hodnoteniaTable->getHtml().$priemeryTable->getHtml());
 			
+			if (Input::get('predmet') !== null)
+			{
+				$tabs->setActive('ZapisnyList');
+			}
+			
 			DisplayManager::addContent($tabs->getHtml());
+			
+			if (Input::get('predmet') !== null)
+			{
+				$terminy = $skusky->getZoznamTerminov(Input::get('predmet'));
+				$terminyTable = new Table($terminy, 'Terminy');
+				DisplayManager::addContent($terminyTable->getHtml());
+			}
 			
 			$timeDiff = (microtime(true)-$startTime);
 			$statistics = "<div> Fajr made ".AIS2Utils::$requests.
@@ -116,8 +122,6 @@ Copyright (c) 2010 Martin Králik
 												$timeDiff).
 			              " seconds to generate this page.</div>";
 			DisplayManager::addContent($statistics);
-			
-			
 		}
 		else
 		{

@@ -97,11 +97,13 @@ class Table
 			if (isset($value['col'])) $colNum=$value['col'];
 			$data[] = array($colNum, $key);
 		}
+
 		sort($data);
 		$columns=array();
 		foreach ($data as $row) {
 			$columns[$row[1]] = $row[1];
 		}
+
 		return $columns;
 	}
 
@@ -124,7 +126,7 @@ class Table
 		
 		$table .= '<table id=\''.$id."'class='colstyle-sorting'>\n<thead>\n<tr>\n";
 		$columns = $this->getColumns();
-		
+
 		foreach ($columns as $key => $value) {
 			$table .= '    <th class="sortable">'.$this->definition[$value]['title']."</th>\n";
 		}
@@ -144,13 +146,15 @@ class Table
 				$table .= "<tr>\n";
 			}
 			
+			$first = true;
 			foreach ($columns as $key => $column)
 			{
 				$table .= '    <td>';
-				if ($this->newKey && $key == 'index') $table .= '<a href="'.hescape($link).'">';
+				if ($this->newKey && $first) $table .= '<a href="'.hescape($link).'">';
 				$table .= $row[substr($this->definition[$column]['aisname'], 0, 32)];
-				if ($this->newKey && $key == 'index') $table .= '</a>';
+				if ($this->newKey && $first) $table .= '</a>';
 				$table .= "</td>\n";
+				$first = false;
 			}
 			$table .= "</tr>\n";
 		}

@@ -197,52 +197,22 @@ class AIS2AdministraciaStudiaScreen extends AIS2AbstractScreen
 
 	public function getZapisneListy($studiumIndex)
 	{
-		$data = AIS2Utils::request($this->getXmlInterfaceLocation(), array('xml_spec' => '
-<request>
-	<serial>'.$this->getSerial().'</serial>
-	<events><ev>
-		<dlgName>VSES017_StudentZapisneListyDlg0</dlgName>
-		<compName>nacitatDataAction</compName>
-		<event class=\'avc.ui.event.AVCActionEvent\'></event>
-	</ev></events>
-	<changedProps>
-		<changedProperties>
-			<objName>app</objName>
-			<propertyValues><nameValue>
-				<name>activeDlgName</name><value>VSES017_StudentZapisneListyDlg0</value>
-			</nameValue></propertyValues>
-		</changedProperties>
-		<changedProperties>
-			<objName>VSES017_StudentZapisneListyDlg0</objName>
-			<propertyValues>
-				<nameValue><name>x</name><value>-4</value></nameValue>
-				<nameValue><name>y</name><value>-4</value></nameValue>
-				<nameValue><name>focusedComponent</name><value>nacitatButton</value></nameValue>
-			</propertyValues>
-			<embObjChProps><changedProperties>
-				<objName>studiaTable</objName>
-				<propertyValues>
-					<nameValue>
-						<name>dataView</name>
-						<isXml>true</isXml>
-						<value><![CDATA[
-							<root><selection>
-								<activeIndex>'.$studiumIndex.'</activeIndex>
-								<selectedIndexes>'.$studiumIndex.'</selectedIndexes>
-							</selection></root>
-						]]></value>
-					</nameValue>
-					<nameValue>
-						<name>editMode</name>
-						<isXml>false</isXml>
-						<value>false</value>
-					</nameValue>
-				</propertyValues>
-				<embObjChProps isNull=\'true\'/>
-			</changedProperties></embObjChProps>
-		</changedProperties>
-	</changedProps>
-</request>'));
+		$data = $this->requestData(
+			'VSES017_StudentZapisneListyDlg0',
+			'nacitatDataAction',
+			'studiaTable',
+			$appProperties = array(),
+			$objProperties = array(
+				'x' => -4,
+				'y' => -4,
+				'focusedComponent' => 'nacitatButton',
+			),
+			$embObjDataView = array(
+				'activeIndex' => $studiumIndex,
+				'selectedIndexes' => $studiumIndex,
+			)
+		);
+		
 		$data = match($data, AIS2Utils::DATA_PATTERN);
 		return new AIS2Table($this->tabulka_zoznam_zapisnych_listov, $data);
 	}
@@ -261,53 +231,23 @@ class AIS2AdministraciaStudiaScreen extends AIS2AbstractScreen
 	{
 		if (empty($this->idCache[$zapisnyListIndex]))
 		{
-			$data = AIS2Utils::request($this->getXmlInterfaceLocation(), array('xml_spec' => '
-<request>
-	<serial>'.$this->getSerial().'</serial>
-	<events><ev>
-		<dlgName>VSES017_StudentZapisneListyDlg0</dlgName>
-		<compName>terminyHodnoteniaAction</compName>
-		<event class=\'avc.ui.event.AVCActionEvent\'></event>
-	</ev></events>
-	<changedProps>
-		<changedProperties>
-			<objName>app</objName>
-			<propertyValues><nameValue>
-				<name>activeDlgName</name><value>VSES017_StudentZapisneListyDlg0</value>
-			</nameValue></propertyValues>
-		</changedProperties>
-		<changedProperties>
-			<objName>VSES017_StudentZapisneListyDlg0</objName>
-			<propertyValues>
-				<nameValue><name>x</name><value>-4</value></nameValue>
-				<nameValue><name>y</name><value>-4</value></nameValue>
-				<nameValue><name>focusedComponent</name><value>zapisneListyTable</value></nameValue>
-			</propertyValues>
-			<embObjChProps><changedProperties>
-				<objName>zapisneListyTable</objName>
-				<propertyValues>
-					<nameValue>
-						<name>dataView</name>
-						<isXml>true</isXml>
-						<value><![CDATA[
-							<root><selection>
-								<activeIndex>'.$zapisnyListIndex.'</activeIndex>
-								<selectedIndexes>'.$zapisnyListIndex.'</selectedIndexes>
-							</selection></root>
-						]]></value>
-					</nameValue>
-					<nameValue>
-						<name>editMode</name>
-						<isXml>false</isXml>
-						<value>false</value>
-					</nameValue>
-				</propertyValues>
-				<embObjChProps isNull=\'true\'/>
-			</changedProperties></embObjChProps>
-		</changedProperties>
-	</changedProps>
-</request>'));
-			// FIXME: toto tunak spravit nejak krajsie
+			$data = $this->requestData(
+				'VSES017_StudentZapisneListyDlg0',
+				'terminyHodnoteniaAction',
+				'zapisneListyTable',
+				$appProperties = array(),
+				$objProperties = array(
+					'x' => -4,
+					'y' => -4,
+					'focusedComponent' => 'zapisneListyTable',
+				),
+				$embObjDataView = array(
+					'activeIndex' => $zapisnyListIndex,
+					'selectedIndexes' => $zapisnyListIndex,
+				)
+			);
+		
+		// FIXME: toto tunak spravit nejak krajsie
 			$data = matchAll($data, AIS2Utils::APP_LOCATION_PATTERN, true);
 			$data = matchAll($data[2], '@&idZapisnyList\=(?P<idZapisnyList>[0-9]*)&idStudium\=(?P<idStudium>[0-9]*)@', true);
 			foreach (array_keys($data) as $key) if (is_numeric($key)) unset($data[$key]);

@@ -165,6 +165,58 @@ require_once 'Table.php';
 			      'col' => -1),
 			// }}}
 		);
+		protected $tabulka_vyber_terminu_hodnotenia = array(
+			// {{{
+			array('aisname' => 'kodFaza',
+			      'title' => 'Kód fázy',
+			      'sortorder' => '0',
+			      'visible' => true),
+			array('aisname' => 'dat',
+			      'title' => 'Dátum',
+			      'sortorder' => '0',
+			      'visible' => true),
+			array('aisname' => 'cas',
+			      'title' => 'Čas',
+			      'sortorder' => '0',
+			      'visible' => true),
+			array('aisname' => 'miestnosti',
+			      'title' => 'Miestnosti',
+			      'sortorder' => '0',
+			      'visible' => true),
+			array('aisname' => 'pocetPrihlasenych',
+			      'title' => 'Počet prihlásených študentov',
+			      'sortorder' => '0',
+			      'visible' => true),
+			array('aisname' => 'maxPocet',
+			      'title' => 'Maximálny počet',
+			      'sortorder' => '0',
+			      'visible' => true),
+			array('aisname' => 'pocetHodn',
+			      'title' => 'Počet hodnotiacich',
+			      'sortorder' => '0',
+			      'visible' => true),
+			array('aisname' => 'hodnotiaci',
+			      'title' => 'Hodnotiaci',
+			      'sortorder' => '0',
+			      'visible' => true),
+			array('aisname' => 'prihlasovanie',
+			      'title' => 'Interval pre prihlasovanie',
+			      'sortorder' => '0',
+			      'visible' => true),
+			array('aisname' => 'odhlasovanie',
+			      'title' => 'Interval pre odhlasovanie',
+			      'sortorder' => '0',
+			      'visible' => true),
+			array('aisname' => 'poznamka',
+			      'title' => 'Poznámka',
+			      'sortorder' => '0',
+			      'visible' => true),
+			array('aisname' => 'zaevidoval',
+			      'title' => 'Zaevidoval',
+			      'sortorder' => '0',
+			      'visible' => true),
+			// }}}
+		);
 
 		public function __construct($idZapisnyList, $idStudium)
 		{
@@ -181,6 +233,39 @@ require_once 'Table.php';
 		{
 			$data = matchAll($this->data, AIS2Utils::DATA_PATTERN);
 			return new AIS2Table($this->tabulka_terminy_hodnotenia, $data[1][1]);
+		}
+		
+		public function getZoznamTerminov($predmetIndex)
+		{
+			$data = $this->requestData(
+				'VSES007_StudentZoznamPrihlaseniNaSkuskuDlg0',
+				'pridatTerminAction',
+				'predmetyTable',
+				$appProperties = array(
+					'width' => 1326,
+					'height' => 650,
+				),
+				$objProperties = array(
+					'width' => 1318,
+					'height' => 642,
+					'x' => -4,
+					'y' => -4,
+					'focusedComponent' => 'pridatButton',
+				),
+				$embObjDataView = array(
+					'activeIndex' => $predmetIndex,
+					'selectedIndexes' => $predmetIndex,
+				),
+				0,
+				0
+			);
+			
+
+			$formName = $this->getDialogName($data);
+			$location = 'https://ais2.uniba.sk/ais/servlets/WebUIServlet?appId='.$this->appId.'&form='.$formName.'&antiCache='.random();
+			$response = AIS2Utils::request($location);
+			$data = matchAll($response, AIS2Utils::DATA_PATTERN);
+			return new AIS2Table($this->tabulka_vyber_terminu_hodnotenia, $data[0][1]);
 		}
 
 	}
