@@ -56,3 +56,23 @@ div.table {
 	padding-left: 10px;
 	padding-top: 10px;
 }
+
+.terminold {
+	color:gray;
+}
+
+.terminmozeodhlasit {
+	color:green;
+}
+
+.terminnemozeodhlasit {
+	color: orange;
+}
+
+.leto {
+	background-color: #ffa
+}
+
+.zima {
+	background-color: #ccf
+}

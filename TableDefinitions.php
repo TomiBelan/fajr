@@ -390,9 +390,15 @@ class TableDefinitions
 		);
 	}
 	
-	public static function terminyHodnotenia() {
+	public static function mojeTerminyHodnotenia() {
 		return array(
 			// {{{
+			// specialne
+			'odhlas' => array(
+			      'title' => 'Odhlás',
+			      'sortorder' => '0',
+			      'visible' => true),
+			// originalne
 			'prihlaseny' => array(
 			      'title' => 'prihlásený',
 			      'sortorder' => '0',

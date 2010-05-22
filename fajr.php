@@ -36,6 +36,8 @@ Copyright (c) 2010 Martin Králik
 	require_once 'libfajr/AIS2AdministraciaStudiaScreen.php';
 	require_once 'libfajr/AIS2TerminyHodnoteniaScreen.php';
 	require_once 'libfajr/AIS2HodnoteniaPriemeryScreen.php';
+	require_once 'TableDefinitions.php';
+	require_once 'Sorter.php';
  
 	try
 	{
@@ -53,56 +55,117 @@ Copyright (c) 2010 Martin Králik
 		} else {
 			$loggedIn = isset($_SESSION['cosignLogin']);
 		}
+		var_dump($_SESSION);
 
 		if ($loggedIn) {
 			DisplayManager::addContent('<a href="?logout">odhlásiť</a><hr/>');
 			$adminStudia = new AIS2AdministraciaStudiaScreen();
 			
-			if (Input::get('studium') !== null) {
-				$studium_id = Input::get('studium');
-			} else {
-				$studium_id = 0;	
-			}
+			if (Input::get('studium') === null) Input::set('studium',0);
+			
 			$zoznamStudii = $adminStudia->getZoznamStudii();
-			$zoznamStudiiTable = new Table($zoznamStudii, 'Zoznam štúdií', 'studium');
-			$zoznamStudiiTable->setOption('selected_key',$studium_id);
-			$zoznamStudiiTable->setOption('collapsed', Input::get('studium') !== null);
+			$zoznamStudiiTable = new Table(TableDefinitions::zoznamStudii(), 'Zoznam štúdií', 'studium');
+			$zoznamStudiiTable->addRows($zoznamStudii->getData());
+			$zoznamStudiiTable->setOption('selected_key', Input::get('studium'));
+			$zoznamStudiiTable->setOption('collapsed', true);
 			DisplayManager::addContent($zoznamStudiiTable->getHtml());
 			
 			
-			$zapisneListy = $adminStudia->getZapisneListy($studium_id);
-			if (Input::get('list') !== null) {
-				$list = Input::get('list');
-			} else {
-				$list = 0;
-			}
+			$zapisneListy = $adminStudia->getZapisneListy(Input::get('studium'));
+			if (Input::get('list') === null) Input::set('list', 0);
 			
-			$zapisneListyTable = new Table($zapisneListy, 'Zoznam zápisných listov', 'list', array('studium' => $studium_id));
-			$zapisneListyTable->setOption('selected_key', $list);
-			$zapisneListyTable->setOption('collapsed', Input::get('list') !== null);
+			$zapisneListyTable = new
+				Table(TableDefinitions::zoznamZapisnychListov(), 'Zoznam zápisných listov',
+					'list', array('studium' => Input::get('studium')));
+			
+			$zapisneListyTable->addRows($zapisneListy->getData());
+			$zapisneListyTable->setOption('selected_key', Input::get('list'));
+			$zapisneListyTable->setOption('collapsed', true);
 			DisplayManager::addContent($zapisneListyTable->getHtml());
 			
-			$skusky = new AIS2TerminyHodnoteniaScreen($adminStudia->getIdZapisnyList($list), $adminStudia->getIdStudium($list));
+			$skusky = new
+				AIS2TerminyHodnoteniaScreen($adminStudia->getIdZapisnyList(Input::get('list')),
+						$adminStudia->getIdStudium(Input::get('list')));
 			$tabs = new TabManager('akcie');
 			
 			$terminyHodnotenia = $skusky->getTerminyHodnotenia();
-			$terminyHodnoteniaTable =  new Table($terminyHodnotenia, 'Termíny hodnotenia', null, array('studium', 'list'));
-			$terminyHodnoteniaTable->setUrlParams(array('studium' => Input::get('studium'), 'list' => $list));
-			$tabs->addTab('TerminyHodnotenia', 'Moje skúšky', $terminyHodnoteniaTable->getHtml());
+			$terminyHodnoteniaTableActive =  new
+				Table(TableDefinitions::mojeTerminyHodnotenia(), 'Aktuálne termíny hodnotenia', null, array('studium', 'list'));
+			
+			$terminyHodnoteniaTableOld =  new
+				Table(TableDefinitions::mojeTerminyHodnotenia(), 'Staré termíny hodnotenia', null, array('studium', 'list'));
+			
+			foreach($terminyHodnotenia->getData() as $row) {
+				$datum=strptime($row['datum']." ".$row['cas'], "%d.%m.%Y %H:%M");
+				$datum=mktime($datum["tm_hour"],$datum["tm_min"],0,1+$datum["tm_mon"],$datum["tm_mday"],1900+$datum["tm_year"]);
+				$row['odhlas']="";
+				if ($datum < time()) {
+					$terminyHodnoteniaTableOld->addRow($row, null);
+				} else {
+					if ($row['mozeOdhlasit']==1) {
+						$class='terminmozeodhlasit';
+						$row['odhlas']="<form> <input type='submit' value='Odhlás'
+								disabled='disabled' /> </form>";
+					} else {
+						$class='terminnemozeodhlasit';
+					}
+						
+					if ($row['prihlaseny']=='A') {
+						$terminyHodnoteniaTableActive->addRow($row, array('class'=>$class));
+					}
+				}
+			}
+			$terminyHodnoteniaTableActive->setUrlParams(array('studium' =>
+						Input::get('studium'), 'list' => Input::get('list')));
+			$tabs->addTab('TerminyHodnotenia', 'Moje skúšky',
+					$terminyHodnoteniaTableActive->getHtml().
+					$terminyHodnoteniaTableOld->getHtml());
 
-			$tabs->addTab('ZapisSkusok', 'Prihlásenie na skúšky', '');
+			$predmetyZapisnehoListu = $skusky->getPredmetyZapisnehoListu();
+			$terminyTable = new
+				Table(TableDefinitions::vyberTerminuHodnoteniaJoined(), 'Termíny,
+						na ktoré sa môžem prihlásiť');
+			
+			foreach ($predmetyZapisnehoListu->getData() as $row) {
+				$terminy = $skusky->getZoznamTerminov($row['index']);
+				foreach($terminy->getData() as $row2) {
+					$row2['predmet']=$row['nazov'];
+					$row2['predmetIndex']=$row['index'];
+					$row2['prihlas']="<form> <input type='submit' value='Prihlás ma!'
+							disabled='disabled'/> </form>";
+					$terminyTable->addRow($row2, null);
+					
+				}
+			}
+			$tabs->addTab('ZapisSkusok', 'Prihlásenie na skúšky', $terminyTable->getHtml());
 			
 			$predmetyZapisnehoListu = $skusky->getPredmetyZapisnehoListu();
-			$predmetyZapisnehoListuTable = new Table($predmetyZapisnehoListu, 'Predmety zápisného listu');
-			$predmetyZapisnehoListuTable->setUrlParams(array('studium' => Input::get('studium'), 'list' => $list));
+			$predmetyZapisnehoListuTable = new
+				Table(TableDefinitions::predmetyZapisnehoListu(), 'Predmety zápisného listu');
+			foreach (Sorter::sort($predmetyZapisnehoListu->getData(),
+						array("semester"=>-1, "nazov"=>1)) as $row) {
+				if ($row['semester']=='L') $class='leto'; else $class='zima';
+				$predmetyZapisnehoListuTable->addRow($row, array('class'=>$class));
+			}
+;
+			$predmetyZapisnehoListuTable->setUrlParams(array('studium' =>
+						Input::get('studium'), 'list' => Input::get('list')));
 			
 			$tabs->addTab('ZapisnyList', 'Zápisný list', $predmetyZapisnehoListuTable->getHtml());
 			
-			$skusky = new AIS2HodnoteniaPriemeryScreen($adminStudia->getIdZapisnyList($list));
+			$skusky = new
+				AIS2HodnoteniaPriemeryScreen($adminStudia->getIdZapisnyList(Input::get('list')));
 			$hodnotenia = $skusky->getHodnotenia();
-			$hodnoteniaTable = new Table($hodnotenia, 'Hodnotenia');
+			$hodnoteniaTable = new Table(TableDefinitions::hodnotenia(), 'Hodnotenia');
+			foreach(Sorter::sort($hodnotenia->getData(),
+						array("semester"=>-1, "nazov"=>1)) as $row) {
+				if ($row['semester']=='L') $class='leto'; else $class='zima';
+				$hodnoteniaTable->addRow($row, array('class'=>$class));
+			}
+			
 			$priemery = $skusky->getPriemery();
-			$priemeryTable = new Table($priemery, 'Priemery');
+			$priemeryTable = new Table(TableDefinitions::priemery(), 'Priemery');
+			$priemeryTable->addRows($priemery->getData());
 			
 			$tabs->addTab('Hodnotenia', 'Hodnotenia/Priemery',
 			              $hodnoteniaTable->getHtml().$priemeryTable->getHtml());
