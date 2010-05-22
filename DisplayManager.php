@@ -89,7 +89,7 @@ Copyright (c) 2010 Martin Králik
 	
 </head>
 <body>
-<div class="container"><h1>FAJR</h1>
+<div class="container"><h1>FAJR beta</h1>
 ',
 
 			'footer' => '
@@ -98,7 +98,7 @@ Copyright (c) 2010 Martin Králik
 </html>
 ',
 			'warnings' => '
-<div class="span-21 prepend-1 last increase-line-height">
+<div class="span-18 prepend-1 last increase-line-height">
 <p>
 Vitajte pred bránou do aplikácie FAJR.
 Zatiaľ poskytuje jedinú funkcionalitu, a to pohľad na niektoré tabuľky z <a href="https://ais2.uniba.sk/">AISu</a>.
