@@ -25,7 +25,7 @@ Copyright (c) 2010 Martin Králik
 }}} */
 
 require_once 'AIS2AbstractScreen.php';
-require_once 'AIS2TableParser.php';
+require_once 'AIS2Table.php';
 require_once 'Table.php';
 
 /**
@@ -192,10 +192,7 @@ class AIS2AdministraciaStudiaScreen extends AIS2AbstractScreen
 	public function getZoznamStudii()
 	{
 		$data = match($this->data, AIS2Utils::DATA_PATTERN);
-		$tableParser = new
-			AIS2TableParser($this->tabulka_zoznam_studii);
-		$tableData = $tableParser->parseHtml($data);
-		return new Table($this->tabulka_zoznam_studii, $tableData, 'Zoznam štúdií', 'studium');
+		return new AIS2Table($this->tabulka_zoznam_studii, $data);
 	}
 
 	public function getZapisneListy($studiumIndex)
@@ -247,10 +244,7 @@ class AIS2AdministraciaStudiaScreen extends AIS2AbstractScreen
 	</changedProps>
 </request>'));
 		$data = match($data, AIS2Utils::DATA_PATTERN);
-		$tableParser = new
-			AIS2TableParser($this->tabulka_zoznam_zapisnych_listov);
-		$tableData = $tableParser->parseHtml($data);
-		return new Table($this->tabulka_zoznam_zapisnych_listov, $tableData, 'Zoznam zápisných listov', 'list', array('studium' => $studiumIndex));
+		return new AIS2Table($this->tabulka_zoznam_zapisnych_listov, $data);
 	}
 
 	public function getIdZapisnyList($zapisnyListIndex)

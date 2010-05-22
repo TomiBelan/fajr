@@ -24,6 +24,8 @@ Copyright (c) 2010 Martin Králik
  OTHER DEALINGS IN THE SOFTWARE.
 */
 
+require_once 'libfajr/AIS2Table.php';
+
 /**
  * Trieda na vygenerovanie tabulky z jej definície a vstupného HTML.
  *
@@ -47,10 +49,10 @@ class Table
  * @param string|null $newKey Názov nového parametru v url, ktorého hodnota bude závisieť od riadku tabuľky.
  * @param array $urlParams Zvyšné už nastavené parametre pre url.
  */
-	public function  __construct($definition, $data, $name = '', $newKey = null, $urlParams = array())
+	public function  __construct(AIS2Table $aisTable, $name = '', $newKey = null, $urlParams = array())
 	{
-		$this->definition = $definition;
-		$this->data = $data;
+		$this->definition = $aisTable->getTableDefinition();
+		$this->data = $aisTable->getData();
 		$this->name = $name;
 		$this->newKey = $newKey;
 		$this->urlParams = $urlParams;

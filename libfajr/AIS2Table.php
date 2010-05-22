@@ -31,13 +31,21 @@ Copyright (c) 2010 Martin Králik
  * @author ppershing
  */
 
-class AIS2TableParser {
-	public function __construct($tableDefinition) {
+class AIS2Table {
+	private $definition = array();
+	private $data = null;
+	
+	public function __construct($tableDefinition, $html) {
 		$this->definition = $tableDefinition;
+		$this->data = matchAll($html, $this->getPattern());
 	}
 	
-	public function parseHtml($html) {
-		return matchAll($html, $this->getPattern());
+	public function getData() {
+		return $this->data;
+	}
+	
+	public function getTableDefinition() {
+		return $this->definition;
 	}
 	
 /**
@@ -45,7 +53,7 @@ class AIS2TableParser {
  * Na jeho konštrukciu sa používa definícia tabuľky.
  * @return string Regulárny výraz.
  */
-	public function getPattern()
+	private function getPattern()
 	{
 		$pattern = '@\<tr id\=\'row_(?P<index>[^\']*)\' rid\=\'[^\']*\'\>';
 		foreach ($this->definition as $column)

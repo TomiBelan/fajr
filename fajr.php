@@ -30,7 +30,8 @@ Copyright (c) 2010 Martin Králik
 	require_once 'Input.php';
 	require_once 'DisplayManager.php';
 	require_once 'TabManager.php';
-  require_once 'Changelog.php';
+	require_once 'Changelog.php';
+	require_once 'Table.php';
 	require_once 'libfajr/AIS2Utils.php';
 	require_once 'libfajr/AIS2AdministraciaStudiaScreen.php';
 	require_once 'libfajr/AIS2TerminyHodnoteniaScreen.php';
@@ -47,7 +48,8 @@ Copyright (c) 2010 Martin Králik
 			DisplayManager::addContent('<a href="?logout">odhlásiť</a><hr/>');
 			$adminStudia = new AIS2AdministraciaStudiaScreen();
 			
-			$zoznamStudiiTable = $adminStudia->getZoznamStudii();
+			$zoznamStudii = $adminStudia->getZoznamStudii();
+			$zoznamStudiiTable = new Table($zoznamStudii, 'Zoznam štúdií', 'studium');
 			$zoznamStudiiTable->setOption('selected_key',Input::get('studium'));
 			$zoznamStudiiTable->setOption('collapsed', Input::get('studium') !== null);
 			DisplayManager::addContent($zoznamStudiiTable->getHtml());
@@ -59,9 +61,10 @@ Copyright (c) 2010 Martin Králik
 			}
 			
 			$zapisneListy = $adminStudia->getZapisneListy($studium_id);
-			$zapisneListy->setOption('selected_key', Input::get('list'));
-			$zapisneListy->setOption('collapsed', Input::get('list') !== null);
-			DisplayManager::addContent($zapisneListy->getHtml());
+			$zapisneListyTable = new Table($zapisneListy, 'Zoznam zápisných listov', 'list', array('studium' => $studium_id));
+			$zapisneListyTable->setOption('selected_key', Input::get('list'));
+			$zapisneListyTable->setOption('collapsed', Input::get('list') !== null);
+			DisplayManager::addContent($zapisneListyTable->getHtml());
 			
 			if (Input::get('list') !== null) {
 				$list = Input::get('list');
@@ -72,21 +75,26 @@ Copyright (c) 2010 Martin Králik
 			$tabs = new TabManager('akcie');
 			
 			$terminyHodnotenia = $skusky->getTerminyHodnotenia();
-			$terminyHodnotenia->setUrlParams(array('studium' => Input::get('studium'), 'list' => $list));
-			$tabs->addTab('TerminyHodnotenia', 'Moje skúšky', $terminyHodnotenia->getHtml());
+			$terminyHodnoteniaTable =  new Table($terminyHodnotenia, 'Termíny hodnotenia', null, array('studium', 'list'));
+			$terminyHodnoteniaTable->setUrlParams(array('studium' => Input::get('studium'), 'list' => $list));
+			$tabs->addTab('TerminyHodnotenia', 'Moje skúšky', $terminyHodnoteniaTable->getHtml());
 
 			$tabs->addTab('ZapisSkusok', 'Prihlásenie na skúšky', '');
 			
 			$predmetyZapisnehoListu = $skusky->getPredmetyZapisnehoListu();
-			$predmetyZapisnehoListu->setUrlParams(array('studium' => Input::get('studium'), 'list' => $list));
+			$predmetyZapisnehoListuTable = new Table($predmetyZapisnehoListu, 'Predmety zápisného listu');
+			$predmetyZapisnehoListuTable->setUrlParams(array('studium' => Input::get('studium'), 'list' => $list));
 			
-			$tabs->addTab('ZapisnyList', 'Zápisný list', $predmetyZapisnehoListu->getHtml());
+			$tabs->addTab('ZapisnyList', 'Zápisný list', $predmetyZapisnehoListuTable->getHtml());
 			
 			$skusky = new AIS2HodnoteniaPriemeryScreen($adminStudia->getIdZapisnyList($list));
 			$hodnotenia = $skusky->getHodnotenia();
-			$tabs->addTab('Hodnotenia', 'Hodnotenia', $hodnotenia->getHtml());
+			$hodnoteniaTable = new Table($hodnotenia, 'Hodnotenia');
 			$priemery = $skusky->getPriemery();
-			$tabs->addTab('Priemery', 'Priemery', $priemery->getHtml());
+			$priemeryTable = new Table($priemery, 'Priemery');
+			
+			$tabs->addTab('Hodnotenia', 'Hodnotenia/Priemery',
+			              $priemeryTable->getHtml().$hodnoteniaTable->getHtml());
 			
 			DisplayManager::addContent($tabs->getHtml());
 			

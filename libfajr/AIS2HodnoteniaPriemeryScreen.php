@@ -43,7 +43,7 @@ require_once 'Table.php';
 			array('aisname' => 'kodCastSP',
 			      'title' => 'Kód časti štúdia',
 			      'sortorder' => '0',
-			      'visible' => true),
+			      'visible' => false),
 			array('aisname' => 'kodTypVyucbySP',
 			      'title' => 'Kód typu výučby',
 			      'sortorder' => '0',
@@ -63,7 +63,7 @@ require_once 'Table.php';
 			array('aisname' => 'kodSposUkon',
 			      'title' => 'Spôsob ukončenia',
 			      'sortorder' => '0',
-			      'visible' => true),
+			      'visible' => false),
 			array('aisname' => 'termin',
 			      'title' => 'Termín',
 			      'sortorder' => '0',
@@ -79,7 +79,7 @@ require_once 'Table.php';
 			array('aisname' => 'uznane',
 			      'title' => 'Uznané hodnotenie',
 			      'sortorder' => '0',
-			      'visible' => true),
+			      'visible' => false),
 			array('aisname' => 'blokPopis',
 			      'title' => 'Popis bloku',
 			      'sortorder' => '0',
@@ -87,23 +87,23 @@ require_once 'Table.php';
 			array('aisname' => 'poplatok',
 			      'title' => 'Zaplatený poplatok a úplný zápis',
 			      'sortorder' => '0',
-			      'visible' => true),
+			      'visible' => false),
 			array('aisname' => 'nahradzaMa',
 			      'title' => 'Nahrádza ma',
 			      'sortorder' => '0',
-			      'visible' => true),
+			      'visible' => false),
 			array('aisname' => 'nahradzam',
 			      'title' => 'Nahrádzam',
 			      'sortorder' => '0',
-			      'visible' => true),
+			      'visible' => false),
 			array('aisname' => 'dovezene',
 			      'title' => 'Dovezené hodnotenie',
 			      'sortorder' => '0',
-			      'visible' => true),
+			      'visible' => false),
 			array('aisname' => 'mozePrihlasit',
 			      'title' => 'Môže prihlásiť',
 			      'sortorder' => '0',
-			      'visible' => true),
+			      'visible' => false),
 			array('aisname' => 'rozsah',
 			      'title' => 'Rozsah',
 			      'sortorder' => '0',
@@ -111,7 +111,7 @@ require_once 'Table.php';
 			array('aisname' => 'priebHodn',
 			      'title' => 'Existuje priebežné hodnotenie',
 			      'sortorder' => '0',
-			      'visible' => true),
+			      'visible' => false),
 			// }}}
 		);
 		protected $tabulka_priemery = array(
@@ -159,11 +159,11 @@ require_once 'Table.php';
 			array('aisname' => 'priemerInfoDatum1Hodn',
 			      'title' => 'Dátum jednofázového hodnotenia',
 			      'sortorder' => '0',
-			      'visible' => true),
+			      'visible' => false),
 			array('aisname' => 'priemerInfoDatum2Hodn',
 			      'title' => 'Dátum dvojfázového hodnotenia',
 			      'sortorder' => '0',
-			      'visible' => true),
+			      'visible' => false),
 			array('aisname' => 'priemerNazov',
 			      'title' => 'Názov priemeru',
 			      'sortorder' => '0',
@@ -171,51 +171,51 @@ require_once 'Table.php';
 			array('aisname' => 'priemerZaAkRok',
 			      'title' => 'Priemer je počítaný za akademický rok',
 			      'sortorder' => '0',
-			      'visible' => true),
+			      'visible' => false),
 			array('aisname' => 'priemerZaSemester',
 			      'title' => 'Priemer je počítaný za semester',
 			      'sortorder' => '0',
-			      'visible' => true),
+			      'visible' => false),
 			array('aisname' => 'priemerLenStudPlan',
 			      'title' => 'Započítane len predmety študijného plánu',
 			      'sortorder' => '0',
-			      'visible' => true),
+			      'visible' => false),
 			array('aisname' => 'priemerUznanePredm',
 			      'title' => 'Počítať uznané predmety',
 			      'sortorder' => '0',
-			      'visible' => true),
+			      'visible' => false),
 			array('aisname' => 'priemerAjDatum1Hodn',
 			      'title' => 'Brať do úvahy dátum jednofázového hodnotenia',
 			      'sortorder' => '0',
-			      'visible' => true),
+			      'visible' => false),
 			array('aisname' => 'priemerAjDatum2Hodn',
 			      'title' => 'Brať do úvahy dátum dvojfázového hodnotenia',
 			      'sortorder' => '0',
-			      'visible' => true),
+			      'visible' => false),
 			array('aisname' => 'priemerPocitatNeabs',
 			      'title' => 'Počítať predmety bez hodnotenia',
 			      'sortorder' => '0',
-			      'visible' => true),
+			      'visible' => false),
 			array('aisname' => 'priemerVahaNeabsolvovanych',
 			      'title' => 'Váha neabsolvovaných predmetov',
 			      'sortorder' => '0',
-			      'visible' => true),
+			      'visible' => false),
 			array('aisname' => 'priemerSkratkaOrganizacnaJednotka',
 			      'title' => 'Skratka organizačnej jednotky',
 			      'sortorder' => '0',
-			      'visible' => true),
+			      'visible' => false),
 			array('aisname' => 'priemerPocitatNeabsC',
 			      'title' => 'Nepočítať výberové bez ukončeného hodnotenia',
 			      'sortorder' => '0',
-			      'visible' => true),
+			      'visible' => false),
 			array('aisname' => 'pocetPredmetovVyp',
 			      'title' => 'Počet predmetov výpočtu',
 			      'sortorder' => '0',
-			      'visible' => true),
+			      'visible' => false),
 			array('aisname' => 'priemerInfoStudentiVypoctu',
 			      'title' => 'Určujúca množina študentov výpočtu priemeru',
 			      'sortorder' => '0',
-			      'visible' => true),
+			      'visible' => false),
 			// }}}
 		);
 
@@ -227,19 +227,13 @@ require_once 'Table.php';
 		public function getHodnotenia()
 		{
 			$data = matchAll($this->data, AIS2Utils::DATA_PATTERN);
-			$tableParser = new
-				AIS2TableParser($this->tabulka_hodnotenia);
-			$tableData = $tableParser->parseHtml($data[0][1]);
-			return new Table($this->tabulka_hodnotenia, $tableData, 'Hodnotenia');
+			return new AIS2Table($this->tabulka_hodnotenia, $data[0][1]);
 		}
 
 		public function getPriemery()
 		{
 			$data = matchAll($this->data, AIS2Utils::DATA_PATTERN);
-			$tableParser = new
-				AIS2TableParser($this->tabulka_priemery);
-			$tableData = $tableParser->parseHtml($data[1][1]);
-			return new Table($this->tabulka_priemery, $tableData, 'Priemery');
+			return new AIS2Table($this->tabulka_priemery, $data[1][1]);
 		}
 
 	}

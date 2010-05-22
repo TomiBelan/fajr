@@ -174,19 +174,13 @@ require_once 'Table.php';
 		public function getPredmetyZapisnehoListu()
 		{
 			$data = matchAll($this->data, AIS2Utils::DATA_PATTERN);
-			$tableParser = new
-				AIS2TableParser($this->tabulka_predmety_zapisneho_listu);
-			$tableData = $tableParser->parseHtml($data[0][1]);
-			return new Table($this->tabulka_predmety_zapisneho_listu, $tableData, 'Predmety zápisného listu');
+			return new AIS2Table($this->tabulka_predmety_zapisneho_listu, $data[0][1]);
 		}
 
 		public function getTerminyHodnotenia()
 		{
 			$data = matchAll($this->data, AIS2Utils::DATA_PATTERN);
-			$tableParser = new
-				AIS2TableParser($this->tabulka_terminy_hodnotenia);
-			$tableData = $tableParser->parseHtml($data[1][1]);
-			return new Table($this->tabulka_terminy_hodnotenia, $tableData, 'Termíny hodnotenia', null, array('studium', 'list'));
+			return new AIS2Table($this->tabulka_terminy_hodnotenia, $data[1][1]);
 		}
 
 	}
