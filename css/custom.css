@@ -28,9 +28,16 @@ th.forwardSort, th.reverseSort {
 .selected {background-color:yellow;}
 
 .tab_header {
-	border-bottom: 1px solid green;
+	border-bottom: 2px solid black;
   padding: 6px;
-	margin: 10px;
+	margin: 0px;
+	margin-top: 20px;
+	margin-bottom: 10px;
+}
+
+.tab a, .tab_selected a {
+	text-decoration: none;
+	font-size: 18px;
 }
 
 .tab:hover, .tab_selected:hover {
@@ -40,7 +47,13 @@ th.forwardSort, th.reverseSort {
 .tab, .tab_selected{
 	margin-left: 15px;
 	padding: 4px;
-	border: 1px solid green;
+	border: 2px solid black;
+	padding-bottom: 5px;
+	background-color: #dfd;
+}
+.tab_selected {
+	border-bottom: 0px;
+	padding-bottom: 7px;
 }
 
 .tab_selected {
@@ -75,4 +88,18 @@ div.table {
 
 .zima {
 	background-color: #ccf
+}
+
+.logout {
+	position: absolute;
+	right: 20px;
+	top: 20px;
+	font-size: 20px;
+}
+
+.logout a {
+	border: 2px solid darkred;
+	padding: 4px;
+	background-color: #fbb;
+	text-decoration: none;
 }

@@ -174,7 +174,8 @@ Copyright (c) 2010 Martin Králik
 		}
 
 		if ($loggedIn) {
-			DisplayManager::addContent('<a href="?logout">odhlásiť</a><hr/>');
+			DisplayManager::addContent(
+					'<div class=\'logout\'><a href="?logout">Odhlásiť</a></div>');
 			$adminStudia = new AIS2AdministraciaStudiaScreen();
 			
 			if (Input::get('studium') === null) Input::set('studium',0);
