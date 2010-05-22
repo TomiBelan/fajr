@@ -24,7 +24,8 @@ Copyright (c) 2010 Martin Králik
  OTHER DEALINGS IN THE SOFTWARE.
 */
 
-	session_start(); 
+	session_start();
+	$startTime = microtime(true);
 
 	require_once 'Input.php';
 	require_once 'displayManager.php';
@@ -88,6 +89,14 @@ Copyright (c) 2010 Martin Králik
 			$tabs->addTab('Priemery', 'Priemery', $priemery->getHtml());
 			
 			DisplayManager::addContent($tabs->getHtml());
+			
+			$timeDiff = (microtime(true)-$startTime);
+			$statistics = "<div> Fajr made ".AIS2Utils::$requests.
+			              " requests and downloaded ".AIS2Utils::$requestsSize.
+			              " bytes of data from AIS2. It took ".sprintf("%.3f",
+												$timeDiff).
+			              " seconds to generate this page.</div>";
+			DisplayManager::addContent($statistics);
 			
 			
 		}

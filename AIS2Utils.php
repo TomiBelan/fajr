@@ -44,6 +44,8 @@ Copyright (c) 2010 Martin Králik
 		const APP_LOCATION_PATTERN = '@webui\.startApp\("([^"]+)","([^"]+)"\);@';
 		const DATA_PATTERN = '@\<tbody id\=\'dataTabBody0\'\>(.*?)\</tbody\>@s';
 
+		public static $requests=0;
+		public static $requestsSize=0;
 		/**
 		 * Ak používateľ nie je prihlásený v AISe, tak sa skúsi podľa vstupných parametrov
 		 * prihlásiť buď cez cosign, alebo pomocou cookie.
@@ -65,7 +67,7 @@ Copyright (c) 2010 Martin Králik
 					{
 						if (preg_match('@Pri pokuse o prihlásenie sa vyskytol problém:@', $data))
 						{
-							if ($reason = pluck($data, '@\<div style\="color:#FF0000;"\>\<b\>([^<]*)\<\/b\>@'))
+							if ($reason = match($data, '@\<div style\="color:#FF0000;"\>\<b\>([^<]*)\<\/b\>@'))
 							{
 								throw new Exception('Nepodarilo sa prihlásiť, dôvod: <b>'.$reason.'</b>');
 							}
@@ -112,6 +114,8 @@ Copyright (c) 2010 Martin Králik
 		public static function request($url, $post = null, $checkError = true)
 		{
 			$response = download($url, $post, true);
+			self::$requests++;
+			self::$requestsSize+=strlen($response);
 			if ($checkError == true) 
 			{
 				$matches = array();
