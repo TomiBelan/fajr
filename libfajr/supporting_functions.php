@@ -91,7 +91,7 @@ Copyright (c) 2010 Martin Králik
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_VERBOSE, false);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // AIS2 nema koser certifikat
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
 
 		if (is_array($post))
 		{
