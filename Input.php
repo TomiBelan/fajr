@@ -47,6 +47,13 @@ Copyright (c) 2010 Martin Králik
 				self::$inputParameters['list'] = $_GET['list'];
 			}
 			
+			if (isset($_GET['tab']))
+			{
+				if (empty($_GET['tab'])) throw new Exception('Vstupný parameter
+						"tab" nesmie byť prázdny.');
+				self::$inputParameters['tab'] = $_GET['tab'];
+			}
+			
 			if (isset($_GET['predmet']))
 			{
 				if (!ctype_digit($_GET['predmet'])) throw new Exception('Vstupný parameter "predmet" musí byť typu integer.');
