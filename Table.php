@@ -91,7 +91,9 @@ class Table
 		$data=array();
 		foreach ($this->definition as $key => $value) {
 			if (!$value['visible']) continue; // skip invisible cells
-			$data[] = array($value['col']+0, $key);
+			$colNum = 0;
+			if (isset($value['col'])) $colNum=$value['col'];
+			$data[] = array($colNum, $key);
 		}
 		sort($data);
 		$columns=array();
