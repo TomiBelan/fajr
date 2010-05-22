@@ -95,7 +95,6 @@ Copyright (c) 2010 Martin Králik
 			'footer' => '
 </div>
 <script type="text/javascript">
-<script type="text/javascript">
 
   var _gaq = _gaq || [];
   _gaq.push([\'_setAccount\', \'UA-680810-11\']);
