@@ -91,28 +91,25 @@ try
 		$zapisneListyTable->setOption('collapsed', true);
 		DisplayManager::addContent($zapisneListyTable->getHtml());
 		
-		$tabs = new TabManager('tab', array('studium'=>Input::get('studium'),
-					'list'=>Input::get('list')));
-		if (Input::get('tab') === null) Input::set('tab', 'TerminyHodnotenia');
-		
-		$tabs->setActive(Input::get('tab'));
 		
 		$terminyHodnotenia = new
 			AIS2TerminyHodnoteniaScreen($adminStudia->getIdZapisnyList(Input::get('list')),
 					$adminStudia->getIdStudium(Input::get('list')));
 		
-		$callback = new MojeTerminyHodnoteniaCallback($terminyHodnotenia);
-		$tabs->addTab('TerminyHodnotenia', 'Moje skúšky', $callback);
-		
-		$callback = new ZoznamTerminovCallback($terminyHodnotenia);
-		$tabs->addTab('ZapisSkusok', 'Prihlásenie na skúšky', $callback);
-
-		$callback = new ZapisanePredmetyCallback($terminyHodnotenia);
-		$tabs->addTab('ZapisnyList', 'Zápisný list', $callback);
-		$callback = new HodnoteniaCallback(
-				new AIS2HodnoteniaPriemeryScreen(
-					$adminStudia->getIdZapisnyList(Input::get('list'))));
-		$tabs->addTab('Hodnotenia', 'Hodnotenia/Priemery', $callback);
+		if (Input::get('tab') === null) Input::set('tab', 'TerminyHodnotenia');
+		$tabs = new TabManager('tab', array('studium'=>Input::get('studium'),
+					'list'=>Input::get('list')));
+		$tabs->setActive(Input::get('tab'));
+		$tabs->addTab('TerminyHodnotenia', 'Moje skúšky',
+					new MojeTerminyHodnoteniaCallback($terminyHodnotenia));
+		$tabs->addTab('ZapisSkusok', 'Prihlásenie na skúšky',
+					new ZoznamTerminovCallback($terminyHodnotenia));
+		$tabs->addTab('ZapisnyList', 'Zápisný list',
+					new ZapisanePredmetyCallback($terminyHodnotenia));
+		$tabs->addTab('Hodnotenia', 'Hodnotenia/Priemery',
+				new HodnoteniaCallback(
+					new AIS2HodnoteniaPriemeryScreen(
+						$adminStudia->getIdZapisnyList(Input::get('list')))));
 		
 		DisplayManager::addContent($tabs->getHtml());
 		
@@ -123,8 +120,6 @@ try
 											$timeDiff).
 									" seconds to generate this page.</div>";
 		DisplayManager::addContent($statistics);
-		
-		
 	}
 	else
 	{
@@ -134,7 +129,6 @@ try
 		DisplayManager::addContent('credits', true);
 		DisplayManager::addContent(Changelog::getChangelog(), false);
 	}
-	
 }
 catch (Exception $e)
 {
