@@ -182,7 +182,8 @@ class Table
 		
 		$table = "\n<!-- ******* Table:{$this->name} ****** -->\n";
 		$table .= "<div class='table'>\n";
-		if ($this->name) $table .= '<h2> <img id=\'toggle'.$id.'\' src=\'images/toggle.png\' onClick=\'toggleVisibility('.$id.');\'> '.$this->name.'</h2>'."\n";
+		if ($this->name) $table .= '<h2> <img class=\'togglevisibilityimg\' id=\'toggle'.$id.'\'
+			src=\'images/minimize.gif\' onClick=\'toggleVisibility('.$id.');\'> '.$this->name.'</h2>'."\n";
 		if (!is_array($this->data) || empty($this->data[0])) {
 			$table .= '<font color="red"> Dáta pre túto tabuľku neboli nájdené.</font><hr class="space" />';
 			$table .= "</div>\n";
