@@ -34,11 +34,17 @@ class MojeTerminyHodnoteniaCallback implements ITabCallback {
 		
 	}
 	
+	public function parseDatumACas($str) {
+			$datum=strptime($str, "%d.%m.%Y %H:%M");
+			return mktime($datum["tm_hour"],$datum["tm_min"],0,1+$datum["tm_mon"],$datum["tm_mday"],1900+$datum["tm_year"]);
+	}
+	
 	public function callback() {
 		$terminyHodnotenia = $this->skusky->getTerminyHodnotenia();
-		if (Input::get('action') !== null)
+		if (Input::get('action') !== null) {
 			assert(Input::get("action")=="odhlasZoSkusky");
-			return $this->OdhlasZoSkusky();
+			return $this->odhlasZoSkusky();
+		}
 		
 		$terminyHodnoteniaTableActive =  new
 			Table(TableDefinitions::mojeTerminyHodnotenia(), 'Aktuálne termíny hodnotenia', null, array('studium', 'list'));
@@ -48,11 +54,11 @@ class MojeTerminyHodnoteniaCallback implements ITabCallback {
 		
 		$actionUrl="?".http_build_query(array("studium"=>Input::get("studium"),
 					"list"=>Input::get("list"),
-					"tab"=>"TerminyHodnotenia"));
+					"tab"=>Input::get("tab")));
 		
 		foreach($terminyHodnotenia->getData() as $row) {
-			$datum=strptime($row['datum']." ".$row['cas'], "%d.%m.%Y %H:%M");
-			$datum=mktime($datum["tm_hour"],$datum["tm_min"],0,1+$datum["tm_mon"],$datum["tm_mday"],1900+$datum["tm_year"]);
+			$datum = $this->parseDatumACas($row['datum']." ".$row['cas']);
+					
 			$row['odhlas']="";
 			if ($datum < time()) {
 				$terminyHodnoteniaTableOld->addRow($row, null);
