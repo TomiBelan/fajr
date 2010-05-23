@@ -13,13 +13,42 @@ class MojeTerminyHodnoteniaCallback implements ITabCallback {
 		$this->skusky = $skusky;
 	}
 	
+	/**
+	 * ked odhlasujeme z predmetu, narozdiel od AISu robime opat
+	 * inicializaciu vsetkych aplikacii. Just for sure chceme
+	 * okontrolovat, ze sa nic nezmenilo a ze sme dostali rovnake data
+	 * ako predtym!
+	 */
+	private function hashNaOdhlasenie($row) {
+		return
+			md5($row['index'].'|'.$row['datum'].'|'.$row['cas'].'|'.$row['predmet']);
+	}
+	
+	private function odhlasZoSkusky() {
+		return "<h3> Odhlasovanie zatial neimplementovane ale pracuje sa na
+			tom! </h3>";
+		// TODO:
+		if (Input::get("hash") != hashNaOdhlasenie($row))
+			throw new Exception("Počas odhlasovania nastala závažná chyba -
+					nesedia mi predmety!");
+		
+	}
+	
 	public function callback() {
 		$terminyHodnotenia = $this->skusky->getTerminyHodnotenia();
+		if (Input::get('action') !== null)
+			assert(Input::get("action")=="odhlasZoSkusky");
+			return $this->OdhlasZoSkusky();
+		
 		$terminyHodnoteniaTableActive =  new
 			Table(TableDefinitions::mojeTerminyHodnotenia(), 'Aktuálne termíny hodnotenia', null, array('studium', 'list'));
 		
 		$terminyHodnoteniaTableOld =  new
 			Table(TableDefinitions::mojeTerminyHodnotenia(), 'Staré termíny hodnotenia', null, array('studium', 'list'));
+		
+		$actionUrl="?".http_build_query(array("studium"=>Input::get("studium"),
+					"list"=>Input::get("list"),
+					"tab"=>"TerminyHodnotenia"));
 		
 		foreach($terminyHodnotenia->getData() as $row) {
 			$datum=strptime($row['datum']." ".$row['cas'], "%d.%m.%Y %H:%M");
@@ -30,8 +59,13 @@ class MojeTerminyHodnoteniaCallback implements ITabCallback {
 			} else {
 				if ($row['mozeOdhlasit']==1) {
 					$class='terminmozeodhlasit';
-					$row['odhlas']="<form> <input type='submit' value='Odhlás'
-							disabled='disabled' /> </form>";
+					$hash=$this->hashNaOdhlasenie($row);
+					$row['odhlas']="<form method='post' action='$actionUrl'>
+						<input type='hidden' name='action' value='odhlasZoSkusky'>
+						<input type='hidden' name='odhlasIndex'
+						value='".$row['index']."'>
+						<input type='hidden' name='hash' value='$hash'>
+						<input type='submit' value='Odhlás' /> </form>";
 				} else {
 					$class='terminnemozeodhlasit';
 				}

@@ -54,10 +54,11 @@ class Input
 			self::$inputParameters['tab'] = $_GET['tab'];
 		}
 		
-		if (isset($_GET['predmet']))
+		if (isset($_POST['action']))
 		{
-			if (!ctype_digit($_GET['predmet'])) throw new Exception('Vstupný parameter "predmet" musí byť typu integer.');
-			self::$inputParameters['predmet'] = $_GET['predmet'];
+			if (empty($_POST['action'])) throw new Exception('Vstupný parameter
+					"action" nesmie byť prázdny');
+			self::$inputParameters['action'] = $_POST['action'];
 		}
 
 		if (isset($_POST['login']))
