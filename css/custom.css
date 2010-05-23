@@ -1,6 +1,11 @@
-.togglevisibilityimg {
+.togglevisibility, .togglevisibilityimg {
 	cursor:pointer;
 }
+
+.togglevisibilityimg {
+	margin: 3px;
+}
+
 .increase-line-height {
 	line-height:1.5;
 }

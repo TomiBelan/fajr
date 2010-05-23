@@ -38,7 +38,7 @@ class ZoznamTerminovCallback implements ITabCallback {
 			Table(TableDefinitions::vyberTerminuHodnoteniaJoined(), 'Termíny,
 					na ktoré sa môžem prihlásiť');
 		
-		$actionUrl="?".http_build_query(array("studium"=>Input::get("studium"),
+		$actionUrl=buildUrl('',array("studium"=>Input::get("studium"),
 					"list"=>Input::get("list"),
 					"tab"=>Input::get("tab")));
 		
@@ -49,13 +49,14 @@ class ZoznamTerminovCallback implements ITabCallback {
 				$row2['predmetIndex']=$row['index'];
 				
 				$hash = $this->hashNaPrihlasenie($row2, $row['nazov']);
-				$row2['prihlas']="<form method='post' action='$actionUrl'>
-						<input type='hidden' name='action' value='prihlasNaSkusku'>
+				$row2['prihlas']="<form method='post' action='$actionUrl'><div>
+						<input type='hidden' name='action' value='prihlasNaSkusku'/>
 						<input type='hidden' name='prihlasPredmetIndex'
-						value='".$row2['predmetIndex']."'>
-						<input type='hidden' name='prihlasTerminIndex' value='".$row2['index']."'>
-						<input type='hidden' name='hash' value='$hash'>
-					<input type='submit' value='Prihlás ma!' /> </form>";
+						value='".$row2['predmetIndex']."'/>
+						<input type='hidden' name='prihlasTerminIndex'
+						value='".$row2['index']."'/>
+						<input type='hidden' name='hash' value='$hash'/>
+					<input type='submit' value='Prihlás ma!' /> </div></form>";
 				$terminyTable->addRow($row2, null);
 				
 			}

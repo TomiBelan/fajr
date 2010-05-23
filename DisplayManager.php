@@ -88,7 +88,7 @@ class DisplayManager
 	
 </head>
 <body>
-<div class="container"><h1><img src=\'images/fajr_small.png\' class=\'logo\'> FAJR beta</h1>
+<div class="container"><h1><img src=\'images/fajr_small.png\' alt="[logo]" class=\'logo\' /> FAJR beta</h1>
 ',
 
 			'footer' => '

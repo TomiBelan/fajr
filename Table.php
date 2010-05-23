@@ -52,10 +52,10 @@ class TableRow
 			$class=$this->options['class'];
 		}
 		
-		$row = "<tr class='$class'>";
+		$row = "<tr class='$class'>\n";
 		
 		if ($table->newKey) {
-			$link = '?'.http_build_query(array_merge($table->urlParams,
+			$link = buildUrl('', array_merge($table->urlParams,
 						array($table->newKey => $this->data['index'])));
 		}
 		
@@ -67,7 +67,7 @@ class TableRow
 				
 			$cell = '    <td>';
 			if ($table->newKey && $colno==0) {
-				$cell .= '<a href="'.hescape($link).'">'.$cell_value."</a>";
+				$cell .= '<a href="'.$link.'">'.$cell_value."</a>";
 			} else {
 				$cell .= $cell_value;
 			}
@@ -178,19 +178,20 @@ class Table
 	 */
 	public function getHtml()
 	{
-		$id = rand(); // FIXME: rozumny id generator
+		$id = "id".rand(); // FIXME: rozumny id generator
 		
 		$table = "\n<!-- ******* Table:{$this->name} ****** -->\n";
 		$table .= "<div class='table'>\n";
-		if ($this->name) $table .= '<h2> <img class=\'togglevisibilityimg\' id=\'toggle'.$id.'\'
-			src=\'images/minimize.gif\' onClick=\'toggleVisibility('.$id.');\'> '.$this->name.'</h2>'."\n";
-		if (!is_array($this->data) || empty($this->data[0])) {
+		if ($this->name) $table .= '<h2 class=\'togglevisibility\'  onclick=\'toggleVisibility("'.$id.'");\' >
+			<img alt="" class=\'togglevisibilityimg\' id=\'toggle'.
+			$id.'\' src=\'images/minimize.gif\' />'.$this->name.'</h2>'."\n";
+			if (!is_array($this->data) || empty($this->data[0])) {
 			$table .= '<font color="red"> Dáta pre túto tabuľku neboli nájdené.</font><hr class="space" />';
 			$table .= "</div>\n";
 			return $table;
 		}
 		
-		$table .= '<table id=\''.$id."'class='colstyle-sorting'>\n<thead>\n<tr>\n";
+		$table .= '<table id=\''.$id."' class='colstyle-sorting'>\n<thead>\n<tr>\n";
 		$columns = $this->getColumns();
 		
 		foreach ($columns as $key=>$value) {
@@ -205,8 +206,8 @@ class Table
 		}
 	$table .= "</tbody></table>\n";
 	if ($this->getOption('collapsed')) {
-		$table .= '<script type="text/javascript"> toggleVisibility('.
-							$id.") </script>\n";
+		$table .= '<script type="text/javascript"> toggleVisibility("'.
+							$id."\") </script>\n";
 	}
 	$table .= "</div>\n\n\n";
 	return $table;

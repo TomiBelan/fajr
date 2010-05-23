@@ -52,7 +52,7 @@ class MojeTerminyHodnoteniaCallback implements ITabCallback {
 		$terminyHodnoteniaTableOld =  new
 			Table(TableDefinitions::mojeTerminyHodnotenia(), 'Staré termíny hodnotenia', null, array('studium', 'list'));
 		
-		$actionUrl="?".http_build_query(array("studium"=>Input::get("studium"),
+		$actionUrl=buildUrl('',array("studium"=>Input::get("studium"),
 					"list"=>Input::get("list"),
 					"tab"=>Input::get("tab")));
 		
@@ -67,11 +67,12 @@ class MojeTerminyHodnoteniaCallback implements ITabCallback {
 					$class='terminmozeodhlasit';
 					$hash=$this->hashNaOdhlasenie($row);
 					$row['odhlas']="<form method='post' action='$actionUrl'>
-						<input type='hidden' name='action' value='odhlasZoSkusky'>
+						<div>
+						<input type='hidden' name='action' value='odhlasZoSkusky'/>
 						<input type='hidden' name='odhlasIndex'
-						value='".$row['index']."'>
-						<input type='hidden' name='hash' value='$hash'>
-						<input type='submit' value='Odhlás' /> </form>";
+						value='".$row['index']."'/>
+						<input type='hidden' name='hash' value='$hash'/>
+						<input type='submit' value='Odhlás' /> </div></form>";
 				} else {
 					$class='terminnemozeodhlasit';
 				}

@@ -53,10 +53,10 @@ class TabManager {
 	public function getHtml() {
 		$code = '<div class=\'tab_header\'>';
 		foreach ($this->tabs as $key => $value) {
-			$link = '?'.http_build_query(array_merge($this->urlParams,
+			$link = buildUrl('',array_merge($this->urlParams,
 			             array($this->name => $key)));
 			if ($key == $this->active) $class='tab_selected'; else $class='tab';
-			$code .= '<span class=\''.$class.'\' \'><a href="'.$link.'">'.$value['title']
+			$code .= '<span class=\''.$class.'\'><a href="'.$link.'">'.$value['title']
 				.'</a></span>';
 		}
 		$code .= '</div>';
