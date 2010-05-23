@@ -40,122 +40,10 @@ require_once 'libfajr/AIS2HodnoteniaPriemeryScreen.php';
 require_once 'TableDefinitions.php';
 require_once 'Sorter.php';
 
-class TerminyHodnoteniaCallback implements ITabCallback {
-	public function __construct($skusky) {
-		$this->skusky = $skusky;
-	}
-	
-	public function callback() {
-		$terminyHodnotenia = $this->skusky->getTerminyHodnotenia();
-		$terminyHodnoteniaTableActive =  new
-			Table(TableDefinitions::mojeTerminyHodnotenia(), 'Aktuálne termíny hodnotenia', null, array('studium', 'list'));
-		
-		$terminyHodnoteniaTableOld =  new
-			Table(TableDefinitions::mojeTerminyHodnotenia(), 'Staré termíny hodnotenia', null, array('studium', 'list'));
-		
-		foreach($terminyHodnotenia->getData() as $row) {
-			$datum=strptime($row['datum']." ".$row['cas'], "%d.%m.%Y %H:%M");
-			$datum=mktime($datum["tm_hour"],$datum["tm_min"],0,1+$datum["tm_mon"],$datum["tm_mday"],1900+$datum["tm_year"]);
-			$row['odhlas']="";
-			if ($datum < time()) {
-				$terminyHodnoteniaTableOld->addRow($row, null);
-			} else {
-				if ($row['mozeOdhlasit']==1) {
-					$class='terminmozeodhlasit';
-					$row['odhlas']="<form> <input type='submit' value='Odhlás'
-							disabled='disabled' /> </form>";
-				} else {
-					$class='terminnemozeodhlasit';
-				}
-					
-				if ($row['prihlaseny']=='A') {
-					$terminyHodnoteniaTableActive->addRow($row, array('class'=>$class));
-				}
-			}
-		}
-		$terminyHodnoteniaTableActive->setUrlParams(array('studium' =>
-					Input::get('studium'), 'list' => Input::get('list')));
-		
-		return
-				$terminyHodnoteniaTableActive->getHtml().
-				$terminyHodnoteniaTableOld->getHtml();
-	}
-}
-
-class ZoznamTerminovCallback implements ITabCallback {
-	private $skusky;
-	
-	public function __construct($skusky) {
-		$this->skusky = $skusky;
-	}
-	
-	public function callback() {
-		$predmetyZapisnehoListu = $this->skusky->getPredmetyZapisnehoListu();
-		$terminyTable = new
-			Table(TableDefinitions::vyberTerminuHodnoteniaJoined(), 'Termíny,
-					na ktoré sa môžem prihlásiť');
-		foreach ($predmetyZapisnehoListu->getData() as $row) {
-			$terminy = $this->skusky->getZoznamTerminov($row['index']);
-			foreach($terminy->getData() as $row2) {
-				$row2['predmet']=$row['nazov'];
-				$row2['predmetIndex']=$row['index'];
-				$row2['prihlas']="<form> <input type='submit' value='Prihlás ma!'
-						disabled='disabled'/> </form>";
-				$terminyTable->addRow($row2, null);
-				
-			}
-		}
-		return $terminyTable->getHtml();
-	}
-}
-
-class ZapisanePredmetyCallback implements ITabCallback {
-	private $skusky;
-	
-	public function __construct($skusky) {
-		$this->skusky = $skusky;
-	}
-	
-	public function callback() {
-		$predmetyZapisnehoListu = $this->skusky->getPredmetyZapisnehoListu();
-		$predmetyZapisnehoListuTable = new
-			Table(TableDefinitions::predmetyZapisnehoListu(), 'Predmety zápisného listu');
-		foreach (Sorter::sort($predmetyZapisnehoListu->getData(),
-					array("semester"=>-1, "nazov"=>1)) as $row) {
-			if ($row['semester']=='L') $class='leto'; else $class='zima';
-			$predmetyZapisnehoListuTable->addRow($row, array('class'=>$class));
-		}
-;
-		$predmetyZapisnehoListuTable->setUrlParams(array('studium' =>
-					Input::get('studium'), 'list' => Input::get('list')));
-		
-		return $predmetyZapisnehoListuTable->getHtml();
-	}
-}
-
-class HodnoteniaCallback implements ITabCallback {
-	private $app;
-	
-	public function __construct($app) {
-		$this->app = $app;
-	}
-	
-	public function callback() {
-		$hodnotenia = $this->app->getHodnotenia();
-		$hodnoteniaTable = new Table(TableDefinitions::hodnotenia(), 'Hodnotenia');
-		foreach(Sorter::sort($hodnotenia->getData(),
-					array("semester"=>-1, "nazov"=>1)) as $row) {
-			if ($row['semester']=='L') $class='leto'; else $class='zima';
-			$hodnoteniaTable->addRow($row, array('class'=>$class));
-		}
-		
-		$priemery = $this->app->getPriemery();
-		$priemeryTable = new Table(TableDefinitions::priemery(), 'Priemery');
-		$priemeryTable->addRows($priemery->getData());
-		
-		return $hodnoteniaTable->getHtml().$priemeryTable->getHtml();
-	}
-}
+require_once 'TabMojeSkusky.php';
+require_once 'TabPrihlasenieNaSkusky.php';
+require_once 'TabZapisnyList.php';
+require_once 'TabHodnoteniaPriemery.php';
 
 try
 {
@@ -209,17 +97,17 @@ try
 		
 		$tabs->setActive(Input::get('tab'));
 		
-		$skusky = new
+		$terminyHodnotenia = new
 			AIS2TerminyHodnoteniaScreen($adminStudia->getIdZapisnyList(Input::get('list')),
 					$adminStudia->getIdStudium(Input::get('list')));
 		
-		$callback = new TerminyHodnoteniaCallback($skusky);
+		$callback = new MojeTerminyHodnoteniaCallback($terminyHodnotenia);
 		$tabs->addTab('TerminyHodnotenia', 'Moje skúšky', $callback);
 		
-		$callback = new ZoznamTerminovCallback($skusky);
+		$callback = new ZoznamTerminovCallback($terminyHodnotenia);
 		$tabs->addTab('ZapisSkusok', 'Prihlásenie na skúšky', $callback);
 
-		$callback = new ZapisanePredmetyCallback($skusky);
+		$callback = new ZapisanePredmetyCallback($terminyHodnotenia);
 		$tabs->addTab('ZapisnyList', 'Zápisný list', $callback);
 		$callback = new HodnoteniaCallback(
 				new AIS2HodnoteniaPriemeryScreen(
