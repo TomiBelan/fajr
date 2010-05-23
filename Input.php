@@ -74,7 +74,7 @@ class Input
 
 		if (isset($_POST['cosignCookie']))
 		{
-			//if (empty($_POST['cosignCookie'])) throw new Exception('Vstupný parameter "cosignCookie" nesmie byť prázdny.');
+			if (empty($_POST['cosignCookie'])) throw new Exception('Vstupný parameter "cosignCookie" nesmie byť prázdny.');
 			self::$inputParameters['cosignCookie'] = $_POST['cosignCookie'];
 		}
 
