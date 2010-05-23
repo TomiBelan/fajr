@@ -1,5 +1,5 @@
 <?php
-/*
+/* {{{
 Copyright (c) 2010 Martin Králik
 
  Permission is hereby granted, free of charge, to any person
@@ -22,81 +22,81 @@ Copyright (c) 2010 Martin Králik
  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  OTHER DEALINGS IN THE SOFTWARE.
-*/
+ }}} */
 
-	/**
-	 * Description of Input
-	 *
-	 * @author majak
-	 */
-	class Input
+/**
+ * Description of Input
+ *
+ * @author majak
+ */
+class Input
+{
+	public static $inputParameters = array();
+
+	public static function prepare()
 	{
-		public static $inputParameters = array();
-
-		public static function prepare()
+		if (isset($_GET['studium']))
 		{
-			if (isset($_GET['studium']))
-			{
-				if (!ctype_digit($_GET['studium'])) throw new Exception('Vstupný parameter "studium" musí byť typu integer.');
-				self::$inputParameters['studium'] = $_GET['studium'];
-			}
-
-			if (isset($_GET['list']))
-			{
-				if (!ctype_digit($_GET['list'])) throw new Exception('Vstupný parameter "list" musí byť typu integer.');
-				self::$inputParameters['list'] = $_GET['list'];
-			}
-			
-			if (isset($_GET['tab']))
-			{
-				if (empty($_GET['tab'])) throw new Exception('Vstupný parameter
-						"tab" nesmie byť prázdny.');
-				self::$inputParameters['tab'] = $_GET['tab'];
-			}
-			
-			if (isset($_GET['predmet']))
-			{
-				if (!ctype_digit($_GET['predmet'])) throw new Exception('Vstupný parameter "predmet" musí byť typu integer.');
-				self::$inputParameters['predmet'] = $_GET['predmet'];
-			}
-
-			if (isset($_POST['login']))
-			{
-				if (empty($_POST['login'])) throw new Exception('Vstupný parameter "login" nesmie byť prázdny.');
-				self::$inputParameters['login'] = $_POST['login'];
-			}
-
-			if (isset($_POST['krbpwd']))
-			{
-				if (empty($_POST['krbpwd'])) throw new Exception('Vstupný parameter "krbpwd" nesmie byť prázdny.');
-				self::$inputParameters['krbpwd'] = $_POST['krbpwd'];
-			}
-
-			if (isset($_POST['cosignCookie']))
-			{
-				if (empty($_POST['cosignCookie'])) throw new Exception('Vstupný parameter "cosignCookie" nesmie byť prázdny.');
-				self::$inputParameters['cosignCookie'] = $_POST['cosignCookie'];
-			}
-
-			if (isset($_GET['logout'])) self::$inputParameters['logout'] = true;
+			if (!ctype_digit($_GET['studium'])) throw new Exception('Vstupný parameter "studium" musí byť typu integer.');
+			self::$inputParameters['studium'] = $_GET['studium'];
 		}
 
-		public static function get($key = null)
+		if (isset($_GET['list']))
 		{
-			if ($key === null) return self::$inputParameters;
-			if (!isset(self::$inputParameters[$key]))
-			{
-				return null;
-			}
-			else
-			{
-				return self::$inputParameters[$key];
-			}
+			if (!ctype_digit($_GET['list'])) throw new Exception('Vstupný parameter "list" musí byť typu integer.');
+			self::$inputParameters['list'] = $_GET['list'];
 		}
 		
-		public static function set($key, $value)
+		if (isset($_GET['tab']))
 		{
-			self::$inputParameters[$key] = $value;
+			if (empty($_GET['tab'])) throw new Exception('Vstupný parameter
+					"tab" nesmie byť prázdny.');
+			self::$inputParameters['tab'] = $_GET['tab'];
+		}
+		
+		if (isset($_GET['predmet']))
+		{
+			if (!ctype_digit($_GET['predmet'])) throw new Exception('Vstupný parameter "predmet" musí byť typu integer.');
+			self::$inputParameters['predmet'] = $_GET['predmet'];
+		}
+
+		if (isset($_POST['login']))
+		{
+			if (empty($_POST['login'])) throw new Exception('Vstupný parameter "login" nesmie byť prázdny.');
+			self::$inputParameters['login'] = $_POST['login'];
+		}
+
+		if (isset($_POST['krbpwd']))
+		{
+			if (empty($_POST['krbpwd'])) throw new Exception('Vstupný parameter "krbpwd" nesmie byť prázdny.');
+			self::$inputParameters['krbpwd'] = $_POST['krbpwd'];
+		}
+
+		if (isset($_POST['cosignCookie']))
+		{
+			//if (empty($_POST['cosignCookie'])) throw new Exception('Vstupný parameter "cosignCookie" nesmie byť prázdny.');
+			self::$inputParameters['cosignCookie'] = $_POST['cosignCookie'];
+		}
+
+		if (isset($_GET['logout'])) self::$inputParameters['logout'] = true;
+	}
+
+	public static function get($key = null)
+	{
+		if ($key === null) return self::$inputParameters;
+		if (!isset(self::$inputParameters[$key]))
+		{
+			return null;
+		}
+		else
+		{
+			return self::$inputParameters[$key];
 		}
 	}
+	
+	public static function set($key, $value)
+	{
+		self::$inputParameters[$key] = $value;
+	}
+}
 ?>

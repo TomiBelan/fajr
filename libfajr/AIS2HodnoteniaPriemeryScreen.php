@@ -1,5 +1,5 @@
 <?php
-/*
+/* {{{
 Copyright (c) 2010 Martin Králik
 
  Permission is hereby granted, free of charge, to any person
@@ -22,88 +22,88 @@ Copyright (c) 2010 Martin Králik
  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  OTHER DEALINGS IN THE SOFTWARE.
-*/
+ }}} */
 
 require_once 'AIS2AbstractScreen.php';
 require_once 'Table.php';
 
-	/**
-	 * Trieda reprezentujúca jednu obrazovku s hodnoteniami a priemermi za jeden rok.
-	 *
-	 * @author majak
-	 */
-	class AIS2HodnoteniaPriemeryScreen extends AIS2AbstractScreen
+/**
+ * Trieda reprezentujúca jednu obrazovku s hodnoteniami a priemermi za jeden rok.
+ *
+ * @author majak
+ */
+class AIS2HodnoteniaPriemeryScreen extends AIS2AbstractScreen
+{
+	protected $tabulka_hodnotenia = array(
+		// {{{
+		'semester',
+		'kodCastSP',
+		'kodTypVyucbySP',
+		'skratka',
+		'nazov',
+		'kredit',
+		'kodSposUkon',
+		'termin',
+		'znamka',
+		'datum',
+		'uznane',
+		'blokPopis',
+		'poplatok',
+		'nahradzaMa',
+		'nahradzam',
+		'dovezene',
+		'mozePrihlasit',
+		'rozsah',
+		'priebHodn',
+		// }}}
+	);
+	protected $tabulka_priemery = array(
+		// {{{
+		'priemerInfoPopisAkadRok',
+		'priemerInfoKodSemester',
+		'vazPriemer',
+		'studPriemer',
+		'pocetPredmetov',
+		'pocetNeabs',
+		'pokusyPriemer',
+		'ziskanyKredit',
+		'prerusUkon',
+		'priemerInfoDatum',
+		'priemerInfoDatum1Hodn',
+		'priemerInfoDatum2Hodn',
+		'priemerNazov',
+		'priemerZaAkRok',
+		'priemerZaSemester',
+		'priemerLenStudPlan',
+		'priemerUznanePredm',
+		'priemerAjDatum1Hodn',
+		'priemerAjDatum2Hodn',
+		'priemerPocitatNeabs',
+		'priemerVahaNeabsolvovanych',
+		'priemerSkratkaOrganizacnaJednotka',
+		'priemerPocitatNeabsC',
+		'pocetPredmetovVyp',
+		'priemerInfoStudentiVypoctu',
+		// }}}
+	);
+
+	public function __construct($idZapisnyList)
 	{
-		protected $tabulka_hodnotenia = array(
-			// {{{
-			'semester',
-			'kodCastSP',
-			'kodTypVyucbySP',
-			'skratka',
-			'nazov',
-			'kredit',
-			'kodSposUkon',
-			'termin',
-			'znamka',
-			'datum',
-			'uznane',
-			'blokPopis',
-			'poplatok',
-			'nahradzaMa',
-			'nahradzam',
-			'dovezene',
-			'mozePrihlasit',
-			'rozsah',
-			'priebHodn',
-			// }}}
-		);
-		protected $tabulka_priemery = array(
-			// {{{
-			'priemerInfoPopisAkadRok',
-			'priemerInfoKodSemester',
-			'vazPriemer',
-			'studPriemer',
-			'pocetPredmetov',
-			'pocetNeabs',
-			'pokusyPriemer',
-			'ziskanyKredit',
-			'prerusUkon',
-			'priemerInfoDatum',
-			'priemerInfoDatum1Hodn',
-			'priemerInfoDatum2Hodn',
-			'priemerNazov',
-			'priemerZaAkRok',
-			'priemerZaSemester',
-			'priemerLenStudPlan',
-			'priemerUznanePredm',
-			'priemerAjDatum1Hodn',
-			'priemerAjDatum2Hodn',
-			'priemerPocitatNeabs',
-			'priemerVahaNeabsolvovanych',
-			'priemerSkratkaOrganizacnaJednotka',
-			'priemerPocitatNeabsC',
-			'pocetPredmetovVyp',
-			'priemerInfoStudentiVypoctu',
-			// }}}
-		);
-
-		public function __construct($idZapisnyList)
-		{
-			parent::__construct('ais.gui.vs.es.VSES212App', '&kodAplikacie=VSES212&idZapisnyList='.$idZapisnyList);
-		}
-
-		public function getHodnotenia()
-		{
-			$data = matchAll($this->data, AIS2Utils::DATA_PATTERN);
-			return new AIS2Table($this->tabulka_hodnotenia, $data[0][1]);
-		}
-
-		public function getPriemery()
-		{
-			$data = matchAll($this->data, AIS2Utils::DATA_PATTERN);
-			return new AIS2Table($this->tabulka_priemery, $data[1][1]);
-		}
-
+		parent::__construct('ais.gui.vs.es.VSES212App', '&kodAplikacie=VSES212&idZapisnyList='.$idZapisnyList);
 	}
-	
+
+	public function getHodnotenia()
+	{
+		$data = matchAll($this->data, AIS2Utils::DATA_PATTERN);
+		return new AIS2Table($this->tabulka_hodnotenia, $data[0][1]);
+	}
+
+	public function getPriemery()
+	{
+		$data = matchAll($this->data, AIS2Utils::DATA_PATTERN);
+		return new AIS2Table($this->tabulka_priemery, $data[1][1]);
+	}
+
+}
+
 ?>

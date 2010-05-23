@@ -1,5 +1,5 @@
 <?php
-/*
+/* {{{
 Copyright (c) 2010 Martin Králik
 
  Permission is hereby granted, free of charge, to any person
@@ -22,13 +22,13 @@ Copyright (c) 2010 Martin Králik
  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  OTHER DEALINGS IN THE SOFTWARE.
-*/
+ }}} */
 
- 	class DisplayManager
-	{
-		protected static $content = array();
-		
-		protected static $predefinedContent = array(
+class DisplayManager
+{
+	protected static $content = array();
+	
+	protected static $predefinedContent = array(
 			'loginBox' => '
 <div class="span-5 prepend-1">
 	<form method="post" action="">
@@ -160,22 +160,22 @@ Prihlásením do systému Fajr súhlasíte s
 <a href="terms_of_use.php">Podmienkami používania</a>
 </p></div>
 '
-		);
-		
-		public static function addContent($content, $predefinedContent = false)
-		{
-			if ($predefinedContent) self::$content[] = self::$predefinedContent[$content];
-			else self::$content[] = $content;
-		}
-		
-		public static function display()
-		{
-			$html = '';
-			foreach (self::$content as $item) $html .= $item;
-			$html = self::$predefinedContent['header'] . $html . self::$predefinedContent['footer'];
-			return $html;
-		}
-				
+	);
+	
+	public static function addContent($content, $predefinedContent = false)
+	{
+		if ($predefinedContent) self::$content[] = self::$predefinedContent[$content];
+		else self::$content[] = $content;
 	}
 	
+	public static function display()
+	{
+		$html = '';
+		foreach (self::$content as $item) $html .= $item;
+		$html = self::$predefinedContent['header'] . $html . self::$predefinedContent['footer'];
+		return $html;
+	}
+			
+}
+
 ?>
