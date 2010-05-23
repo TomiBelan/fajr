@@ -79,12 +79,17 @@ try
 		
 		
 		$zapisneListy = $adminStudia->getZapisneListy(Input::get('studium'));
-		if (Input::get('list') === null) Input::set('list', 0);
 		
 		$zapisneListyTable = new
 			Table(TableDefinitions::zoznamZapisnychListov(), 'Zoznam zápisných listov',
 				'list', array('studium' => Input::get('studium'),
 					'tab'=>Input::get('tab')));
+		
+		if (Input::get('list') === null) {
+			$tmp = $zapisneListy->getData();
+			$lastList = end($tmp);
+			Input::set('list', $lastList['index']);
+		}
 		
 		$zapisneListyTable->addRows($zapisneListy->getData());
 		$zapisneListyTable->setOption('selected_key', Input::get('list'));
