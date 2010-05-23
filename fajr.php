@@ -26,6 +26,7 @@ Copyright (c) 2010 Martin Králik
 
 error_reporting(E_ALL | E_STRICT);
 session_start();
+session_cache_expire(300);
 $startTime = microtime(true);
 
 require_once 'Input.php';
