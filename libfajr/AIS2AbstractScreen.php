@@ -24,18 +24,19 @@ Copyright (c) 2010 Martin Králik
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
+require_once 'AIS2AbstractWindow.php';
+ 
 /**
  * Abstraktná trieda reprezentujúca jednu obrazovku v AISe.
  *
  * @author majak
  */
-abstract class AIS2AbstractScreen
+abstract class AIS2AbstractScreen extends AIS2AbstractWindow
 {
 	protected $appId = null;
-	protected $formName = null;
 	protected $serial = null;
-	protected $data = null;
-
+	public $openedDialog = false;
+	
 	/**
 	 * Konštruktor.
 	 * Nadviaže spojenie, spustí danú "aplikáciu" v AISe
@@ -60,7 +61,7 @@ abstract class AIS2AbstractScreen
 		}
 		$this->setFormName($response);
 
-		$this->data = AIS2Utils::request('https://ais2.uniba.sk/ais/servlets/WebUIServlet?appId='.$this->appId.'&form='.$this->formName.'&antiCache='.random());
+		$this->data = AIS2Utils::request('https://ais2.uniba.sk/ais/servlets/WebUIServlet?appId='.$this->getAppId().'&form='.$this->formName.'&antiCache='.random());
 	}
 
 	/**
@@ -81,7 +82,12 @@ abstract class AIS2AbstractScreen
 	{
 		return $this->serial++;
 	}
-
+	
+	protected function getAppId()
+	{
+		return $this->appId;
+	}
+	
 	/**
 	 * Nastaví atribút $appId, ktorý pomocou regulárneho výrazu nájde vo vstupných dátach.
 	 * @param string $response Odpoveď AISu v HTML formáte z inicializačnej časti komunikácie.
@@ -110,79 +116,5 @@ abstract class AIS2AbstractScreen
 		else throw new Exception('Neviem nájsť formName v odpovedi vo fáze inicializácie triedy '.__CLASS__.'!');
 	}
 
-	/**
-	 * Vytvorí url XML interfacu pre komunikáciu s "aplikáciou" tejto obrazovky.
-	 * @return string Url.
-	 */
-	protected function getXmlInterfaceLocation()
-	{
-		return 'https://ais2.uniba.sk/ais/servlets/WebUIServlet?appId='.$this->appId.'&antiCache='.random().'&viewer=web&viewer=web';
-	}
-	
-	/**
-	* Experimentalna funkcia snažiaca sa zovšeobecniť dodatočné requesty jednotlivých AIS aplikácií.
-	* Je veľmi pravdepodobné, že sa bude meniť.
-	*/
-	protected function requestData($dlgName, $compName, $embObjName, $appProperties = array(), $objProperties = array(), $embObjDataView = array(), $visibleBuffers = null, $loadedBuffers = null)
-	{
-		if (!isset($appProperties['activeDlgName'])) $appProperties['activeDlgName'] = $dlgName;
-		$xml_spec = '
-<request>
-<serial>'.$this->getSerial().'</serial>
-<events><ev>
-	<dlgName>'.$dlgName.'</dlgName>
-	<compName>'.$compName.'</compName>
-	<event class=\'avc.ui.event.AVCActionEvent\'></event>
-</ev></events>
-<changedProps>
-	<changedProperties>
-		<objName>app</objName>
-		<propertyValues>';
-		foreach ($appProperties as $name => $value) $xml_spec .= '<nameValue><name>'.$name.'</name><value>'.$value.'</value></nameValue>';
-		$xml_spec .= '
-		</propertyValues>
-	</changedProperties>
-	<changedProperties>
-		<objName>'.$dlgName.'</objName>
-		<propertyValues>';
-		foreach ($objProperties as $name => $value) $xml_spec .= '<nameValue><name>'.$name.'</name><value>'.$value.'</value></nameValue>';
-		$xml_spec .= '
-		</propertyValues>
-		<embObjChProps><changedProperties>
-			<objName>'.$embObjName.'</objName>
-			<propertyValues>
-				<nameValue>
-					<name>dataView</name>
-					<isXml>true</isXml>
-					<value><![CDATA[
-						<root><selection>';
-		foreach ($embObjDataView as $name => $value) $xml_spec .= '<'.$name.'>'.$value.'</'.$name.'>';
-		$xml_spec .= '
-						</selection>';
-		if ($visibleBuffers !== null) $xml_spec .= '<visibleBuffers>'.$visibleBuffers.'</visibleBuffers>';
-		if ($loadedBuffers !== null) $xml_spec .= '<loadedBuffers>'.$loadedBuffers.'</loadedBuffers>';
-		$xml_spec .= '
-						</root>
-					]]></value>
-				</nameValue>
-				<nameValue>
-					<name>editMode</name>
-					<isXml>false</isXml>
-					<value>false</value>
-				</nameValue>
-			</propertyValues>
-			<embObjChProps isNull=\'true\'/>
-		</changedProperties></embObjChProps>
-	</changedProperties>
-</changedProps>
-</request>';
-
-		return AIS2Utils::request($this->getXmlInterfaceLocation(), array('xml_spec' => $xml_spec));
-	}
-
-	protected function getDialogName($response)
-	{
-		return match($response, AIS2Utils::DIALOG_NAME_PATTERN);
-	}
 }
 ?>

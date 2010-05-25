@@ -25,6 +25,7 @@ Copyright (c) 2010 Martin Králik
  }}} */
 
 require_once 'AIS2AbstractScreen.php';
+require_once 'AIS2TerminyDialog.php';
 require_once 'Table.php';
 
 /**
@@ -73,22 +74,6 @@ class AIS2TerminyHodnoteniaScreen extends AIS2AbstractScreen
 		'predmet',
 		// }}}
 	);
-	protected $tabulka_vyber_terminu_hodnotenia = array(
-		// {{{
-		'kodFaza',
-		'dat',
-		'cas',
-		'miestnosti',
-		'pocetPrihlasenych',
-		'maxPocet',
-		'pocetHodn',
-		'hodnotiaci',
-		'prihlasovanie',
-		'odhlasovanie',
-		'poznamka',
-		'zaevidoval',
-		// }}}
-	);
 
 	public function __construct($idZapisnyList, $idStudium)
 	{
@@ -106,38 +91,15 @@ class AIS2TerminyHodnoteniaScreen extends AIS2AbstractScreen
 		$data = matchAll($this->data, AIS2Utils::DATA_PATTERN);
 		return new AIS2Table($this->tabulka_terminy_hodnotenia, $data[1][1]);
 	}
-	
+
 	public function getZoznamTerminov($predmetIndex)
 	{
-		$data = $this->requestData(
-			'VSES007_StudentZoznamPrihlaseniNaSkuskuDlg0',
-			'pridatTerminAction',
-			'predmetyTable',
-			$appProperties = array(
-				'width' => 1326,
-				'height' => 650,
-			),
-			$objProperties = array(
-				'width' => 1318,
-				'height' => 642,
-				'x' => -4,
-				'y' => -4,
-				'focusedComponent' => 'pridatButton',
-			),
-			$embObjDataView = array(
-				'activeIndex' => $predmetIndex,
-				'selectedIndexes' => $predmetIndex,
-			),
-			0,
-			0
-		);
-		
-
-		$formName = $this->getDialogName($data);
-		$location = 'https://ais2.uniba.sk/ais/servlets/WebUIServlet?appId='.$this->appId.'&form='.$formName.'&antiCache='.random();
-		$response = AIS2Utils::request($location);
-		$data = matchAll($response, AIS2Utils::DATA_PATTERN);
-		return new AIS2Table($this->tabulka_vyber_terminu_hodnotenia, $data[0][1]);
+		$dialog = new AIS2TerminyDialog($this, 'pridatTerminAction', 'predmetyTable', $predmetIndex);
+		return $dialog->getZoznamTerminov();
+	}
+	
+	public function prihlasNaTermin()
+	{
 	}
 
 }
