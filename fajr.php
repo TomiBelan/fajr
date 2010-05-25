@@ -143,7 +143,7 @@ try
 }
 catch (Exception $e)
 {
-	DisplayManager::addContent('<h2>ERROR!</h2><div class="error">'.$e->getMessage().'<br/>'.$e->getTraceAsString().'</div>');
+	DisplayManager::addContent('<h2>ERROR!</h2><div class="error">'.$e->getMessage().'<br/>'.nl2br($e->getTraceAsString()).'</div>');
 }
 
 echo DisplayManager::display();
