@@ -25,6 +25,11 @@ Copyright (c) 2010 Martin Králik
  }}} */
 
 error_reporting(E_ALL | E_STRICT);
+
+// Pretoze v session ukladam objekty libfajru, treba nacitat definicie
+// tried skor, ako sa nacitava session
+require_once 'libfajr/libfajr.php';
+
 session_start();
 session_cache_expire(300);
 $startTime = microtime(true);
@@ -34,12 +39,12 @@ require_once 'DisplayManager.php';
 require_once 'TabManager.php';
 require_once 'Changelog.php';
 require_once 'Table.php';
-require_once 'libfajr/AIS2Utils.php';
 require_once 'libfajr/AIS2AdministraciaStudiaScreen.php';
 require_once 'libfajr/AIS2TerminyHodnoteniaScreen.php';
 require_once 'libfajr/AIS2HodnoteniaPriemeryScreen.php';
 require_once 'TableDefinitions.php';
 require_once 'Sorter.php';
+require_once 'FajrUtils.php';
 
 require_once 'TabMojeSkusky.php';
 require_once 'TabPrihlasenieNaSkusky.php';
@@ -50,17 +55,17 @@ try
 {
 	Input::prepare();
 	
-	if (Input::get('logout') !== null) AIS2Utils::cosignLogout();
+	if (Input::get('logout') !== null) FajrUtils::logout();
 	
 	$login = Input::get('login');
 	$krbpwd = Input::get('krbpwd');
 	$cosignCookie = Input::get('cosignCookie');
 	if ($login !== null && $krbpwd !== null) {
-		$loggedIn = AIS2Utils::loginViaCosign($login, $krbpwd);
+		$loggedIn = FajrUtils::login(new AIS2CosignLogin($login, $krbpwd));
 	} else if ($cosignCookie !== null) {
-		$loggedIn = AIS2Utils::loginViaCookie($cosignCookie);
+		$loggedIn = FajrUtils::login(new AIS2CookieLogin($cosignCookie));
 	} else {
-		$loggedIn = isset($_SESSION['cosignLogin']);
+		$loggedIn = FajrUtils::isLoggedIn();
 	}
 
 	if ($loggedIn) {

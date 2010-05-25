@@ -27,18 +27,12 @@ Copyright (c) 2010 Martin Králik
 	require_once 'supporting_functions.php';
 
 /**
- * Trieda združujúca rôzne základné veci pre prácu s AISom,
- * ako napríklad prihlásenie a odhlásenie.
+ * Trieda združujúca rôzne základné veci pre prácu s AISom
  *
  * @author majak
  */
 class AIS2Utils
 {
-
-	const COSIGN_LOGIN = 'https://login.uniba.sk/cosign.cgi';
-	const COSIGN_LOGOUT = 'https://login.uniba.sk/logout.cgi';
-	const LOGIN = 'https://ais2.uniba.sk/ais/login.do';
-	const MAIN_PAGE = 'https://ais2.uniba.sk';
 
 	const INTERNAL_ERROR_PATTERN = '@^function main\(\) { (?:alert|webui\.onAppClosedOnServer)\(\'([^\']*)\'\);? }$@m';
 	const APP_LOCATION_PATTERN = '@webui\.startApp\("([^"]+)","([^"]+)"\);@';
@@ -47,65 +41,6 @@ class AIS2Utils
 
 	public static $requests=0;
 	public static $requestsSize=0;
-	
-	/**
-	 * Ak používateľ nie je prihlásený v AISe, tak sa skúsi podľa vstupných parametrov
-	 * prihlásiť buď cez cosign, alebo pomocou cookie.
-	 * @return boolean Úspešnosť prihlásenia.
-	 */
-	public static function loginViaCosign($login, $krbpwd)
-	{
-		$data = download(self::LOGIN);
-		if (preg_match('@\<title\>IIKS \- Prihlásenie\</title\>@', $data))
-		{
-			assert($login !== null && $krbpwd !== null);
-			$data = download(self::COSIGN_LOGIN, array('ref' => self::LOGIN, 'login'=> $login, 'krbpwd' => $krbpwd));
-
-			if (!preg_match('@\<base href\="https://ais2\.uniba\.sk/ais/portal/pages/portal_layout\.jsp"\>@', $data))
-			{
-				if (preg_match('@Pri pokuse o prihlásenie sa vyskytol problém:@', $data))
-				{
-					if ($reason = match($data, '@\<div style\="color:#FF0000;"\>\<b\>([^<]*)\<\/b\>@'))
-					{
-						throw new Exception('Nepodarilo sa prihlásiť, dôvod: <b>'.$reason.'</b>');
-					}
-				}
-				throw new Exception('Nepodarilo sa prihlásiť, dôvod neznámy.');
-			}
-			$_SESSION['cosignLogin'] = true;
-			redirect();
-			return true;
-		}
-		$_SESSION['cosignLogin'] = true;
-		return true;
-	}
-	
-	public static function loginViaCookie($cosignCookie)
-	{
-		assert($cosignCookie !== null);
-		$_SESSION['cosignLogin'] = false;
-		
-		$cookieFile = getCookieFile();
-		$fh = fopen($cookieFile, 'a');
-		if (!$fh) throw new Exception('Neviem otvoriť súbor s cookies.');
-		fwrite($fh, "ais2.uniba.sk	FALSE	/	TRUE	0	cosign-filter-ais2.uniba.sk	".str_replace(' ', '+', $cosignCookie));
-		fclose($fh);
-		$data = download(self::LOGIN);
-		if (preg_match('@\<title\>IIKS \- Prihlásenie\</title\>@', $data))
-			return false;
-		redirect();
-	}
-
-	/**
-	 * Odhlási z Cosignu a zmaže lokálne cookies.
-	 */
-	public static function cosignLogout()
-	{
-		if (isset($_SESSION['cosignLogin'])) download(self::COSIGN_LOGOUT, array('verify' => 'Odhlásiť', 'url'=> self::MAIN_PAGE));
-		unlink(getCookieFile());
-		unset($_SESSION['cosignLogin']);
-		redirect();
-	}
 
 	/**
 	 * Stiahne zadanú stránku a skontroluje ci pri tom nenastala chyba v AISe.

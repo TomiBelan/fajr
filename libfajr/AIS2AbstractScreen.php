@@ -53,7 +53,8 @@ abstract class AIS2AbstractScreen
 
 		$response = AIS2Utils::request($this->getXmlInterfaceLocation(), array('xml_spec' => '<request><serial>'.$this->getSerial().'</serial><events><ev><event class=\'avc.ui.event.AVCComponentEvent\'><command>INIT</command></event></ev></events></request>'));
 		if (preg_match("/Neautorizovaný prístup!/", $response)) {
-			AIS2Utils::cosignLogout(); // logoutni aby to nemusel robit uzivatel
+			// TODO FIXME Tu treba vyhodit vynimku spravneho typu a odhlasenie osetrit v aplikacii
+			//AIS2Utils::cosignLogout(); // logoutni aby to nemusel robit uzivatel
 			throw new Exception("AIS hlási neautorizovaný prístup -
 				pravdepodobne vypršala platnosť cookie");
 		}
