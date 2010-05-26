@@ -57,7 +57,7 @@ try
 	
 	if (Input::get('logout') !== null) FajrUtils::logout();
 	
-	$login = Input::get('login'); Input::set('login', null)
+	$login = Input::get('login'); Input::set('login', null);
 	$krbpwd = Input::get('krbpwd'); Input::set('krbpwd', null);
 	$cosignCookie = Input::get('cosignCookie'); Input::set('cosignCookie', null);
 	if ($login !== null && $krbpwd !== null) {
