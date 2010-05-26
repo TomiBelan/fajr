@@ -41,13 +41,20 @@ class AIS2CosignLogin extends AIS2AbstractLogin {
 
 	private $username = null;
 	private $krbpwd = null;
+	
+	public function __construct($username, $krbpwd) {
+		assert($username != null);
+		assert($krbpwd != null);
+		$this->username = $username;
+		$this->krbpwd = $krbpwd;
+	}
 
 	public function login() {
 		$login = $this->username;
 		$krbpwd = $this->krbpwd;
 
 		// Username a password si nebudeme pamatat dlhsie ako treba
-		$this->login = null;
+		$this->username = null;
 		$this->krbpwd = null;
 
 		$data = download(self::LOGIN);

@@ -57,13 +57,16 @@ try
 	
 	if (Input::get('logout') !== null) FajrUtils::logout();
 	
-	$login = Input::get('login');
-	$krbpwd = Input::get('krbpwd');
-	$cosignCookie = Input::get('cosignCookie');
+	$login = Input::get('login'); Input::set('login', null)
+	$krbpwd = Input::get('krbpwd'); Input::set('krbpwd', null);
+	$cosignCookie = Input::get('cosignCookie'); Input::set('cosignCookie', null);
 	if ($login !== null && $krbpwd !== null) {
 		$loggedIn = FajrUtils::login(new AIS2CosignLogin($login, $krbpwd));
+		$login = null;
+		$krbpwd = null;
 	} else if ($cosignCookie !== null) {
 		$loggedIn = FajrUtils::login(new AIS2CookieLogin($cosignCookie));
+		$cosignCookie = null;
 	} else {
 		$loggedIn = FajrUtils::isLoggedIn();
 	}
