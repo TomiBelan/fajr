@@ -34,24 +34,6 @@ class MojeTerminyHodnoteniaCallback implements ITabCallback {
 		
 	}
 	
-	/**
-	 * predpokladame AIS format datumu a casu, t.j.
-	 * vo formate "11.01.2010 08:30"
-	 */
-	public function parseDatumACas($str) {
-		// Pozn. strptime() nefunguje na windowse, preto pouzijeme regex
-		$pattern =
-			'@(?P<tm_mday>[0-3][0-9])\.(?P<tm_mon>[0-1][0-9])\.(?P<tm_year>20[0-9][0-9])'.
-			' (?P<tm_hour>[0-2][0-9]):(?P<tm_min>[0-5][0-9]*)@';
-		$datum = matchAll($str, $pattern);
-		if (!$datum) {
-			throw new Exception("Chyba pri parsovaní dátumu a času");
-		}
-		$datum=$datum[0];
-		
-		return mktime($datum["tm_hour"],$datum["tm_min"],0,
-				$datum["tm_mon"],$datum["tm_mday"],$datum["tm_year"]);
-	}
 	
 	public function callback() {
 		$terminyHodnotenia = $this->skusky->getTerminyHodnotenia();
@@ -71,10 +53,10 @@ class MojeTerminyHodnoteniaCallback implements ITabCallback {
 					"tab"=>Input::get("tab")));
 		
 		foreach($terminyHodnotenia->getData() as $row) {
-			$datum = $this->parseDatumACas($row['datum']." ".$row['cas']);
+			$datum = AIS2Utils::parseAISDateTime($row['datum']." ".$row['cas']);
 					
-			$row['odhlas']="";
 			if ($datum < time()) {
+				$row['odhlas']="Skúška už bola";
 				$terminyHodnoteniaTableOld->addRow($row, null);
 			} else {
 				if ($row['mozeOdhlasit']==1) {
@@ -88,6 +70,7 @@ class MojeTerminyHodnoteniaCallback implements ITabCallback {
 						<input type='hidden' name='hash' value='$hash'/>
 						<input type='submit' value='Odhlás' /> </div></form>";
 				} else {
+					$row['odhlas']="nedá sa";
 					$class='terminnemozeodhlasit';
 				}
 					

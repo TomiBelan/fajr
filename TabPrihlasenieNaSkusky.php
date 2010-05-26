@@ -42,22 +42,27 @@ class ZoznamTerminovCallback implements ITabCallback {
 					"list"=>Input::get("list"),
 					"tab"=>Input::get("tab")));
 		
-		foreach ($predmetyZapisnehoListu->getData() as $row) {
-			$terminy = $this->skusky->getZoznamTerminov($row['index']);
-			foreach($terminy->getData() as $row2) {
-				$row2['predmet']=$row['nazov'];
-				$row2['predmetIndex']=$row['index'];
+		foreach ($predmetyZapisnehoListu->getData() as $predmetRow) {
+			$terminy = $this->skusky->getZoznamTerminov($predmetRow['index']);
+			foreach($terminy->getData() as $row) {
+				$row['predmet']=$predmetRow['nazov'];
+				$row['predmetIndex']=$predmetRow['index'];
 				
-				$hash = $this->hashNaPrihlasenie($row2, $row['nazov']);
-				$row2['prihlas']="<form method='post' action='$actionUrl'><div>
-						<input type='hidden' name='action' value='prihlasNaSkusku'/>
-						<input type='hidden' name='prihlasPredmetIndex'
-						value='".$row2['predmetIndex']."'/>
-						<input type='hidden' name='prihlasTerminIndex'
-						value='".$row2['index']."'/>
-						<input type='hidden' name='hash' value='$hash'/>
-					<input type='submit' value='Prihlás ma!' /> </div></form>";
-				$terminyTable->addRow($row2, null);
+				$hash = $this->hashNaPrihlasenie($row, $predmetRow['nazov']);
+				$prihlasRange = AIS2Utils::parseAISDateTimeRange($row['prihlasovanie']);
+				if ($prihlasRange['od'] < time() && $prihlasRange['do']>time()) {
+					$row['prihlas']="<form method='post' action='$actionUrl'><div>
+							<input type='hidden' name='action' value='prihlasNaSkusku'/>
+							<input type='hidden' name='prihlasPredmetIndex'
+							value='".$row['predmetIndex']."'/>
+							<input type='hidden' name='prihlasTerminIndex'
+							value='".$row['index']."'/>
+							<input type='hidden' name='hash' value='$hash'/>
+						<input type='submit' value='Prihlás ma!' /> </div></form>";
+				} else {
+					$row['prihlas'] = 'nedá sa';
+				}
+				$terminyTable->addRow($row, null);
 				
 			}
 		}
