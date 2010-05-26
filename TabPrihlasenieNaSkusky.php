@@ -26,6 +26,22 @@ class ZoznamTerminovCallback implements ITabCallback {
 			tom! </h3>";
 	}
 	
+	const PRIHLASIT_MOZE = 0;
+	const PRIHLASIT_NEMOZE_CAS = 1;
+	const PRIHLASIT_NEMOZE_POCET = 2;
+	
+	public function mozeSaPrihlasit($row) {
+		$prihlasRange = AIS2Utils::parseAISDateTimeRange($row['prihlasovanie']);
+		if (!($prihlasRange['od'] < time() && $prihlasRange['do']>time())) {
+			return self::PRIHLASIT_NEMOZE_CAS;
+		}
+		if ($row['maxPocet'] != '' &&
+				$row['maxPocet']==$row['pocetPrihlasenych']) {
+			return self::PRIHLASIT_NEMOZE_POCET;
+		}
+		return self::PRIHLASIT_MOZE;
+	}
+	
 	public function callback() {
 		$predmetyZapisnehoListu = $this->skusky->getPredmetyZapisnehoListu();
 		
@@ -49,8 +65,8 @@ class ZoznamTerminovCallback implements ITabCallback {
 				$row['predmetIndex']=$predmetRow['index'];
 				
 				$hash = $this->hashNaPrihlasenie($row, $predmetRow['nazov']);
-				$prihlasRange = AIS2Utils::parseAISDateTimeRange($row['prihlasovanie']);
-				if ($prihlasRange['od'] < time() && $prihlasRange['do']>time()) {
+				$mozeSaPrihlasit = $this->mozeSaPrihlasit($row);
+				if ($mozeSaPrihlasit == self::PRIHLASIT_MOZE) {
 					$row['prihlas']="<form method='post' action='$actionUrl'><div>
 							<input type='hidden' name='action' value='prihlasNaSkusku'/>
 							<input type='hidden' name='prihlasPredmetIndex'
@@ -59,8 +75,12 @@ class ZoznamTerminovCallback implements ITabCallback {
 							value='".$row['index']."'/>
 							<input type='hidden' name='hash' value='$hash'/>
 						<input type='submit' value='Prihlás ma!' /> </div></form>";
-				} else {
+				} else if ($mozeSaPrihlasit == self::PRIHLASIT_NEMOZE_CAS) {
 					$row['prihlas'] = 'nedá sa';
+				} else if ($mozeSaPrihlasit == self::PRIHLASIT_NEMOZE_POCET) {
+					$row['prihlas'] = 'termín je plný!';
+				} else {
+					assert(false);
 				}
 				$terminyTable->addRow($row, null);
 				
