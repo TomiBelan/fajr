@@ -25,6 +25,7 @@ Copyright (c) 2010 Martin Králik
  }}} */
 
 error_reporting(E_ALL | E_STRICT);
+date_default_timezone_set('Europe/Bratislava');
 
 // Pretoze v session ukladam objekty libfajru, treba nacitat definicie
 // tried skor, ako sa nacitava session
