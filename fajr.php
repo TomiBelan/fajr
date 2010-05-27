@@ -144,9 +144,13 @@ try
 		DisplayManager::addContent(Changelog::getChangelog(), false);
 	}
 }
+catch (AIS2LoginException $e) {
+	FajrUtils::logout();
+	DisplayManager::addException($e);
+}
 catch (Exception $e)
 {
-	DisplayManager::addContent('<h2>ERROR!</h2><div class="error">'.$e->getMessage().'<br/>'.nl2br($e->getTraceAsString()).'</div>');
+	DisplayManager::addException($e);
 }
 
 echo DisplayManager::display();

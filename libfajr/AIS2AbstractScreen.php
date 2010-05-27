@@ -25,6 +25,7 @@ Copyright (c) 2010 Martin Králik
  }}} */
 
 require_once 'AIS2AbstractWindow.php';
+require_once 'AIS2LoginException.php';
  
 /**
  * Abstraktná trieda reprezentujúca jednu obrazovku v AISe.
@@ -54,9 +55,8 @@ abstract class AIS2AbstractScreen extends AIS2AbstractWindow
 
 		$response = AIS2Utils::request($this->getXmlInterfaceLocation(), array('xml_spec' => '<request><serial>'.$this->getSerial().'</serial><events><ev><event class=\'avc.ui.event.AVCComponentEvent\'><command>INIT</command></event></ev></events></request>'));
 		if (preg_match("/Neautorizovaný prístup!/", $response)) {
-			// TODO FIXME Tu treba vyhodit vynimku spravneho typu a odhlasenie osetrit v aplikacii
-			//AIS2Utils::cosignLogout(); // logoutni aby to nemusel robit uzivatel
-			throw new Exception("AIS hlási neautorizovaný prístup -
+			// logoutni aby to nemusel robit uzivatel
+			throw new AIS2LoginException("AIS hlási neautorizovaný prístup -
 				pravdepodobne vypršala platnosť cookie");
 		}
 		$this->setFormName($response);

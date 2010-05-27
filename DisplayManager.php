@@ -167,6 +167,11 @@ Prihlásením do systému Fajr súhlasíte s
 		if ($predefinedContent) self::$content[] = self::$predefinedContent[$content];
 		else self::$content[] = $content;
 	}
+
+	public static function addException($ex)
+	{
+		self::addContent('<h2>ERROR!</h2><div class="error">'.$e->getMessage().'<br/>'.nl2br($e->getTraceAsString()).'</div>');
+	}
 	
 	public static function display()
 	{
