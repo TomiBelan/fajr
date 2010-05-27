@@ -40,7 +40,6 @@ class FajrUtils {
 
 	/**
 	 * Odhlási z Cosignu a zmaže lokálne cookies.
-	 * @deprecated Vytvorenie AIS2Session a zapamatanie/mazanie tohto objektu by sa malo robit v aplikacii
 	 */
 	public static function logout()
 	{
