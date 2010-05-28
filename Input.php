@@ -24,6 +24,8 @@ Copyright (c) 2010 Martin Králik
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
+require_once 'Validator.php';
+ 
 /**
  * Description of Input
  *
@@ -31,55 +33,68 @@ Copyright (c) 2010 Martin Králik
  */
 class Input
 {
-	public static $inputParameters = array();
+	protected static $inputParameters = array();
+	protected static $_get = array();
+	protected static $_post = array();
+	
+	protected static $allowedParamters = array(
+		'_get' => array(
+			'studium' => 'int',
+			'list' => 'int',
+			'tab' => 'string',
+		),
+		'_post' => array(
+			'prihlasPredmetIndex' => 'int',
+			'prihlasTerminIndex' => 'int',
+			'action' => 'string',
+			'login' => 'string',
+			'krbpwd' => 'string',
+			'cosignCookie' => 'string',
+		),
+	);
+	
+	protected static $conditions = array(
+		'int' => array(
+			'cond' => 'number',
+			'options' => array(),
+			'message' => 'Vstupný parameter "%%NAME%%" musí byť typu integer.',
+		),
+		'string' => array(
+			'cond' => 'string',
+			'options' => array('minLength' => 1),
+			'message' => 'Vstupný parameter "%%NAME%%" nesmie byť prázdny.',
+		),
+	);
+	
 
 	public static function prepare()
 	{
-		if (isset($_GET['studium']))
+		$_get = $_GET;
+		$_post = $_POST;
+	
+		// podla pola definujeceho vstupne parametre overim ich platnost
+		foreach (self::$allowedParamters as $input => $params)
 		{
-			if (!ctype_digit($_GET['studium'])) throw new Exception('Vstupný parameter "studium" musí byť typu integer.');
-			self::$inputParameters['studium'] = $_GET['studium'];
-		}
-
-		if (isset($_GET['list']))
-		{
-			if (!ctype_digit($_GET['list'])) throw new Exception('Vstupný parameter "list" musí byť typu integer.');
-			self::$inputParameters['list'] = $_GET['list'];
-		}
-		
-		if (isset($_GET['tab']))
-		{
-			if (empty($_GET['tab'])) throw new Exception('Vstupný parameter
-					"tab" nesmie byť prázdny.');
-			self::$inputParameters['tab'] = $_GET['tab'];
+			foreach ($params as $name => $type) if (isset(${$input}[$name]))
+			{
+				$checker = self::$conditions[$type]['cond'];
+				if (!Validator::$checker(${$input}[$name], self::$conditions[$type]['options']))
+					throw new Exception(str_replace('%%NAME%%', $name, self::$conditions[$type]['message']));
+				self::$inputParameters[$name] = ${$input}[$name];
+				self::${$input}[$name] = ${$input}[$name];
+			}
 		}
 		
-		if (isset($_POST['action']))
+		// specialne vynimky
+		if (isset($_GET['logout']))
 		{
-			if (empty($_POST['action'])) throw new Exception('Vstupný parameter
-					"action" nesmie byť prázdny');
-			self::$inputParameters['action'] = $_POST['action'];
+			self::$inputParameters['logout'] = true;
+			self::$_GET['logout'] = true;
 		}
-
-		if (isset($_POST['login']))
-		{
-			if (empty($_POST['login'])) throw new Exception('Vstupný parameter "login" nesmie byť prázdny.');
-			self::$inputParameters['login'] = $_POST['login'];
-		}
-
-		if (isset($_POST['krbpwd']))
-		{
-			if (empty($_POST['krbpwd'])) throw new Exception('Vstupný parameter "krbpwd" nesmie byť prázdny.');
-			self::$inputParameters['krbpwd'] = $_POST['krbpwd'];
-		}
-
-		if (isset($_POST['cosignCookie']))
-		{
-			if (empty($_POST['cosignCookie'])) throw new Exception('Vstupný parameter "cosignCookie" nesmie byť prázdny.');
-			self::$inputParameters['cosignCookie'] = $_POST['cosignCookie'];
-		}
-
-		if (isset($_GET['logout'])) self::$inputParameters['logout'] = true;
+		
+		// budeme pouzivat uz len Input
+		unset($_GET);
+		unset($_POST);
 	}
 
 	public static function get($key = null)
@@ -98,6 +113,11 @@ class Input
 	public static function set($key, $value)
 	{
 		self::$inputParameters[$key] = $value;
+	}
+	
+	public static function getUrlParams()
+	{
+		return self::_get;
 	}
 }
 ?>
