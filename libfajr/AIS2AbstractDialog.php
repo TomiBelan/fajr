@@ -34,6 +34,7 @@ require_once 'AIS2AbstractWindow.php';
 /*abstract */class AIS2AbstractDialog extends AIS2AbstractWindow
 {
 	protected $parent = null;
+	protected $terminated = false;
 
 	/**
 	 * Konštruktor.
@@ -70,6 +71,7 @@ require_once 'AIS2AbstractWindow.php';
 		$this->data = AIS2Utils::request('https://ais2.uniba.sk/ais/servlets/WebUIServlet?appId='.$this->getAppId().'&form='.$this->formName.'&antiCache='.random());
 		
 		$this->parent->openedDialog = true;
+		$this->terminated = false;
 	}
 
 	/**
@@ -80,11 +82,13 @@ require_once 'AIS2AbstractWindow.php';
 	 */
 	public function  __destruct()
 	{
-		$response = $this->requestData(array(
-			'eventClass' => 'avc.ui.event.AVCComponentEvent',
-			'command' => 'CLOSE',
-		));
-		
+		if (!$this->terminated)
+		{
+			$response = $this->requestData(array(
+				'eventClass' => 'avc.ui.event.AVCComponentEvent',
+				'command' => 'CLOSE',
+			));
+		}
 		$this->parent->openedDialog = false;
 	}
 
