@@ -57,8 +57,25 @@ require_once 'AIS2AbstractDialog.php';
 		return new AIS2Table($this->tabulka_vyber_terminu_hodnotenia, $data[0][1]);
 	}
 	
-	public function prihlasNaTermin()
+	public function prihlasNaTermin($terminIndex)
 	{
+		$data = $this->requestData(array(
+			'compName' => 'enterAction',
+			'eventClass' => 'avc.ui.event.AVCActionEvent',
+			'embObj' => array(
+				'objName' => 'zoznamTerminovTable',
+				'dataView' => array(
+					'activeIndex' => $terminIndex,
+					'selectedIndexes' => $terminIndex,
+				),
+			),
+		));
+		
+		$error = match($data, '@webui\.messageBox\("([^"]*)",@');
+		if ($error) throw new Exception('Nepodarilo sa prihlásiť na zvolený termín.<br/>Dôvod: <b>'.$error.'</b>');
+		
+		$this->terminated = true; // po uspesnom prihlaseni za dialog hned zavrie
+		return true;
 	}
 	
 }

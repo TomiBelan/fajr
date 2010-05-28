@@ -23,9 +23,9 @@ class ZoznamTerminovCallback implements ITabCallback {
 		
 	}
 	
-	public function prihlasNaSkusku() {
-		return "<h3> Prihlasovanie zatial neimplementovane ale pracuje sa na
-			tom! </h3>";
+	public function prihlasNaSkusku($predmetIndex, $terminIndex)
+	{
+		return $this->skusky->getZoznamTerminovDialog($predmetIndex)->prihlasNaTermin($terminIndex);
 	}
 	
 	const PRIHLASIT_MOZE = 0;
@@ -62,7 +62,11 @@ class ZoznamTerminovCallback implements ITabCallback {
 		
 		if (Input::get('action') !== null) {
 			assert(Input::get("action")=="prihlasNaSkusku");
-			return $this->prihlasNaSkusku();
+			if ($this->prihlasNaSkusku(Input::get("prihlasPredmetIndex"), Input::get("prihlasTerminIndex")))
+			{
+				redirect(array('tab' => 'TerminyHodnotenia'));
+			}
+			else throw new Exception('Na skúšku sa nepodarilo prihlásiť.');
 		}
 		
 		$terminyTable = new
@@ -74,7 +78,8 @@ class ZoznamTerminovCallback implements ITabCallback {
 					"tab"=>Input::get("tab")));
 		
 		foreach ($predmetyZapisnehoListu->getData() as $predmetRow) {
-			$terminy = $this->skusky->getZoznamTerminov($predmetRow['index']);
+			
+			$terminy = $this->skusky->getZoznamTerminovDialog($predmetRow['index'])->getZoznamTerminov();
 			foreach($terminy->getData() as $row) {
 				$row['predmet']=$predmetRow['nazov'];
 				$row['predmetIndex']=$predmetRow['index'];

@@ -92,14 +92,9 @@ class AIS2TerminyHodnoteniaScreen extends AIS2AbstractScreen
 		return new AIS2Table($this->tabulka_terminy_hodnotenia, $data[1][1]);
 	}
 
-	public function getZoznamTerminov($predmetIndex)
+	public function getZoznamTerminovDialog($predmetIndex)
 	{
-		$dialog = new AIS2TerminyDialog($this, 'pridatTerminAction', 'predmetyTable', $predmetIndex);
-		return $dialog->getZoznamTerminov();
-	}
-	
-	public function prihlasNaTermin()
-	{
+		return new AIS2TerminyDialog($this, 'pridatTerminAction', 'predmetyTable', $predmetIndex);
 	}
 
 }
