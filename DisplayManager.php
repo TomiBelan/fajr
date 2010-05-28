@@ -170,7 +170,8 @@ Prihlásením do systému Fajr súhlasíte s
 
 	public static function addException($ex)
 	{
-		self::addContent('<h2>ERROR!</h2><div class="error">'.$ex->getMessage().'<br/>'.nl2br($ex->getTraceAsString()).'</div>');
+		self::addContent('<div class="error"><h2>Pri spracúvaní požiadavky nastala chyba:</h2>'.
+					$ex->getMessage().'<br/><br/>Stacktrace:<br/>'.nl2br($ex->getTraceAsString()).'</div>');
 	}
 	
 	public static function display()
