@@ -90,7 +90,8 @@ class Input
 		if (isset($_GET['logout']))
 		{
 			self::$inputParameters['logout'] = true;
-			self::$_GET['logout'] = true;
+			//self::$_GET['logout'] = true; FIXME: Majak, co tu robilo toto?
+			//Pravdepodobne to chceme umazat.
 		}
 		
 		// budeme pouzivat uz len Input
