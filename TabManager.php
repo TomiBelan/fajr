@@ -64,7 +64,12 @@ class TabManager {
 		if (!isset($this->tabs[$this->active])) {
 			throw new Exception("Pokus o zobrazenie neplatného tabu!");
 		}
-		$code .= $this->tabs[$this->active]['callback']->callback();
+		
+		try {
+			$code .= $this->tabs[$this->active]['callback']->callback();
+		} catch (Exception $e) {
+			DisplayManager::addException($e);
+		}
 		return $code;
 	}
 
