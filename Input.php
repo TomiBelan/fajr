@@ -46,6 +46,7 @@ class Input
 		'_post' => array(
 			'prihlasPredmetIndex' => 'int',
 			'prihlasTerminIndex' => 'int',
+			'hash' => 'string',
 			'action' => 'string',
 			'login' => 'string',
 			'krbpwd' => 'string',

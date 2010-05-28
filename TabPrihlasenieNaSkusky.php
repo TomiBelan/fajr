@@ -25,6 +25,29 @@ class ZoznamTerminovCallback implements ITabCallback {
 	
 	public function prihlasNaSkusku($predmetIndex, $terminIndex)
 	{
+		$predmety = $this->skusky->getPredmetyZapisnehoListu()->getData();
+		$predmetKey = -1;
+		foreach ($predmety as $key=>$row) {
+			if ($row['index']==$predmetIndex) $predmetKey = $key;
+		}
+		
+		$terminy =
+			$this->skusky->getZoznamTerminovDialog($predmetIndex)->getZoznamTerminov()->getData();
+		$terminKey = -1;
+		foreach($terminy as $key=>$row) {
+			if ($row['index']==$terminIndex) $terminKey = $key;
+		}
+		if ($predmetKey == -1 || $terminIndex == -1) {
+			throw new Exception("Ooops, predmet/termín nenájdený. Pravdepodobne
+					zmena dát v AISe.");
+		}
+		
+		$hash = $this->hashNaPrihlasenie($predmety[$predmetIndex]['nazov'],
+				$terminy[$terminIndex]);
+		if ($hash != Input::get('hash')) {
+			throw new Exception("Ooops, nesedia údaje o termíne. Pravdepodobne zmena
+					dát v AISe spôsobila posunutie tabuliek.");
+		}
 		return $this->skusky->getZoznamTerminovDialog($predmetIndex)->prihlasNaTermin($terminIndex);
 	}
 	
