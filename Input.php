@@ -117,7 +117,7 @@ class Input
 	
 	public static function getUrlParams()
 	{
-		return self::_get;
+		return self::$_get;
 	}
 }
 ?>
