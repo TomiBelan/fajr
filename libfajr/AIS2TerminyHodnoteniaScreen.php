@@ -137,7 +137,7 @@ class AIS2TerminyHodnoteniaScreen extends AIS2AbstractScreen
 		));
 		
 		$message = match($data, '@webui\.messageBox\("([^"]*)"@');
-		if (($message !== false) && ($message != 'Činnosť úspešne dokončená.')) throw new Exception("Z termínu sa nepodarilo odhlásiť. Dôvod:<br/><b>".$message.'</b>');
+		if (($message !== false) && ($message != 'Činnosť úspešne dokončená.')) throw new Exception("Z termínu sa (pravdepodobne) nepodarilo odhlásiť. Dôvod:<br/><b>".$message.'</b>');
 		
 		return true;
 	}
