@@ -127,7 +127,7 @@ class AIS2TerminyHodnoteniaScreen extends AIS2AbstractScreen
 		// Nacitame loading obrazovku.
 		$data = AIS2Utils::request('https://ais2.uniba.sk/ais/servlets/WebUIServlet?appId='.$this->getAppId().'&form=PleaseWaitDlg0&antiCache='.random());
 		
-		// Zavrieme loading obrazovku. Az
+		// Zavrieme loading obrazovku. Az po tomto kroku sme naozaj odhlaseni.
 		$data = $this->requestData(array(
 			'events' => false,
 			'dlgName' => false,
@@ -137,7 +137,7 @@ class AIS2TerminyHodnoteniaScreen extends AIS2AbstractScreen
 		));
 		
 		$message = match($data, '@webui\.messageBox\("([^"]*)"@');
-		if ($message != 'Činnosť úspešne dokončená.') throw new Exception("Z termínu sa nepodarilo odhlásiť. Dôvod:<br/><b>".$message.'</b>');
+		if (($message !== false) && ($message != 'Činnosť úspešne dokončená.')) throw new Exception("Z termínu sa nepodarilo odhlásiť. Dôvod:<br/><b>".$message.'</b>');
 		
 		return true;
 	}
