@@ -71,6 +71,8 @@ class MojeTerminyHodnoteniaCallback implements ITabCallback {
 					Input::get('termin'));
 			$terminyHodnoteniaTableOld->setOption('selected_key',
 					Input::get('termin'));
+			$terminyHodnoteniaTableActive->setOption('collapsed', true);
+			$terminyHodnoteniaTableOld->setOption('collapsed', true);
 		}
 		
 		$actionUrl=buildUrl('', $baseUrlParams);
@@ -98,7 +100,7 @@ class MojeTerminyHodnoteniaCallback implements ITabCallback {
 				}
 					
 				if ($row['prihlaseny']!='A') {
-					$row['odhlas']='Odhlásený. Ak chceš, opäť sa prihlás.';
+					$row['odhlas']='Si odhlásený. Ak chceš, opäť sa prihlás.';
 					$class='terminodhlaseny';
 				}
 				$terminyHodnoteniaTableActive->addRow($row, array('class'=>$class));

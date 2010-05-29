@@ -138,6 +138,7 @@ class ZoznamTerminovCallback implements ITabCallback {
 			$terminyTable->setOption('selected_key',
 					array('index'=>Input::get('termin'),
 						'predmetIndex'=>Input::get('predmet')));
+			$terminyTable->setOption('collapsed', true);
 		}
 		
 		$html = $terminyTable->getHtml();
