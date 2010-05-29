@@ -46,17 +46,35 @@ class TableRow
 		$table = $this->table;
 		$columns = $table->getColumns();
 		$class='';
-		if ($table->GetOption('selected_key') == $this->data['index']) {
-			$class = 'selected';
-		} else if (isset($this->options['class'])) {
+		if (isset($this->options['class'])) {
 			$class=$this->options['class'];
+		}
+		if ($table->GetOption('selected_key') !=null) {
+			$sKey = $table->getOption('selected_key');
+			if (is_array($sKey)) {
+				$selected = true;
+				foreach ($sKey as $key=>$value) {
+					if ($value != $this->data[$key]) $selected=false;
+				}
+			} else {
+				$selected = ($sKey == $this->data['index']);
+			}
+			if ($selected) $class='selected';
 		}
 		
 		$row = "<tr class='$class'>\n";
 		
 		if ($table->newKey) {
-			$link = buildUrl('', array_merge($table->urlParams,
-						array($table->newKey => $this->data['index'])));
+			if (is_array($table->newKey)) {
+				$params = $table->urlParams;
+				foreach ($table->newKey as $key=>$tableCol) {
+					$params[$key] = $this->data[$tableCol];
+				}
+				$link = buildUrl('', $params);
+			} else {
+				$link = buildUrl('', array_merge($table->urlParams,
+							array($table->newKey => $this->data['index'])));
+			}
 		}
 		
 		$colno = 0;
