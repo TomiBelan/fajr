@@ -56,7 +56,7 @@ class AIS2Table {
  */
 	private function getPattern()
 	{
-		$pattern = '@\<tr id\=\'row_(?P<index>[^\']*)\' rid\=\'[^\']*\'\>';
+		$pattern = '@\<tr id\=\'row_(?P<index>[^\']*)\' rid\=\'[^\']*\'[^>]*\>';
 		foreach ($this->definition as $column)
 		{
 			$pattern .= '\<td[^>]*\>\<div\>(?P<'.substr($column,0,32).'>[^<]*)\</div\>\</td\>';
