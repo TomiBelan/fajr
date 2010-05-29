@@ -37,7 +37,7 @@ class ZoznamTerminovCallback implements ITabCallback {
 		foreach($terminy as $key=>$row) {
 			if ($row['index']==$terminIndex) $terminKey = $key;
 		}
-		if ($predmetKey == -1 || $terminIndex == -1) {
+		if ($predmetKey == -1 || $terminKey == -1) {
 			throw new Exception("Ooops, predmet/termín nenájdený. Pravdepodobne
 					zmena dát v AISe.");
 		}
@@ -92,13 +92,16 @@ class ZoznamTerminovCallback implements ITabCallback {
 			else throw new Exception('Na skúšku sa nepodarilo prihlásiť.');
 		}
 		
-		$terminyTable = new
-			Table(TableDefinitions::vyberTerminuHodnoteniaJoined(), 'Termíny,
-					na ktoré sa môžem prihlásiť');
-		
-		$actionUrl=buildUrl('',array("studium"=>Input::get("studium"),
+		$baseUrlParams = array("studium"=>Input::get("studium"),
 					"list"=>Input::get("list"),
-					"tab"=>Input::get("tab")));
+					"tab"=>Input::get("tab"));
+		
+		$terminyTable = new
+			Table(TableDefinitions::vyberTerminuHodnoteniaJoined(), 'Termíny, na
+					ktoré sa môžem prihlásiť', array('termin'=>'index',
+						'predmet'=>'predmetIndex'), $baseUrlParams);
+		
+		$actionUrl=buildUrl('',$baseUrlParams);
 		
 		foreach ($predmetyZapisnehoListu->getData() as $predmetRow) {
 			
@@ -131,6 +134,23 @@ class ZoznamTerminovCallback implements ITabCallback {
 				
 			}
 		}
-		return $terminyTable->getHtml();
+		if (Input::get('termin')!=null && Input::get('predmet')!=null) {
+			$terminyTable->setOption('selected_key',
+					array('index'=>Input::get('termin'),
+						'predmetIndex'=>Input::get('predmet')));
+		}
+		
+		$html = $terminyTable->getHtml();
+		if (Input::get('termin') != null && Input::get('predmet')!=null) {
+			// FIXME(majak) ked bude zoznam
+			$zoznamPrihlasenychTable =  new
+			Table(TableDefinitions::mojeTerminyHodnotenia(), 'Zoznam prihlásených
+					na vybratý termín',
+					null, array('studium', 'list'));
+			
+			$html .= "<h2> Zatiaľ neimplementované! </h2>";
+			$html .= $zoznamPrihlasenychTable->getHtml();
+		}
+		return $html;
 	}
 }

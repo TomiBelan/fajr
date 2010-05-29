@@ -24,14 +24,25 @@ class MojeTerminyHodnoteniaCallback implements ITabCallback {
 			md5($row['index'].'|'.$row['datum'].'|'.$row['cas'].'|'.$row['predmet']);
 	}
 	
-	private function odhlasZoSkusky() {
+	private function odhlasZoSkusky($index) {
 		return "<h3> Odhlasovanie zatial neimplementovane ale pracuje sa na
 			tom! </h3>";
-		// TODO:
-		if (Input::get("hash") != hashNaOdhlasenie($row))
-			throw new Exception("Počas odhlasovania nastala závažná chyba -
-					nesedia mi predmety!");
 		
+		$terminy = $this->skusky->getTerminyHodnotenia()->getData();
+		$terminKey = -1;
+		foreach ($terminy as $key=>$row) {
+			if ($row['index']==$predmetIndex) $terminKey = $key;
+		}
+		if ($terminKey == -1) {
+			throw new Exception("Ooops, predmet/termín nenájdený. Pravdepodobne
+					zmena dát v AISe.");
+		}
+		if (Input::get("hash") != hashNaOdhlasenie($terminy[$terminyKey])) {
+			throw new Exception("Ooops, nesedia údaje o termíne. Pravdepodobne zmena
+					dát v AISe spôsobila posunutie tabuliek.");
+		}
+		// TODO(majak):
+		return null;
 	}
 	
 	
@@ -42,15 +53,26 @@ class MojeTerminyHodnoteniaCallback implements ITabCallback {
 			return $this->odhlasZoSkusky();
 		}
 		
+		$baseUrlParams = array("studium"=>Input::get("studium"),
+					"list"=>Input::get("list"),
+					"tab"=>Input::get("tab"));
+		
 		$terminyHodnoteniaTableActive =  new
-			Table(TableDefinitions::mojeTerminyHodnotenia(), 'Aktuálne termíny hodnotenia', null, array('studium', 'list'));
+			Table(TableDefinitions::mojeTerminyHodnotenia(), 'Aktuálne termíny hodnotenia',
+					'termin', $baseUrlParams);
 		
 		$terminyHodnoteniaTableOld =  new
-			Table(TableDefinitions::mojeTerminyHodnotenia(), 'Staré termíny hodnotenia', null, array('studium', 'list'));
+			Table(TableDefinitions::mojeTerminyHodnotenia(), 'Staré termíny hodnotenia',
+					'termin', $baseUrlParams);
 		
-		$actionUrl=buildUrl('',array("studium"=>Input::get("studium"),
-					"list"=>Input::get("list"),
-					"tab"=>Input::get("tab")));
+		if (Input::get('termin')!=null) {
+			$terminyHodnoteniaTableActive->setOption('selected_key',
+					Input::get('termin'));
+			$terminyHodnoteniaTableOld->setOption('selected_key',
+					Input::get('termin'));
+		}
+		
+		$actionUrl=buildUrl('', $baseUrlParams);
 		
 		foreach($terminyHodnotenia->getData() as $row) {
 			$datum = AIS2Utils::parseAISDateTime($row['datum']." ".$row['cas']);
@@ -74,16 +96,26 @@ class MojeTerminyHodnoteniaCallback implements ITabCallback {
 					$class='terminnemozeodhlasit';
 				}
 					
-				if ($row['prihlaseny']=='A') {
-					$terminyHodnoteniaTableActive->addRow($row, array('class'=>$class));
+				if ($row['prihlaseny']!='A') {
+					$row['odhlas']='Odhlásený. Ak chceš, opäť sa prihlás.';
+					$class='terminodhlaseny';
 				}
+				$terminyHodnoteniaTableActive->addRow($row, array('class'=>$class));
 			}
 		}
-		$terminyHodnoteniaTableActive->setUrlParams(array('studium' =>
-					Input::get('studium'), 'list' => Input::get('list')));
 		
-		return
-				$terminyHodnoteniaTableActive->getHtml().
-				$terminyHodnoteniaTableOld->getHtml();
+		$html = $terminyHodnoteniaTableActive->getHtml();
+		$html .= $terminyHodnoteniaTableOld->getHtml();
+		if (Input::get('termin')!=null) {
+			// FIXME(majak) ked bude zoznam
+			$zoznamPrihlasenychTable =  new
+			Table(TableDefinitions::mojeTerminyHodnotenia(), 'Zoznam prihlásených
+					na vybratý termín',
+					null, array('studium', 'list'));
+			
+			$html .= "<h2> Zatiaľ neimplementované! </h2>";
+			$html .= $zoznamPrihlasenychTable->getHtml();
+		}
+		return $html;
 	}
 }

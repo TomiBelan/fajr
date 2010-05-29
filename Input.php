@@ -41,6 +41,8 @@ class Input
 		'_get' => array(
 			'studium' => 'int',
 			'list' => 'int',
+			'predmet' => 'int',
+			'termin' => 'int',
 			'tab' => 'string',
 		),
 		'_post' => array(
