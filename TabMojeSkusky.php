@@ -24,25 +24,22 @@ class MojeTerminyHodnoteniaCallback implements ITabCallback {
 			md5($row['index'].'|'.$row['datum'].'|'.$row['cas'].'|'.$row['predmet']);
 	}
 	
-	private function odhlasZoSkusky($index) {
-		return "<h3> Odhlasovanie zatial neimplementovane ale pracuje sa na
-			tom! </h3>";
+	private function odhlasZoSkusky($terminIndex) {
 		
 		$terminy = $this->skusky->getTerminyHodnotenia()->getData();
 		$terminKey = -1;
 		foreach ($terminy as $key=>$row) {
-			if ($row['index']==$predmetIndex) $terminKey = $key;
+			if ($row['index']==$terminIndex) $terminKey = $key;
 		}
 		if ($terminKey == -1) {
 			throw new Exception("Ooops, predmet/termín nenájdený. Pravdepodobne
 					zmena dát v AISe.");
 		}
-		if (Input::get("hash") != hashNaOdhlasenie($terminy[$terminyKey])) {
+		if (Input::get("hash") != $this->hashNaOdhlasenie($terminy[$terminKey])) {
 			throw new Exception("Ooops, nesedia údaje o termíne. Pravdepodobne zmena
 					dát v AISe spôsobila posunutie tabuliek.");
 		}
-		// TODO(majak):
-		return null;
+		return $this->skusky->odhlasZTerminu($terminIndex);
 	}
 	
 	
@@ -50,7 +47,11 @@ class MojeTerminyHodnoteniaCallback implements ITabCallback {
 		$terminyHodnotenia = $this->skusky->getTerminyHodnotenia();
 		if (Input::get('action') !== null) {
 			assert(Input::get("action")=="odhlasZoSkusky");
-			return $this->odhlasZoSkusky();
+			if ($this->odhlasZoSkusky(Input::get("odhlasIndex")))
+			{
+				redirect();
+			}
+			else throw new Exception('Z termínu sa nepodarilo odhlásiť.');
 		}
 		
 		$baseUrlParams = array("studium"=>Input::get("studium"),

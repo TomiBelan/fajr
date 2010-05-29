@@ -96,6 +96,51 @@ class AIS2TerminyHodnoteniaScreen extends AIS2AbstractScreen
 	{
 		return new AIS2TerminyDialog($this, 'pridatTerminAction', 'predmetyTable', $predmetIndex);
 	}
+	
+	public function odhlasZTerminu($terminIndex)
+	{
+		// Posleme request ze sa chceme odhlasit.
+		$data = $this->requestData(array(
+			'compName' => 'odstranitTerminAction',
+			'eventClass' => 'avc.ui.event.AVCActionEvent',
+			'embObj' => array(
+				'objName' => 'terminyTable',
+				'dataView' => array(
+					'activeIndex' => $terminIndex,
+					'selectedIndexes' => $terminIndex,
+				),
+			),
+		));
+		
+		// Odklikneme konfirmacne okno ze naozaj.
+		$data = $this->requestData(array(
+			'events' => false,
+			'app' => false,
+			'dlgName' => false,
+			'changedProperties' => array(
+				'confirmResult' => 2,
+			),
+		));
+		
+		if (!preg_match('@dialogManager\.openDialog\("PleaseWaitDlg0"@', $data)) throw new Exception('Z termínu sa nepodarilo odhlásiť.<br/>Pravdepodobne termín s daným indexom neexistuje.');
+		
+		// Nacitame loading obrazovku.
+		$data = AIS2Utils::request('https://ais2.uniba.sk/ais/servlets/WebUIServlet?appId='.$this->getAppId().'&form=PleaseWaitDlg0&antiCache='.random());
+		
+		// Zavrieme loading obrazovku. Az
+		$data = $this->requestData(array(
+			'events' => false,
+			'dlgName' => false,
+			'appProperties' => array(
+				'activeDlgName' => 'PleaseWaitDlg0',
+			),
+		));
+		
+		$message = match($data, '@webui\.messageBox\("([^"]*)"@');
+		if ($message != 'Činnosť úspešne dokončená.') throw new Exception("Z termínu sa nepodarilo odhlásiť. Dôvod:<br/><b>".$message.'</b>');
+		
+		return true;
+	}
 
 }
 
