@@ -53,6 +53,10 @@ class DisplayManager
 	<form method="post" action="">
 		<fieldset>
 			<legend>Prihlásenie cez cookie</legend> 
+			bezbečne sa <a
+			href=\'https://login.uniba.sk/?cosign-filter-ais2.uniba.sk&amp;https://ais2.uniba.sk/ais/login.do?\'>
+				prihlás</a> do AISu a skopíruj si cookie.
+			<hr/>
 			<label for="cosignCookie">cosign-filter-ais2.uniba.sk</label>
 			<br/>
 			<input type="text" name="cosignCookie" id="cosignCookie"/>
@@ -113,8 +117,10 @@ class DisplayManager
 <div class="span-18 prepend-1 last increase-line-height">
 <p>
 Vitajte pred bránou do aplikácie FAJR.
-Zatiaľ poskytuje jedinú funkcionalitu, a to pohľad na niektoré tabuľky z <a href="https://ais2.uniba.sk/">AISu</a>.
-Sú dve možnosti ako sa do nej prihlásiť.
+Snahou tejto miniaplikácie je poskytovať najčastejšie používané funkcie
+<a href="https://ais2.uniba.sk/">AISu</a> a to jednoducho, rýchlo,
+bez zbytočných klikaní a na všetkých browseroch.
+Sú dve možnosti ako sa môžeš prihlásiť.
 </p>
 <ol>
 <li>
@@ -135,12 +141,12 @@ Prečo je prvý postup bezpečnejší?<br/>
 Pretože pri ňom neposielate svoje meno a heslo a nevystavujete sa riziku, že ho niekto po ceste ukrade.
 S odcudzenou cookie sa dajú meniť len údaje v <a href="https://ais2.uniba.sk/">AISe</a>,
 s menom a heslom sa dá dostať všade, na čo a kde sa používa.<br/>
-Pri nadväzovaní spojenia s AISom a Cosignom sa neoveruje, či majú platný certifikát,
-pretože s tým bol problém (nemali).
 </p>
 <p>
-Táto aplikácia nerobí nič zlé. Ale ak jej aj tak nedôverujete, môžete si ju rozbehnúť u seba.
-Stačí vám k tomu webserver, PHP a jej <a href="http://code.google.com/p/fajr/source/checkout">zdrojové kódy</a>.
+Táto aplikácia nerobí nič zlé (aspoň jej autori o tom nevedia).
+Ale ak jej aj tak nedôverujete, môžete si ju rozbehnúť u seba.
+Stačí vám k tomu webserver, PHP a jej
+<a href="http://code.google.com/p/fajr/source/checkout">zdrojové kódy</a>.
 Ak jej ani tak nedôverujete, používajte AIS ;-).
 </p>
 </div>
