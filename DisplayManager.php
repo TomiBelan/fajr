@@ -53,7 +53,7 @@ class DisplayManager
 	<form method="post" action="">
 		<fieldset>
 			<legend>Prihlásenie cez cookie</legend> 
-			bezbečne sa <a
+			bezpečne sa <a
 			href=\'https://login.uniba.sk/?cosign-filter-ais2.uniba.sk&amp;https://ais2.uniba.sk/ais/login.do?\'>
 				prihlás</a> do AISu a skopíruj si cookie.
 			<hr/>
@@ -138,7 +138,7 @@ Tento postup <strong>nie je odporúčaný</strong>.
 </ol>
 <p>
 Prečo je prvý postup bezpečnejší?<br/>
-Pretože pri ňom neposielate svoje meno a heslo a nevystavujete sa riziku, že ho niekto po ceste ukrade.
+Pretože pri ňom neposielate svoje meno a heslo a nevystavujete sa riziku, že ho niekto po ceste ukradne.
 S odcudzenou cookie sa dajú meniť len údaje v <a href="https://ais2.uniba.sk/">AISe</a>,
 s menom a heslom sa dá dostať všade, na čo a kde sa používa.<br/>
 </p>
@@ -146,7 +146,8 @@ s menom a heslom sa dá dostať všade, na čo a kde sa používa.<br/>
 Táto aplikácia nerobí nič zlé (aspoň jej autori o tom nevedia).
 Ale ak jej aj tak nedôverujete, môžete si ju rozbehnúť u seba.
 Stačí vám k tomu webserver, PHP a jej
-<a href="http://code.google.com/p/fajr/source/checkout">zdrojové kódy</a>.
+<a href="http://code.google.com/p/fajr/source/checkout">zdrojové kódy</a>
+(pre viac informácií viď <a href="http://code.google.com/p/fajr/source/browse/trunk/README">README</a>).
 Ak jej ani tak nedôverujete, používajte AIS ;-).
 </p>
 </div>
