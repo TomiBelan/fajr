@@ -49,7 +49,7 @@ class TableRow
 		if (isset($this->options['class'])) {
 			$class=$this->options['class'];
 		}
-		if ($table->GetOption('selected_key') !=null) {
+		if ($table->GetOption('selected_key') !== null) {
 			$sKey = $table->getOption('selected_key');
 			if (is_array($sKey)) {
 				$selected = true;
