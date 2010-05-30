@@ -25,7 +25,7 @@ Copyright (c) 2010 Martin Králik
  }}} */
 
 // FIXME: put this under namespace
-	define('USER_AGENT', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; sk; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7');
+	define('FAJR_USER_AGENT', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; sk; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7');
 
 	function redirect($newParams = array(), $base = 'fajr.php')
 	{
@@ -82,16 +82,22 @@ Copyright (c) 2010 Martin Králik
 	}
 	
 	function download($url, $post = null, $xWwwFormUrlencoded = true)
-	{
-		$ch = curl_init($url);
+	{ static $ch = null;
+		if ($ch === null) {
+			$ch = curl_init(); // prvy krat inicializujeme curl
+		};
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_FORBID_REUSE, false); // Keepalive konekcie
 		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_COOKIEFILE, getCookieFile());
 		curl_setopt($ch, CURLOPT_COOKIEJAR, getCookieFile());
-		curl_setopt($ch, CURLOPT_USERAGENT, USER_AGENT);
+		curl_setopt($ch, CURLOPT_USERAGENT, FAJR_USER_AGENT);
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_VERBOSE, false);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, true);
+		curl_setopt($ch, CURLOPT_HTTPGET, true); // defaultne chceme GET
 
 		if (is_array($post))
 		{
@@ -111,8 +117,9 @@ Copyright (c) 2010 Martin Králik
 					curl_error($ch));
 		}
 
-		if (strpos($output, "\x1f\x8b\x08\x00\x00\x00\x00\x00") === 0) $output = gzdecode($output); //ak to zacina ako gzip, tak to odzipujeme
-		curl_close($ch);
+		if (strpos($output, "\x1f\x8b\x08\x00\x00\x00\x00\x00") === 0) {
+			$output = gzdecode($output); //ak to zacina ako gzip, tak to odzipujeme
+		}
 		return $output;
 	}
 	
