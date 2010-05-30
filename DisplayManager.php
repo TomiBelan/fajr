@@ -59,7 +59,7 @@ class DisplayManager
 			<hr/>
 			<label for="cosignCookie">cosign-filter-ais2.uniba.sk</label>
 			<br/>
-			<input type="text" name="cosignCookie" id="cosignCookie"/>
+			<input type="password" name="cosignCookie" id="cosignCookie"/>
 			<br/>
 			<button type="submit" name="submit">
 				<img alt="" src="images/key_add.png"/>
