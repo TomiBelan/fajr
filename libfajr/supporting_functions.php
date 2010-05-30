@@ -106,7 +106,10 @@ Copyright (c) 2010 Martin Králik
 		}
 
 		$output = curl_exec($ch);
-		if (curl_errno($ch)) echo curl_error($ch);
+		if (curl_errno($ch)) {
+			throw new Exception("Chyba pri nadväzovaní spojenia:".
+					curl_error($ch));
+		}
 
 		if (strpos($output, "\x1f\x8b\x08\x00\x00\x00\x00\x00") === 0) $output = gzdecode($output); //ak to zacina ako gzip, tak to odzipujeme
 		curl_close($ch);
