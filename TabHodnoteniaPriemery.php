@@ -26,7 +26,7 @@ class HodnoteniaCallback implements ITabCallback {
 		}
 		
 		$priemery = $this->app->getPriemery();
-		$priemeryTable = new Table(TableDefinitions::priemery(), 'Priemery');
+		$priemeryTable = new Table(TableDefinitions::priemery(), 'Priemery (nefunguje presne tak ako v AISe, sťažujte sa tam)');
 		$priemeryTable->addRows($priemery->getData());
 		
 		return $hodnoteniaTable->getHtml().$priemeryTable->getHtml();
