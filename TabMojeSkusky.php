@@ -71,8 +71,6 @@ class MojeTerminyHodnoteniaCallback implements ITabCallback {
 					Input::get('termin'));
 			$terminyHodnoteniaTableOld->setOption('selected_key',
 					Input::get('termin'));
-			$terminyHodnoteniaTableActive->setOption('collapsed', true);
-			$terminyHodnoteniaTableOld->setOption('collapsed', true);
 		}
 		
 		$actionUrl=buildUrl('', $baseUrlParams);
@@ -110,13 +108,11 @@ class MojeTerminyHodnoteniaCallback implements ITabCallback {
 		$html = $terminyHodnoteniaTableActive->getHtml();
 		$html .= $terminyHodnoteniaTableOld->getHtml();
 		if (Input::get('termin')!=null) {
-			// FIXME(majak) ked bude zoznam
-			$zoznamPrihlasenychTable =  new
-			Table(TableDefinitions::mojeTerminyHodnotenia(), 'Zoznam prihlásených
-					na vybratý termín',
-					null, array('studium', 'list'));
-			
-			$html .= "<h2> Zatiaľ neimplementované! </h2>";
+			$prihlaseni = $this->skusky->getZoznamPrihlasenychDialog(Input::get('termin'))->getZoznamPrihlasenych();
+			$zoznamPrihlasenychTable = new
+			Table(TableDefinitions::zoznamPrihlasenych(), 'Zoznam prihlásených
+					na vybratý termín', null, array('studium', 'list'));
+			$zoznamPrihlasenychTable->addRows($prihlaseni->getData());
 			$html .= $zoznamPrihlasenychTable->getHtml();
 		}
 		return $html;

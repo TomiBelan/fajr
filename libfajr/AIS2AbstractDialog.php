@@ -31,10 +31,11 @@ require_once 'AIS2AbstractWindow.php';
  *
  * @author majak
  */
-/*abstract */class AIS2AbstractDialog extends AIS2AbstractWindow
+abstract class AIS2AbstractDialog extends AIS2AbstractWindow
 {
 	protected $parent = null;
 	protected $terminated = false;
+	protected $openedDialog = false;
 
 	/**
 	 * Konštruktor.

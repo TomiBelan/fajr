@@ -26,6 +26,7 @@ Copyright (c) 2010 Martin Králik
 
 require_once 'AIS2AbstractScreen.php';
 require_once 'AIS2TerminyDialog.php';
+require_once 'AIS2ZoznamPrihlasenychDialog.php';
 require_once 'Table.php';
 
 /**
@@ -95,6 +96,11 @@ class AIS2TerminyHodnoteniaScreen extends AIS2AbstractScreen
 	public function getZoznamTerminovDialog($predmetIndex)
 	{
 		return new AIS2TerminyDialog($this, 'pridatTerminAction', 'predmetyTable', $predmetIndex);
+	}
+	
+	public function getZoznamPrihlasenychDialog($terminIndex)
+	{
+		return new AIS2ZoznamPrihlasenychDialog($this, 'zoznamPrihlasenychStudentovAction', 'terminyTable', $terminIndex);
 	}
 	
 	public function odhlasZTerminu($terminIndex)

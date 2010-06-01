@@ -138,18 +138,20 @@ class ZoznamTerminovCallback implements ITabCallback {
 			$terminyTable->setOption('selected_key',
 					array('index'=>Input::get('termin'),
 						'predmetIndex'=>Input::get('predmet')));
-			$terminyTable->setOption('collapsed', true);
 		}
 		
 		$html = $terminyTable->getHtml();
 		if (Input::get('termin') != null && Input::get('predmet')!=null) {
-			// FIXME(majak) ked bude zoznam
+			$prihlaseni = $this->skusky->getZoznamTerminovDialog(Input::get('predmet'))
+				->getZoznamPrihlasenychDialog(Input::get('termin'))
+				->getZoznamPrihlasenych();
+			
 			$zoznamPrihlasenychTable =  new
-			Table(TableDefinitions::mojeTerminyHodnotenia(), 'Zoznam prihlásených
+			Table(TableDefinitions::zoznamPrihlasenych(), 'Zoznam prihlásených
 					na vybratý termín',
 					null, array('studium', 'list'));
 			
-			$html .= "<h2> Zatiaľ neimplementované! </h2>";
+			$zoznamPrihlasenychTable->addRows($prihlaseni->getData());
 			$html .= $zoznamPrihlasenychTable->getHtml();
 		}
 		return $html;

@@ -635,4 +635,46 @@ class TableDefinitions
 			// }}}
 		);
 	}
+	
+	public static function zoznamPrihlasenych() {
+		return array(
+			// {{{
+			'meno' => array(
+			      'title' => 'Meno',
+			      'sortorder' => '0',
+			      'visible' => false,
+			      'col' => 0),
+			'priezvisko' => array(
+			      'title' => 'Priezvisko',
+			      'sortorder' => '0',
+			      'visible' => false,
+			      'col' => 10),
+			'skratka' => array(
+			      'title' => 'Skratka študijného programu',
+			      'sortorder' => '0',
+			      'visible' => true,
+			      'col' => 20),
+			'datumPrihlas' => array(
+			      'title' => 'Dátum prihlásenia',
+			      'sortorder' => '0',
+			      'visible' => true,
+			      'col' => -10),
+			'plneMeno' => array(
+			      'title' => 'Plné meno',
+			      'sortorder' => '0',
+			      'visible' => true,
+			      'col' => -5),
+			'rocnik' => array(
+			      'title' => 'Ročník',
+			      'sortorder' => '0',
+			      'visible' => true,
+			      'col' => 30),
+			'kruzok' => array(
+			      'title' => 'Krúžok',
+			      'sortorder' => '0',
+			      'visible' => false,
+			      'col' => 40),
+			// }}}
+		);
+	}
 }

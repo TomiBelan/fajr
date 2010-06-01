@@ -78,5 +78,10 @@ require_once 'AIS2AbstractDialog.php';
 		return true;
 	}
 	
+	public function getZoznamPrihlasenychDialog($terminIndex)
+	{
+		return new AIS2ZoznamPrihlasenychDialog($this, 'zobrazitZoznamPrihlasenychAction', 'zoznamTerminovTable', $terminIndex);
+	}
+	
 }
 ?>
