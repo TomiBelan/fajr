@@ -32,6 +32,7 @@ class Changelog {
 			       zbytočné stĺpce a celkovo vylepšili vzhľad'),
 			array('2010-05-23', '0.2', 'Fajr prešiel na beta testing :-)'),
 			array('2010-05-29', '0.2', 'Implementované prihlasovanie a odhlasovanie zo skúšok'),
+			array('2010-06-01', '0.25', 'Pribudol zoznam prihlásených na termín'),
 			);
 
 	private static $limit = 6;
