@@ -85,6 +85,7 @@ class DisplayManager
 	<link rel="stylesheet" href="css/plugins/buttons/screen.css" type="text/css" media="screen, projection" />
 	<link rel="stylesheet" href="css/custom.css" type="text/css" media="screen, projection" />
 	<link rel="stylesheet" href="css/print.css" type="text/css" media="print" />
+	<link rel="stylesheet" href="css/customprint.css" type="text/css" media="print" />
 	<!--[if lt IE 8]><link rel="stylesheet" href="css/ie.css" type="text/css" media="screen, projection" /><![endif]-->
 	<link href="images/favicon.ico" rel="icon" type="image/x-icon" />
 	

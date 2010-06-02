@@ -1,3 +1,4 @@
+/* expand/collapse tables */
 .togglevisibility, .togglevisibilityimg {
 	cursor:pointer;
 }
@@ -6,34 +7,99 @@
 	margin: 3px;
 }
 
+/* ??? */
+
 .increase-line-height {
 	line-height:1.5;
 }
 
-td,th {
-	border-bottom: 1px solid #999;
-}
-tr:hover {
-	background-color: #fdc;
-}
-
-tr.clickable { 
+/* general style for all clickable elements */
+.clickable { 
 	cursor: pointer;
 }
 
-tr.clickable:hover {
+.clickable:hover {
 	background-color: #90EE90;
 }
 
-th {
-	background-color: #FFFFE0;
+/* div around all tables */
+div.table {
+	border: 1px solid black;
+	margin: 5px;
+	margin-bottom: 15px;
+}
+
+table {
+	margin: 2px;
+	padding-right: 5px;
+}
+tr {
+	padding: 5px;
+	margin: 5px;
+}
+
+/* table headers */
+thead th {
+	background-color:#b3c9ef;
 }
 
 th.forwardSort, th.reverseSort { 
 	background-color: yellow;
 }
 
-.selected {background-color:yellow;}
+/* table rows */
+td,th {
+	border-bottom: 1px solid #999;
+}
+
+tr:hover {
+	background-color: #fdc;
+}
+
+tr:nth-child(even) {
+	background-color: #CFC;
+}
+
+tr:nth-child(odd) {
+	background-color: #DDF;
+}
+
+tr.selected {background-color:yellow;}
+
+tr.terminold {
+	color:gray;
+}
+
+tr.terminmozeodhlasit {
+	color:green;
+}
+
+tr.terminnemozeodhlasit {
+	color: orange;
+}
+
+tr.terminodhlaseny {
+	color: #aaa;
+}
+
+tr.leto {
+	background-color: #FFA;
+}
+
+tr.leto:nth-child(even) {
+	background-color: #FFB;
+}
+
+tr.zima {
+	background-color: #CCF;
+}
+
+tr.zima:nth-child(even) {
+	background-color: #BBF;
+}
+
+
+/* Tabs */
 
 .tab_header {
 	border-bottom: 2px solid black;
@@ -68,38 +134,12 @@ th.forwardSort, th.reverseSort {
 	background-color:yellow;
 }
 
-div.table {
-	border: 1px solid darkgray;
-	margin: 5px;
-}
+
+/* Logo and logout */
 
 .logo {
 	padding-left: 10px;
 	padding-top: 10px;
-}
-
-.terminold {
-	color:gray;
-}
-
-.terminmozeodhlasit {
-	color:green;
-}
-
-.terminnemozeodhlasit {
-	color: orange;
-}
-
-.terminodhlaseny {
-	color: #aaa;
-}
-
-.leto {
-	background-color: #ffa
-}
-
-.zima {
-	background-color: #ccf
 }
 
 .logout {
