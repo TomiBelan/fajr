@@ -140,7 +140,8 @@ Tento postup <strong>nie je odporúčaný</strong>.
 <p>
 Prečo je prvý postup bezpečnejší?<br/>
 Pretože pri ňom neposielate svoje meno a heslo a nevystavujete sa riziku, že ho niekto po ceste ukradne.
-S odcudzenou cookie sa dajú meniť len údaje v <a href="https://ais2.uniba.sk/">AISe</a>,
+S odcudzenou cookie sa dajú meniť len údaje v <a href="https://ais2.uniba.sk/">AISe</a>
+(aj to maximálne najbližších 12 hodín),
 s menom a heslom sa dá dostať všade, na čo a kde sa používa.<br/>
 </p>
 <p>
