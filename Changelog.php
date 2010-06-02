@@ -38,7 +38,7 @@ class Changelog {
 	private static $limit = 6;
 
 	public static function getChangelog() {
-		$data = "<div class='changelog'>\n<strong>Changelog:</strong><ul>\n";
+		$data = "<div class='changelog prepend-1 span-21 last increase-line-height'>\n<strong>Changelog:</strong><ul>\n";
 		$tmp_array = array_slice(array_reverse(Changelog::$changes), 0, Changelog::$limit);
 		foreach ($tmp_array as $change) {
 			$data .= '<li>'.$change[0].' (verzia ' . $change[1] . ') - ';
