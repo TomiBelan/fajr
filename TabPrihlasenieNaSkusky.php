@@ -120,7 +120,9 @@ class ZoznamTerminovCallback implements ITabCallback {
 							<input type='hidden' name='prihlasTerminIndex'
 							value='".$row['index']."'/>
 							<input type='hidden' name='hash' value='$hash'/>
-						<input type='submit' value='Prihlás ma!' /> </div></form>";
+							<button name='submit' type='submit' class='tableButton positive'>
+								<img src='images/add.png' alt=''>Prihlás ma!
+							</button></div></form>";
 				} else if ($mozeSaPrihlasit == self::PRIHLASIT_NEMOZE_CAS) {
 					$row['prihlas'] = 'nedá sa';
 				} else if ($mozeSaPrihlasit == self::PRIHLASIT_NEMOZE_POCET) {

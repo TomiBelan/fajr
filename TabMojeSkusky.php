@@ -91,7 +91,9 @@ class MojeTerminyHodnoteniaCallback implements ITabCallback {
 						<input type='hidden' name='odhlasIndex'
 						value='".$row['index']."'/>
 						<input type='hidden' name='hash' value='$hash'/>
-						<input type='submit' value='Odhlás' /> </div></form>";
+						<button name='submit' type='submit' class='tableButton negative'>
+							<img src='images/cross.png' alt=''>Odhlás
+						</button></div></form>";
 				} else {
 					$row['odhlas']="nedá sa";
 					$class='terminnemozeodhlasit';

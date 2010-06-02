@@ -75,7 +75,9 @@ try
 
 	if ($loggedIn) {
 		DisplayManager::addContent(
-				'<div class=\'logout\'><a href="?logout">Odhlásiť</a></div>');
+		'<div class=\'logout\'><a class="button negative" href="?logout">
+	  <img src="images/door_in.png" alt=""/>Odhlásiť</a></div>'
+		);
 		$adminStudia = new AIS2AdministraciaStudiaScreen();
 		
 		if (Input::get('studium') === null) Input::set('studium',0);

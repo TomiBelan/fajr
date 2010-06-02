@@ -3,10 +3,10 @@ function toggleVisibility(id) {
 		var img = document.getElementById('toggle' + id);
 		if (element.style.display != 'none' ) {
 				element.style.display = 'none';
-				img.src='images/maximize.gif'
+				img.src='images/arrow_out.png'
 		} else {
 				element.style.display = '';
-				img.src='images/minimize.gif'
+				img.src='images/arrow_in.png'
 		}
 		
 }

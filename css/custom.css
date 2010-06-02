@@ -5,6 +5,7 @@
 
 .togglevisibilityimg {
 	margin: 3px;
+	vertical-align: top;
 }
 
 /* ??? */
@@ -19,7 +20,7 @@
 }
 
 .clickable:hover {
-	background-color: #90EE90;
+	background-color: #85FF85;
 }
 
 /* div around all tables */
@@ -57,11 +58,7 @@ tr:hover {
 }
 
 tr:nth-child(even) {
-	background-color: #CFC;
-}
-
-tr:nth-child(odd) {
-	background-color: #DDF;
+	background-color: #F0F8FF;
 }
 
 tr.selected {background-color:yellow;}
@@ -83,19 +80,19 @@ tr.terminodhlaseny {
 }
 
 tr.leto {
-	background-color: #FFA;
+	background-color: #FFFFE0;
 }
 
 tr.leto:nth-child(even) {
-	background-color: #FFB;
+	background-color: #FFFFC2;
 }
 
 tr.zima {
-	background-color: #CCF;
+	background-color: #E0E0FF;
 }
 
 tr.zima:nth-child(even) {
-	background-color: #BBF;
+	background-color: #D1D1FF;
 }
 
 
@@ -146,12 +143,18 @@ tr.zima:nth-child(even) {
 	position: absolute;
 	right: 20px;
 	top: 20px;
-	font-size: 20px;
 }
 
-.logout a {
-	border: 2px solid darkred;
-	padding: 4px;
-	background-color: #fbb;
-	text-decoration: none;
+
+/* Buttons */
+
+.logout button
+{
+	border:1px solid #fbc2c4;
+}
+
+button.tableButton
+{
+	white-space:nowrap;
+	margin:0 0 0 0;
 }
