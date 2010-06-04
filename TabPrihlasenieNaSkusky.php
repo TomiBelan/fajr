@@ -61,7 +61,7 @@ class ZoznamTerminovCallback implements ITabCallback {
 		if (isset($this->hodnoteniaData[$row['predmet']])) {
 			$znamka=$this->hodnoteniaData[$row['predmet']];
 		} else $znamka="";
-		if ($znamka!="") {
+		if ($znamka!="" && $znamka!="FX") {
 			return self::PRIHLASIT_NEMOZE_ZNAMKA;
 		}
 		if (!($prihlasRange['od'] < time() && $prihlasRange['do']>time())) {
