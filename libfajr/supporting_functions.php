@@ -27,12 +27,6 @@ Copyright (c) 2010 Martin Králik
 // FIXME: put this under namespace
 	define('FAJR_USER_AGENT', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; sk; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7');
 
-	function redirect($newParams = array(), $base = 'fajr.php')
-	{
-		header('Location: '.$base.'?'.http_build_query(array_merge(Input::getUrlParams(), $newParams)));
-		exit();
-	}
-	
 	/**
 	 * Function that searchs haystack for perl-like pattern and
 	 * returns first sub-match from pattern.

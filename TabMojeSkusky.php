@@ -7,6 +7,7 @@ require_once 'libfajr/AIS2TerminyHodnoteniaScreen.php';
 require_once 'libfajr/AIS2HodnoteniaPriemeryScreen.php';
 require_once 'TableDefinitions.php';
 require_once 'Sorter.php';
+require_once 'FajrUtils.php';
 
 class MojeTerminyHodnoteniaCallback implements ITabCallback {
 	public function __construct($skusky) {
@@ -49,7 +50,7 @@ class MojeTerminyHodnoteniaCallback implements ITabCallback {
 			assert(Input::get("action")=="odhlasZoSkusky");
 			if ($this->odhlasZoSkusky(Input::get("odhlasIndex")))
 			{
-				redirect();
+				FajrUtils::redirect();
 			}
 			else throw new Exception('Z termínu sa nepodarilo odhlásiť.');
 		}

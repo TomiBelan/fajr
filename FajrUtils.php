@@ -34,7 +34,7 @@ class FajrUtils {
 		if (!$session->login()) return false;
 
 		$_SESSION['AISSession'] = $session;
-		redirect();
+		self::redirect();
 		return true;
 	}
 
@@ -47,12 +47,18 @@ class FajrUtils {
 		if ($_SESSION['AISSession']->logout()) {
 			unset($_SESSION['AISSession']);
 		}
-		redirect();
+		self::redirect();
 	}
 
 	public static function isLoggedIn() {
 		if (!isset($_SESSION['AISSession'])) return false;
 		return $_SESSION['AISSession']->isLoggedIn();
+	}
+
+	public static function redirect($newParams = array(), $base = 'fajr.php')
+	{
+		header('Location: '.$base.'?'.http_build_query(array_merge(Input::getUrlParams(), $newParams)));
+		exit();
 	}
 
 }

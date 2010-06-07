@@ -7,6 +7,7 @@ require_once 'libfajr/AIS2TerminyHodnoteniaScreen.php';
 require_once 'libfajr/AIS2HodnoteniaPriemeryScreen.php';
 require_once 'TableDefinitions.php';
 require_once 'Sorter.php';
+require_once 'FajrUtils.php';
 
 class ZoznamTerminovCallback implements ITabCallback {
 	private $skusky;
@@ -87,7 +88,7 @@ class ZoznamTerminovCallback implements ITabCallback {
 			assert(Input::get("action")=="prihlasNaSkusku");
 			if ($this->prihlasNaSkusku(Input::get("prihlasPredmetIndex"), Input::get("prihlasTerminIndex")))
 			{
-				redirect(array('tab' => 'TerminyHodnotenia'));
+				FajrUtils::redirect(array('tab' => 'TerminyHodnotenia'));
 			}
 			else throw new Exception('Na skúšku sa nepodarilo prihlásiť.');
 		}
