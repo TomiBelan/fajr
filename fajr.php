@@ -36,8 +36,17 @@ session_start();
 session_cache_expire(300);
 $startTime = microtime(true);
 
-require_once 'Input.php';
+require_once 'FajrConfig.php';
 require_once 'DisplayManager.php';
+
+if (!FajrConfig::isConfigured()) {
+	DisplayManager::addContent('notConfigured', true);
+	echo DisplayManager::display();
+	session_write_close();
+	die();
+}
+
+require_once 'Input.php';
 require_once 'TabManager.php';
 require_once 'Changelog.php';
 require_once 'Table.php';

@@ -24,6 +24,8 @@ Copyright (c) 2010 Martin Králik
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
+require_once 'FajrConfig.php';
+
 class DisplayManager
 {
 	protected static $content = array();
@@ -98,19 +100,8 @@ class DisplayManager
 
 			'footer' => '
 </div>
-<script type="text/javascript">
-
-  var _gaq = _gaq || [];
-  _gaq.push([\'_setAccount\', \'UA-680810-11\']);
-  _gaq.push([\'_trackPageview\']);
-
-  (function() {
-    var ga = document.createElement(\'script\'); ga.type = \'text/javascript\'; ga.async = true;
-    ga.src = (\'https:\' == document.location.protocol ? \'https://ssl\' : \'http://www\') + \'.google-analytics.com/ga.js\';
-    var s = document.getElementsByTagName(\'script\')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script>
+',
+			'footer2'=>'
 </body>
 </html>
 ',
@@ -168,6 +159,20 @@ a <a href="http://www.famfamfam.com/lab/icons/silk/">Silk icons</a>.
 Prihlásením do systému Fajr súhlasíte s 
 <a href="terms_of_use.php">Podmienkami používania</a>
 </p></div>
+',
+		'notConfigured' => '
+<div class="prepend-1 span-18 increase-line-height last"><p>Fajr nie je nakonfigurovaný, prosím skopírujte súbor
+<code>configuration.example.php</code> do <code>configuration.php</code>.
+Prednastavené hodnoty konfiguračných volieb by mali byť vhodné pre väčšinu inštalácií,
+no napriek tomu ponúkame možnosť ich pohodlne zmeniť na jednom mieste - v tomto súbore.</p>
+
+<p>
+<strong>Dôležité:</strong> Pred používaním aplikácie je ešte nutné správne nastaviť skupinu na
+<code>www-data</code> (alebo pod čím beží webserver) a práva na adresáre
+<code>./temp</code> a <code>./libfajr/cookies</code>, tak, aby boli nastavené práva
+len na zapisovanie a použitie, t.j. <code>d----wx---</code>.
+</p>
+</div>
 '
 	);
 	
@@ -187,8 +192,27 @@ Prihlásením do systému Fajr súhlasíte s
 	{
 		$html = '';
 		foreach (self::$content as $item) $html .= $item;
-		$html = self::$predefinedContent['header'] . $html . self::$predefinedContent['footer'];
+		$html = self::$predefinedContent['header'] . $html;
+		$html .= self::$predefinedContent['footer'] . self::googleAnalytics() . self::$predefinedContent['footer2'];
 		return $html;
+	}
+
+	protected static function googleAnalytics() {
+		$account = FajrConfig::get('GoogleAnalytics.Account');
+		if ($account === null) return '';
+		return '<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push([\'_setAccount\', \''.$account.'\']);
+  _gaq.push([\'_trackPageview\']);
+
+  (function() {
+    var ga = document.createElement(\'script\'); ga.type = \'text/javascript\'; ga.async = true;
+    ga.src = (\'https:\' == document.location.protocol ? \'https://ssl\' : \'http://www\') + \'.google-analytics.com/ga.js\';
+    var s = document.getElementsByTagName(\'script\')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>';
 	}
 			
 }

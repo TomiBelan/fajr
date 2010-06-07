@@ -1,12 +1,22 @@
-Inštalácia je jednoduchá - stačí aplikáciu niekde nakopírovať, kde má
-prístup web server.
-Dôležité upozornenie, ešte predtým, ako aplikáciu spustíte prvý raz,
-nastavte práva pre adresáre
-./temp, ./libfajr/cookies
-tak aby grupa bola www-data, práva pre others boli prázdne a 
-práva pre webserver boli "-rw" a nikto iný tam nevedel nič robiť
-(čiže za predpokladu, že nie ste administrátor,
- práva by mali byť "d----wx---" - vy ani nikto iný okrem webservera
- nebude vedieť čítať cookie, webserver bude vedieť, ale musí mať správny
- názov súboru, nevie získať zoznam tých súborov).
+Fajr - README
+=============
 
+Inštalácia
+==========
+
+1. Nakopírujte aplikáciu niekde, kde má prístup web server.
+
+2. Skopírujte súbor ./configuration.example.php do ./configuration.php
+   Prednastavené hodnoty konfiguračných volieb by mali byť vhodné pre väčšinu
+   inštalácií, no napriek tomu ponúkame možnosť ich pohodlne zmeniť
+   na jednom mieste - v tomto súbore.
+
+3. Nastavte práva práva pre adresáre ./temp a ./libfajr/cookies tak, aby grupa
+   bola www-data, práva pre others boli prázdne a práva pre webserver boli
+   "-rw" a nikto iný tam nevedel nič robiť (čiže za predpokladu, že nie ste
+   administrátor, práva by mali byť "d----wx---" - vy ani nikto iný okrem
+   webservera nebude vedieť čítať cookie, webserver bude vedieť, ale musí mať
+   správny názov súboru, nevie získať zoznam tých súborov).
+
+4. Hotovo! Teraz môžete zadať adresu súboru fajr.php do webového prehliadača
+   a začať túto aplikáciu používať.
