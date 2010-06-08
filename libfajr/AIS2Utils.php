@@ -25,6 +25,7 @@ Copyright (c) 2010 Martin Králik
  }}} */
 
 	require_once 'supporting_functions.php';
+	require_once 'AIS2CurlConnection.php';
 
 /**
  * Trieda združujúca rôzne základné veci pre prácu s AISom
@@ -48,10 +49,22 @@ class AIS2Utils
 	 * @param array Pole s POST dátami.
 	 * @param boolean Príznak určujúci, či sa má vykonať kontrola chyby v prijatých dátach.
 	 * @return string Načítaná stránka.
+	 * @deprecated Bude sa priamo používať inštancia AIS2Connection
 	 */
 	public static function request($url, $post = null, $checkError = true)
 	{
-		$response = download($url, $post, true);
+		static $connection = null;
+
+		if ($connection === null) {
+			$connection = new AIS2CurlConnection(getCookieFile());
+		}
+
+		if (is_array($post)) {
+			$response = $connection->post($url, $post);
+		}
+		else {
+			$response = $connection->get($url);
+		}
 		self::$requests++;
 		self::$requestsSize+=strlen($response);
 		if ($checkError == true) 

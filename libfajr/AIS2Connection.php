@@ -1,7 +1,6 @@
 <?php
 /* {{{
 Copyright (c) 2010 Martin Sucha
-Copyright (c) 2010 Martin Králik
 
  Permission is hereby granted, free of charge, to any person
  obtaining a copy of this software and associated documentation
@@ -25,37 +24,19 @@ Copyright (c) 2010 Martin Králik
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
-	require_once 'supporting_functions.php';
-	require_once 'AIS2AbstractLogin.php';
-	require_once 'AIS2Utils.php';
+interface AIS2Connection {
 
-/**
- * Trieda reprezentujúca prihlasovanie pomocou cookie
- *
- * @author majak, ms
- */
-class AIS2CookieLogin extends AIS2AbstractLogin {
-	private $cookie = null;
+	/**
+	 * Spravi get request vramci tohto spojenia
+	 * @param string $url
+	 */
+	public function get($url);
 
-	public function  __construct($cookie) {
-		assert($cookie !== null);
-		$this->cookie = $cookie;
-	}
-
-	public function login() {
-		assert($this->cookie !== null);
-		if ($this->loggedIn) return false;
-
-		$cookieFile = getCookieFile();
-		$fh = fopen($cookieFile, 'a');
-		if (!$fh) throw new Exception('Neviem otvoriť súbor s cookies.');
-		fwrite($fh, "ais2.uniba.sk	FALSE	/	TRUE	0	cosign-filter-ais2.uniba.sk	".str_replace(' ', '+', $this->cookie));
-		fclose($fh);
-		$data = AIS2Utils::request(self::LOGIN, null, false);
-		if (preg_match('@\<title\>IIKS \- Prihlásenie\</title\>@', $data))
-			return false;
-		$this->loggedIn = true;
-		return true;
-	}
+	/**
+	 * Spravi post request vramci tohto spojenia
+	 * @param string $url
+	 * @param array $data asociativne pole dat na poslanie
+	 */
+	public function post($url, $data);
 
 }

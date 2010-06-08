@@ -27,6 +27,7 @@ Copyright (c) 2010 Martin Králik
 
 	require_once 'supporting_functions.php';
 	require_once 'AIS2AbstractLogin.php';
+	require_once 'AIS2Utils.php';
 
 /**
  * Trieda reprezentujúca prihlasovanie pomocou cosign
@@ -57,10 +58,10 @@ class AIS2CosignLogin extends AIS2AbstractLogin {
 		$this->username = null;
 		$this->krbpwd = null;
 
-		$data = download(self::LOGIN);
+		$data = AIS2Utils::request(self::LOGIN, null, false);
 		if (preg_match('@\<title\>IIKS \- Prihlásenie\</title\>@', $data)) {
 			assert($login !== null && $krbpwd !== null);
-			$data = download(self::COSIGN_LOGIN, array('ref' => self::LOGIN, 'login'=> $login, 'krbpwd' => $krbpwd));
+			$data = AIS2Utils::request(self::COSIGN_LOGIN, array('ref' => self::LOGIN, 'login'=> $login, 'krbpwd' => $krbpwd), false);
 			if (!preg_match('@\<base href\="https://ais2\.uniba\.sk/ais/portal/pages/portal_layout\.jsp"\>@', $data)) {
 				if (preg_match('@Pri pokuse o prihlásenie sa vyskytol problém:@', $data)) {
 					if ($reason = match($data, '@\<div style\="color:#FF0000;"\>\<b\>([^<]*)\<\/b\>@')) {
@@ -80,7 +81,7 @@ class AIS2CosignLogin extends AIS2AbstractLogin {
 	}
 
 	public function logout() {
-		download(self::COSIGN_LOGOUT, array('verify' => 'Odhlásiť', 'url'=> self::MAIN_PAGE));
+		AIS2Utils::request(self::COSIGN_LOGOUT, array('verify' => 'Odhlásiť', 'url'=> self::MAIN_PAGE), false);
 		return parent::logout();
 	}
 

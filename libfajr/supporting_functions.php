@@ -74,49 +74,7 @@ Copyright (c) 2010 Martin Králik
 	{
 		return dirname(__FILE__).DIRECTORY_SEPARATOR.'cookies'.DIRECTORY_SEPARATOR.session_id();
 	}
-	
-	function download($url, $post = null, $xWwwFormUrlencoded = true)
-	{ static $ch = null;
-		if ($ch === null) {
-			$ch = curl_init(); // prvy krat inicializujeme curl
-		};
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_FORBID_REUSE, false); // Keepalive konekcie
-		curl_setopt($ch, CURLOPT_HEADER, false);
-		curl_setopt($ch, CURLOPT_COOKIEFILE, getCookieFile());
-		curl_setopt($ch, CURLOPT_COOKIEJAR, getCookieFile());
-		curl_setopt($ch, CURLOPT_USERAGENT, FAJR_USER_AGENT);
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_VERBOSE, false);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, true);
-		curl_setopt($ch, CURLOPT_HTTPGET, true); // defaultne chceme GET
 
-		if (is_array($post))
-		{
-				curl_setopt($ch, CURLOPT_POST, true);
-				if ($xWwwFormUrlencoded === true)
-				{
-					$newPost = '';
-					foreach ($post as $key => $value) $newPost .= urlencode($key).'='.urlencode($value).'&';
-					$post = substr($newPost, 0, -1);
-				}
-				curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
-		}
-
-		$output = curl_exec($ch);
-		if (curl_errno($ch)) {
-			throw new Exception("Chyba pri nadväzovaní spojenia:".
-					curl_error($ch));
-		}
-
-		if (strpos($output, "\x1f\x8b\x08\x00\x00\x00\x00\x00") === 0) {
-			$output = gzdecode($output); //ak to zacina ako gzip, tak to odzipujeme
-		}
-		return $output;
-	}
-	
 	function hescape($string)
 	{
 		return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
