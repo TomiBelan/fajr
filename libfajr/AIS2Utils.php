@@ -40,8 +40,26 @@ class AIS2Utils
 	const DIALOG_NAME_PATTERN = '@dialogManager\.openDialog\("([^"]+)",@';
 	const DATA_PATTERN = '@\<tbody id\=\'dataTabBody0\'\>(.*?)\</tbody\>@s';
 
-	public static $requests=0;
-	public static $requestsSize=0;
+	/**
+	 * Docasna metoda, nez sa spojenia zrefaktoruju uplne
+	 * @staticvar AIS2Connection $connection
+	 * @param AIS2Connection $set_to
+	 * @return AIS2Connection
+	 * @deprecated po zrefaktorovani zmizne
+	 */
+	public static function connection(AIS2Connection $set_to=null) {
+		static $connection = null;
+
+		if ($set_to !== null) {
+			$connection = $set_to;
+		}
+
+		if ($connection === null) {
+			$connection = new AIS2CurlConnection(getCookieFile());
+		}
+
+		return $connection;
+	}
 
 	/**
 	 * Stiahne zadanú stránku a skontroluje ci pri tom nenastala chyba v AISe.
@@ -53,11 +71,7 @@ class AIS2Utils
 	 */
 	public static function request($url, $post = null, $checkError = true)
 	{
-		static $connection = null;
-
-		if ($connection === null) {
-			$connection = new AIS2CurlConnection(getCookieFile());
-		}
+		$connection = self::connection();
 
 		if (is_array($post)) {
 			$response = $connection->post($url, $post);
@@ -65,8 +79,6 @@ class AIS2Utils
 		else {
 			$response = $connection->get($url);
 		}
-		self::$requests++;
-		self::$requestsSize+=strlen($response);
 		if ($checkError == true) 
 		{
 			$matches = array();

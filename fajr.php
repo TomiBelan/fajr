@@ -53,6 +53,7 @@ require_once 'Table.php';
 require_once 'libfajr/AIS2AdministraciaStudiaScreen.php';
 require_once 'libfajr/AIS2TerminyHodnoteniaScreen.php';
 require_once 'libfajr/AIS2HodnoteniaPriemeryScreen.php';
+require_once 'libfajr/AIS2StatsConnection.php';
 require_once 'TableDefinitions.php';
 require_once 'Sorter.php';
 require_once 'FajrUtils.php';
@@ -64,6 +65,9 @@ require_once 'TabHodnoteniaPriemery.php';
 
 try
 {
+	$connection = new AIS2StatsConnection(AIS2Utils::connection()); // TODO vytvorit instanciu uplne manualne
+	AIS2Utils::connection($connection); // toto tu je docasne
+
 	Input::prepare();
 	
 	if (Input::get('logout') !== null) FajrUtils::logout();
@@ -143,11 +147,12 @@ try
 		DisplayManager::addContent($tabs->getHtml());
 		
 		$timeDiff = (microtime(true)-$startTime);
-		$statistics = "<div> Fajr made ".AIS2Utils::$requests.
-									" requests and downloaded ".AIS2Utils::$requestsSize.
-									" bytes of data from AIS2. It took ".sprintf("%.3f",
-											$timeDiff).
-									" seconds to generate this page.</div>";
+		$statistics = "<div> Fajr made ".$connection->getTotalCount().
+						" requests and downloaded ".$connection->getTotalSize().
+						" bytes of data from AIS2 in ".
+						sprintf("%.3f", $connection->getTotalTime()).
+						" seconds. It took ".sprintf("%.3f", $timeDiff).
+						" seconds to generate this page.</div>";
 		DisplayManager::addContent($statistics);
 	}
 	else
