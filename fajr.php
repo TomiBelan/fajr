@@ -63,6 +63,7 @@ require_once 'TabPrihlasenieNaSkusky.php';
 require_once 'TabZapisnyList.php';
 require_once 'TabHodnoteniaPriemery.php';
 
+$connection = null;
 try
 {
 	$connection = new AIS2StatsConnection(AIS2Utils::connection()); // TODO vytvorit instanciu uplne manualne
@@ -70,17 +71,17 @@ try
 
 	Input::prepare();
 	
-	if (Input::get('logout') !== null) FajrUtils::logout();
+	if (Input::get('logout') !== null) FajrUtils::logout($connection);
 	
 	$login = Input::get('login'); Input::set('login', null);
 	$krbpwd = Input::get('krbpwd'); Input::set('krbpwd', null);
 	$cosignCookie = Input::get('cosignCookie'); Input::set('cosignCookie', null);
 	if ($login !== null && $krbpwd !== null) {
-		$loggedIn = FajrUtils::login(new AIS2CosignLogin($login, $krbpwd));
+		$loggedIn = FajrUtils::login(new AIS2CosignLogin($login, $krbpwd), $connection);
 		$login = null;
 		$krbpwd = null;
 	} else if ($cosignCookie !== null) {
-		$loggedIn = FajrUtils::login(new AIS2CookieLogin($cosignCookie));
+		$loggedIn = FajrUtils::login(new AIS2CookieLogin($cosignCookie), $connection);
 		$cosignCookie = null;
 	} else {
 		$loggedIn = FajrUtils::isLoggedIn();
@@ -165,7 +166,7 @@ try
 	}
 }
 catch (AIS2LoginException $e) {
-	FajrUtils::logout();
+	if ($connection) FajrUtils::logout($connection);
 	DisplayManager::addException($e);
 }
 catch (Exception $e)

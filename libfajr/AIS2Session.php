@@ -41,12 +41,12 @@ class AIS2Session
 		$this->login = $login;
 	}
 
-	public function login() {
-		return $this->login->login();
+	public function login(AIS2Connection $connection) {
+		return $this->login->login($connection);
 	}
 
-	public function logout() {
-		return $this->login->logout();
+	public function logout(AIS2Connection $connection) {
+		return $this->login->logout($connection);
 	}
 
 	public function isLoggedIn() {

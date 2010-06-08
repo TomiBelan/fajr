@@ -30,13 +30,17 @@ require_once 'supporting_functions.php';
 
 class AIS2CurlConnection implements AIS2Connection {
 
-	private $curl = null;
 	const USER_AGENT = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; sk; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7';
+
+	private $curl = null;
+	private $cookieFile = null;
 
 	public function  __construct($cookieFile, $userAgent = null) {
 		if ($userAgent === null) {
 			$userAgent = self::USER_AGENT;
 		}
+
+		$this->cookieFile = $cookieFile;
 
 		$ch = curl_init(); // prvy krat inicializujeme curl
 		curl_setopt($ch, CURLOPT_FORBID_REUSE, false); // Keepalive konekcie
@@ -71,6 +75,24 @@ class AIS2CurlConnection implements AIS2Connection {
 		curl_setopt($this->curl, CURLOPT_POSTFIELDS, $post);
 
 		return $this->exec();
+	}
+
+	public function addCookie($name, $value, $expire, $path, $domain,
+								$secure = true, $tailmatch = false) {
+		$fh = fopen($this->cookieFile, 'a');
+		if (!$fh) throw new Exception('Neviem otvoriť súbor s cookies.');
+
+		$cookieLine = $domain."\t".($tailmatch?'TRUE':'FALSE')."\t";
+		$cookieLine .= $path."\t".($secure?'TRUE':'FALSE')."\t";
+		$cookieLine .= $expire."\t".$name."\t".str_replace(' ', '+',$value);
+		$cookieLine .= "\n";
+
+		fwrite($fh, $cookieLine);
+		fclose($fh);
+	}
+
+	public function clearCookies() {
+		unlink($this->cookieFile);
 	}
 
 	private function exec() {

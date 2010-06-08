@@ -28,10 +28,10 @@ Copyright (c) 2010 Martin Sucha
 
 class FajrUtils {
 
-	public static function login($login) {
+	public static function login(AIS2Login $login, AIS2Connection $connection) {
 		$session = new AIS2Session($login);
 
-		if (!$session->login()) return false;
+		if (!$session->login($connection)) return false;
 
 		$_SESSION['AISSession'] = $session;
 		self::redirect();
@@ -41,10 +41,10 @@ class FajrUtils {
 	/**
 	 * Odhlási z Cosignu a zmaže lokálne cookies.
 	 */
-	public static function logout()
+	public static function logout(AIS2Connection $connection)
 	{
 		if (!isset($_SESSION['AISSession'])) return false;
-		if ($_SESSION['AISSession']->logout()) {
+		if ($_SESSION['AISSession']->logout($connection)) {
 			unset($_SESSION['AISSession']);
 		}
 		self::redirect();

@@ -50,7 +50,7 @@ class AIS2CosignLogin extends AIS2AbstractLogin {
 		$this->krbpwd = $krbpwd;
 	}
 
-	public function login() {
+	public function login(AIS2Connection $connection) {
 		$login = $this->username;
 		$krbpwd = $this->krbpwd;
 
@@ -80,9 +80,9 @@ class AIS2CosignLogin extends AIS2AbstractLogin {
 		return true;
 	}
 
-	public function logout() {
+	public function logout(AIS2Connection $connection) {
 		AIS2Utils::request(self::COSIGN_LOGOUT, array('verify' => 'Odhlásiť', 'url'=> self::MAIN_PAGE));
-		return parent::logout();
+		return parent::logout($connection);
 	}
 
 }

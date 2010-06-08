@@ -81,6 +81,14 @@ class AIS2StatsConnection implements AIS2Connection {
 		}
 	}
 
+	public function addCookie($name, $value, $expire, $path, $domain, $secure = true, $tailmatch = false) {
+		return $this->delegate->addCookie($name, $value, $expire, $path, $domain, $secure, $tailmatch);
+	}
+
+	public function clearCookies() {
+		return $this->delegate->clearCookies();
+	}
+
 	public function getCount($type) {
 		return $this->counts[$type];
 	}

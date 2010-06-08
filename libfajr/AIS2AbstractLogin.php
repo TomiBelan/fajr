@@ -37,8 +37,8 @@ abstract class AIS2AbstractLogin implements AIS2Login {
 		return $this->loggedIn;
 	}
 
-	public function logout() {
-		unlink(getCookieFile());
+	public function logout(AIS2Connection $connection) {
+		$connection->clearCookies();
 		$this->loggedIn = false;
 		return true;
 	}

@@ -29,12 +29,12 @@ interface AIS2Login {
 	 * Prihlási používateľa
 	 * @return boolean true ak sa podarilo prihlásiť, false inak
 	 */
-	public function login();
+	public function login(AIS2Connection $connection);
 
 	/**
 	 * Odhlási používateľa
 	 */
-	public function logout();
+	public function logout(AIS2Connection $connection);
 
 	/**
 	 * @return true ak je používateľ momentálne prihlásený

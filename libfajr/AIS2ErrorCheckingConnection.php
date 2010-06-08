@@ -44,6 +44,14 @@ class AIS2ErrorCheckingConnection implements AIS2Connection {
 		return $this->check($this->delegate->post($url, $data));
 	}
 
+	public function addCookie($name, $value, $expire, $path, $domain, $secure = true, $tailmatch = false) {
+		return $this->delegate->addCookie($name, $value, $expire, $path, $domain, $secure, $tailmatch);
+	}
+
+	public function clearCookies() {
+		return $this->delegate->clearCookies();
+	}
+
 	private function check($response) {
 		$matches = array();
 		if (preg_match(self::INTERNAL_ERROR_PATTERN, $response, $matches))

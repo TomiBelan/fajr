@@ -42,15 +42,12 @@ class AIS2CookieLogin extends AIS2AbstractLogin {
 		$this->cookie = $cookie;
 	}
 
-	public function login() {
+	public function login(AIS2Connection $connection) {
 		assert($this->cookie !== null);
 		if ($this->loggedIn) return false;
 
-		$cookieFile = getCookieFile();
-		$fh = fopen($cookieFile, 'a');
-		if (!$fh) throw new Exception('Neviem otvoriť súbor s cookies.');
-		fwrite($fh, "ais2.uniba.sk	FALSE	/	TRUE	0	cosign-filter-ais2.uniba.sk	".str_replace(' ', '+', $this->cookie));
-		fclose($fh);
+		$connection->addCookie('cosign-filter-ais2.uniba.sk', $this->cookie,
+									0, '/', 'ais2.uniba.sk');
 		$data = AIS2Utils::request(self::LOGIN);
 		if (preg_match('@\<title\>IIKS \- Prihlásenie\</title\>@', $data))
 			return false;
