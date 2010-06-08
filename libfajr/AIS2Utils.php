@@ -26,6 +26,7 @@ Copyright (c) 2010 Martin Králik
 
 	require_once 'supporting_functions.php';
 	require_once 'AIS2CurlConnection.php';
+	require_once 'AIS2ErrorCheckingConnection.php';
 
 /**
  * Trieda združujúca rôzne základné veci pre prácu s AISom
@@ -35,7 +36,6 @@ Copyright (c) 2010 Martin Králik
 class AIS2Utils
 {
 
-	const INTERNAL_ERROR_PATTERN = '@^function main\(\) { (?:alert|webui\.onAppClosedOnServer)\(\'([^\']*)\'\);? }$@m';
 	const APP_LOCATION_PATTERN = '@webui\.startApp\("([^"]+)","([^"]+)"\);@';
 	const DIALOG_NAME_PATTERN = '@dialogManager\.openDialog\("([^"]+)",@';
 	const DATA_PATTERN = '@\<tbody id\=\'dataTabBody0\'\>(.*?)\</tbody\>@s';
@@ -55,7 +55,7 @@ class AIS2Utils
 		}
 
 		if ($connection === null) {
-			$connection = new AIS2CurlConnection(getCookieFile());
+			$connection = new AIS2ErrorCheckingConnection(new AIS2CurlConnection(getCookieFile()));
 		}
 
 		return $connection;
@@ -78,11 +78,7 @@ class AIS2Utils
 		else {
 			$response = $connection->get($url);
 		}
-		$matches = array();
-		if (preg_match(self::INTERNAL_ERROR_PATTERN, $response, $matches))
-		{
-			throw new Exception('<b>Nastala chyba pri requeste.</b><br/>Zdôvodnenie od AISu:'.hescape($matches[1]).'<br/>Požadovaná url: '.hescape($url));
-		}
+
 		return $response;
 	}
 	
