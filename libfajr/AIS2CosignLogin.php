@@ -58,10 +58,10 @@ class AIS2CosignLogin extends AIS2AbstractLogin {
 		$this->username = null;
 		$this->krbpwd = null;
 
-		$data = AIS2Utils::request(self::LOGIN);
+		$data = $connection->get(self::LOGIN);
 		if (preg_match('@\<title\>IIKS \- Prihlásenie\</title\>@', $data)) {
 			assert($login !== null && $krbpwd !== null);
-			$data = AIS2Utils::request(self::COSIGN_LOGIN, array('ref' => self::LOGIN, 'login'=> $login, 'krbpwd' => $krbpwd));
+			$data = $connection->post(self::COSIGN_LOGIN, array('ref' => self::LOGIN, 'login'=> $login, 'krbpwd' => $krbpwd));
 			if (!preg_match('@\<base href\="https://ais2\.uniba\.sk/ais/portal/pages/portal_layout\.jsp"\>@', $data)) {
 				if (preg_match('@Pri pokuse o prihlásenie sa vyskytol problém:@', $data)) {
 					if ($reason = match($data, '@\<div style\="color:#FF0000;"\>\<b\>([^<]*)\<\/b\>@')) {
@@ -81,7 +81,7 @@ class AIS2CosignLogin extends AIS2AbstractLogin {
 	}
 
 	public function logout(AIS2Connection $connection) {
-		AIS2Utils::request(self::COSIGN_LOGOUT, array('verify' => 'Odhlásiť', 'url'=> self::MAIN_PAGE));
+		$connection->post(self::COSIGN_LOGOUT, array('verify' => 'Odhlásiť', 'url'=> self::MAIN_PAGE));
 		return parent::logout($connection);
 	}
 
