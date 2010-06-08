@@ -102,9 +102,6 @@ class AIS2CurlConnection implements AIS2Connection {
 					curl_error($this->curl));
 		}
 
-		if (strpos($output, "\x1f\x8b\x08\x00\x00\x00\x00\x00") === 0) {
-			$output = gzdecode($output); //ak to zacina ako gzip, tak to odzipujeme
-		}
 		return $output;
 	}
 

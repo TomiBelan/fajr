@@ -54,6 +54,7 @@ require_once 'libfajr/AIS2AdministraciaStudiaScreen.php';
 require_once 'libfajr/AIS2TerminyHodnoteniaScreen.php';
 require_once 'libfajr/AIS2HodnoteniaPriemeryScreen.php';
 require_once 'libfajr/AIS2CurlConnection.php';
+require_once 'libfajr/AIS2DecompressingConnection.php';
 require_once 'libfajr/AIS2ErrorCheckingConnection.php';
 require_once 'libfajr/AIS2StatsConnection.php';
 require_once 'libfajr/AIS2DebugConnection.php';
@@ -72,6 +73,7 @@ $statsConnection = null;
 try
 {
 	$connection = new AIS2CurlConnection(FajrUtils::getCookieFile());
+	$connection = new AIS2DecompressingConnection($connection, FajrUtils::getTempDir());
 	$connection = new AIS2ErrorCheckingConnection($connection);
 
 	$statsConnection = new AIS2StatsConnection($connection);

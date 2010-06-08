@@ -56,17 +56,6 @@ Copyright (c) 2010 Martin Králik
 		else echo '<pre>'.hescape($s).'</pre><hr/>';
 	}
 	
-	function gzdecode($data)
-	{
-		$g = tempnam(dirname(__FILE__).DIRECTORY_SEPARATOR.'temp', 'gzip');
-		@file_put_contents($g, $data);
-		ob_start();
-		readgzfile($g);
-		$d = ob_get_clean();
-		unlink($g);
-		return $d;
-	}
-	
 	function hescape($string)
 	{
 		return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
