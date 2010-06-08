@@ -70,9 +70,14 @@ require_once 'TabHodnoteniaPriemery.php';
 $connection = null;
 $debugConnection = null;
 $statsConnection = null;
+$rawStatsConnection = null;
 try
 {
 	$connection = new AIS2CurlConnection(FajrUtils::getCookieFile());
+
+	$rawStatsConnection = new AIS2StatsConnection($connection);
+	$connection = $rawStatsConnection;
+
 	$connection = new AIS2DecompressingConnection($connection, FajrUtils::getTempDir());
 	$connection = new AIS2ErrorCheckingConnection($connection);
 
@@ -166,8 +171,9 @@ try
 		
 		$timeDiff = (microtime(true)-$startTime);
 		$statistics = "<div> Fajr made ".$statsConnection->getTotalCount().
-						" requests and downloaded ".$statsConnection->getTotalSize().
-						" bytes of data from AIS2 in ".
+						" requests and downloaded ".$rawStatsConnection->getTotalSize().
+						" bytes (".$statsConnection->getTotalSize().
+						" bytes uncompressed) of data from AIS2 in ".
 						sprintf("%.3f", $statsConnection->getTotalTime()).
 						" seconds. It took ".sprintf("%.3f", $timeDiff).
 						" seconds to generate this page.</div>";
