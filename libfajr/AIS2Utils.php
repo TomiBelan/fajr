@@ -55,7 +55,7 @@ class AIS2Utils
 		}
 
 		if ($connection === null) {
-			$connection = new AIS2ErrorCheckingConnection(new AIS2CurlConnection(getCookieFile()));
+			throw new Exception("Nie je nastaveny ziaden connection");
 		}
 
 		return $connection;

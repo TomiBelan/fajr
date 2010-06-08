@@ -11,7 +11,7 @@ Inštalácia
    inštalácií, no napriek tomu ponúkame možnosť ich pohodlne zmeniť
    na jednom mieste - v tomto súbore.
 
-3. Nastavte práva práva pre adresáre ./temp a ./libfajr/cookies tak, aby grupa
+3. Nastavte práva pre adresáre ./temp a ./temp/cookies tak, aby grupa
    bola www-data, práva pre others boli prázdne a práva pre webserver boli
    "-rw" a nikto iný tam nevedel nič robiť (čiže za predpokladu, že nie ste
    administrátor, práva by mali byť "d----wx---" - vy ani nikto iný okrem

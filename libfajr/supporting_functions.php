@@ -24,8 +24,6 @@ Copyright (c) 2010 Martin Králik
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
-// FIXME: put this under namespace
-
 	/**
 	 * Function that searchs haystack for perl-like pattern and
 	 * returns first sub-match from pattern.
@@ -69,11 +67,6 @@ Copyright (c) 2010 Martin Králik
 		return $d;
 	}
 	
-	function getCookieFile()
-	{
-		return dirname(__FILE__).DIRECTORY_SEPARATOR.'cookies'.DIRECTORY_SEPARATOR.session_id();
-	}
-
 	function hescape($string)
 	{
 		return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');

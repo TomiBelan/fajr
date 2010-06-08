@@ -61,4 +61,19 @@ class FajrUtils {
 		exit();
 	}
 
+	public static function getTempDir()
+	{
+		return dirname(__FILE__).DIRECTORY_SEPARATOR.'temp';
+	}
+
+	public static function getCookieDir()
+	{
+		return self::getTempDir().DIRECTORY_SEPARATOR.'cookies';
+	}
+
+	public static function getCookieFile()
+	{
+		return self::getCookieDir().DIRECTORY_SEPARATOR.session_id();
+	}
+
 }

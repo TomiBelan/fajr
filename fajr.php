@@ -53,6 +53,8 @@ require_once 'Table.php';
 require_once 'libfajr/AIS2AdministraciaStudiaScreen.php';
 require_once 'libfajr/AIS2TerminyHodnoteniaScreen.php';
 require_once 'libfajr/AIS2HodnoteniaPriemeryScreen.php';
+require_once 'libfajr/AIS2CurlConnection.php';
+require_once 'libfajr/AIS2ErrorCheckingConnection.php';
 require_once 'libfajr/AIS2StatsConnection.php';
 require_once 'libfajr/AIS2DebugConnection.php';
 require_once 'TableDefinitions.php';
@@ -69,7 +71,8 @@ $debugConnection = null;
 $statsConnection = null;
 try
 {
-	$connection = AIS2Utils::connection(); // TODO vytvorit instanciu uplne manualne
+	$connection = new AIS2CurlConnection(FajrUtils::getCookieFile());
+	$connection = new AIS2ErrorCheckingConnection($connection);
 
 	$statsConnection = new AIS2StatsConnection($connection);
 	$connection = $statsConnection;

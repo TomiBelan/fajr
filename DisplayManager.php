@@ -169,7 +169,7 @@ no napriek tomu ponúkame možnosť ich pohodlne zmeniť na jednom mieste - v to
 <p>
 <strong>Dôležité:</strong> Pred používaním aplikácie je ešte nutné správne nastaviť skupinu na
 <code>www-data</code> (alebo pod čím beží webserver) a práva na adresáre
-<code>./temp</code> a <code>./libfajr/cookies</code>, tak, aby boli nastavené práva
+<code>./temp</code> a <code>./temp/cookies</code>, tak, aby boli nastavené práva
 len na zapisovanie a použitie, t.j. <code>d----wx---</code>.
 </p>
 </div>
