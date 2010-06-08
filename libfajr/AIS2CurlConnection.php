@@ -31,14 +31,19 @@ require_once 'supporting_functions.php';
 class AIS2CurlConnection implements AIS2Connection {
 
 	private $curl = null;
+	const USER_AGENT = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; sk; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7';
 
-	public function  __construct($cookieFile) {
+	public function  __construct($cookieFile, $userAgent = null) {
+		if ($userAgent === null) {
+			$userAgent = self::USER_AGENT;
+		}
+
 		$ch = curl_init(); // prvy krat inicializujeme curl
 		curl_setopt($ch, CURLOPT_FORBID_REUSE, false); // Keepalive konekcie
 		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile);
 		curl_setopt($ch, CURLOPT_COOKIEJAR, $cookieFile);
-		curl_setopt($ch, CURLOPT_USERAGENT, FAJR_USER_AGENT);
+		curl_setopt($ch, CURLOPT_USERAGENT, $userAgent);
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_VERBOSE, false);
