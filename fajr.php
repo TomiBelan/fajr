@@ -54,6 +54,7 @@ require_once 'libfajr/AIS2AdministraciaStudiaScreen.php';
 require_once 'libfajr/AIS2TerminyHodnoteniaScreen.php';
 require_once 'libfajr/AIS2HodnoteniaPriemeryScreen.php';
 require_once 'libfajr/AIS2StatsConnection.php';
+require_once 'libfajr/AIS2DebugConnection.php';
 require_once 'TableDefinitions.php';
 require_once 'Sorter.php';
 require_once 'FajrUtils.php';
@@ -64,9 +65,20 @@ require_once 'TabZapisnyList.php';
 require_once 'TabHodnoteniaPriemery.php';
 
 $connection = null;
+$debugConnection = null;
+$statsConnection = null;
 try
 {
-	$connection = new AIS2StatsConnection(AIS2Utils::connection()); // TODO vytvorit instanciu uplne manualne
+	$connection = AIS2Utils::connection(); // TODO vytvorit instanciu uplne manualne
+
+	$statsConnection = new AIS2StatsConnection($connection);
+	$connection = $statsConnection;
+
+	if (FajrConfig::get('Debug.Connections')) {
+		$debugConnection = new AIS2DebugConnection($connection);
+		$connection = $debugConnection;
+	}
+
 	AIS2Utils::connection($connection); // toto tu je docasne
 
 	Input::prepare();
@@ -148,10 +160,10 @@ try
 		DisplayManager::addContent($tabs->getHtml());
 		
 		$timeDiff = (microtime(true)-$startTime);
-		$statistics = "<div> Fajr made ".$connection->getTotalCount().
-						" requests and downloaded ".$connection->getTotalSize().
+		$statistics = "<div> Fajr made ".$statsConnection->getTotalCount().
+						" requests and downloaded ".$statsConnection->getTotalSize().
 						" bytes of data from AIS2 in ".
-						sprintf("%.3f", $connection->getTotalTime()).
+						sprintf("%.3f", $statsConnection->getTotalTime()).
 						" seconds. It took ".sprintf("%.3f", $timeDiff).
 						" seconds to generate this page.</div>";
 		DisplayManager::addContent($statistics);
@@ -172,6 +184,10 @@ catch (AIS2LoginException $e) {
 catch (Exception $e)
 {
 	DisplayManager::addException($e);
+}
+
+if ($debugConnection) {
+	DisplayManager::dumpRequests($debugConnection->getRequests());
 }
 
 echo DisplayManager::display();

@@ -214,6 +214,39 @@ len na zapisovanie a použitie, t.j. <code>d----wx---</code>.
 
 </script>';
 	}
+
+	public static function dumpRequests($requests) {
+		$html = '<div class="debug">';
+		foreach ($requests as $request) {
+			$html .= '<div class="debug_connection">';
+			$html .= '<div class="debug_connection_header"><span class="debug_connection_method">'.hescape($request['method']).'</span> '.hescape($request['url']).'</div>';
+			$html .= '<div class="debug_connection_auxinfo">'.sprintf("%.3f", $request['startTime']);
+			$html .= 's - '.sprintf("%.3f", $request['endTime']).'s (';
+			$html .= sprintf("%.3f", $request['endTime']-$request['startTime']);
+			$html .= 's)</div>';
+			if (isset($request['requestData'])) {
+				$html .= '<div class="debug_connection_block"><div class="debug_connection_block_title">Request data:</div><pre>';
+				foreach ($request['requestData'] as $name => $value) {
+					$html .= hescape($name).': '.hescape($value);
+				}
+				$html .= '</pre></div>';
+			}
+			if (isset($request['responseData'])) {
+				$html .= '<div class="debug_connection_block"><div class="debug_connection_block_title">Response data:</div><pre>';
+				$html .= hescape($request['responseData']);
+				$html .= '</pre></div>';
+			}
+			if (isset($request['exception'])) {
+				$html .= '<div class="debug_connection_block"><div class="debug_connection_block_title">Response data:</div><pre>';
+				$html .= hescape($request['exception']->getTraceAsString());
+				$html .= '</pre></div>';
+			}
+			$html .= '</div>';
+			
+		}
+		$html .= '</div>';
+		self::addContent($html);
+	}
 			
 }
 

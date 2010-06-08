@@ -4,12 +4,16 @@ class FajrConfig {
 
 	protected static $config = null;
 
+	protected static $defaultOptions = array(
+		'Debug.Connections'=>false,
+	);
+
 	public static function load() {
 		if (self::isConfigured()) return;
 
 		@$result = (include 'configuration.php');
 		if ($result !== false && is_array($result)) {
-			self::$config = $result;
+			self::$config = array_merge(self::$defaultOptions, $result);
 		}
 	}
 

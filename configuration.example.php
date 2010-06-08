@@ -13,5 +13,13 @@ return array(
 	 */
 	//'GoogleAnalytics.Account'=>'UA-680810-11',
 
+	/*
+	 * Ak je táto voľba zapnutá, fajr bude vypisovať komunikáciu medzi
+	 * ním a AISom. Neodporúčame používať na produkčných inštaláciách, keďže
+	 * spôsobuje, že na výstupe stránky sa objaví obrovské množstvo dát.
+	 * Predvolená hodnota false vypne debugovanie spojení.
+	 */
+	//'Debug.Connections'=>true,
+
 
 );

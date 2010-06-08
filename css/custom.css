@@ -158,3 +158,40 @@ button.tableButton
 	white-space:nowrap;
 	margin:0 0 0 0;
 }
+
+/* Debug */
+
+.debug {
+	border: 1px solid black;
+	padding: 2px;
+	margin: 5px;
+}
+
+.debug_connection {
+	margin-bottom: 0.5em;
+}
+
+.debug_connection_header, .debug_connection_block_title {
+	border-bottom: 1px solid #999;
+	padding: 2px;
+	margin-bottom: 5px;
+	background: #B3C9EF;
+}
+
+.debug_connection_method {
+	font-weight: bold;
+}
+
+.debug_connection_auxinfo {
+	margin-bottom: 1em;
+}
+
+.debug_connection_block {
+	border: 1px solid #999;
+	margin-left: 3em;
+	margin-bottom: 5px;
+}
+
+.debug_connection_block pre {
+	margin: 0.5em 1em;
+}
