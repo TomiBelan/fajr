@@ -65,11 +65,10 @@ class AIS2Utils
 	 * Stiahne zadanú stránku a skontroluje ci pri tom nenastala chyba v AISe.
 	 * @param string Požadovaná url.
 	 * @param array Pole s POST dátami.
-	 * @param boolean Príznak určujúci, či sa má vykonať kontrola chyby v prijatých dátach.
 	 * @return string Načítaná stránka.
 	 * @deprecated Bude sa priamo používať inštancia AIS2Connection
 	 */
-	public static function request($url, $post = null, $checkError = true)
+	public static function request($url, $post = null)
 	{
 		$connection = self::connection();
 
@@ -79,13 +78,10 @@ class AIS2Utils
 		else {
 			$response = $connection->get($url);
 		}
-		if ($checkError == true) 
+		$matches = array();
+		if (preg_match(self::INTERNAL_ERROR_PATTERN, $response, $matches))
 		{
-			$matches = array();
-			if (preg_match(self::INTERNAL_ERROR_PATTERN, $response, $matches))
-			{
-				throw new Exception('<b>Nastala chyba pri requeste.</b><br/>Zdôvodnenie od AISu:'.hescape($matches[1]).'<br/>Požadovaná url: '.hescape($url));
-			}
+			throw new Exception('<b>Nastala chyba pri requeste.</b><br/>Zdôvodnenie od AISu:'.hescape($matches[1]).'<br/>Požadovaná url: '.hescape($url));
 		}
 		return $response;
 	}
