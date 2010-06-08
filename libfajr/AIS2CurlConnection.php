@@ -99,7 +99,7 @@ class AIS2CurlConnection implements AIS2Connection {
 		$output = curl_exec($this->curl);
 		if (curl_errno($this->curl)) {
 			throw new Exception("Chyba pri nadväzovaní spojenia:".
-					curl_error($ch));
+					curl_error($this->curl));
 		}
 
 		if (strpos($output, "\x1f\x8b\x08\x00\x00\x00\x00\x00") === 0) {
