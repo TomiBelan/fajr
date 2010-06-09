@@ -74,7 +74,7 @@ class MojeTerminyHodnoteniaCallback implements ITabCallback {
 					Input::get('termin'));
 		}
 		
-		$actionUrl=FajrUtils::buildUrl('', $baseUrlParams);
+		$actionUrl=FajrUtils::linkUrl($baseUrlParams);
 		
 		foreach($terminyHodnotenia->getData() as $row) {
 			$datum = AIS2Utils::parseAISDateTime($row['datum']." ".$row['cas']);

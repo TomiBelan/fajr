@@ -53,7 +53,7 @@ class TabManager {
 	public function getHtml() {
 		$code = '<div class=\'tab_header\'>';
 		foreach ($this->tabs as $key => $value) {
-			$link = FajrUtils::buildUrl('',array_merge($this->urlParams,
+			$link = FajrUtils::linkUrl(array_merge($this->urlParams,
 			             array($this->name => $key)));
 			if ($key == $this->active) $class='tab_selected'; else $class='tab';
 			$code .= '<span class=\''.$class.'\'><a href="'.$link.'">'.$value['title']

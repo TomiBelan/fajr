@@ -102,7 +102,7 @@ class ZoznamTerminovCallback implements ITabCallback {
 					ktoré sa môžem prihlásiť', array('termin'=>'index',
 						'predmet'=>'predmetIndex'), $baseUrlParams);
 		
-		$actionUrl=FajrUtils::buildUrl('',$baseUrlParams);
+		$actionUrl=FajrUtils::linkUrl($baseUrlParams);
 		
 		foreach ($predmetyZapisnehoListu->getData() as $predmetRow) {
 			
