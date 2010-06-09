@@ -75,7 +75,7 @@
 				<li>Služba je poskytované tak, ako je a prevádzkovateľ služby Vám
 						v súvislosti so službou neposkytuje žiadnu záruku.
 				</li>
-				<li>Predovšetkým, Služba nezaodpovedá za to, že:
+				<li>Predovšetkým, Služba nezodpovedá za to, že:
 						<ul><li>používanie služby bude spĺňať Vaše požiadavky,
 								</li>
 								<li>budete môcť službu používať nepretržite, včas,
