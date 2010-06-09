@@ -121,7 +121,7 @@ Sú dve možnosti ako sa môžeš prihlásiť.
 Pomocou cookie.<br/>
 Tento postup je náročnejší, ale bezpečnejší a preto <strong>odporúčaný</strong>.
 Funguje to tak, že sa normálne prihlásite do <a href="https://ais2.uniba.sk/">AISu</a>.
-Po prihlásení si poziete nastavené cookies.
+Po prihlásení si pozriete nastavené cookies.
 Hodnotu tej s názvom "cosign-filter-ais2.uniba.sk" skopírujete do pravého formulára "<em>Prihlásenie cez cookie</em>".
 </li>
 <li>
