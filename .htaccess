@@ -1,6 +1,16 @@
+DirectoryIndex fajr.php
+
 <IfModule rewrite_module>
 	RewriteEngine On
+
+	# presmerovanie na https
 	RewriteCond %{HTTPS} off
 	RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [QSA,R,L]
-	DirectoryIndex fajr.php
+
+	# existujuce adresare nechaj tak
+	RewriteCond %{REQUEST_FILENAME} !-d
+	# takisto subory
+	RewriteCond %{REQUEST_FILENAME} !-f
+	# prepis /nieco na fajr.php/nieco
+	RewriteRule (.*) fajr.php/$1
 </IfModule>

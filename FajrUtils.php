@@ -78,10 +78,17 @@ class FajrUtils {
 
 	public static function buildUrl($params) {
 		$path = FajrRouter::paramsToPath($params);
-		if (strlen($path)>0) $path = '/'.$path;
 		$query = http_build_query($params);
 		if (strlen($query)>0) $query = '?'.$query;
-		return self::basePath().'fajr.php'.$path.$query;
+
+		$base = '';
+
+		if (!FajrConfig::get('URL.Rewrite')) {
+			$base = 'fajr.php';
+			if (strlen($path)>0) $base .= '/';
+		}
+
+		return self::basePath().$base.$path.$query;
 	}
 
 	public static function linkUrl($params) {
