@@ -73,8 +73,12 @@ class Input
 
 	public static function prepare()
 	{
-		//FajrRouter::pathToParams(FajrUtils::pathInfo())
-		$_get = array_merge(FajrRouter::pathToParams(FajrUtils::pathInfo()),$_GET);
+		if (FajrConfig::get('URL.Path')) {
+			$_get = array_merge(FajrRouter::pathToParams(FajrUtils::pathInfo()),$_GET);
+		}
+		else {
+			$_get = $_GET;
+		}
 		$_post = $_POST;
 	
 		// podla pola definujeceho vstupne parametre overim ich platnost

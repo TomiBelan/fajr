@@ -30,6 +30,8 @@ class FajrConfig {
 
 	protected static $defaultOptions = array(
 		'Debug.Connections'=>false,
+		'Debug.Path'=>false,
+		'Debug.Rewrite'=>false,
 	);
 
 	public static function load() {

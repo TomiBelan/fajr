@@ -20,6 +20,21 @@ return array(
 	 * Predvolená hodnota false vypne debugovanie spojení.
 	 */
 	//'Debug.Connections'=>true,
+	
+	/*
+	 * Ak je táto voľba zapnutá, budú sa používať cesty tvaru fajr.php/nieco.
+	 * Predvolená hodnota false znamená, že sa takéto cesty nebudú používať
+	 * (najväčšia kompatibilita).
+	 */
+	//'URL.Path'=>true,
+
+	/*
+	 * Ak je táto voľba zapnutá, URL-ka aplikácie nebudú obsahovať časť
+	 * "fajr.php". Aplikácia v tomto prípade bude fungovať, len ak je správne
+	 * nastavený a povolený mod_rewrite, či jeho ekvivalent.
+	 * Táto voľba má účinok len vtedy, keď je zapnutá voľba URL.Path
+	 */
+	//'URL.Rewrite'=>true,
 
 
 );

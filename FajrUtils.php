@@ -77,7 +77,10 @@ class FajrUtils {
 	}
 
 	public static function buildUrl($params) {
-		$path = FajrRouter::paramsToPath($params);
+		$path = '';
+		if (FajrConfig::get('URL.Path')) {
+			$path = FajrRouter::paramsToPath($params);
+		}
 		$query = http_build_query($params);
 		if (strlen($query)>0) $query = '?'.$query;
 
