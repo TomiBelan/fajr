@@ -33,12 +33,13 @@ abstract class AIS2AbstractScreen extends AIS2AbstractWindow
 {
 	protected $appId = null;
 	protected $serial = null;
+	protected $appClassName = null;
+	protected $identifiers = null;
+
 	public $openedDialog = false;
-	
+
 	/**
 	 * Konštruktor.
-	 * Nadviaže spojenie, spustí danú "aplikáciu" v AISe
-	 * a natiahne prvotné dáta do atribútu $data.
 	 *
 	 * @param string $appClassName Názov "triedy" obsluhujúcej danú obrazovku v AISe.
 	 * @param string $identifiers Konkrétne parametre pre vyvolanie danej obrazovky.
@@ -46,7 +47,20 @@ abstract class AIS2AbstractScreen extends AIS2AbstractWindow
 	public function __construct($appClassName, $identifiers)
 	{
 		$this->serial = 0;
-		$location = 'https://ais2.uniba.sk/ais/servlets/WebUIServlet?appClassName='.$appClassName.$identifiers.'&viewer=web&antiCache='.random();
+		$this->appClassName = $appClassName;
+		$this->identifiers = $identifiers;
+		$this->open();
+	}
+
+	/**
+ 	 * Nadviaže spojenie, spustí danú "aplikáciu" v AISe
+	 * a natiahne prvotné dáta do atribútu $data.
+	 */
+	public function open() {
+		if ($this->inUse) return;
+		$this->inUse = true;
+		
+		$location = 'https://ais2.uniba.sk/ais/servlets/WebUIServlet?appClassName='.$this->appClassName.$this->identifiers.'&viewer=web&antiCache='.random();
 		$response = AIS2Utils::request($location);
 		$this->setAppId($response);
 
@@ -62,13 +76,22 @@ abstract class AIS2AbstractScreen extends AIS2AbstractWindow
 	}
 
 	/**
+	 * Zatvorí danú "aplikáciu" v AISe,
+	 */
+	public function close() {
+		if (!$this->inUse) return;
+		AIS2Utils::request($this->getXmlInterfaceLocation(), array('xml_spec' => '<request><serial>'.$this->getSerial().'</serial><events><ev><event class=\'avc.framework.webui.WebUIKillEvent\'/></ev></events></request>'));
+		$this->inUse = false;
+	}
+
+	/**
 	 * Deštruktor.
 	 * Zatvorí danú "aplikáciu" v AISe,
 	 * aby sa nevyčerpal limit otvorených aplikácii na session.
 	 */
 	public function  __destruct()
 	{
-		AIS2Utils::request($this->getXmlInterfaceLocation(), array('xml_spec' => '<request><serial>'.$this->getSerial().'</serial><events><ev><event class=\'avc.framework.webui.WebUIKillEvent\'/></ev></events></request>'));
+		$this->close();
 	}
 
 	/**
@@ -82,6 +105,7 @@ abstract class AIS2AbstractScreen extends AIS2AbstractWindow
 	
 	protected function getAppId()
 	{
+		$this->open();
 		return $this->appId;
 	}
 	

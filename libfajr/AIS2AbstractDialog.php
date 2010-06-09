@@ -34,11 +34,12 @@ abstract class AIS2AbstractDialog extends AIS2AbstractWindow
 	protected $parent = null;
 	protected $terminated = false;
 	protected $openedDialog = false;
+	private $compName = null;
+	private $embObjName = null;
+	private $index = null;
 
 	/**
 	 * Konštruktor.
-	 * Nadviaže spojenie, spustí danú "aplikáciu" v AISe
-	 * a natiahne prvotné dáta do atribútu $data.
 	 *
 	 * @param string $appClassName Názov "triedy" obsluhujúcej danú obrazovku v AISe.
 	 * @param string $identifiers Konkrétne parametre pre vyvolanie danej obrazovky.
@@ -46,31 +47,62 @@ abstract class AIS2AbstractDialog extends AIS2AbstractWindow
 	public function __construct($parent, $compName, $embObjName, $index)
 	{
 		$this->parent = $parent;
+		$this->compName = $compName;
+		$this->embObjName = $embObjName;
+		$this->index = $index;
+		$this->open();
+	}
+
+	/**
+	 * Nadviaže spojenie, spustí danú "aplikáciu" v AISe
+	 * a natiahne prvotné dáta do atribútu $data.
+	 */
+	public function open() {
+		if ($this->inUse) return;
+
 		if ($this->parent->openedDialog)
 		{
 			throw new Exception('V nadradenom screene "'.$this->parent->formName.'" už existuje otvorený dialog. Pre otvorenie nového treba pôvodný zatvoriť.');
 		}
-		
+
+		$this->inUse = true;
+
 		$response = $this->requestData(array(
 			'dlgName' => $this->parent->formName,
-			'compName' => $compName,
+			'compName' => $this->compName,
 			'embObj' => array(
-				'objName' => $embObjName,
+				'objName' => $this->embObjName,
 				'dataView' => array(
-					'activeIndex' =>  $index,
-					'selectedIndexes' => $index,
+					'activeIndex' =>  $this->index,
+					'selectedIndexes' => $this->index,
 				),
 			),
 		));
-		
+
 		$formName = match($response, AIS2Utils::DIALOG_NAME_PATTERN);
 		if ($formName === false) throw new Exception('Nepodarilo sa nájsť názov dialógu pre triedu '.__CLASS__.'.');
-		
+
 		$this->formName = $formName;
 		$this->data = AIS2Utils::request('https://ais2.uniba.sk/ais/servlets/WebUIServlet?appId='.$this->getAppId().'&form='.$this->formName.'&antiCache='.random());
-		
+
 		$this->parent->openedDialog = true;
 		$this->terminated = false;
+	}
+
+	/**
+	 * Zatvorí danú "aplikáciu" v AISe
+	 */
+	public function close() {
+		if (!$this->inUse) return;
+		if (!$this->terminated)
+		{
+			$response = $this->requestData(array(
+				'eventClass' => 'avc.ui.event.AVCComponentEvent',
+				'command' => 'CLOSE',
+			));
+		}
+		$this->parent->openedDialog = false;
+		$this->inUse = false;
 	}
 
 	/**
@@ -81,14 +113,7 @@ abstract class AIS2AbstractDialog extends AIS2AbstractWindow
 	 */
 	public function  __destruct()
 	{
-		if (!$this->terminated)
-		{
-			$response = $this->requestData(array(
-				'eventClass' => 'avc.ui.event.AVCComponentEvent',
-				'command' => 'CLOSE',
-			));
-		}
-		$this->parent->openedDialog = false;
+		$this->close();
 	}
 
 	/**

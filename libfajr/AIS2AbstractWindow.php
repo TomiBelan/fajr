@@ -33,6 +33,17 @@ abstract class AIS2AbstractWindow
 {
 	protected $formName = null;
 	protected $data = null;
+	protected $inUse = false;
+
+	/**
+	 * Otvorí okno reprezentované touto triedou (čiže sa pripojí)
+	 */
+	abstract protected function open();
+
+	/**
+	 * Zatvorí okno (a prípadné ďaľšie zdroje) používané touto triedou
+	 */
+	abstract protected function close();
 
 	/**
 	 * Získa nové sériové číslo používané v XML protokole na komunikáciu s AISom.
