@@ -24,9 +24,6 @@ Copyright (c) 2010 Martin Sucha
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
-	require_once 'supporting_functions.php';
-	require_once 'AIS2Login.php';
-
 abstract class AIS2AbstractLogin implements AIS2Login {
 
 	const LOGIN = 'https://ais2.uniba.sk/ais/login.do';

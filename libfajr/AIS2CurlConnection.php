@@ -25,9 +25,6 @@ Copyright (c) 2010 Martin Králik
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
-require_once 'AIS2Connection.php';
-require_once 'supporting_functions.php';
-
 class AIS2CurlConnection implements AIS2Connection {
 
 	const USER_AGENT = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; sk; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7';

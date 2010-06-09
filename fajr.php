@@ -31,6 +31,7 @@ mb_internal_encoding("UTF-8");
 // Pretoze v session ukladam objekty libfajru, treba nacitat definicie
 // tried skor, ako sa nacitava session
 require_once 'libfajr/libfajr.php';
+libfajr_autoload_register();
 
 session_start();
 session_cache_expire(300);

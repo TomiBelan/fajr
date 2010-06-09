@@ -24,9 +24,6 @@ Copyright (c) 2010 Martin Králik
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
-require_once 'AIS2AbstractWindow.php';
-require_once 'AIS2LoginException.php';
- 
 /**
  * Abstraktná trieda reprezentujúca jednu obrazovku v AISe.
  *

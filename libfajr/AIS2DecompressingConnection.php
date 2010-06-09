@@ -25,8 +25,6 @@ Copyright (c) 2010 Martin Králik
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
-require_once 'AIS2Connection.php';
-
 class AIS2DecompressingConnection implements AIS2Connection {
 
 	private $tempDir = null;

@@ -24,10 +24,6 @@ Copyright (c) 2010 Martin Králik
  OTHER DEALINGS IN THE SOFTWARE.
 }}} */
 
-require_once 'AIS2AbstractScreen.php';
-require_once 'AIS2Table.php';
-require_once 'Table.php';
-
 /**
  * Trieda reprezentujúca jednu obrazovku so zoznamom štúdií a zápisných listov.
  *

@@ -24,10 +24,6 @@ Copyright (c) 2010 Martin Králik
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
-	require_once 'supporting_functions.php';
-	require_once 'AIS2CurlConnection.php';
-	require_once 'AIS2ErrorCheckingConnection.php';
-
 /**
  * Trieda združujúca rôzne základné veci pre prácu s AISom
  *

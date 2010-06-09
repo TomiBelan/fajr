@@ -24,8 +24,6 @@ Copyright (c) 2010 Martin Sucha
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
-    require_once 'supporting_functions.php';
-
 /**
  * Trieda reprezentujúca session systému (stav prihlásenia, ...)
  *

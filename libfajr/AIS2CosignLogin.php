@@ -25,10 +25,6 @@ Copyright (c) 2010 Martin Králik
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
-	require_once 'supporting_functions.php';
-	require_once 'AIS2AbstractLogin.php';
-	require_once 'AIS2Utils.php';
-
 /**
  * Trieda reprezentujúca prihlasovanie pomocou cosign
  *

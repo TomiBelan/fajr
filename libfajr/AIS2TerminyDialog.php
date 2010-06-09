@@ -24,8 +24,6 @@ Copyright (c) 2010 Martin Králik
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
-require_once 'AIS2AbstractDialog.php';
- 
 /**
  * Trieda pre dialóg s termínmi skúšok k jednému predmetu.
  *

@@ -24,8 +24,6 @@ Copyright (c) 2010 Martin Sucha
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
-require_once 'AIS2Connection.php';
-
 /**
  * Zbiera základné štatistické informácie o vykonaných spojeniach
  */

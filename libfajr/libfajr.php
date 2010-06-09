@@ -24,7 +24,14 @@ Copyright (c) 2010 Martin Sucha
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
-	require_once 'AIS2Utils.php';
-	require_once 'AIS2Session.php';
-	require_once 'AIS2CookieLogin.php';
-	require_once 'AIS2CosignLogin.php';
+	require_once 'supporting_functions.php';
+	
+	function libfajr_autoload($className) {
+		if (preg_match('/^AIS2[a-zA-Z0-9]+$/', $className)) {
+			require_once $className.'.php';
+		}
+	}
+
+	function libfajr_autoload_register() {
+		spl_autoload_register('libfajr_autoload');
+	}

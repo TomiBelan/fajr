@@ -24,9 +24,6 @@ Copyright (c) 2010 Martin Králik
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
-require_once 'AIS2AbstractScreen.php';
-require_once 'Table.php';
-
 /**
  * Trieda reprezentujúca jednu obrazovku s hodnoteniami a priemermi za jeden rok.
  *

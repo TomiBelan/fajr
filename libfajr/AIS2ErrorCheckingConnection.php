@@ -25,8 +25,6 @@
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
-require_once 'AIS2Connection.php';
-
 class AIS2ErrorCheckingConnection implements AIS2Connection {
 
 	private $delegate = null;
