@@ -46,6 +46,7 @@ class AIS2ZoznamPrihlasenychDialog extends AIS2AbstractDialog
 	
 	public function getZoznamPrihlasenych()
 	{
+		$this->open();
 		$data = matchAll($this->data, AIS2Utils::DATA_PATTERN);
 		return new AIS2Table($this->tabulka_zoznam_prihlasenych, $data[0][1]);
 	}

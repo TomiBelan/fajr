@@ -91,12 +91,14 @@ class AIS2HodnoteniaPriemeryScreen extends AIS2AbstractScreen
 
 	public function getHodnotenia()
 	{
+		$this->open();
 		$data = matchAll($this->data, AIS2Utils::DATA_PATTERN);
 		return new AIS2Table($this->tabulka_hodnotenia, $data[0][1]);
 	}
 
 	public function getPriemery()
 	{
+		$this->open();
 		$data = matchAll($this->data, AIS2Utils::DATA_PATTERN);
 		return new AIS2Table($this->tabulka_priemery, $data[1][1]);
 	}

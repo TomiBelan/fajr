@@ -78,12 +78,14 @@ class AIS2TerminyHodnoteniaScreen extends AIS2AbstractScreen
 
 	public function getPredmetyZapisnehoListu()
 	{
+		$this->open();
 		$data = matchAll($this->data, AIS2Utils::DATA_PATTERN);
 		return new AIS2Table($this->tabulka_predmety_zapisneho_listu, $data[0][1]);
 	}
 
 	public function getTerminyHodnotenia()
 	{
+		$this->open();
 		$data = matchAll($this->data, AIS2Utils::DATA_PATTERN);
 		return new AIS2Table($this->tabulka_terminy_hodnotenia, $data[1][1]);
 	}
@@ -100,6 +102,7 @@ class AIS2TerminyHodnoteniaScreen extends AIS2AbstractScreen
 	
 	public function odhlasZTerminu($terminIndex)
 	{
+		$this->open();
 		// Posleme request ze sa chceme odhlasit.
 		$data = $this->requestData(array(
 			'compName' => 'odstranitTerminAction',

@@ -67,6 +67,8 @@ abstract class AIS2AbstractDialog extends AIS2AbstractWindow
 
 		$this->inUse = true;
 
+		$this->parent->open();
+
 		$response = $this->requestData(array(
 			'dlgName' => $this->parent->formName,
 			'compName' => $this->compName,

@@ -84,12 +84,14 @@ class AIS2AdministraciaStudiaScreen extends AIS2AbstractScreen
 
 	public function getZoznamStudii()
 	{
+		$this->open();
 		$data = match($this->data, AIS2Utils::DATA_PATTERN);
 		return new AIS2Table($this->tabulka_zoznam_studii, $data);
 	}
 
 	public function getZapisneListy($studiumIndex)
 	{
+		$this->open();
 		$data = $this->requestData(array(
 			'compName' => 'nacitatDataAction',
 			'objProperties' => array(
@@ -122,6 +124,7 @@ class AIS2AdministraciaStudiaScreen extends AIS2AbstractScreen
 
 	protected function getIdFromZapisnyListIndex($zapisnyListIndex, $idType)
 	{
+		$this->open();
 		if (empty($this->idCache[$zapisnyListIndex]))
 		{
 			$data = $this->requestData(array(

@@ -51,12 +51,14 @@ Copyright (c) 2010 Martin Králik
 	
 	public function getZoznamTerminov()
 	{
+		$this->open();
 		$data = matchAll($this->data, AIS2Utils::DATA_PATTERN);
 		return new AIS2Table($this->tabulka_vyber_terminu_hodnotenia, $data[0][1]);
 	}
 	
 	public function prihlasNaTermin($terminIndex)
 	{
+		$this->open();
 		$data = $this->requestData(array(
 			'compName' => 'enterAction',
 			'eventClass' => 'avc.ui.event.AVCActionEvent',
