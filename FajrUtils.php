@@ -81,7 +81,7 @@ class FajrUtils {
 		if (strlen($path)>0) $path = '/'.$path;
 		$query = http_build_query($params);
 		if (strlen($query)>0) $query = '?'.$query;
-		return $base.$path.$query;
+		return self::basePath().$base.$path.$query;
 	}
 
 	public static function linkUrl($params, $base='fajr.php') {

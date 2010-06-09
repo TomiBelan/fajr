@@ -36,7 +36,11 @@ class FajrRouter {
 
 		$path = array();
 
-		if (isset($params['studium'])) {
+		if (isset($params['logout'])) {
+			$path[] = 'logout';
+			unset($params['logout']);
+		}
+		else if (isset($params['studium'])) {
 			$path[] = $params['studium'];
 			unset($params['studium']);
 
@@ -69,6 +73,11 @@ class FajrRouter {
 		$n = count($path);
 
 		if ($n>0) {
+			if ($path[0] == 'logout') {
+				$params['logout']=true;
+				return $params;
+			}
+
 			$params['studium'] = $path[0];
 		}
 		if ($n>1) {

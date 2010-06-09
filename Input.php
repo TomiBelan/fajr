@@ -91,7 +91,7 @@ class Input
 		}
 		
 		// specialne vynimky
-		if (isset($_GET['logout']))
+		if (isset($_get['logout']))
 		{
 			self::$inputParameters['logout'] = true;
 			//self::$_GET['logout'] = true; FIXME: Majak, co tu robilo toto?

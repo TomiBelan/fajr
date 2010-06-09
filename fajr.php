@@ -104,7 +104,7 @@ try
 
 	if ($loggedIn) {
 		DisplayManager::addContent(
-		'<div class=\'logout\'><a class="button negative" href="?logout">
+		'<div class=\'logout\'><a class="button negative" href="'.FajrUtils::linkUrl(array('logout'=>true)).'">
 	  <img src="images/door_in.png" alt=""/>Odhlásiť</a></div>'
 		);
 		$adminStudia = new AIS2AdministraciaStudiaScreen();
