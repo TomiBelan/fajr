@@ -55,9 +55,9 @@ class FajrUtils {
 		return $_SESSION['AISSession']->isLoggedIn();
 	}
 
-	public static function redirect($newParams = array(), $base = 'fajr.php')
+	public static function redirect($newParams = array())
 	{
-		header('Location: '.self::buildUrl(array_merge(Input::getUrlParams(), $newParams), $base));
+		header('Location: '.self::buildUrl(array_merge(Input::getUrlParams(), $newParams)));
 		exit();
 	}
 
@@ -76,16 +76,16 @@ class FajrUtils {
 		return self::getCookieDir().DIRECTORY_SEPARATOR.session_id();
 	}
 
-	public static function buildUrl($params, $base='fajr.php') {
+	public static function buildUrl($params) {
 		$path = FajrRouter::paramsToPath($params);
 		if (strlen($path)>0) $path = '/'.$path;
 		$query = http_build_query($params);
 		if (strlen($query)>0) $query = '?'.$query;
-		return self::basePath().$base.$path.$query;
+		return self::basePath().'fajr.php'.$path.$query;
 	}
 
-	public static function linkUrl($params, $base='fajr.php') {
-		return hescape(self::buildUrl($params, $base));
+	public static function linkUrl($params) {
+		return hescape(self::buildUrl($params));
 	}
 
 	public static function pathInfo() {
