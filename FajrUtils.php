@@ -24,8 +24,6 @@ Copyright (c) 2010 Martin Sucha
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
-	require_once 'libfajr/libfajr.php';
-
 class FajrUtils {
 
 	public static function login(AIS2Login $login, AIS2Connection $connection) {
