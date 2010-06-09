@@ -50,7 +50,6 @@ abstract class AIS2AbstractDialog extends AIS2AbstractWindow
 		$this->compName = $compName;
 		$this->embObjName = $embObjName;
 		$this->index = $index;
-		$this->open();
 	}
 
 	/**

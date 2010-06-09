@@ -49,7 +49,6 @@ abstract class AIS2AbstractScreen extends AIS2AbstractWindow
 		$this->serial = 0;
 		$this->appClassName = $appClassName;
 		$this->identifiers = $identifiers;
-		$this->open();
 	}
 
 	/**
