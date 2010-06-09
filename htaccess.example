@@ -8,9 +8,9 @@ DirectoryIndex fajr.php
 	RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [QSA,R,L]
 
 	# existujuce adresare nechaj tak
-	RewriteCond %{REQUEST_FILENAME} !-d
+	#RewriteCond %{REQUEST_FILENAME} !-d
 	# takisto subory
-	RewriteCond %{REQUEST_FILENAME} !-f
+	#RewriteCond %{REQUEST_FILENAME} !-f
 	# prepis /nieco na fajr.php/nieco
-	RewriteRule (.*) fajr.php/$1
+	#RewriteRule (.*) fajr.php/$1
 </IfModule>
