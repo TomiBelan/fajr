@@ -70,9 +70,9 @@ class TableRow
 				foreach ($table->newKey as $key=>$tableCol) {
 					$params[$key] = $this->data[$tableCol];
 				}
-				$link = buildUrl('', $params);
+				$link = FajrUtils::buildUrl('', $params);
 			} else {
-				$link = buildUrl('', array_merge($table->urlParams,
+				$link = FajrUtils::buildUrl('', array_merge($table->urlParams,
 							array($table->newKey => $this->data['index'])));
 			}
 		}

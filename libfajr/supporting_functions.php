@@ -61,10 +61,6 @@ Copyright (c) 2010 Martin Králik
 		return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
 	}
 
-	function buildUrl($base, $params) {
-		return hescape($base."?".http_build_query($params));
-	}
-
 	function random()
 	{
 		return rand(100000,999999);
