@@ -79,6 +79,8 @@ class DisplayManager
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="sk" lang="sk">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	',
+			'header2' => '
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/prototype/1.6.1.0/prototype.js"></script>
 	<script type="text/javascript" src="scripts/fajr.js"></script>
 	<script type="text/javascript" src="scripts/toggleVisibility.js"></script>
@@ -192,7 +194,10 @@ len na zapisovanie a použitie, t.j. <code>d----wx---</code>.
 	{
 		$html = '';
 		foreach (self::$content as $item) $html .= $item;
-		$html = self::$predefinedContent['header'] . $html;
+		$header = self::$predefinedContent['header'];
+		$header .= '<base href="'.hescape(FajrUtils::basePath()).'" />';
+		$header .= self::$predefinedContent['header2'];
+		$html = $header . $html;
 		$html .= self::$predefinedContent['footer'] . self::googleAnalytics() . self::$predefinedContent['footer2'];
 		return $html;
 	}

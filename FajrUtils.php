@@ -24,6 +24,8 @@ Copyright (c) 2010 Martin Sucha
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
+require_once 'FajrRouter.php';
+
 class FajrUtils {
 
 	public static function login(AIS2Login $login, AIS2Connection $connection) {
@@ -75,13 +77,49 @@ class FajrUtils {
 	}
 
 	public static function buildUrl($params, $base='fajr.php') {
+		$path = FajrRouter::paramsToPath($params);
+		if (strlen($path)>0) $path = '/'.$path;
 		$query = http_build_query($params);
 		if (strlen($query)>0) $query = '?'.$query;
-		return $base.$query;
+		return $base.$path.$query;
 	}
 
 	public static function linkUrl($params, $base='fajr.php') {
 		return hescape(self::buildUrl($params, $base));
+	}
+
+	public static function pathInfo() {
+		if (!isset($_SERVER['PATH_INFO'])) return '';
+		$path = $_SERVER['PATH_INFO'];
+		if (substr_compare($path, '/', 0, 1)==0) $path = substr($path, 1);
+		return $path;
+	}
+	
+	public static function isHTTPS() {
+		return ((isset($_SERVER['HTTPS'])) && 
+					($_SERVER['HTTPS']!=='off') && 
+					($_SERVER['HTTPS'])) || 
+				((isset($_SERVER['SERVER_PORT'])) && $_SERVER['SERVER_PORT']=='443');
+	}
+
+	public static function basePath() {
+		$url = '';
+		if (self::isHTTPS()) {
+			$url = 'https://';
+		}
+		else {
+			$url = 'http://';
+		}
+		$url .= $_SERVER['SERVER_NAME'];
+		if (isset($_SERVER['SERVER_PORT'])) {
+			$port = $_SERVER['SERVER_PORT'];
+			if ($port != '80' && $port != '443') {
+				$url .= ':'.$port;
+			}
+		}
+		$url .= dirname($_SERVER['SCRIPT_NAME']);
+
+		return $url;
 	}
 
 }
