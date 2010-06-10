@@ -127,7 +127,7 @@ class FajrUtils {
 				$url .= ':'.$port;
 			}
 		}
-		$url .= dirname($_SERVER['SCRIPT_NAME']);
+		$url .= dirname($_SERVER['SCRIPT_NAME']) . '/';
 
 		return $url;
 	}
