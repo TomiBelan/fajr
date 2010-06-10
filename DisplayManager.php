@@ -30,6 +30,8 @@ class DisplayManager
 {
 	protected static $content = array();
 	
+	protected static $base = null;
+	
 	protected static $predefinedContent = array(
 			'loginBox' => '
 <div class="span-5 prepend-1">
@@ -178,6 +180,11 @@ len na zapisovanie a použitie, t.j. <code>d----wx---</code>.
 '
 	);
 	
+	public static function setBase($base)
+	{
+		self::$base = $base;
+	}
+	
 	public static function addContent($content, $predefinedContent = false)
 	{
 		if ($predefinedContent) self::$content[] = self::$predefinedContent[$content];
@@ -195,7 +202,7 @@ len na zapisovanie a použitie, t.j. <code>d----wx---</code>.
 		$html = '';
 		foreach (self::$content as $item) $html .= $item;
 		$header = self::$predefinedContent['header'];
-		$header .= '<base href="'.hescape(FajrUtils::basePath()).'" />';
+		if (self::$base !== null) $header .= '<base href="'.self::$base.'" />';
 		$header .= self::$predefinedContent['header2'];
 		$html = $header . $html;
 		$html .= self::$predefinedContent['footer'] . self::googleAnalytics() . self::$predefinedContent['footer2'];

@@ -194,6 +194,7 @@ if ($debugConnection) {
 	DisplayManager::dumpRequests($debugConnection->getRequests());
 }
 
+DisplayManager::setBase(hescape(FajrUtils::basePath()));
 echo DisplayManager::display();
 
 session_write_close();
