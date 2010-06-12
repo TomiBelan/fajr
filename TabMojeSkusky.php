@@ -10,8 +10,9 @@ require_once 'Sorter.php';
 require_once 'FajrUtils.php';
 
 class MojeTerminyHodnoteniaCallback implements ITabCallback {
-	public function __construct($skusky) {
-		$this->skusky = $skusky;
+	public function __construct($terminyHodnotenia, $hodnotenia) {
+		$this->terminyHodnoteniaApp = $terminyHodnotenia;
+		$this->hodnoteniaApp = $hodnotenia;
 	}
 	
 	/**
@@ -27,7 +28,7 @@ class MojeTerminyHodnoteniaCallback implements ITabCallback {
 	
 	private function odhlasZoSkusky($terminIndex) {
 		
-		$terminy = $this->skusky->getTerminyHodnotenia()->getData();
+		$terminy = $this->terminyHodnoteniaApp->getTerminyHodnotenia()->getData();
 		$terminKey = -1;
 		foreach ($terminy as $key=>$row) {
 			if ($row['index']==$terminIndex) $terminKey = $key;
@@ -40,12 +41,13 @@ class MojeTerminyHodnoteniaCallback implements ITabCallback {
 			throw new Exception("Ooops, nesedia údaje o termíne. Pravdepodobne zmena
 					dát v AISe spôsobila posunutie tabuliek.");
 		}
-		return $this->skusky->odhlasZTerminu($terminIndex);
+		return $this->terminyHodnoteniaApp->odhlasZTerminu($terminIndex);
 	}
 	
 	
 	public function callback() {
-		$terminyHodnotenia = $this->skusky->getTerminyHodnotenia();
+		$terminyHodnotenia = $this->terminyHodnoteniaApp->getTerminyHodnotenia();
+		$hodnotenia = $this->hodnoteniaApp->getHodnotenia();
 		if (Input::get('action') !== null) {
 			assert(Input::get("action")=="odhlasZoSkusky");
 			if ($this->odhlasZoSkusky(Input::get("odhlasIndex")))
@@ -76,11 +78,24 @@ class MojeTerminyHodnoteniaCallback implements ITabCallback {
 		
 		$actionUrl=FajrUtils::linkUrl($baseUrlParams);
 		
+		$hodnoteniePredmetu=array();
+		foreach($hodnotenia->getData() as $row) {
+			$hodnoteniePredmetu[$row['nazov']]=$row['znamka'];
+		}
+		
 		foreach($terminyHodnotenia->getData() as $row) {
 			$datum = AIS2Utils::parseAISDateTime($row['datum']." ".$row['cas']);
+			
+			if ($row['znamka']=="") { // skusme najst znamku v hodnoteniach
+				if (isset($hodnoteniePredmetu[$row['predmet']]) &&
+							$hodnoteniePredmetu[$row['predmet']]!="") {
+						$row['znamka'] =
+								$hodnoteniePredmetu[$row['predmet']]." (z&nbsp;predmetu)";
+						}
+			}
 					
 			if ($datum < time()) {
-				$row['odhlas']="Skúška už bola";
+				$row['odhlas']="Skúška už bola.";
 				$terminyHodnoteniaTableOld->addRow($row, null);
 			} else {
 				if ($row['mozeOdhlasit']==1) {
@@ -111,7 +126,7 @@ class MojeTerminyHodnoteniaCallback implements ITabCallback {
 		$html = $terminyHodnoteniaTableActive->getHtml();
 		$html .= $terminyHodnoteniaTableOld->getHtml();
 		if (Input::get('termin')!=null) {
-			$prihlaseni = $this->skusky->getZoznamPrihlasenychDialog(Input::get('termin'))->getZoznamPrihlasenych();
+			$prihlaseni = $this->terminyHodnoteniaApp->getZoznamPrihlasenychDialog(Input::get('termin'))->getZoznamPrihlasenych();
 			$zoznamPrihlasenychTable = new
 			Table(TableDefinitions::zoznamPrihlasenych(), 'Zoznam prihlásených
 					na vybratý termín', null, array('studium', 'list'));

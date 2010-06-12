@@ -147,12 +147,12 @@ try
 		$tabs = new TabManager('tab', array('studium'=>Input::get('studium'),
 					'list'=>Input::get('list')));
 		$tabs->setActive(Input::get('tab'));
-		$tabs->addTab('TerminyHodnotenia', 'Moje skúšky',
-					new MojeTerminyHodnoteniaCallback($terminyHodnotenia));
 		// FIXME: chceme to nejak refaktorovat, aby sme nevytvarali zbytocne
 		// objekty, ktore v konstruktore robia requesty
 		$hodnoteniaScreen = new AIS2HodnoteniaPriemeryScreen(
 					$adminStudia->getIdZapisnyList(Input::get('list')));
+		$tabs->addTab('TerminyHodnotenia', 'Moje skúšky',
+					new MojeTerminyHodnoteniaCallback($terminyHodnotenia, $hodnoteniaScreen));
 		$tabs->addTab('ZapisSkusok', 'Prihlásenie na skúšky',
 					new ZoznamTerminovCallback($terminyHodnotenia, $hodnoteniaScreen));
 		$tabs->addTab('ZapisnyList', 'Zápisný list',

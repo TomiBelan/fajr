@@ -520,7 +520,7 @@ class TableDefinitions
 			'znamka' => array(
 			      'title' => 'známka',
 			      'sortorder' => '0',
-			      'visible' => false),
+			      'visible' => true),
 			'prihlasovanie' => array(
 			      'title' => 'prihlasovanie',
 			      'sortorder' => '0',
