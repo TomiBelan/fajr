@@ -96,7 +96,9 @@ class MojeTerminyHodnoteniaCallback implements ITabCallback {
 					
 			if ($datum < time()) {
 				$row['odhlas']="Skúška už bola.";
-				$terminyHodnoteniaTableOld->addRow($row, null);
+				if ($row['prihlaseny']=='A') {
+					$terminyHodnoteniaTableOld->addRow($row, null);
+				}
 			} else {
 				if ($row['mozeOdhlasit']==1) {
 					$class='terminmozeodhlasit';
