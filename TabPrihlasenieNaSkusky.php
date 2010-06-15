@@ -53,18 +53,32 @@ class ZoznamTerminovCallback implements ITabCallback {
 	}
 	
 	const PRIHLASIT_MOZE = 0;
+	const PRIHLASIT_MOZE_ZNAMKA = -1;
 	const PRIHLASIT_NEMOZE_CAS = 1;
 	const PRIHLASIT_NEMOZE_POCET = 2;
 	const PRIHLASIT_NEMOZE_ZNAMKA = 3;
+	const PRIHLASIT_NEMOZE_INE = 4;
 	
 	public function mozeSaPrihlasit($row) {
 		$prihlasRange = AIS2Utils::parseAISDateTimeRange($row['prihlasovanie']);
-		if (isset($this->hodnoteniaData[$row['predmet']])) {
-			$znamka=$this->hodnoteniaData[$row['predmet']];
-		} else $znamka="";
-		if ($znamka!="" && $znamka!="FX") {
+		$predmet = $row['predmet'];
+		if (isset($this->hodnoteniaData[$predmet]['znamka'])) {
+			$znamka = $this->hodnoteniaData[$predmet]['znamka'];
+		} else {
+			$znamka = "";
+		}
+
+		if (isset($this->hodnoteniaData[$predmet]['mozePrihlasit']) &&
+				$this->hodnoteniaData[$predmet]['mozePrihlasit']=='N') {
+			$mozePredmet = false;
+		} else {
+			$mozePredmet = true;
+		}
+
+		if ($znamka!="" && $znamka!="FX" && !$mozePredmet) {
 			return self::PRIHLASIT_NEMOZE_ZNAMKA;
 		}
+
 		if (!($prihlasRange['od'] < time() && $prihlasRange['do']>time())) {
 			return self::PRIHLASIT_NEMOZE_CAS;
 		}
@@ -72,6 +86,15 @@ class ZoznamTerminovCallback implements ITabCallback {
 				$row['maxPocet']==$row['pocetPrihlasenych']) {
 			return self::PRIHLASIT_NEMOZE_POCET;
 		}
+
+		if (!$mozePredmet) {
+			return self::PRIHLASIT_NEMOZE_INE;
+		}
+
+		if ($znamka!="" && $znamka!="FX" && $mozePredmet) {
+			return self::PRIHLASIT_MOZE_ZNAMKA;
+		}
+
 		return self::PRIHLASIT_MOZE;
 	}
 	
@@ -80,7 +103,7 @@ class ZoznamTerminovCallback implements ITabCallback {
 		$hodnoteniaData = array();
 		
 		foreach ($this->hodnotenia->getHodnotenia()->getData() as $row) {
-			$hodnoteniaData[$row['nazov']]=$row['znamka'];
+			$hodnoteniaData[$row['nazov']]=$row;;
 		}
 		$this->hodnoteniaData = $hodnoteniaData;
 		
@@ -113,7 +136,8 @@ class ZoznamTerminovCallback implements ITabCallback {
 				
 				$hash = $this->hashNaPrihlasenie($predmetRow['nazov'], $row);
 				$mozeSaPrihlasit = $this->mozeSaPrihlasit($row);
-				if ($mozeSaPrihlasit == self::PRIHLASIT_MOZE) {
+				if ($mozeSaPrihlasit == self::PRIHLASIT_MOZE ||
+				    $mozeSaPrihlasit == self::PRIHLASIT_MOZE_ZNAMKA) {
 					$row['prihlas']="<form method='post' action='$actionUrl'><div>
 							<input type='hidden' name='action' value='prihlasNaSkusku'/>
 							<input type='hidden' name='prihlasPredmetIndex'
@@ -124,14 +148,19 @@ class ZoznamTerminovCallback implements ITabCallback {
 							<button name='submit' type='submit' class='tableButton positive'>
 								<img src='images/add.png' alt=''>Prihlás ma!
 							</button></div></form>";
+					if ($mozeSaPrihlasit == self::PRIHLASIT_MOZE_ZNAMKA) {
+						$row['prihlas'] = 'Už máš zápísané"'.
+							$hodnoteniaData[$row['predmet']]['znamka'].'"'.$row['prihlas'];
+					}
 				} else if ($mozeSaPrihlasit == self::PRIHLASIT_NEMOZE_CAS) {
-					$row['prihlas'] = 'nedá sa';
+					$row['prihlas'] = 'Nedá sa (neskoro)';
 				} else if ($mozeSaPrihlasit == self::PRIHLASIT_NEMOZE_POCET) {
-					$row['prihlas'] = 'termín je plný!';
+					$row['prihlas'] = 'Termín je plný!';
 				} else if ($mozeSaPrihlasit == self::PRIHLASIT_NEMOZE_ZNAMKA) {
-					$row['prihlas'] = 'Už máš zápísané "'.$hodnoteniaData[$row['predmet']].'"';
-				} else {
-					assert(false);
+					$row['prihlas'] = 'Už máš zápísané"'.
+						$hodnoteniaData[$row['predmet']]['znamka'].'"';
+				} else if ($mozeSaPrihlasit == self::PRIHLASIT_NEMOZE_INE) {
+					$row['prihlas'] = 'Nedá sa, dôvod neznámy';
 				}
 				$terminyTable->addRow($row, null);
 				
