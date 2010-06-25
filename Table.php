@@ -25,6 +25,7 @@ Copyright (c) 2010 Martin Králik
  }}} */
 
 require_once 'libfajr/AIS2Table.php';
+require_once 'DisplayManager.php';
 
 class TableRow
 {
@@ -196,7 +197,7 @@ class Table
 	 */
 	public function getHtml()
 	{
-		$id = "id".rand(); // FIXME: rozumny id generator
+		$id = DisplayManager::getUniqueHTMLId('table');
 		
 		$table = "\n<!-- ******* Table:{$this->name} ****** -->\n";
 		$table .= "<div class='table'>\n";

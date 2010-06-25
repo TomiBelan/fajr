@@ -31,6 +31,8 @@ class DisplayManager
 	protected static $content = array();
 	
 	protected static $base = null;
+
+	private static $nextHtmlId = 1;
 	
 	protected static $predefinedContent = array(
 			'loginBox' => '
@@ -258,6 +260,13 @@ len na zapisovanie a použitie, t.j. <code>d----wx---</code>.
 		}
 		$html .= '</div>';
 		self::addContent($html);
+	}
+
+	public static function getUniqueHTMLId($idType = 'id') {
+		$uniquePart = self::$nextHtmlId;
+		self::$nextHtmlId += 1;
+
+		return $idType.$uniquePart;
 	}
 			
 }
