@@ -35,38 +35,52 @@ class TabManager {
 	private $name = '';
 	private $urlParams = null;
 	
-	public function __construct($name, $urlParams) {
+	public function __construct($name, array $urlParams) {
 		$this->name = $name;
 		$this->urlParams = $urlParams;
 		
 	}
 	
 	public function addTab($name, $title, ITabCallback $callback) {
-		$this->tabs[$name] = array('title' => $title, 'callback' => $callback);
+		if (isset($this->tabs[$name])) {
+			throw new Exception('Pokus o predefinovanie existujúceho tabu');
+		}
+		$this->tabs[$name] = array('name' => $name, 'title' => $title, 'callback' => $callback);
+		// Po pridani prveho tabu do prazdneho TabManagera je tento implicitne aktivny
+		if ($this->active === null) {
+			$this->setActive($name);
+		}
 	}
 	
 	public function setActive($tabName) {
-		// FIXME: check for invalid argument
+		if (!isset($this->tabs[$tabName])) {
+			throw new Exception('Takýto tab neexistuje!');
+		}
 		$this->active = $tabName;
 	}
 
+	private function getActiveTab() {
+		if ($this->active === null) {
+			throw new Exception('Nebol nastavený aktívny tab!');
+		}
+		return $this->tabs[$this->active];
+	}
+
 	public function getHtml() {
+		$activeTab = $this->getActiveTab();
+
 		$code = '<div class=\'tab_header\'>';
 		foreach ($this->tabs as $key => $value) {
 			$link = FajrUtils::linkUrl(array_merge($this->urlParams,
 			             array($this->name => $key)));
-			if ($key == $this->active) $class='tab_selected'; else $class='tab';
+			if ($key == $activeTab['name']) $class='tab_selected'; else $class='tab';
 			$code .= '<span class=\''.$class.'\'><a href="'.$link.'">'.$value['title']
 				.'</a></span>';
 		}
 		$code .= '</div>';
 		
-		if (!isset($this->tabs[$this->active])) {
-			throw new Exception("Pokus o zobrazenie neplatného tabu!");
-		}
-		
 		try {
-			$code .= $this->tabs[$this->active]['callback']->callback();
+			$code .= $activeTab['callback']->callback();
 		} catch (Exception $e) {
 			DisplayManager::addException($e);
 		}

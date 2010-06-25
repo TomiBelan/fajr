@@ -146,7 +146,6 @@ try
 		if (Input::get('tab') === null) Input::set('tab', 'TerminyHodnotenia');
 		$tabs = new TabManager('tab', array('studium'=>Input::get('studium'),
 					'list'=>Input::get('list')));
-		$tabs->setActive(Input::get('tab'));
 		// FIXME: chceme to nejak refaktorovat, aby sme nevytvarali zbytocne
 		// objekty, ktore v konstruktore robia requesty
 		$hodnoteniaScreen = new AIS2HodnoteniaPriemeryScreen(
@@ -159,7 +158,8 @@ try
 					new ZapisanePredmetyCallback($terminyHodnotenia));
 		$tabs->addTab('Hodnotenia', 'Hodnotenia/Priemery',
 				new HodnoteniaCallback($hodnoteniaScreen));
-		
+
+		$tabs->setActive(Input::get('tab'));
 		DisplayManager::addContent($tabs->getHtml());
 		
 		$timeDiff = (microtime(true)-$startTime);
