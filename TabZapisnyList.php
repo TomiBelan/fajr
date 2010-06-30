@@ -19,12 +19,15 @@ class ZapisanePredmetyCallback implements ITabCallback {
 		$predmetyZapisnehoListu = $this->skusky->getPredmetyZapisnehoListu();
 		$predmetyZapisnehoListuTable = new
 			Table(TableDefinitions::predmetyZapisnehoListu(), 'Predmety zápisného listu');
+		$kreditovCelkom = 0;
 		foreach (Sorter::sort($predmetyZapisnehoListu->getData(),
 					array("semester"=>-1, "nazov"=>1)) as $row) {
 			if ($row['semester']=='L') $class='leto'; else $class='zima';
 			$predmetyZapisnehoListuTable->addRow($row, array('class'=>$class));
+			$kreditovCelkom += $row['kredit'];
 		}
 ;
+		$predmetyZapisnehoListuTable->addFooter(array('nazov'=>'Celkom','kredit'=>$kreditovCelkom), array());
 		$predmetyZapisnehoListuTable->setUrlParams(array('studium' =>
 					Input::get('studium'), 'list' => Input::get('list')));
 		
