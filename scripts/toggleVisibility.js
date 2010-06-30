@@ -1,12 +1,10 @@
 function toggleVisibility(id) {
-		var element = document.getElementById(id);
-		var img = document.getElementById('toggle' + id);
-		if (element.style.display != 'none' ) {
-				element.style.display = 'none';
-				img.src='images/arrow_out.png'
+		// OK, kedze je includnuty prototype, mozme ho pouzit
+		var element = $(id);
+		if (!element.hasClassName('collapsed') ) {
+				element.addClassName('collapsed');
 		} else {
-				element.style.display = '';
-				img.src='images/arrow_in.png'
+				element.removeClassName('collapsed');
 		}
 		
 }

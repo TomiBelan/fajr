@@ -214,17 +214,16 @@ class Table
 		$id = DisplayManager::getUniqueHTMLId('table');
 		
 		$table = "\n<!-- ******* Table:{$this->name} ****** -->\n";
-		$table .= "<div class='table'>\n";
-		if ($this->name) $table .= '<h2 class=\'togglevisibility\'  onclick=\'toggleVisibility("'.$id.'");\' >
-			<img alt="" class=\'togglevisibilityimg\' id=\'toggle'.
-			$id.'\' src=\'images/arrow_in.png\' />'.$this->name.'</h2>'."\n";
+		$table .= '<div class="table" id="'.$id.'"'."\n";
+		if ($this->name) $table .= '<h2 class=\'togglevisibility\'
+			onclick=\'toggleVisibility("'.$id.'");\' >'.$this->name.'</h2>'."\n";
 			if (!is_array($this->data) || empty($this->data[0])) {
 			$table .= '<font color="red"> Dáta pre túto tabuľku neboli nájdené.</font><hr class="space" />';
 			$table .= "</div>\n";
 			return $table;
 		}
 		
-		$table .= '<table id=\''.$id."' class='colstyle-sorting'>\n<thead>\n<tr>\n";
+		$table .= "<table class='colstyle-sorting'>\n<thead>\n<tr>\n";
 		$columns = $this->getColumns();
 		
 		foreach ($columns as $key=>$value) {

@@ -1,12 +1,19 @@
 /* expand/collapse tables */
-.togglevisibility, .togglevisibilityimg {
+.togglevisibility {
 	cursor:pointer;
 }
 
-.togglevisibilityimg {
-	margin: 3px;
-	vertical-align: top;
+div.table h2.togglevisibility {
+	padding-left: 22px;
+	background-image: url('../images/arrow_in.png');
+	background-position: 3px 3px;
+	background-repeat: no-repeat;
 }
+
+div.table.collapsed h2.togglevisibility {
+	background-image: url('../images/arrow_out.png');
+}
+
 
 /* ??? */
 
@@ -34,6 +41,11 @@ table {
 	margin: 2px;
 	padding-right: 5px;
 }
+
+div.table.collapsed table {
+	display: none;
+}
+
 tr {
 	padding: 5px;
 	margin: 5px;
