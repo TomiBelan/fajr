@@ -1,5 +1,5 @@
 <?php
-require_once 'TabManager.php';
+require_once 'Renderable.php';
 require_once 'Table.php';
 require_once 'libfajr/AIS2Utils.php';
 require_once 'libfajr/AIS2AdministraciaStudiaScreen.php';
@@ -9,7 +9,7 @@ require_once 'TableDefinitions.php';
 require_once 'Sorter.php';
 require_once 'FajrUtils.php';
 
-class ZoznamTerminovCallback implements ITabCallback {
+class ZoznamTerminovCallback implements Renderable {
 	private $skusky;
 	private $hodnotenia;
 	
@@ -98,7 +98,7 @@ class ZoznamTerminovCallback implements ITabCallback {
 		return self::PRIHLASIT_MOZE;
 	}
 	
-	public function callback() {
+	public function getHtml() {
 		$predmetyZapisnehoListu = $this->skusky->getPredmetyZapisnehoListu();
 		$hodnoteniaData = array();
 		
@@ -121,9 +121,11 @@ class ZoznamTerminovCallback implements ITabCallback {
 					"tab"=>Input::get("tab"));
 		
 		$terminyTable = new
-			Table(TableDefinitions::vyberTerminuHodnoteniaJoined(), 'Termíny, na
-					ktoré sa môžem prihlásiť', array('termin'=>'index',
+			Table(TableDefinitions::vyberTerminuHodnoteniaJoined(), array('termin'=>'index',
 						'predmet'=>'predmetIndex'), $baseUrlParams);
+
+		$terminyCollapsible = new Collapsible('Termíny, na ktoré sa môžem prihlásiť',
+			$terminyTable);
 		
 		$actionUrl=FajrUtils::linkUrl($baseUrlParams);
 		
@@ -172,19 +174,20 @@ class ZoznamTerminovCallback implements ITabCallback {
 						'predmetIndex'=>Input::get('predmet')));
 		}
 		
-		$html = $terminyTable->getHtml();
+		$html = $terminyCollapsible->getHtml();
 		if (Input::get('termin') != null && Input::get('predmet')!=null) {
 			$prihlaseni = $this->skusky->getZoznamTerminovDialog(Input::get('predmet'))
 				->getZoznamPrihlasenychDialog(Input::get('termin'))
 				->getZoznamPrihlasenych();
 			
 			$zoznamPrihlasenychTable =  new
-			Table(TableDefinitions::zoznamPrihlasenych(), 'Zoznam prihlásených
-					na vybratý termín',
-					null, array('studium', 'list'));
+			Table(TableDefinitions::zoznamPrihlasenych(), null, array('studium', 'list'));
+
+			$zoznamPrihlasenychCollapsible = new Collapsible('Zoznam prihlásených
+					na vybratý termín', $zoznamPrihlasenychTable);
 			
 			$zoznamPrihlasenychTable->addRows($prihlaseni->getData());
-			$html .= $zoznamPrihlasenychTable->getHtml();
+			$html .= $zoznamPrihlasenychCollapsible->getHtml();
 		}
 		return $html;
 	}

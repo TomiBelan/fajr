@@ -26,13 +26,14 @@ Copyright (c) 2010 Martin Králik
 
 require_once 'libfajr/AIS2Table.php';
 require_once 'DisplayManager.php';
+require_once 'Renderable.php';
 
-class TableRow
+class TableRow implements Renderable
 {
 	private $data = null;
 	private $options = null;
 	
-	public function __construct($table, $rowData, $options = null, $isFooter = false) {
+	public function __construct(Table $table, array $rowData, $options = null, $isFooter = false) {
 		assert($isFooter || isset($rowData['index'])); // row should have index
 		$this->data = $rowData;
 		$this->options = $options;
@@ -117,11 +118,10 @@ class TableRow
  *
  * @author majak
  */
-class Table
+class Table implements Renderable
 {
 	protected $definition = null;
 	protected $data = array();
-	protected $name = null;
 	public $newKey = null;
 	public $urlParams = array();
 	protected $options = null;
@@ -131,14 +131,12 @@ class Table
  * Nastaví atribúty a zo vstupného HTML dá tabuľku do poľa.
  * @param array $definition Definícia tabuľky.
  * @param string $html HTML z AISu.
- * @param string $name Názov tabuľky.
  * @param string|null $newKey Názov nového parametru v url, ktorého hodnota bude závisieť od riadku tabuľky.
  * @param array $urlParams Zvyšné už nastavené parametre pre url.
  */
-	public function  __construct($definition, $name = '', $newKey = null, $urlParams = array())
+	public function  __construct(array $definition, $newKey = null, array $urlParams = array())
 	{
 		$this->definition = $definition;
-		$this->name = $name;
 		$this->newKey = $newKey;
 		$this->urlParams = $urlParams;
 		$this->footer = null;
@@ -156,11 +154,6 @@ class Table
 
 	public function addFooter($rowData, $rowOptions) {
 		$this->footer[] = new TableRow($this, $rowData, $rowOptions, true);
-	}
-
-	public function setName($name)
-	{
-		$this->name = $name;
 	}
 
 	public function setNewKey($newKey)
@@ -213,17 +206,14 @@ class Table
 	{
 		$id = DisplayManager::getUniqueHTMLId('table');
 		
-		$table = "\n<!-- ******* Table:{$this->name} ****** -->\n";
-		$table .= '<div class="table" id="'.$id.'"'."\n";
-		if ($this->name) $table .= '<h2 class=\'togglevisibility\'
-			onclick=\'toggleVisibility("'.$id.'");\' >'.$this->name.'</h2>'."\n";
-			if (!is_array($this->data) || empty($this->data[0])) {
+		$table = "\n<!-- ******* Table ****** -->\n";
+		
+		if (!is_array($this->data) || empty($this->data[0])) {
 			$table .= '<font color="red"> Dáta pre túto tabuľku neboli nájdené.</font><hr class="space" />';
-			$table .= "</div>\n";
 			return $table;
 		}
 		
-		$table .= "<table class='colstyle-sorting'>\n<thead>\n<tr>\n";
+		$table .= "<table id=\"".$id."\"class='colstyle-sorting'>\n<thead>\n<tr>\n";
 		$columns = $this->getColumns();
 		
 		foreach ($columns as $key=>$value) {
@@ -252,11 +242,6 @@ class Table
 			$table .= "</tfoot>\n";
 		}
 		$table .= "</table>\n";
-		if ($this->getOption('collapsed')) {
-			$table .= '<script type="text/javascript"> toggleVisibility("'.
-								$id."\") </script>\n";
-		}
-		$table .= "</div>\n\n\n";
 		return $table;
 	}
 

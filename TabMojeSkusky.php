@@ -1,5 +1,5 @@
 <?php
-require_once 'TabManager.php';
+require_once 'Renderable.php';
 require_once 'Table.php';
 require_once 'libfajr/AIS2Utils.php';
 require_once 'libfajr/AIS2AdministraciaStudiaScreen.php';
@@ -9,7 +9,7 @@ require_once 'TableDefinitions.php';
 require_once 'Sorter.php';
 require_once 'FajrUtils.php';
 
-class MojeTerminyHodnoteniaCallback implements ITabCallback {
+class MojeTerminyHodnoteniaCallback implements Renderable {
 	public function __construct($terminyHodnotenia, $hodnotenia) {
 		$this->terminyHodnoteniaApp = $terminyHodnotenia;
 		$this->hodnoteniaApp = $hodnotenia;
@@ -45,7 +45,7 @@ class MojeTerminyHodnoteniaCallback implements ITabCallback {
 	}
 	
 	
-	public function callback() {
+	public function getHtml() {
 		$terminyHodnotenia = $this->terminyHodnoteniaApp->getTerminyHodnotenia();
 		$hodnotenia = $this->hodnoteniaApp->getHodnotenia();
 		if (Input::get('action') !== null) {
@@ -62,12 +62,16 @@ class MojeTerminyHodnoteniaCallback implements ITabCallback {
 					"tab"=>Input::get("tab"));
 		
 		$terminyHodnoteniaTableActive =  new
-			Table(TableDefinitions::mojeTerminyHodnotenia(), 'Aktuálne termíny hodnotenia',
-					'termin', $baseUrlParams);
+			Table(TableDefinitions::mojeTerminyHodnotenia(), 'termin', $baseUrlParams);
+
+		$terminyHodnoteniaCollapsibleActive = new Collapsible('Aktuálne termíny hodnotenia',
+			$terminyHodnoteniaTableActive);
 		
 		$terminyHodnoteniaTableOld =  new
-			Table(TableDefinitions::mojeTerminyHodnotenia(), 'Staré termíny hodnotenia',
-					'termin', $baseUrlParams);
+			Table(TableDefinitions::mojeTerminyHodnotenia(), 'termin', $baseUrlParams);
+
+		$terminyHodnoteniaCollapsibleOld = new Collapsible('Staré termíny hodnotenia',
+			$terminyHodnoteniaTableOld);
 		
 		if (Input::get('termin')!=null) {
 			$terminyHodnoteniaTableActive->setOption('selected_key',
@@ -124,16 +128,17 @@ class MojeTerminyHodnoteniaCallback implements ITabCallback {
 				$terminyHodnoteniaTableActive->addRow($row, array('class'=>$class));
 			}
 		}
-		
-		$html = $terminyHodnoteniaTableActive->getHtml();
-		$html .= $terminyHodnoteniaTableOld->getHtml();
+
+		$html = $terminyHodnoteniaCollapsibleActive->getHtml();
+		$html .= $terminyHodnoteniaCollapsibleOld->getHtml();
 		if (Input::get('termin')!=null) {
 			$prihlaseni = $this->terminyHodnoteniaApp->getZoznamPrihlasenychDialog(Input::get('termin'))->getZoznamPrihlasenych();
 			$zoznamPrihlasenychTable = new
-			Table(TableDefinitions::zoznamPrihlasenych(), 'Zoznam prihlásených
-					na vybratý termín', null, array('studium', 'list'));
+			Table(TableDefinitions::zoznamPrihlasenych(), null, array('studium', 'list'));
 			$zoznamPrihlasenychTable->addRows($prihlaseni->getData());
-			$html .= $zoznamPrihlasenychTable->getHtml();
+			$zoznamPrihlasenychCollapsible = new Collapsible('Zoznam prihlásených
+					na vybratý termín', $zoznamPrihlasenychTable);
+			$html .= $zoznamPrihlasenychCollapsible->getHtml();
 		}
 		return $html;
 	}

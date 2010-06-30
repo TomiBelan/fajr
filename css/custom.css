@@ -1,17 +1,28 @@
-/* expand/collapse tables */
+/* expand/collapse elements */
 .togglevisibility {
 	cursor:pointer;
 }
 
-div.table h2.togglevisibility {
+div.collapsible h2.togglevisibility {
 	padding-left: 22px;
 	background-image: url('../images/arrow_in.png');
 	background-position: 3px 3px;
 	background-repeat: no-repeat;
 }
 
-div.table.collapsed h2.togglevisibility {
+div.collapsible.collapsed h2.togglevisibility {
 	background-image: url('../images/arrow_out.png');
+}
+
+div.collapsible.collapsed div.collapsiblecontent {
+	display: none;
+}
+
+/* div around all collapsible elements */
+div.collapsible {
+	border: 1px solid black;
+	margin: 5px;
+	margin-bottom: 15px;
 }
 
 
@@ -30,20 +41,9 @@ div.table.collapsed h2.togglevisibility {
 	background-color: #85FF85;
 }
 
-/* div around all tables */
-div.table {
-	border: 1px solid black;
-	margin: 5px;
-	margin-bottom: 15px;
-}
-
 table {
 	margin: 2px;
 	padding-right: 5px;
-}
-
-div.table.collapsed table {
-	display: none;
 }
 
 tr {

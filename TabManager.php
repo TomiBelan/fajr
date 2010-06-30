@@ -24,11 +24,9 @@ Copyright (c) 2010 Peter Peresini
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
-interface ITabCallback {
-	public function callback();
-}
+require_once 'Renderable.php';
 
-class TabManager {
+class TabManager implements Renderable {
 
 	private $tabs = array();
 	private $active = null;
@@ -41,11 +39,11 @@ class TabManager {
 		
 	}
 	
-	public function addTab($name, $title, ITabCallback $callback) {
+	public function addTab($name, $title, Renderable $content) {
 		if (isset($this->tabs[$name])) {
 			throw new Exception('Pokus o predefinovanie existujúceho tabu');
 		}
-		$this->tabs[$name] = array('name' => $name, 'title' => $title, 'callback' => $callback);
+		$this->tabs[$name] = array('name' => $name, 'title' => $title, 'content' => $content);
 		// Po pridani prveho tabu do prazdneho TabManagera je tento implicitne aktivny
 		if ($this->active === null) {
 			$this->setActive($name);
@@ -80,7 +78,7 @@ class TabManager {
 		$code .= '</div>';
 		
 		try {
-			$code .= $activeTab['callback']->callback();
+			$code .= $activeTab['content']->getHtml();
 		} catch (Exception $e) {
 			DisplayManager::addException($e);
 		}

@@ -1,5 +1,5 @@
 <?php
-require_once 'TabManager.php';
+require_once 'Renderable.php';
 require_once 'Table.php';
 require_once 'libfajr/AIS2Utils.php';
 require_once 'libfajr/AIS2AdministraciaStudiaScreen.php';
@@ -8,17 +8,19 @@ require_once 'libfajr/AIS2HodnoteniaPriemeryScreen.php';
 require_once 'TableDefinitions.php';
 require_once 'Sorter.php';
 
-class ZapisanePredmetyCallback implements ITabCallback {
+class ZapisanePredmetyCallback implements Renderable {
 	private $skusky;
 	
 	public function __construct($skusky) {
 		$this->skusky = $skusky;
 	}
 	
-	public function callback() {
+	public function getHtml() {
 		$predmetyZapisnehoListu = $this->skusky->getPredmetyZapisnehoListu();
 		$predmetyZapisnehoListuTable = new
-			Table(TableDefinitions::predmetyZapisnehoListu(), 'Predmety zápisného listu');
+			Table(TableDefinitions::predmetyZapisnehoListu());
+		$predmetyZapisnehoListuCollapsible = new Collapsible('Predmety zápisného listu',
+			$predmetyZapisnehoListuTable);
 		$kreditovCelkom = 0;
 		foreach (Sorter::sort($predmetyZapisnehoListu->getData(),
 					array("semester"=>-1, "nazov"=>1)) as $row) {

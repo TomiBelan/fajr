@@ -54,6 +54,7 @@ require_once 'Table.php';
 require_once 'TableDefinitions.php';
 require_once 'Sorter.php';
 require_once 'FajrUtils.php';
+require_once 'Collapsible.php';
 
 require_once 'TabMojeSkusky.php';
 require_once 'TabPrihlasenieNaSkusky.php';
@@ -112,18 +113,20 @@ try
 		if (Input::get('studium') === null) Input::set('studium',0);
 		
 		$zoznamStudii = $adminStudia->getZoznamStudii();
-		$zoznamStudiiTable = new Table(TableDefinitions::zoznamStudii(),
-				'Zoznam štúdií', 'studium', array('tab' => Input::get('tab')));
+		$zoznamStudiiTable = new Table(TableDefinitions::zoznamStudii(), 'studium',
+			array('tab' => Input::get('tab')));
 		$zoznamStudiiTable->addRows($zoznamStudii->getData());
 		$zoznamStudiiTable->setOption('selected_key', Input::get('studium'));
 		$zoznamStudiiTable->setOption('collapsed', true);
-		DisplayManager::addContent($zoznamStudiiTable->getHtml());
-		
+
+		$zoznamStudiiCollapsible = new Collapsible('Zoznam štúdií', $zoznamStudiiTable, true);
+
+		DisplayManager::addContent($zoznamStudiiCollapsible->getHtml());		
 		
 		$zapisneListy = $adminStudia->getZapisneListy(Input::get('studium'));
 		
 		$zapisneListyTable = new
-			Table(TableDefinitions::zoznamZapisnychListov(), 'Zoznam zápisných listov',
+			Table(TableDefinitions::zoznamZapisnychListov(),
 				'list', array('studium' => Input::get('studium'),
 					'tab'=>Input::get('tab')));
 		
@@ -136,7 +139,10 @@ try
 		$zapisneListyTable->addRows($zapisneListy->getData());
 		$zapisneListyTable->setOption('selected_key', Input::get('list'));
 		$zapisneListyTable->setOption('collapsed', true);
-		DisplayManager::addContent($zapisneListyTable->getHtml());
+
+		$zapisneListyCollapsible = new Collapsible('Zoznam zápisných listov', $zapisneListyTable, true);
+
+		DisplayManager::addContent($zapisneListyCollapsible->getHtml());
 		
 		
 		$terminyHodnotenia = new
