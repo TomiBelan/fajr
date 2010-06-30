@@ -47,6 +47,11 @@ th a:link, th a:visited {
 	text-decoration: none;
 }
 
+tfoot {
+	display: table-row-group;
+	font-style: italic;
+}
+
 .logo {
 	display: none;
 }

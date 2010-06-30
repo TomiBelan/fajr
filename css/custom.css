@@ -95,6 +95,13 @@ tr.zima:nth-child(even) {
 	background-color: #D1D1FF;
 }
 
+/* table footer */
+
+tfoot tr {
+	background-color:#efefef;
+	font-style: italic;
+}
+
 
 /* Tabs */
 

@@ -32,11 +32,12 @@ class TableRow
 	private $data = null;
 	private $options = null;
 	
-	public function __construct($table, $rowData, $options = null) {
-		assert(isset($rowData['index'])); // row should have index
+	public function __construct($table, $rowData, $options = null, $isFooter = false) {
+		assert($isFooter || isset($rowData['index'])); // row should have index
 		$this->data = $rowData;
 		$this->options = $options;
 		$this->table = $table;
+		$this->isFooter = $isFooter;
 	}
 	
 	public function getData() {
@@ -50,17 +51,19 @@ class TableRow
 		if (isset($this->options['class'])) {
 			$class=$this->options['class'];
 		}
-		if ($table->GetOption('selected_key') !== null) {
-			$sKey = $table->getOption('selected_key');
-			if (is_array($sKey)) {
-				$selected = true;
-				foreach ($sKey as $key=>$value) {
-					if ($value != $this->data[$key]) $selected=false;
+		if (!$this->isFooter) {
+			if ($table->GetOption('selected_key') !== null) {
+				$sKey = $table->getOption('selected_key');
+				if (is_array($sKey)) {
+					$selected = true;
+					foreach ($sKey as $key=>$value) {
+						if ($value != $this->data[$key]) $selected=false;
+					}
+				} else {
+					$selected = ($sKey == $this->data['index']);
 				}
-			} else {
-				$selected = ($sKey == $this->data['index']);
+				if ($selected) $class='selected';
 			}
-			if ($selected) $class='selected';
 		}
 		
 		$row = "<tr class='$class'>\n";
@@ -81,7 +84,13 @@ class TableRow
 		$colno = 0;
 		foreach ($columns as $key => $column)
 		{
-			$cell_value = $this->data[substr($key, 0, 32)];
+			$real_key = substr($key, 0, 32);
+			if (isset($this->data[$real_key])) {
+				$cell_value = $this->data[$real_key];
+			}
+			else {
+				$cell_value = '';
+			}
 			if ($cell_value=="") $cell_value="&nbsp;";
 				
 			$cell = '    <td>';
@@ -132,6 +141,7 @@ class Table
 		$this->name = $name;
 		$this->newKey = $newKey;
 		$this->urlParams = $urlParams;
+		$this->footer = null;
 	}
 	
 	public function addRows($data) {
@@ -142,6 +152,10 @@ class Table
 	
 	public function addRow($rowData, $rowOptions) {
 		$this->data[] = new TableRow($this, $rowData, $rowOptions);
+	}
+
+	public function addFooter($rowData, $rowOptions) {
+		$this->footer[] = new TableRow($this, $rowData, $rowOptions, true);
 	}
 
 	public function setName($name)
@@ -218,18 +232,33 @@ class Table
 		}
 		
 		$table .= "</tr>\n";
-		$table .= "\n</thead>\n<tbody>\n";
+		$table .= "\n</thead>\n";
+		// Tu by mal byt TFOOT, vid nizsie
+		$table .= "<tbody>\n";
 		foreach ($this->data as $row)
 		{
 			$table .= $row->getHtml();
 		}
-	$table .= "</tbody></table>\n";
-	if ($this->getOption('collapsed')) {
-		$table .= '<script type="text/javascript"> toggleVisibility("'.
-							$id."\") </script>\n";
-	}
-	$table .= "</div>\n\n\n";
-	return $table;
+		$table .= "</tbody>";
+		// FIXME: Tento TFOOT by mal byt podla specifikacie pred TBODY,
+		// ale ked je tu, je mozne css-kom vypnut opakovanie
+		// footer riadkov pri tlaci (inak by boli na vrchu tabulky).
+		// Ak chceme mat vystup 100% validny, treba upravit sorter skript,
+		// aby bral do uvahy nejaky class a zmenit tento TFOOT na TBODY.
+		if ($this->footer !== null) {
+			$table .= '<tfoot>';
+			foreach ($this->footer as $row) {
+				$table .= $row->getHtml();
+			}
+			$table .= "</tfoot>\n";
+		}
+		$table .= "</table>\n";
+		if ($this->getOption('collapsed')) {
+			$table .= '<script type="text/javascript"> toggleVisibility("'.
+								$id."\") </script>\n";
+		}
+		$table .= "</div>\n\n\n";
+		return $table;
 	}
 
 }
