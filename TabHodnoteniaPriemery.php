@@ -9,6 +9,7 @@ require_once 'libfajr/AIS2TerminyHodnoteniaScreen.php';
 require_once 'libfajr/AIS2HodnoteniaPriemeryScreen.php';
 require_once 'TableDefinitions.php';
 require_once 'Sorter.php';
+require_once 'PriemeryCalculator.php';
 
 
 class HodnoteniaCallback implements Renderable {
@@ -21,37 +22,23 @@ class HodnoteniaCallback implements Renderable {
 	public function getHtml() {
 		$hodnotenia = $this->app->getHodnotenia();
 		$hodnoteniaTable = new Table(TableDefinitions::hodnotenia());
-
-		$sucet = array('leto'=>0.0, 'zima'=>0.0);
-		$pocet = array('leto'=>0.0, 'zima'=>0.0);
-		$sucetKreditov = array('leto'=>0, 'zima'=>0);
-		$vsetky = array('leto'=>true, 'zima'=>true);
-
-		$numerickaHodnotaZnamky = array('A'=>1.0,
-										'B'=>1.5,
-										'C'=>2.0,
-										'D'=>2.5,
-										'E'=>3.0,
-										'Fx'=>4.0);
+		$priemeryCalculator = new PriemeryCalculator();
 
 		foreach(Sorter::sort($hodnotenia->getData(),
 					array("semester"=>-1, "nazov"=>1)) as $row) {
 			if ($row['semester']=='L') {
 				$class='leto';
+				$priemeryCalculator->add(PriemeryCalculator::SEMESTER_LETNY,
+					$row['znamka'], $row['kredit']);
 			}
 			else {
 				$class='zima';
-			}
-			if (isset($row['znamka']) && !empty($row['znamka'])) {
-				$pocet[$class] += 1;
-				$sucet[$class] += $numerickaHodnotaZnamky[$row['znamka']]*$row['kredit'];
-				$sucetKreditov[$class] += $row['kredit'];
-			}
-			else {
-				$vsetky[$class] = false;
+				$priemeryCalculator->add(PriemeryCalculator::SEMESTER_ZIMNY,
+					$row['znamka'], $row['kredit']);
 			}
 			$hodnoteniaTable->addRow($row, array('class'=>$class));
 		}
+
 
 		$hodnoteniaCollapsible = new Collapsible('Hodnotenia', $hodnoteniaTable);
 		
@@ -63,27 +50,12 @@ class HodnoteniaCallback implements Renderable {
 		$priemeryContainer->addChild(new Label('Nasledovné priemery sú prebraté z AISu, čiže to (ne)funguje presne rovnako:'));
 		$priemeryContainer->addChild($priemeryTable);
 
-		if ($pocet['zima'] > 0 || $pocet['leto'] > 0) {
-			$priemeryFajrText = '<p><br />Nasledovné vážené študijné priemery sú počítané Fajrom z tabuľky Hodnotenia <strong>zo zatiaľ ohodnotených predmetov</strong>:<br />';
-
-			if ($pocet['zima']>0) {
-				$priemerZima = $sucet['zima']/$sucetKreditov['zima'];
-				$priemeryFajrText .= 'Zimný semester: '.sprintf('%.2f', $priemerZima).'<br />';
-			}
-
-			if ($pocet['leto']>0) {
-				$priemerLeto = $sucet['leto']/$sucetKreditov['leto'];
-				$priemeryFajrText .= 'Letný semester: '.sprintf('%.2f', $priemerLeto).'<br />';
-			}
-
-			if ($pocet['zima']>0 && $pocet['leto']>0) {
-				$priemerRok = ($sucet['zima']+$sucet['leto'])/($sucetKreditov['zima']+$sucetKreditov['leto']);
-				$priemeryFajrText .= 'Celý akad. rok: '.sprintf('%.2f', $priemerRok).'<br />';
-			}
-
+		if ($priemeryCalculator->hasPriemer()) {
+			$priemeryFajrText = '<p><br />Nasledovné vážené študijné priemery sú počítané Fajrom priebežne z tabuľky Hodnotenia, <strong>preto nemôžu byť považované ako oficiálne</strong>:<br /><br />';
+			$priemeryFajrText .= $priemeryCalculator->getHtml();
+			$priemeryFajrText .= '</p>';
 
 			$priemeryContainer->addChild(new Label($priemeryFajrText));
-			$priemeryFajrText .= '</p>';
 		}
 		
 
