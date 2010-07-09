@@ -98,22 +98,24 @@ class AIS2Utils
 	}
 	
 	/**
-	 * predpokladame range v 2 moznych standardnych ais formatoch
-	 * "do [datum a cas]"
-	 * "[datum a cas] do [datum a cas]"
+	 * @param str predpokladame range v 2 moznych standardnych ais formatoch
+	 *		- "do [datum a cas]"
+	 *		- "[datum a cas] do [datum a cas]"
 	 * @see parseAISDateTime
+	 * @returns array('od'=>timestamp, 'do'=>timestamp)
 	 */
 	public static function parseAISDateTimeRange($str) {
 		$pattern = '@(?P<od>[0-9:. ]*)do (?P<do>[0-9:. ]*)@';
 		$data = matchAll($str, $pattern);
 		$data = $data[0];
+		$result = array();
 		if ($data['od'] == '') {
-			$data['od'] = null;
+			$result['od'] = null;
 		} else {
-			$data['od'] = self::parseAISDateTime($data['od']);
+			$result['od'] = self::parseAISDateTime($data['od']);
 		}
-		$data['do'] = self::parseAISDateTime($data['do']);
-		return $data;
+		$result['do'] = self::parseAISDateTime($data['do']);
+		return $result;
 	}
 	
 }
