@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * This file contains tests for Validator class
  *
@@ -30,3 +30,4 @@ public function testNumbers() {
 
 }
 
+?>

@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * This file contains tests for AIS2 utility class
  *
@@ -40,3 +40,4 @@ public function testDateTimeRange() {
 }
 }
 
+?>
