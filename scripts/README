@@ -1,0 +1,13 @@
+Tu sa nachadzaju rozne uzitocne skripty, ktore vedia pomahat pri vyvoji.
+Tieto skripty ale zvacsa vyzaduju, aby mal dany clovek nainstalovany nejake 
+pridavne php package
+
+Menovite tu mame:
+update_cscope.sh -- (potrebuje cscope), sluzi na vyhladavanie definicii tried, funkcii, ...
+run_tests.sh -- (potrebuje PHPUnit), sluzi na spustanie unittestov
+make_coding_standard.sh -- (potrebuje phpcs), sluzi na vygenerovanie reportu o chybach formatovania
+                        zdrojakov
+make_all_doc.sh -- (potrebuje phpdoc, graphviz), sluzi na vygenerovanie dokumentacie a grafov
+                    reprezentujucich rozne aspekty kodu (triedy, package, adresarova struktura)
+
+Tieto skripty generuju svoje reporty do adresara ../report
