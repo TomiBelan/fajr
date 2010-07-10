@@ -30,8 +30,8 @@ Copyright (c) 2010 Martin Sucha
  *
  * @package Fajr
  * @subpackage Html
- * @author Martin Kralik <@TODO>
- * @author Martin Sucha <@TODO>
+ * @author Martin Kralik <majak47@gmail.com>
+ * @author Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */
 
@@ -40,79 +40,87 @@ Copyright (c) 2010 Martin Sucha
  * ho bolo mozne javascriptom schovat
  * @package Fajr
  * @subpackage Html
+ * @author Martin Kralik <majak47@gmail.com>
+ * @author Martin Sucha <anty.sk@gmail.com>
  */
-class Collapsible implements Renderable {
+class Collapsible implements Renderable
+{
 
-	/** 
-	 * titulok, ktory je zobrazeny vzdy, bez ohladu na
-	 * to ci je element skryty alebo nie.
-	 * Pozor, titulok moze obsahovat html kod
-	 * a preto musi byt bezpecny!
-	 */
-	protected $title = null;
+  /** 
+   * titulok, ktory je zobrazeny vzdy, bez ohladu na
+   * to ci je element skryty alebo nie.
+   * Pozor, titulok moze obsahovat html kod
+   * a preto musi byt bezpecny!
+   */
+  protected $title = null;
 
-	/** obsah, ktory chceme vediet skryvat */
-	protected Renderable $content = null;
+  /** obsah, ktory chceme vediet skryvat */
+  protected Renderable $content = null;
 
-	/** je element aktualne skryty? */
-	protected $collapsed = false;
+  /** je element aktualne skryty? */
+  protected $collapsed = false;
 
-	/**
-	 * Konstruktor
-	 * @param string	$title		Titulok schovavanej oblasti
-	 * @param Renderable	$content	Obsah schovavanej oblasti
-	 * @param bool		$collapsed	Je oblast schovana?
-	 */
-	function __construct($title, Renderable $content, $collapsed = false) {
-		assert($content != null);
-		$this->setTitle($title);
-		$this->setContent($content);
-		$this->setCollapsed($collapsed);
-	}
+  /**
+   * Konstruktor
+   * @param string      $title      Titulok schovavanej oblasti
+   * @param Renderable  $content    Obsah schovavanej oblasti
+   * @param bool        $collapsed  Je oblast schovana?
+   */
+  function __construct($title, Renderable $content, $collapsed = false)
+  {
+    assert($content != null);
+    $this->setTitle($title);
+    $this->setContent($content);
+    $this->setCollapsed($collapsed);
+  }
 
-	public function getTitle() {
-		return $this->title;
-	}
+  public function getTitle()
+  {
+    return $this->title;
+  }
 
-	public function setTitle($title) {
-		assert($title != null);
-		$this->title = $title;
-	}
+  public function setTitle($title)
+  {
+    assert($title != null);
+    $this->title = $title;
+  }
 
-	public function getCollapsed() {
-	 return $this->collapsed;
-	}
+  public function getCollapsed()
+  {
+    return $this->collapsed;
+  }
 
-	public function setCollapsed($collapsed) {
-	 $this->collapsed = $collapsed;
-	}
+  public function setCollapsed($collapsed)
+  {
+    $this->collapsed = $collapsed;
+  }
 
-	public function getContent() {
-	 return $this->content;
-	}
+  public function getContent()
+  {
+    return $this->content;
+  }
 
-	public function setContent(Renderable $content) {
-	 $this->content = $content;
-	}
+  public function setContent(Renderable $content)
+  {
+    $this->content = $content;
+  }
 
-	public function getHtml() {
-		$id = DisplayManager::getUniqueHTMLId('collapsible');
+  public function getHtml()
+  {
+    $id = DisplayManager::getUniqueHTMLId('collapsible');
 
-		$html = '<div class="collapsible" id="'.$id.'"'."\n";
-		$html .= '<h2 class="togglevisibility" onclick=\'toggleVisibility("'.$id.'");\' >';
-		$html .= $this->title.'</h2>'."\n";
-		$html .= '<div class="collapsiblecontent">';
-		$html .= $this->content->getHtml();
-		$html .= '</div>';
-		$html .= "</div>\n\n\n";
-		if ($this->collapsed) {
-			$html .= '<script type="text/javascript"> toggleVisibility("';
-			$html .= $id."\") </script>\n";
-		}
+    $html = '<div class="collapsible" id="'.$id.'"'."\n";
+    $html .= '<h2 class="togglevisibility" onclick=\'toggleVisibility("'.$id.'");\' >';
+    $html .= $this->title.'</h2>'."\n";
+    $html .= '<div class="collapsiblecontent">';
+    $html .= $this->content->getHtml();
+    $html .= '</div>';
+    $html .= "</div>\n\n\n";
+    if ($this->collapsed) {
+      $html .= '<script type="text/javascript"> toggleVisibility("';
+      $html .= $id."\") </script>\n";
+    }
 
-		return $html;
-	}
-
-
-
+    return $html;
+  }
 }
