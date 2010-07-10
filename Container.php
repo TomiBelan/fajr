@@ -24,8 +24,6 @@ Copyright (c) 2010 Martin Sucha
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
-require_once 'Renderable.php';
-
 /**
  * Jednoducha implementacia Renderable, ktora vracia spojenie html
  * reprezentacii clenskych objektov

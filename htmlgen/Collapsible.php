@@ -55,7 +55,7 @@ class Collapsible implements Renderable
   protected $title = null;
 
   /** obsah, ktory chceme vediet skryvat */
-  protected Renderable $content = null;
+  protected $content = null;
 
   /** je element aktualne skryty? */
   protected $collapsed = false;
