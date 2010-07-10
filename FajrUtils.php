@@ -28,115 +28,129 @@ require_once 'FajrRouter.php';
 
 class FajrUtils {
 
-	public static function login(AIS2Login $login, AIS2Connection $connection) {
-		$session = new AIS2Session($login);
+  public static function login(AIS2Login $login, AIS2Connection $connection)
+  {
+    $session = new AIS2Session($login);
 
-		if (!$session->login($connection)) return false;
+    if (!$session->login($connection)) return false;
 
-		$_SESSION['AISSession'] = $session;
-		self::redirect();
-		return true;
-	}
+    $_SESSION['AISSession'] = $session;
+    self::redirect();
+    return true;
+  }
 
-	/**
-	 * Odhlási z Cosignu a zmaže lokálne cookies.
-	 */
-	public static function logout(AIS2Connection $connection)
-	{
-		if (!isset($_SESSION['AISSession'])) return false;
-		if ($_SESSION['AISSession']->logout($connection)) {
-			unset($_SESSION['AISSession']);
-		}
-		self::redirect();
-	}
+  /**
+   * Odhlási z Cosignu a zmaže lokálne cookies.
+   */
+  public static function logout(AIS2Connection $connection)
+  {
+    if (!isset($_SESSION['AISSession'])) return false;
+    if ($_SESSION['AISSession']->logout($connection)) {
+      unset($_SESSION['AISSession']);
+    }
+    self::redirect();
+  }
 
-	public static function isLoggedIn() {
-		if (!isset($_SESSION['AISSession'])) return false;
-		return $_SESSION['AISSession']->isLoggedIn();
-	}
+  public static function isLoggedIn()
+  {
+    if (!isset($_SESSION['AISSession'])) return false;
+    return $_SESSION['AISSession']->isLoggedIn();
+  }
 
-	public static function redirect($newParams = array())
-	{
-		header('Location: '.self::buildUrl(array_merge(Input::getUrlParams(), $newParams)));
-		exit();
-	}
+  public static function redirect($newParams = array())
+  {
+    header('Location: '.self::buildUrl(array_merge(Input::getUrlParams(), $newParams)));
+    exit();
+  }
 
-	public static function getTempDir()
-	{
-		return dirname(__FILE__).DIRECTORY_SEPARATOR.'temp';
-	}
+  public static function getTempDir()
+  {
+    return dirname(__FILE__).DIRECTORY_SEPARATOR.'temp';
+  }
 
-	public static function getCookieDir()
-	{
-		return self::getTempDir().DIRECTORY_SEPARATOR.'cookies';
-	}
+  public static function getCookieDir()
+  {
+    return self::getTempDir().DIRECTORY_SEPARATOR.'cookies';
+  }
 
-	public static function getCookieFile()
-	{
-		return self::getCookieDir().DIRECTORY_SEPARATOR.session_id();
-	}
+  public static function getCookieFile()
+  {
+    return self::getCookieDir().DIRECTORY_SEPARATOR.session_id();
+  }
 
-	public static function buildUrl($params) {
-		$path = '';
-		if (FajrConfig::get('URL.Path')) {
-			$path = FajrRouter::paramsToPath($params);
-		}
-		$query = http_build_query($params);
-		if (strlen($query)>0) $query = '?'.$query;
+  public static function buildUrl($params)
+  {
+    $path = '';
+    if (FajrConfig::get('URL.Path')) {
+      $path = FajrRouter::paramsToPath($params);
+    }
+    $query = http_build_query($params);
+    if (strlen($query)>0) $query = '?'.$query;
 
-		$base = '';
+    $base = '';
 
-		if (!FajrConfig::get('URL.Rewrite')) {
-			$base = 'fajr.php';
-			if (strlen($path)>0) $base .= '/';
-		}
+    if (!FajrConfig::get('URL.Rewrite')) {
+      $base = 'fajr.php';
+      if (strlen($path)>0) $base .= '/';
+    }
 
-		return self::basePath().$base.$path.$query;
-	}
+    return self::basePath().$base.$path.$query;
+  }
 
-	public static function linkUrl($params) {
-		return hescape(self::buildUrl($params));
-	}
+  /**
+   * creates htmlescaped url
+   */
+  public static function linkUrl($params)
+  {
+    return hescape(self::buildUrl($params));
+  }
 
-	public static function pathInfo() {
-		if (!isset($_SERVER['PATH_INFO'])) return '';
-		$path = $_SERVER['PATH_INFO'];
-		if (substr_compare($path, '/', 0, 1)==0) $path = substr($path, 1);
-		return $path;
-	}
-	
-	public static function isHTTPS() {
-		return ((isset($_SERVER['HTTPS'])) && 
-					($_SERVER['HTTPS']!=='off') && 
-					($_SERVER['HTTPS'])) || 
-				((isset($_SERVER['SERVER_PORT'])) && $_SERVER['SERVER_PORT']=='443');
-	}
+  
+  public static function pathInfo()
+  {
+    if (!isset($_SERVER['PATH_INFO'])) return '';
+    $path = $_SERVER['PATH_INFO'];
+    if (substr_compare($path, '/', 0, 1)==0) $path = substr($path, 1);
+    return $path;
+  }
 
-	public static function basePath() {
-		$url = '';
-		if (self::isHTTPS()) {
-			$url = 'https://';
-		}
-		else {
-			$url = 'http://';
-		}
-		$url .= $_SERVER['SERVER_NAME'];
-		if (isset($_SERVER['SERVER_PORT'])) {
-			$port = $_SERVER['SERVER_PORT'];
-			if ($port != '80' && $port != '443') {
-				$url .= ':'.$port;
-			}
-		}
+  /**
+   * @returns bool whether the current connection is secured
+   */
+  public static function isHTTPS()
+  {
+    return ((isset($_SERVER['HTTPS'])) && 
+        ($_SERVER['HTTPS']!=='off') && 
+        ($_SERVER['HTTPS'])) || 
+      ((isset($_SERVER['SERVER_PORT'])) && $_SERVER['SERVER_PORT']=='443');
+  }
 
-		$dname = dirname($_SERVER['SCRIPT_NAME']);
+  public static function basePath()
+  {
+    $url = '';
+    if (self::isHTTPS()) {
+      $url = 'https://';
+    }
+    else {
+      $url = 'http://';
+    }
+    $url .= $_SERVER['SERVER_NAME'];
+    if (isset($_SERVER['SERVER_PORT'])) {
+      $port = $_SERVER['SERVER_PORT'];
+      if ($port != '80' && $port != '443') {
+        $url .= ':'.$port;
+      }
+    }
 
-		if ($dname !== '/') {
-			$dname .= '/';
-		}
+    $dname = dirname($_SERVER['SCRIPT_NAME']);
 
-		$url .=  $dname;
+    if ($dname !== '/') {
+      $dname .= '/';
+    }
 
-		return $url;
-	}
+    $url .=  $dname;
+
+    return $url;
+  }
 
 }
