@@ -1,7 +1,7 @@
-SCRIPT="phpdoc/makedoc.sh";
-SCRIPT_GRAPH_CLASS="phpdoc/class_graph.sh";
-SCRIPT_GRAPH_DIR="phpdoc/directory_graph.sh";
-SCRIPT_GRAPH_PACKAGE="phpdoc/package_graph.sh";
+SCRIPT=`dirname $0`/phpdoc/makedoc.sh;
+SCRIPT_GRAPH_CLASS=`dirname $0`/phpdoc/class_graph.sh;
+SCRIPT_GRAPH_DIR=`dirname $0`/phpdoc/directory_graph.sh;
+SCRIPT_GRAPH_PACKAGE=`dirname $0`/phpdoc/package_graph.sh;
 
 BASE_PATH=`dirname $0`/..
 $SCRIPT $BASE_PATH "Fajr";
