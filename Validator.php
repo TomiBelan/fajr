@@ -31,18 +31,18 @@ Copyright (c) 2010 Martin Králik
  */
 class Validator
 {
-	static function number($input, $options)
-	{
-		return ctype_digit($input);
-	}
-	
-	static function string($input, $options)
-	{
-		$minLength = 0;
-		extract($options, EXTR_IF_EXISTS);
-		
-		if ((is_string($input) || is_int($input) || is_float($input))
-			&& (mb_strlen($input) >= $minLength)) return true;
-	}
+  static function number($input, $options)
+  {
+    return ctype_digit($input);
+  }
+
+  static function string($input, $options)
+  {
+    $minLength = 0;
+    extract($options, EXTR_IF_EXISTS);
+
+    if ((is_string($input) || is_int($input) || is_float($input))
+        && (mb_strlen($input) >= $minLength)) return true;
+  }
 }
 ?>
