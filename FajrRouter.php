@@ -24,70 +24,73 @@ Copyright (c) 2010 Martin Sucha
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
-class FajrRouter {
+class FajrRouter
+{
 
-	/**
-	 * Vyrobi cestu z parametrov dotazu. Z params odstrani vsetky kluce, ktore
-	 * sa nemaju objavit v query stringu
-	 * @param array $params asociativne pole parametrov
-	 * @return string vysledna cesta
-	 */
-	public static function paramsToPath(array &$params) {
+  /**
+   * Vyrobi cestu z parametrov dotazu. Z params odstrani vsetky kluce, ktore
+   * sa nemaju objavit v query stringu
+   * @param array $params asociativne pole parametrov
+   * @return string vysledna cesta
+   */
+  public static function paramsToPath(array &$params)
+  {
 
-		$path = array();
+    $path = array();
 
-		if (isset($params['logout'])) {
-			$path[] = 'logout';
-			unset($params['logout']);
-		}
-		else if (isset($params['studium'])) {
-			$path[] = $params['studium'];
-			unset($params['studium']);
+    if (isset($params['logout'])) {
+      $path[] = 'logout';
+      unset($params['logout']);
+    }
+    else if (isset($params['studium'])) {
+      $path[] = $params['studium'];
+      unset($params['studium']);
 
-			if (isset($params['list'])) {
-				$path[] = $params['list'];
-				unset($params['list']);
+      if (isset($params['list'])) {
+        $path[] = $params['list'];
+        unset($params['list']);
 
-				if (isset($params['tab'])) {
-					$path[] = $params['tab'];
-					unset($params['tab']);
-				}
-			}
-		}
+        if (isset($params['tab'])) {
+          $path[] = $params['tab'];
+          unset($params['tab']);
+        }
+      }
+    }
 
-		return implode('/', $path);
-	}
+    return implode('/', $path);
+  }
 
-	/**
-	 * Inverzna funkcia k paramsToPath, vrati vsetky parametre, ktore su
-	 * zakodovane v ceste
-	 * @param string $path
-	 * @return array asociativne pole parametrov
-	 */
-	public static function pathToParams($pathString) {
-		$params = array();
+  /**
+   * Inverzna funkcia k paramsToPath, vrati vsetky parametre, ktore su
+   * zakodovane v ceste
+   * @param string $path
+   * @return array asociativne pole parametrov
+   */
+  public static function pathToParams($pathString)
+  {
+    $params = array();
 
-		if (strlen($pathString)==0) return $params;
+    if (strlen($pathString)==0) return $params;
 
-		$path = explode('/',$pathString);
-		$n = count($path);
+    $path = explode('/',$pathString);
+    $n = count($path);
 
-		if ($n>0) {
-			if ($path[0] == 'logout') {
-				$params['logout']=true;
-				return $params;
-			}
+    if ($n>0) {
+      if ($path[0] == 'logout') {
+        $params['logout']=true;
+        return $params;
+      }
 
-			$params['studium'] = $path[0];
-		}
-		if ($n>1) {
-			$params['list'] = $path[1];
-		}
-		if ($n>2) {
-			$params['tab'] = $path[2];
-		}
+      $params['studium'] = $path[0];
+    }
+    if ($n>1) {
+      $params['list'] = $path[1];
+    }
+    if ($n>2) {
+      $params['tab'] = $path[2];
+    }
 
-		return $params;
-	}
+    return $params;
+  }
 
 }
