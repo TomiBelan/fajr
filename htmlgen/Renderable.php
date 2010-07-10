@@ -25,12 +25,26 @@ Copyright (c) 2010 Martin Sucha
  }}} */
 
 /**
+ * Interface pre vsetky objekty generujuce html kod
+ *
+ * @package Fajr
+ * @subpackage Html
+ * @author Martin Sucha <anty.sk@gmail.com>
+ * @filesource
+ */
+
+/**
  * Indikuje, že tento objekt vie vygenerovať svoj obsah ako HTML
+ *
+ * @package Fajr
+ * @subpackage Html
+ * @author Martin Sucha <anty.sk@gmail.com>
  */
 interface Renderable {
 
 	/**
-	 * Vráti obsah tohto objektu ako html retazec
+	 * Vráti obsah tohto objektu ako html reťazec
+	 * @returns string html kód
 	 */
 	public function getHtml();
 }
