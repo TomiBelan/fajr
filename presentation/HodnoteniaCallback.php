@@ -1,16 +1,4 @@
 <?php
-require_once 'Renderable.php';
-require_once 'Container.php';
-require_once 'Label.php';
-require_once 'Table.php';
-require_once 'libfajr/AIS2Utils.php';
-require_once 'libfajr/AIS2AdministraciaStudiaScreen.php';
-require_once 'libfajr/AIS2TerminyHodnoteniaScreen.php';
-require_once 'libfajr/AIS2HodnoteniaPriemeryScreen.php';
-require_once 'TableDefinitions.php';
-require_once 'Sorter.php';
-require_once 'PriemeryCalculator.php';
-
 
 class HodnoteniaCallback implements Renderable {
 	private $app;

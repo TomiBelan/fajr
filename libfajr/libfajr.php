@@ -25,13 +25,4 @@ Copyright (c) 2010 Martin Sucha
  }}} */
 
 	require_once 'supporting_functions.php';
-	
-	function libfajr_autoload($className) {
-		if (preg_match('/^AIS2[a-zA-Z0-9]+$/', $className)) {
-			require_once $className.'.php';
-		}
-	}
-
-	function libfajr_autoload_register() {
-		spl_autoload_register('libfajr_autoload');
-	}
+	require_once 'Loader.php';

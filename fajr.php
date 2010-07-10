@@ -31,10 +31,17 @@ mb_internal_encoding("UTF-8");
 // Pretoze v session ukladam objekty libfajru, treba nacitat definicie
 // tried skor, ako sa nacitava session
 require_once 'libfajr/libfajr.php';
-libfajr_autoload_register();
+Loader::register();
+Loader::searchForClasses(".", true);
 
+// cache expire, u browsera
+session_cache_expire(600);
+// cache expire, u servera
+ini_set("session.gc_maxlifetime", "36000");
+// custom cache expire je mozny iba pre custom session adresar
+session_save_path("sessions");
 session_start();
-session_cache_expire(300);
+
 $startTime = microtime(true);
 
 require_once 'FajrConfig.php';
@@ -46,20 +53,6 @@ if (!FajrConfig::isConfigured()) {
 	session_write_close();
 	die();
 }
-
-require_once 'Input.php';
-require_once 'TabManager.php';
-require_once 'Changelog.php';
-require_once 'Table.php';
-require_once 'TableDefinitions.php';
-require_once 'Sorter.php';
-require_once 'FajrUtils.php';
-require_once 'Collapsible.php';
-
-require_once 'TabMojeSkusky.php';
-require_once 'TabPrihlasenieNaSkusky.php';
-require_once 'TabZapisnyList.php';
-require_once 'TabHodnoteniaPriemery.php';
 
 $connection = null;
 $debugConnection = null;

@@ -24,8 +24,6 @@ Copyright (c) 2010 Peter Peresini
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
-require_once 'Renderable.php';
-
 class TabManager implements Renderable {
 
 	private $tabs = array();

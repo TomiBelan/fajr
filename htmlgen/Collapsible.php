@@ -25,23 +25,43 @@ Copyright (c) 2010 Martin Sucha
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
-require_once 'DisplayManager.php';
-require_once 'Renderable.php';
+/**
+ * Obsahuje generator html kodu, ktory sa da skryt javascriptom
+ *
+ * @package Fajr
+ * @subpackage Html
+ * @author Martin Kralik <@TODO>
+ * @author Martin Sucha <@TODO>
+ * @filesource
+ */
 
 /**
  * Trieda, ktora vygeneruje okolo daneho Renderable taky HTML kod, aby
  * ho bolo mozne javascriptom schovat
+ * @package Fajr
+ * @subpackage Html
  */
 class Collapsible implements Renderable {
 
-	protected $name = null;
-	protected $content = null;
+	/** 
+	 * titulok, ktory je zobrazeny vzdy, bez ohladu na
+	 * to ci je element skryty alebo nie.
+	 * Pozor, titulok moze obsahovat html kod
+	 * a preto musi byt bezpecny!
+	 */
+	protected $title = null;
+
+	/** obsah, ktory chceme vediet skryvat */
+	protected Renderable $content = null;
+
+	/** je element aktualne skryty? */
 	protected $collapsed = false;
 
 	/**
 	 * Konstruktor
-	 * @param string $title Titulok schovavanej oblasti
-	 * @param Renderable $content Obsah schovavanej oblasti
+	 * @param string	$title		Titulok schovavanej oblasti
+	 * @param Renderable	$content	Obsah schovavanej oblasti
+	 * @param bool		$collapsed	Je oblast schovana?
 	 */
 	function __construct($title, Renderable $content, $collapsed = false) {
 		assert($content != null);
@@ -71,7 +91,7 @@ class Collapsible implements Renderable {
 	 return $this->content;
 	}
 
-	public function setContent($content) {
+	public function setContent(Renderable $content) {
 	 $this->content = $content;
 	}
 
