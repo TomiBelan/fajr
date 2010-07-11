@@ -32,7 +32,7 @@ class Loader
      */
     private static $_classPaths = array();
 
-    /**
+	/**
      * add information about class
      *
      * @param string $className Name of the class
@@ -92,7 +92,13 @@ class Loader
                     ."path $path is not a directory!");
         }
 
-        $d = dir($path);
+        @$d = dir($path);
+
+        if ($d === false) {
+		    // TODO provide a way to explicitly exclude subtrees from being searched
+            error_log('Cannot open '.$path.' while searching for classes');
+			return;
+        }
 
         while (false !== ($entry = $d->read())) {
             if ($entry=="." || $entry=="..") {
