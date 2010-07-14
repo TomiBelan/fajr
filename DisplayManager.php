@@ -28,90 +28,90 @@ require_once 'FajrConfig.php';
 
 class DisplayManager
 {
-	protected static $content = array();
-	
-	protected static $base = null;
+  protected static $content = array();
+  
+  protected static $base = null;
 
-	private static $nextHtmlId = 1;
-	
-	protected static $predefinedContent = array(
-			'loginBox' => '
+  private static $nextHtmlId = 1;
+  
+  protected static $predefinedContent = array(
+      'loginBox' => '
 <div class="span-5 prepend-1">
-	<form method="post" action="">
-		<fieldset>
-			<legend>Prihlásenie cez Cosign</legend> 
-			<label for="login">Prihlasovacie meno</label>
-			<br/>
-			<input type="text" name="login" id="login"/>
-			<br/>
-			<label for="krbpwd">Heslo</label>
-			<br/>
-			<input type="password" name="krbpwd" id="krbpwd"/>
-			<br/>
-			<button type="submit" name="submit">
-				<img alt="" src="images/key_go.png"/>
-				Prihlásiť
-			</button>
-		</fieldset>
-	</form>
+  <form method="post" action="">
+    <fieldset>
+      <legend>Prihlásenie cez Cosign</legend> 
+      <label for="login">Prihlasovacie meno</label>
+      <br/>
+      <input type="text" name="login" id="login"/>
+      <br/>
+      <label for="krbpwd">Heslo</label>
+      <br/>
+      <input type="password" name="krbpwd" id="krbpwd"/>
+      <br/>
+      <button type="submit" name="submit">
+        <img alt="" src="images/key_go.png"/>
+        Prihlásiť
+      </button>
+    </fieldset>
+  </form>
 </div>
 <div class="span-5 last">
-	<form method="post" action="">
-		<fieldset>
-			<legend>Prihlásenie cez cookie</legend> 
-			bezpečne sa <a
-			href=\'https://login.uniba.sk/?cosign-filter-ais2.uniba.sk&amp;https://ais2.uniba.sk/ais/login.do?\'>
-				prihlás</a> do AISu a skopíruj si cookie.
-			<hr/>
-			<label for="cosignCookie">cosign-filter-ais2.uniba.sk</label>
-			<br/>
-			<input type="password" name="cosignCookie" id="cosignCookie"/>
-			<br/>
-			<button type="submit" name="submit">
-				<img alt="" src="images/key_add.png"/>
-				Prihlásiť
-			</button>
-		</fieldset>
-	</form>
+  <form method="post" action="">
+    <fieldset>
+      <legend>Prihlásenie cez cookie</legend> 
+      bezpečne sa <a
+      href=\'https://login.uniba.sk/?cosign-filter-ais2.uniba.sk&amp;https://ais2.uniba.sk/ais/login.do?\'>
+        prihlás</a> do AISu a skopíruj si cookie.
+      <hr/>
+      <label for="cosignCookie">cosign-filter-ais2.uniba.sk</label>
+      <br/>
+      <input type="password" name="cosignCookie" id="cosignCookie"/>
+      <br/>
+      <button type="submit" name="submit">
+        <img alt="" src="images/key_add.png"/>
+        Prihlásiť
+      </button>
+    </fieldset>
+  </form>
 </div>
 <hr class="space" />',
 
-			'header' => '
+      'header' => '
 <!DOCTYPE html
      PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="sk" lang="sk">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	',
-			'header2' => '
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/prototype/1.6.1.0/prototype.js"></script>
-	<script type="text/javascript" src="javascript/fajr.js"></script>
-	<script type="text/javascript" src="javascript/toggleVisibility.js"></script>
-	<script type="text/javascript" src="javascript/tablesort.min.js"></script>
-	<link rel="stylesheet" href="css/screen.css" type="text/css" media="screen, projection" />
-	<link rel="stylesheet" href="css/plugins/buttons/screen.css" type="text/css" media="screen, projection" />
-	<link rel="stylesheet" href="css/custom.css" type="text/css" media="screen, projection" />
-	<link rel="stylesheet" href="css/print.css" type="text/css" media="print" />
-	<link rel="stylesheet" href="css/customprint.css" type="text/css" media="print" />
-	<!--[if lt IE 8]><link rel="stylesheet" href="css/ie.css" type="text/css" media="screen, projection" /><![endif]-->
-	<link href="images/favicon.ico" rel="icon" type="image/x-icon" />
-	
-	<title>FAJR</title>
-	
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  ',
+      'header2' => '
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/prototype/1.6.1.0/prototype.js"></script>
+  <script type="text/javascript" src="javascript/fajr.js"></script>
+  <script type="text/javascript" src="javascript/toggleVisibility.js"></script>
+  <script type="text/javascript" src="javascript/tablesort.min.js"></script>
+  <link rel="stylesheet" href="css/screen.css" type="text/css" media="screen, projection" />
+  <link rel="stylesheet" href="css/plugins/buttons/screen.css" type="text/css" media="screen, projection" />
+  <link rel="stylesheet" href="css/custom.css" type="text/css" media="screen, projection" />
+  <link rel="stylesheet" href="css/print.css" type="text/css" media="print" />
+  <link rel="stylesheet" href="css/customprint.css" type="text/css" media="print" />
+  <!--[if lt IE 8]><link rel="stylesheet" href="css/ie.css" type="text/css" media="screen, projection" /><![endif]-->
+  <link href="images/favicon.ico" rel="icon" type="image/x-icon" />
+  
+  <title>FAJR</title>
+  
 </head>
 <body>
 <div class="container"><h1><img src=\'images/fajr_small.gif\' alt="[logo]" class=\'logo\' /> FAJR beta</h1>
 ',
 
-			'footer' => '
+      'footer' => '
 </div>
 ',
-			'footer2'=>'
+      'footer2'=>'
 </body>
 </html>
 ',
-			'warnings' => '
+      'warnings' => '
 <div class="span-18 prepend-1 last increase-line-height">
 <p>
 Vitajte pred bránou do aplikácie FAJR.
@@ -151,7 +151,7 @@ Ak jej ani tak nedôverujete, používajte AIS ;-).
 </p>
 </div>
 ',
-		'credits' => '
+    'credits' => '
 <div class="span-21 prepend-1 last increase-line-height"><p>
 Stránka mohla vzniknúť vďaka
 <a href="http://www.prototypejs.org/">Prototype</a>,
@@ -160,13 +160,13 @@ Stránka mohla vzniknúť vďaka
 a <a href="http://www.famfamfam.com/lab/icons/silk/">Silk icons</a>.
 </p></div>
 ',
-		'terms' => '
+    'terms' => '
 <div class="span-21 prepend-1 last increase-line-height"><p>
 Prihlásením do systému Fajr súhlasíte s 
 <a href="terms_of_use.php">Podmienkami používania</a>
 </p></div>
 ',
-		'notConfigured' => '
+    'notConfigured' => '
 <div class="prepend-1 span-18 increase-line-height last"><p>Fajr nie je nakonfigurovaný, prosím skopírujte súbor
 <code>configuration.example.php</code> do <code>configuration.php</code>.
 Prednastavené hodnoty konfiguračných volieb by mali byť vhodné pre väčšinu inštalácií,
@@ -180,41 +180,41 @@ len na zapisovanie a použitie, t.j. <code>d----wx---</code>.
 </p>
 </div>
 '
-	);
-	
-	public static function setBase($base)
-	{
-		self::$base = $base;
-	}
-	
-	public static function addContent($content, $predefinedContent = false)
-	{
-		if ($predefinedContent) self::$content[] = self::$predefinedContent[$content];
-		else self::$content[] = $content;
-	}
+  );
+  
+  public static function setBase($base)
+  {
+    self::$base = $base;
+  }
+  
+  public static function addContent($content, $predefinedContent = false)
+  {
+    if ($predefinedContent) self::$content[] = self::$predefinedContent[$content];
+    else self::$content[] = $content;
+  }
 
-	public static function addException($ex)
-	{
-		self::addContent('<div class="error"><h2>Pri spracúvaní požiadavky nastala chyba:</h2>'.
-					$ex->getMessage().'<br/><br/>Stacktrace:<br/>'.nl2br($ex->getTraceAsString()).'</div>');
-	}
-	
-	public static function display()
-	{
-		$html = '';
-		foreach (self::$content as $item) $html .= $item;
-		$header = self::$predefinedContent['header'];
-		if (self::$base !== null) $header .= '<base href="'.self::$base.'" />';
-		$header .= self::$predefinedContent['header2'];
-		$html = $header . $html;
-		$html .= self::$predefinedContent['footer'] . self::googleAnalytics() . self::$predefinedContent['footer2'];
-		return $html;
-	}
+  public static function addException($ex)
+  {
+    self::addContent('<div class="error"><h2>Pri spracúvaní požiadavky nastala chyba:</h2>'.
+          $ex->getMessage().'<br/><br/>Stacktrace:<br/>'.nl2br($ex->getTraceAsString()).'</div>');
+  }
+  
+  public static function display()
+  {
+    $html = '';
+    foreach (self::$content as $item) $html .= $item;
+    $header = self::$predefinedContent['header'];
+    if (self::$base !== null) $header .= '<base href="'.self::$base.'" />';
+    $header .= self::$predefinedContent['header2'];
+    $html = $header . $html;
+    $html .= self::$predefinedContent['footer'] . self::googleAnalytics() . self::$predefinedContent['footer2'];
+    return $html;
+  }
 
-	protected static function googleAnalytics() {
-		$account = FajrConfig::get('GoogleAnalytics.Account');
-		if ($account === null) return '';
-		return '<script type="text/javascript">
+  protected static function googleAnalytics() {
+    $account = FajrConfig::get('GoogleAnalytics.Account');
+    if ($account === null) return '';
+    return '<script type="text/javascript">
 
   var _gaq = _gaq || [];
   _gaq.push([\'_setAccount\', \''.$account.'\']);
@@ -227,48 +227,48 @@ len na zapisovanie a použitie, t.j. <code>d----wx---</code>.
   })();
 
 </script>';
-	}
+  }
 
-	public static function dumpRequests($requests) {
-		$html = '<div class="debug">';
-		foreach ($requests as $request) {
-			$html .= '<div class="debug_connection">';
-			$html .= '<div class="debug_connection_header"><span class="debug_connection_method">'.hescape($request['method']).'</span> '.hescape($request['url']).'</div>';
-			$html .= '<div class="debug_connection_auxinfo">'.sprintf("%.3f", $request['startTime']);
-			$html .= 's - '.sprintf("%.3f", $request['endTime']).'s (';
-			$html .= sprintf("%.3f", $request['endTime']-$request['startTime']);
-			$html .= 's)</div>';
-			if (isset($request['requestData'])) {
-				$html .= '<div class="debug_connection_block"><div class="debug_connection_block_title">Request data:</div><pre>';
-				foreach ($request['requestData'] as $name => $value) {
-					$html .= hescape($name).': '.hescape($value);
-				}
-				$html .= '</pre></div>';
-			}
-			if (isset($request['responseData'])) {
-				$html .= '<div class="debug_connection_block"><div class="debug_connection_block_title">Response data:</div><pre>';
-				$html .= hescape($request['responseData']);
-				$html .= '</pre></div>';
-			}
-			if (isset($request['exception'])) {
-				$html .= '<div class="debug_connection_block"><div class="debug_connection_block_title">Response data:</div><pre>';
-				$html .= hescape($request['exception']->getTraceAsString());
-				$html .= '</pre></div>';
-			}
-			$html .= '</div>';
-			
-		}
-		$html .= '</div>';
-		self::addContent($html);
-	}
+  public static function dumpRequests($requests) {
+    $html = '<div class="debug">';
+    foreach ($requests as $request) {
+      $html .= '<div class="debug_connection">';
+      $html .= '<div class="debug_connection_header"><span class="debug_connection_method">'.hescape($request['method']).'</span> '.hescape($request['url']).'</div>';
+      $html .= '<div class="debug_connection_auxinfo">'.sprintf("%.3f", $request['startTime']);
+      $html .= 's - '.sprintf("%.3f", $request['endTime']).'s (';
+      $html .= sprintf("%.3f", $request['endTime']-$request['startTime']);
+      $html .= 's)</div>';
+      if (isset($request['requestData'])) {
+        $html .= '<div class="debug_connection_block"><div class="debug_connection_block_title">Request data:</div><pre>';
+        foreach ($request['requestData'] as $name => $value) {
+          $html .= hescape($name).': '.hescape($value);
+        }
+        $html .= '</pre></div>';
+      }
+      if (isset($request['responseData'])) {
+        $html .= '<div class="debug_connection_block"><div class="debug_connection_block_title">Response data:</div><pre>';
+        $html .= hescape($request['responseData']);
+        $html .= '</pre></div>';
+      }
+      if (isset($request['exception'])) {
+        $html .= '<div class="debug_connection_block"><div class="debug_connection_block_title">Response data:</div><pre>';
+        $html .= hescape($request['exception']->getTraceAsString());
+        $html .= '</pre></div>';
+      }
+      $html .= '</div>';
+      
+    }
+    $html .= '</div>';
+    self::addContent($html);
+  }
 
-	public static function getUniqueHTMLId($idType = 'id') {
-		$uniquePart = self::$nextHtmlId;
-		self::$nextHtmlId += 1;
+  public static function getUniqueHTMLId($idType = 'id') {
+    $uniquePart = self::$nextHtmlId;
+    self::$nextHtmlId += 1;
 
-		return $idType.$uniquePart;
-	}
-			
+    return $idType.$uniquePart;
+  }
+      
 }
 
 ?>
