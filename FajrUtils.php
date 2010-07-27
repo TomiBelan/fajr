@@ -48,8 +48,15 @@ class FajrUtils
     if (!isset($_SESSION['AISSession'])) return false;
     if ($_SESSION['AISSession']->logout($connection)) {
       unset($_SESSION['AISSession']);
+      self::dropSession();
     }
-    self::redirect();
+  }
+
+  /**
+   * Ensure current session is disposed of and new clean session is created
+   */
+  public static function dropSession() {
+    session_regenerate_id(true);
   }
 
   public static function isLoggedIn()

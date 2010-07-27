@@ -60,6 +60,23 @@ $statsConnection = null;
 $rawStatsConnection = null;
 try
 {
+  Input::prepare();
+
+  $login = Input::get('login'); Input::set('login', null);
+	$krbpwd = Input::get('krbpwd'); Input::set('krbpwd', null);
+	$cosignCookie = Input::get('cosignCookie'); Input::set('cosignCookie', null);
+
+  // FIXME this should be refactored
+  if (($login !== null && $krbpwd !== null) || ($cosignCookie !== null)) {
+    // we are going to log in, so we get a clean session
+    // this needs to be done before a connection
+    // is created, because we pass cookie file name
+    // that contains session_id into AIS2CurlConnection
+    // If we regenerated the session id afterwards,
+    // we could not find the cookie file after a redirect
+    FajrUtils::dropSession();
+  }
+
 	$connection = new AIS2CurlConnection(FajrUtils::getCookieFile());
 
 	$rawStatsConnection = new AIS2StatsConnection($connection);
@@ -78,13 +95,11 @@ try
 
 	AIS2Utils::connection($connection); // toto tu je docasne
 
-	Input::prepare();
-	
-	if (Input::get('logout') !== null) FajrUtils::logout($connection);
-	
-	$login = Input::get('login'); Input::set('login', null);
-	$krbpwd = Input::get('krbpwd'); Input::set('krbpwd', null);
-	$cosignCookie = Input::get('cosignCookie'); Input::set('cosignCookie', null);
+	if (Input::get('logout') !== null) {
+    FajrUtils::logout($connection);
+    FajrUtils::redirect();
+  }
+
 	if ($login !== null && $krbpwd !== null) {
 		$loggedIn = FajrUtils::login(new AIS2CosignLogin($login, $krbpwd), $connection);
 		$login = null;
