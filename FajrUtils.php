@@ -160,6 +160,8 @@ class FajrUtils
    */
   public static function startsWith($haystack, $needle)
   {
+    if ($needle == '') return true;
+
     $needle_length = strlen($needle);
     if ($needle_length > strlen($haystack)) {
       return false;
@@ -175,6 +177,8 @@ class FajrUtils
    */
   public static function endsWith($haystack, $needle)
   {
+    if ($needle == '') return true;
+    
     $needle_length = strlen($needle);
     if ($needle_length > strlen($haystack)) {
       return false;
@@ -215,6 +219,9 @@ class FajrUtils
    * Moreover, this function is associative, i.e.
    * joinPath('a','b','c') has the same effect as
    * joinPath(joinPath('a', 'b'), 'c') or joinPath('a', joinPath('b', 'c'))
+   *
+   * Path components of zero length are ignored
+   *
    * @param string $a first path component
    * @param string $b second path component
    * @param string ... any other path components to join
@@ -224,18 +231,24 @@ class FajrUtils
   {
     $args = func_get_args();
     $num_args = count($args);
+    $shouldAddDS = true;
 
     // start with $a, omit trailing directory separator
-    if ($a != DIRECTORY_SEPARATOR && self::endsWith($a, DIRECTORY_SEPARATOR)) {
-      $path = substr($a, strlen($a) - 1);
-    } else {
+    if ($a == DIRECTORY_SEPARATOR || $a == '') {
+      $shouldAddDS = false;
+      $path = $a;
+    }
+    else if (self::endsWith($a, DIRECTORY_SEPARATOR)) {
+      $path = substr($a, 0, strlen($a) - 1);
+    }
+    else {
       $path = $a;
     }
 
     // add other components
     for ($i = 1; $i < $num_args; $i++) {
       $part = $args[$i];
-      // DIRECTORY_SEPARATOR is a special case
+      // DIRECTORY_SEPARATOR or empty string is a special case
       if ($part == DIRECTORY_SEPARATOR) continue;
 
       // first extract range of part without leading or trailing DS
@@ -251,7 +264,9 @@ class FajrUtils
       }
 
       // append a path component
-      $path .= DIRECTORY_SEPARATOR . substr($part, $start, $end);
+      if ($shouldAddDS) $path .= DIRECTORY_SEPARATOR;
+      $shouldAddDS = true;
+      $path .= substr($part, $start, $end);
     }
 
     return $path;
