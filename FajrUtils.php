@@ -153,4 +153,108 @@ class FajrUtils {
     return $url;
   }
 
+  /**
+   * Checks whether $haystack starts with a substring $needle
+   * @param string $haystack
+   * @param string $needle
+   * @return bool true if $haystack starts with $needle, false otherwise
+   */
+  public static function startsWith($haystack, $needle) {
+	$needle_length = strlen($needle);
+	if ($needle_length>strlen($haystack)) {
+	  return false;
+	}
+	return substr_compare($haystack, $needle, 0, $needle_length) === 0;
+  }
+
+  /**
+   * Checks whether $haystack ends with a substring $needle
+   * @param string $haystack
+   * @param string $needle
+   * @return bool true if $haystack ends with $needle, false otherwise
+   */
+  public static function endsWith($haystack, $needle) {
+	$needle_length = strlen($needle);
+	if ($needle_length>strlen($haystack)) {
+	  return false;
+	}
+	return substr_compare($haystack, $needle, -$needle_length, $needle_length) === 0;
+  }
+
+  /**
+   * Determines, whether given $path is an absolute path or not.
+   * A path is absolute if it starts with filesystem root definition
+   * (i.e. / on unix like systems and C:\ or \\ on Windows)
+   * @param string $path true if the path is relative
+   */
+  public static function isAbsolutePath($path) {
+	// check for unix-like /
+	if (self::startsWith($path, '/')) {
+	  return true;
+	}
+
+	// check for Windows UNC path
+	if (self::startsWith($path, '\\\\')) {
+	  return true;
+	}
+
+	// check for Windows drive letter
+	if (preg_match('/^[A-Z]:/', $subject)) {
+	  return true;
+	}
+
+	return false;
+  }
+
+  /**
+   * Joins two or more path components.
+   * If joining more than two path components, the result is
+   * the same as calling two-argument joinPath successively.
+   * Moreover, this function is associative, i.e.
+   * joinPath('a','b','c') has the same effect as
+   * joinPath(joinPath('a', 'b'), 'c') or joinPath('a', joinPath('b', 'c'))
+   * @param string $a first path component
+   * @param string $b second path component
+   * @param string ... any other path components to join
+   * @return string all the paths joined using a directory separator
+   */
+  public static function joinPath($a, $b) {
+	$args = func_get_args();
+	$num_args = count($args);
+
+	// start with $a, omit trailing directory separator
+	if ($a != DIRECTORY_SEPARATOR && self::endsWith($a, DIRECTORY_SEPARATOR)) {
+	  $path = substr($a, strlen($a)-1);
+	}
+	else {
+	  $path = $a;
+	}
+
+	// add other components
+	for($i = 1; i < num_args-1; $i++) {
+	  $part = $args[$i];
+	  // DIRECTORY_SEPARATOR is a special case
+	  if ($part == DIRECTORY_SEPARATOR) continue;
+
+	  // first extract range of part without leading or trailing DS
+	  if (self::startsWith($part, DIRECTORY_SEPARATOR)) {
+		$start = 1;
+	  }
+	  else {
+		$start = 0;
+	  }
+	  if (self::endsWith($part, DIRECTORY_SEPARATOR)) {
+		$end = strlen($part)-1;
+	  }
+	  else {
+		$end = strlen($part);
+	  }
+
+	  // append a path component
+	  $path .= DIRECTORY_SEPARATOR . substr($part, $start, $end);
+	}
+
+	return $path;
+  }
+
 }

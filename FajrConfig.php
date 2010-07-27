@@ -55,6 +55,25 @@ class FajrConfig
     if (!isset(self::$config[$key])) return null;
     return self::$config[$key];
   }
+
+  /**
+   * Get a directory configuration path.
+   *
+   * If a relative path is given in configuration, it is resolved
+   * relative to the project root directory
+   *
+   * @param string $key
+   * @return string absolute path for the directory specified in configuration
+   */
+  public static function getDirectory($key)
+  {
+	$dir = self::get($key);
+	if ($dir === null) return null;
+	if (FajrUtils::isAbsolutePath($dir)) {
+	  return $dir;
+	}
+	return FajrUtils::joinPath(dirname(__FILE__), $dir);
+  }
 }
 
 FajrConfig::load();
