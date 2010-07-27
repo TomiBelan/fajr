@@ -29,11 +29,30 @@ class FajrConfig
 
   protected static $config = null;
 
+  /**
+   * Default values for configuration options
+   * @var array key=>value
+   * @see configuration.example.php for more information
+   */
   protected static $defaultOptions = array(
     'Debug.Connections'=>false,
     'Debug.Path'=>false,
     'Debug.Rewrite'=>false,
     'Path.Temporary'=>'./temp',
+    'Path.Temporary.Cookies'=>'./cookies',
+    'Path.Temporary.Sessions'=>'./sessions',
+  );
+
+  /**
+   * Specified to which directory a given configuration option
+   * should be relative. It maps option names to option names.
+   * 'A'=>'B' means, that option A should be resolved relative to
+   * directory stored in option B. If not specified or null,
+   * directories are resolved relative to the project root directory.
+   */
+  protected static $directoriesRelativeTo = array(
+    'Path.Temporary.Cookies'=>'Path.Temporary',
+    'Path.Temporary.Sessions'=>'Path.Temporary',
   );
 
   public static function load()
@@ -61,19 +80,30 @@ class FajrConfig
    * Get a directory configuration path.
    *
    * If a relative path is given in configuration, it is resolved
-   * relative to the project root directory
+   * relative to the specified directory or project root directory
+   * if no directory was specified
    *
    * @param string $key
    * @return string absolute path for the directory specified in configuration
+   *                or null if this option was not specified and does not have
+   *                a default value
+   * @see FajrConfig::$defaultOptions
+   * @see FajrConfig::$directoriesRelativeTo
+   * @see configuration.example.php
    */
   public static function getDirectory($key)
   {
-	$dir = self::get($key);
-	if ($dir === null) return null;
-	if (FajrUtils::isAbsolutePath($dir)) {
-	  return $dir;
-	}
-	return FajrUtils::joinPath(dirname(__FILE__), $dir);
+    $dir = self::get($key);
+    if ($dir === null) return null;
+    if (FajrUtils::isAbsolutePath($dir)) {
+      return $dir;
+    }
+    // default resolve relative
+    $relativeTo = dirname(__FILE__);
+    if (!empty(self::$directoriesRelativeTo[$key])) {
+      $relativeTo = self::getDirectory(self::$directoriesRelativeTo[$key]);
+    }
+    return FajrUtils::joinPath($relativeTo, $dir);
   }
 }
 

@@ -39,7 +39,7 @@ session_cache_expire(600);
 // cache expire, u servera
 ini_set("session.gc_maxlifetime", "36000");
 // custom cache expire je mozny iba pre custom session adresar
-session_save_path("sessions");
+session_save_path(FajrConfig::getDirectory('Path.Temporary.Sessions'));
 session_start();
 
 $startTime = microtime(true);
@@ -65,7 +65,7 @@ try
 	$rawStatsConnection = new AIS2StatsConnection($connection);
 	$connection = $rawStatsConnection;
 
-	$connection = new AIS2DecompressingConnection($connection, FajrUtils::getTempDir());
+	$connection = new AIS2DecompressingConnection($connection, FajrConfig::getDirectory('Path.Temporary'));
 	$connection = new AIS2ErrorCheckingConnection($connection);
 
 	$statsConnection = new AIS2StatsConnection($connection);

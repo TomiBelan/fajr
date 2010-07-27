@@ -40,4 +40,16 @@ return array(
    * alebo relatívna k adresáru projektu)
    */
   //'Path.Temporary'=>'./temp',
+
+  /*
+   * Cesta k adresáru pre cookies súbory (absolútna,
+   * alebo relatívna k adresáru Path.Temporary)
+   */
+  //'Path.Temporary.Cookies'=>'./cookies',
+
+  /*
+   * Cesta k adresáru pre session súbory (absolútna,
+   * alebo relatívna k adresáru Path.Temporary)
+   */
+  //'Path.Temporary.Sessions'=>'./sessions',
 );

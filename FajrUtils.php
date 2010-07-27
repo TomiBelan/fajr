@@ -64,19 +64,18 @@ class FajrUtils
     exit();
   }
 
-  public static function getTempDir()
-  {
-    return dirname(__FILE__) . DIRECTORY_SEPARATOR . 'temp';
-  }
-
-  public static function getCookieDir()
-  {
-    return self::getTempDir() . DIRECTORY_SEPARATOR . 'cookies';
-  }
-
+  /**
+   * Returns a cookie file path for current session.
+   *
+   * Cookie file name is not the same as session_id() so that if one
+   * configures the same path for cookie and session directories,
+   * the filenames do not clash.
+   *
+   * @return string file path to use to store cookies into.
+   */
   public static function getCookieFile()
   {
-    return self::getCookieDir() . DIRECTORY_SEPARATOR . session_id();
+    return self::joinPath(FajrConfig::getDirectory('Path.Temporary.Cookies'), 'cookie_'.session_id());
   }
 
   public static function buildUrl($params)
