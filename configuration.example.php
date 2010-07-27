@@ -34,4 +34,10 @@ return array(
    * Táto voľba má účinok len vtedy, keď je zapnutá voľba URL.Path
    */
   //'URL.Rewrite'=>true,
+
+  /*
+   * Cesta k adresáru pre dočasné súbory (absolútna,
+   * alebo relatívna k adresáru projektu)
+   */
+  //'Path.Temporary'=>'./temp',
 );

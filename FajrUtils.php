@@ -201,7 +201,7 @@ class FajrUtils
     }
 
     // check for Windows drive letter
-    if (preg_match('/^[A-Z]:/', $subject)) {
+    if (preg_match('/^[A-Z]:/', $path)) {
       return true;
     }
 
@@ -233,7 +233,7 @@ class FajrUtils
     }
 
     // add other components
-    for ($i = 1; i < num_args - 1; $i++) {
+    for ($i = 1; $i < $num_args; $i++) {
       $part = $args[$i];
       // DIRECTORY_SEPARATOR is a special case
       if ($part == DIRECTORY_SEPARATOR) continue;

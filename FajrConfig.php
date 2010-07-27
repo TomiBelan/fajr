@@ -33,6 +33,7 @@ class FajrConfig
     'Debug.Connections'=>false,
     'Debug.Path'=>false,
     'Debug.Rewrite'=>false,
+    'Path.Temporary'=>'./temp',
   );
 
   public static function load()
