@@ -88,6 +88,17 @@ class FajrUtilsTest extends PHPUnit_Framework_TestCase
     $this->assertFalse(FajrUtils::endsWith('foobar', 'xfoobar'), 'foobar does not end with xfoobar');
   }
 
+  public function testFormatPlural()
+  {
+    $this->assertEquals(FajrUtils::formatPlural(0, 'ok %d', 'failed one %d', 'failed 2-4 %d', 'failed other %d'), 'ok 0');
+    $this->assertEquals(FajrUtils::formatPlural(1, 'failed zero %d', 'ok %d', 'failed 2-4 %d', 'failed other %d'), 'ok 1');
+    $this->assertEquals(FajrUtils::formatPlural(2, 'failed zero %d', 'failed one %d', 'ok %d', 'failed other %d'), 'ok 2');
+    $this->assertEquals(FajrUtils::formatPlural(3, 'failed zero %d', 'failed one %d', 'ok %d', 'failed other %d'), 'ok 3');
+    $this->assertEquals(FajrUtils::formatPlural(4, 'failed zero %d', 'failed one %d', 'ok %d', 'failed other %d'), 'ok 4');
+    $this->assertEquals(FajrUtils::formatPlural(5, 'failed zero %d', 'failed one %d', 'failed 2-4 %d', 'ok %d'), 'ok 5');
+    $this->assertEquals(FajrUtils::formatPlural(10, 'failed zero %d', 'failed one %d', 'failed 2-4 %d', 'ok %d'), 'ok 10');
+  }
+
 }
 
 ?>

@@ -12,15 +12,39 @@ class ZapisanePredmetyCallback implements Renderable {
 			Table(TableDefinitions::predmetyZapisnehoListu());
 		$predmetyZapisnehoListuCollapsible = new Collapsible('Predmety zápisného listu',
 			$predmetyZapisnehoListuTable);
-		$kreditovCelkom = 0;
+		$kreditovCelkomLeto = 0;
+    $kreditovCelkomZima = 0;
+    $pocetPredmetovLeto = 0;
+    $pocetPredmetovZima = 0;
 		foreach (Sorter::sort($predmetyZapisnehoListu->getData(),
 					array("semester"=>-1, "nazov"=>1)) as $row) {
-			if ($row['semester']=='L') $class='leto'; else $class='zima';
+			if ($row['semester']=='L') {
+        $pocetPredmetovLeto += 1;
+        $kreditovCelkomLeto += $row['kredit'];
+        $class='leto';
+      }
+      else {
+        $pocetPredmetovZima += 1;
+        $kreditovCelkomZima += $row['kredit'];
+        $class='zima';
+      }
 			$predmetyZapisnehoListuTable->addRow($row, array('class'=>$class));
-			$kreditovCelkom += $row['kredit'];
+			
 		}
-;
-		$predmetyZapisnehoListuTable->addFooter(array('nazov'=>'Celkom','kredit'=>$kreditovCelkom), array());
+
+    $pocetPredmetovText = 'Celkom ';
+    $pocetPredmetovText .= FajrUtils::formatPlural($pocetPredmetovLeto+$pocetPredmetovZima,
+        '0 predmetov', '1 predmet', '%d predmety', '%d predmetov');
+    if ($pocetPredmetovLeto > 0 && $pocetPredmetovZima > 0) {
+      $pocetPredmetovText .= sprintf(' (%d v zime, %d v lete)', $pocetPredmetovZima, $pocetPredmetovLeto);
+    }
+
+    $kreditovCelkomText = ''. ($kreditovCelkomLeto+$kreditovCelkomZima);
+    if ($kreditovCelkomLeto > 0 && $kreditovCelkomZima > 0) {
+      $kreditovCelkomText .= sprintf(' (%d+%d)', $kreditovCelkomZima, $kreditovCelkomLeto);
+    }
+
+		$predmetyZapisnehoListuTable->addFooter(array('nazov'=>$pocetPredmetovText,'kredit'=>$kreditovCelkomText), array());
 		$predmetyZapisnehoListuTable->setUrlParams(array('studium' =>
 					Input::get('studium'), 'list' => Input::get('list')));
 		

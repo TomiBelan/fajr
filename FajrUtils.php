@@ -278,4 +278,28 @@ class FajrUtils
     return $path;
   }
 
+  /**
+   * Format plural according to Slovak language rules
+   * @param int $number number to decide on and pass as argument to sprintf
+   * @param string $zero sprintf format string if $number is 0 (zero)
+   * @param string $one sprintf format string if $number is 1 (one)
+   * @param string $few sprintf format string if $number is between 2 and 4 (inclusive)
+   * @param string $many sprintf format string for other $number values
+   */
+  public static function formatPlural($number, $zero, $one, $few, $many)
+  {
+    if ($number == 0) {
+      return sprintf($zero, $number);
+    }
+    else if ($number == 1) {
+      return sprintf($one, $number);
+    }
+    else if ($number >= 2 && $number <= 4) {
+      return sprintf($few, $number);
+    }
+    else {
+      return sprintf($many, $number);
+    }
+  }
+
 }
