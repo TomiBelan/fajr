@@ -24,33 +24,37 @@ Copyright (c) 2010 Martin Sucha
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
-class FajrConfig {
+class FajrConfig
+{
 
-	protected static $config = null;
+  protected static $config = null;
 
-	protected static $defaultOptions = array(
-		'Debug.Connections'=>false,
-		'Debug.Path'=>false,
-		'Debug.Rewrite'=>false,
-	);
+  protected static $defaultOptions = array(
+    'Debug.Connections'=>false,
+    'Debug.Path'=>false,
+    'Debug.Rewrite'=>false,
+  );
 
-	public static function load() {
-		if (self::isConfigured()) return;
+  public static function load()
+  {
+    if (self::isConfigured()) return;
 
-		@$result = (include 'configuration.php');
-		if ($result !== false && is_array($result)) {
-			self::$config = array_merge(self::$defaultOptions, $result);
-		}
-	}
+    @$result = (include 'configuration.php');
+    if ($result !== false && is_array($result)) {
+      self::$config = array_merge(self::$defaultOptions, $result);
+    }
+  }
 
-	public static function isConfigured() {
-		return (self::$config !== null);
-	}
+  public static function isConfigured()
+  {
+    return (self::$config !== null);
+  }
 
-	public static function get($key) {
-		if (!isset(self::$config[$key])) return null;
-		return self::$config[$key];
-	}
+  public static function get($key)
+  {
+    if (!isset(self::$config[$key])) return null;
+    return self::$config[$key];
+  }
 }
 
 FajrConfig::load();
