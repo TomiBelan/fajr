@@ -24,6 +24,16 @@ Copyright (c) 2010 Martin Králik
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
+if (!defined('_FAJR')) {
+  die('<html><head><title>Varovanie</title></head><body>'.
+      '<h1>Varovanie</h1>'.
+      '<p>Máte zle nastavený server, tento súbor by nemal byť '.
+      'priamo prístupný. Prosím nastavte server tak, aby sa dalo '.
+      'dostať len k podadresáru <code>web</code> a použite '.
+      '<code>index.php</code> v ňom</p>'.
+      '</body></html>');
+}
+
 error_reporting(E_ALL | E_STRICT);
 date_default_timezone_set('Europe/Bratislava');
 mb_internal_encoding("UTF-8");
@@ -32,7 +42,7 @@ mb_internal_encoding("UTF-8");
 // tried skor, ako sa nacitava session
 require_once 'libfajr/libfajr.php';
 Loader::register();
-Loader::searchForClasses(".", true);
+Loader::searchForClasses(dirname(__FILE__), true);
 
 // cache expire, u browsera
 session_cache_expire(600);
@@ -43,9 +53,6 @@ session_save_path(FajrConfig::getDirectory('Path.Temporary.Sessions'));
 session_start();
 
 $startTime = microtime(true);
-
-require_once 'FajrConfig.php';
-require_once 'DisplayManager.php';
 
 if (!FajrConfig::isConfigured()) {
 	DisplayManager::addContent('notConfigured', true);

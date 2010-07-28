@@ -1,4 +1,4 @@
-DirectoryIndex fajr.php
+DirectoryIndex index.php
 
 <IfModule rewrite_module>
 	RewriteEngine On
@@ -11,6 +11,6 @@ DirectoryIndex fajr.php
 	#RewriteCond %{REQUEST_FILENAME} !-d
 	# takisto subory
 	#RewriteCond %{REQUEST_FILENAME} !-f
-	# prepis /nieco na fajr.php/nieco
-	#RewriteRule (.*) fajr.php/$1
+	# prepis /nieco na index.php/nieco
+	#RewriteRule (.*) index.php/$1
 </IfModule>

@@ -24,9 +24,6 @@ Copyright (c) 2010 Martin Králik
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
-require_once 'libfajr/AIS2Table.php';
-require_once 'DisplayManager.php';
-require_once 'Renderable.php';
 
 class TableRow implements Renderable
 {
