@@ -184,6 +184,8 @@ try
 		DisplayManager::addContent($tabs->getHtml());
 		
 		$timeDiff = (microtime(true)-$startTime);
+    $version = '<div>Fajr verzia '.hescape(Version::getVersionString()).'</div>';
+    DisplayManager::addContent($version);
 		$statistics = "<div> Fajr made ".$statsConnection->getTotalCount().
 						" requests and downloaded ".$rawStatsConnection->getTotalSize().
 						" bytes (".$statsConnection->getTotalSize().
@@ -199,7 +201,11 @@ try
 		DisplayManager::addContent('warnings', true);
 		DisplayManager::addContent('terms', true);
 		DisplayManager::addContent('credits', true);
-		DisplayManager::addContent(Changelog::getChangelog(), false);
+    $version = "<div class='version prepend-1 span-21 last increase-line-height'>\n<strong>Verzia fajru:</strong> \n";
+    $version .= hescape(Version::getVersionString());
+    $version .= '</div>';
+    DisplayManager::addContent($version);
+		DisplayManager::addContent(Version::getChangelog(), false);
 	}
 }
 catch (AIS2LoginException $e) {

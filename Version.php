@@ -23,8 +23,11 @@ Copyright (c) 2010 Peter Peresini
  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
-class Changelog {
-  private static $changes = array (
+class Version {
+
+  private static $version = '0.25';
+
+  private static $changelog = array (
       array('2010-01-xx', '0.1', 'Maják zverejnil prvú verziu Fajr-u'),
       array('2010-02-15', '0.1', 'Fajr sa presunul na google code'),
       array('2010-02-16', '0.1', 'AIS2 sa upgradol, prestali fungovať  niektoré veci'),
@@ -35,17 +38,40 @@ class Changelog {
       array('2010-06-01', '0.25', 'Pribudol zoznam prihlásených na termín'),
     );
 
-  private static $limit = 6;
+  private static $changelogLimit = 6;
 
   public static function getChangelog() {
     $data = "<div class='changelog prepend-1 span-21 last increase-line-height'>\n<strong>Changelog:</strong><ul>\n";
-    $tmp_array = array_slice(array_reverse(Changelog::$changes), 0, Changelog::$limit);
+    $tmp_array = array_slice(array_reverse(Version::$changelog), 0, Version::$changelogLimit);
     foreach ($tmp_array as $change) {
       $data .= '<li>'.$change[0].' (verzia ' . $change[1] . ') - ';
       $data .= $change[2]."</li>\n";
     }
     $data .= "</ul></div>\n";
     return $data;
+  }
+
+  public static function getBuildTimeInfo() {
+    @$result = (include 'version_info.php');
+    return $result;
+  }
+
+  public static function getVersion() {
+    return self::$version;
+  }
+
+  public static function getVersionString() {
+    $versionString = self::$version;
+    $buildInfo = self::getBuildTimeInfo();
+    if ($buildInfo !== false) {
+      if (!empty($buildInfo['revision'])) {
+        $versionString .= '/'.$buildInfo['revision'];
+      }
+      if (!empty($buildInfo['date'])) {
+        $versionString .= ' ('.date('d.m.Y', $buildInfo['timestamp']).')';
+      }
+    }
+    return $versionString;
   }
 }
 
