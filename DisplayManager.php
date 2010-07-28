@@ -90,9 +90,9 @@ class DisplayManager
   ',
       'header2' => '
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/prototype/1.6.1.0/prototype.js"></script>
-  <script type="text/javascript" src="javascript/fajr.js"></script>
-  <script type="text/javascript" src="javascript/toggleVisibility.js"></script>
-  <script type="text/javascript" src="javascript/tablesort.min.js"></script>
+  <script type="text/javascript" src="javascripts/fajr.js"></script>
+  <script type="text/javascript" src="javascripts/toggleVisibility.js"></script>
+  <script type="text/javascript" src="javascripts/tablesort.min.js"></script>
   <link rel="stylesheet" href="css/screen.css" type="text/css" media="screen, projection" />
   <link rel="stylesheet" href="css/plugins/buttons/screen.css" type="text/css" media="screen, projection" />
   <link rel="stylesheet" href="css/custom.css" type="text/css" media="screen, projection" />
