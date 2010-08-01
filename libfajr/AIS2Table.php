@@ -25,48 +25,72 @@ Copyright (c) 2010 Martin Králik
  }}} */
 
 /**
- * Trieda, ktora poparsuje AIS html tabulku a vyrobi z nej pole
- * jednotlivych riadkov
+ * Tento súbor obsahuje parser AIS html tabuliek do poľa stringov.
  *
- * @author ppershing
+ * @package Libfajr
+ * @author Peter Peresini <ppershing+fajr@gmail.com>
+ * @filesource
  */
 
+/**
+ * Trieda, ktorá poparsuje AIS html tabuľku a vyrobí z nej pole
+ * jednotlivých riadkov.
+ *
+ * @package Libfajr
+ * @author Peter Peresini <ppershing+fajr@gmail.com>
+ */
 class AIS2Table {
-	private $definition = array();
-	private $data = null;
-	
-	public function __construct($tableDefinition, $html) {
-		$this->definition = $tableDefinition;
-		$data = matchAll($html, $this->getPattern());
+  /**
+   * Definícia stĺpcov tabuľky
+   * @var array(string)
+   */
+  private $definition = null;
+
+  /**
+   * Samotné dáta poparsovaní pri konštrukcii objektu
+   * @var array(array(string=>string))
+   */
+  private $data = null;
+
+  /**
+   * Konštruktor, z html kódu vyrobí dáta
+   * @param array(string) $tableDefinition  názvy stĺpcov
+   * @param string        $html             html vygenerované AISom
+   */
+  public function __construct($tableDefinition, $html) {
+    $this->definition = $tableDefinition;
+    $data = matchAll($html, $this->getPattern());
     $this->data = array();
-		if ($data !== false) {
+    if ($data !== false) {
       foreach ($data as $row) {
         $this->data[] = removeIntegerIndexesFromArray($row);
       }
+    } else {
+      throw new Exception("Problém pri parsovaní dát.");
     }
-	}
-	
-	public function getData() {
-		return $this->data;
-	}
-	
-	public function getTableDefinition() {
-		return $this->definition;
-	}
-	
-/**
- * Vráti regulárny výraz použitý na matchovanie tabuľky v HTML výstupe z AISu.
- * Na jeho konštrukciu sa používa definícia tabuľky.
- * @return string Regulárny výraz.
- */
-	private function getPattern()
-	{
-		$pattern = '@\<tr id\=\'row_(?P<index>[^\']*)\' rid\=\'[^\']*\'[^>]*\>';
-		foreach ($this->definition as $column)
-		{
-			$pattern .= '\<td[^>]*\>(\<div\>){0,1}(?P<'.substr($column,0,32).'>[^<]*)(\</div\>){0,1}\</td\>';
-		}
-		$pattern .= '\</tr\>@';
-		return $pattern;
-	}
+  }
+
+  public function getData() {
+    return $this->data;
+  }
+
+  public function getTableDefinition() {
+    return $this->definition;
+  }
+
+  /**
+   * Vráti regulárny výraz použitý na matchovanie tabuľky v HTML výstupe z AISu.
+   * Na jeho konštrukciu sa používa definícia tabuľky.
+   * @return string Regulárny výraz.
+   */
+  private function getPattern()
+  {
+    $pattern = '@\<tr id\=\'row_(?P<index>[^\']*)\' rid\=\'[^\']*\'[^>]*\>';
+    foreach ($this->definition as $column)
+    {
+      $pattern .= '\<td[^>]*\>(\<div\>){0,1}(?P<'.substr($column,0,32).'>[^<]*)(\</div\>){0,1}\</td\>';
+    }
+    $pattern .= '\</tr\>@';
+    return $pattern;
+  }
 }
