@@ -97,7 +97,7 @@ class FajrUtils
     $base = '';
 
     if (!FajrConfig::get('URL.Rewrite')) {
-      $base = 'fajr.php';
+      $base = 'index.php';
       if (strlen($path) > 0) $base .= '/';
     }
 
