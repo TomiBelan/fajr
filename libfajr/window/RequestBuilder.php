@@ -32,7 +32,7 @@ interface RequestBuilder {
    * @param array() $options
    * @return array() POST data array
    */
-  public function buildRequestData($dlgName, $options);
+  public function buildRequestData($dlgName, array $options);
 
   /**
    * Vygeneruje url na ktorú treba robiť request
