@@ -56,103 +56,103 @@ class AIS2AdministraciaStudiaScreen extends AIS2AbstractScreen
     ); // }}}
   }
 
-	protected $tabulka_zoznam_zapisnych_listov = array(
-		// {{{
-		'akademickyRok',
-		'rocnik',
-		'studProgramSkratka',
-		'studijnyProgram',
-		'doplnujuceUdaje',
-		'datumZapisu',
-		'potvrdenyZapis',
-		'podmienecnyZapis',
-		'dlzkaVSemestroch',
-		'cisloEVI',
-		'cisloProgramu',
-		'datumSplnenia',
-		'priznak',
-		'organizacnaJednotka',
-		'typFinacovania',
-		'skratkaTypuFinacovania',
-		// }}}
-	);
+  protected $tabulka_zoznam_zapisnych_listov = array(
+    // {{{
+    'akademickyRok',
+    'rocnik',
+    'studProgramSkratka',
+    'studijnyProgram',
+    'doplnujuceUdaje',
+    'datumZapisu',
+    'potvrdenyZapis',
+    'podmienecnyZapis',
+    'dlzkaVSemestroch',
+    'cisloEVI',
+    'cisloProgramu',
+    'datumSplnenia',
+    'priznak',
+    'organizacnaJednotka',
+    'typFinacovania',
+    'skratkaTypuFinacovania',
+    // }}}
+  );
 
-	protected $idCache = array();
+  protected $idCache = array();
 
-	public function __construct()
-	{
-		parent::__construct('ais.gui.vs.es.VSES017App', '&kodAplikacie=VSES017');
-	}
+  public function __construct()
+  {
+    parent::__construct('ais.gui.vs.es.VSES017App', '&kodAplikacie=VSES017');
+  }
 
-	public function getZoznamStudii()
-	{
-		$this->open();
-		$data = match($this->data, AIS2Utils::DATA_PATTERN);
-		return new AIS2Table($this->get_tabulka_zoznam_studii(), $data);
-	}
+  public function getZoznamStudii()
+  {
+    $this->open();
+    $data = match($this->data, AIS2Utils::DATA_PATTERN);
+    return new AIS2Table($this->get_tabulka_zoznam_studii(), $data);
+  }
 
-	public function getZapisneListy($studiumIndex)
-	{
-		$this->open();
-		$data = $this->requestData(array(
-			'compName' => 'nacitatDataAction',
-			'objProperties' => array(
-				'x' => -4,
-				'y' => -4,
-				'focusedComponent' => 'nacitatButton',
-			),
-			'embObj' => array(
-				'objName' => 'studiaTable',
-				'dataView' => array(
-					'activeIndex' => $studiumIndex,
-					'selectedIndexes' => $studiumIndex,
-				),
-			),
-		));
-		
-		$data = match($data, AIS2Utils::DATA_PATTERN);
-		return new AIS2Table($this->tabulka_zoznam_zapisnych_listov, $data);
-	}
+  public function getZapisneListy($studiumIndex)
+  {
+    $this->open();
+    $data = $this->requestData(array(
+      'compName' => 'nacitatDataAction',
+      'objProperties' => array(
+        'x' => -4,
+        'y' => -4,
+        'focusedComponent' => 'nacitatButton',
+      ),
+      'embObj' => array(
+        'objName' => 'studiaTable',
+        'dataView' => array(
+          'activeIndex' => $studiumIndex,
+          'selectedIndexes' => $studiumIndex,
+        ),
+      ),
+    ));
+    
+    $data = match($data, AIS2Utils::DATA_PATTERN);
+    return new AIS2Table($this->tabulka_zoznam_zapisnych_listov, $data);
+  }
 
-	public function getIdZapisnyList($zapisnyListIndex)
-	{
-		return $this->getIdFromZapisnyListIndex($zapisnyListIndex, 'idZapisnyList');
-	}
+  public function getIdZapisnyList($zapisnyListIndex)
+  {
+    return $this->getIdFromZapisnyListIndex($zapisnyListIndex, 'idZapisnyList');
+  }
 
-	public function getIdStudium($zapisnyListIndex)
-	{
-		return $this->getIdFromZapisnyListIndex($zapisnyListIndex, 'idStudium');
-	}
+  public function getIdStudium($zapisnyListIndex)
+  {
+    return $this->getIdFromZapisnyListIndex($zapisnyListIndex, 'idStudium');
+  }
 
-	protected function getIdFromZapisnyListIndex($zapisnyListIndex, $idType)
-	{
-		$this->open();
-		if (empty($this->idCache[$zapisnyListIndex]))
-		{
-			$response = $this->requestData(array(
-				'compName' => 'terminyHodnoteniaAction',
-				'objProperties' => array(
-					'x' => -4,
-					'y' => -4,
-					'focusedComponent' => 'runZapisneListyButton',
-				),
-				'embObj' => array(
-					'objName' => 'zoznamTemTable',
-					'dataView' => array(
-						'activeIndex' => $zapisnyListIndex,
-						'selectedIndexes' => $zapisnyListIndex,
-					),
-				),
-			));
+  protected function getIdFromZapisnyListIndex($zapisnyListIndex, $idType)
+  {
+    $this->open();
+    if (empty($this->idCache[$zapisnyListIndex]))
+    {
+      $response = $this->requestData(array(
+        'compName' => 'terminyHodnoteniaAction',
+        'objProperties' => array(
+          'x' => -4,
+          'y' => -4,
+          'focusedComponent' => 'runZapisneListyButton',
+        ),
+        'embObj' => array(
+          'objName' => 'zoznamTemTable',
+          'dataView' => array(
+            'activeIndex' => $zapisnyListIndex,
+            'selectedIndexes' => $zapisnyListIndex,
+          ),
+        ),
+      ));
       $data = $this->parseIdFromZapisnyListIndexFromResponse($response);
       if ($data == null) {
         throw new Exception("Neviem parsovať dáta z AISu");
       }
-		
-			$this->idCache[$zapisnyListIndex] = $data;
-		}
-		return $this->idCache[$zapisnyListIndex][$idType];
-	}
+    
+      $this->idCache[$zapisnyListIndex] = $data;
+    }
+    return $this->idCache[$zapisnyListIndex][$idType];
+  }
 
   public function parseIdFromZapisnyListIndexFromResponse($response) {
       // FIXME: toto tunak spravit nejak krajsie

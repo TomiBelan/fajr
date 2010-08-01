@@ -56,54 +56,54 @@ class AIS2HodnoteniaPriemeryScreen extends AIS2AbstractScreen
     ); // }}}
   }
 
-	protected $tabulka_priemery = array(
-		// {{{
-		'priemerInfoPopisAkadRok',
-		'priemerInfoKodSemester',
-		'vazPriemer',
-		'studPriemer',
-		'pocetPredmetov',
-		'pocetNeabs',
-		'pokusyPriemer',
-		'ziskanyKredit',
-		'prerusUkon',
-		'priemerInfoDatum',
-		'priemerInfoDatum1Hodn',
-		'priemerInfoDatum2Hodn',
-		'priemerNazov',
-		'priemerZaAkRok',
-		'priemerZaSemester',
-		'priemerLenStudPlan',
-		'priemerUznanePredm',
-		'priemerAjDatum1Hodn',
-		'priemerAjDatum2Hodn',
-		'priemerPocitatNeabs',
-		'priemerVahaNeabsolvovanych',
-		'priemerSkratkaOrganizacnaJednotka',
-		'priemerPocitatNeabsC',
-		'pocetPredmetovVyp',
-		'priemerInfoStudentiVypoctu',
-		// }}}
-	);
+  protected $tabulka_priemery = array(
+    // {{{
+    'priemerInfoPopisAkadRok',
+    'priemerInfoKodSemester',
+    'vazPriemer',
+    'studPriemer',
+    'pocetPredmetov',
+    'pocetNeabs',
+    'pokusyPriemer',
+    'ziskanyKredit',
+    'prerusUkon',
+    'priemerInfoDatum',
+    'priemerInfoDatum1Hodn',
+    'priemerInfoDatum2Hodn',
+    'priemerNazov',
+    'priemerZaAkRok',
+    'priemerZaSemester',
+    'priemerLenStudPlan',
+    'priemerUznanePredm',
+    'priemerAjDatum1Hodn',
+    'priemerAjDatum2Hodn',
+    'priemerPocitatNeabs',
+    'priemerVahaNeabsolvovanych',
+    'priemerSkratkaOrganizacnaJednotka',
+    'priemerPocitatNeabsC',
+    'pocetPredmetovVyp',
+    'priemerInfoStudentiVypoctu',
+    // }}}
+  );
 
-	public function __construct($idZapisnyList)
-	{
-		parent::__construct('ais.gui.vs.es.VSES212App', '&kodAplikacie=VSES212&idZapisnyList='.$idZapisnyList);
-	}
+  public function __construct($idZapisnyList)
+  {
+    parent::__construct('ais.gui.vs.es.VSES212App', '&kodAplikacie=VSES212&idZapisnyList='.$idZapisnyList);
+  }
 
-	public function getHodnotenia()
-	{
-		$this->open();
-		$data = matchAll($this->data, AIS2Utils::DATA_PATTERN);
-		return new AIS2Table($this->get_tabulka_hodnotenia(), $data[0][1]);
-	}
+  public function getHodnotenia()
+  {
+    $this->open();
+    $data = matchAll($this->data, AIS2Utils::DATA_PATTERN);
+    return new AIS2Table($this->get_tabulka_hodnotenia(), $data[0][1]);
+  }
 
-	public function getPriemery()
-	{
-		$this->open();
-		$data = matchAll($this->data, AIS2Utils::DATA_PATTERN);
-		return new AIS2Table($this->tabulka_priemery, $data[1][1]);
-	}
+  public function getPriemery()
+  {
+    $this->open();
+    $data = matchAll($this->data, AIS2Utils::DATA_PATTERN);
+    return new AIS2Table($this->tabulka_priemery, $data[1][1]);
+  }
 
 }
 
