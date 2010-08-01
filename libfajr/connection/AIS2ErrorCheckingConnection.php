@@ -29,17 +29,18 @@ class AIS2ErrorCheckingConnection implements AIS2Connection {
 
 	private $delegate = null;
 	const INTERNAL_ERROR_PATTERN = '@^function main\(\) { (?:alert|webui\.onAppClosedOnServer)\(\'([^\']*)\'\);? }$@m';
+	const APACHE_ERROR_PATTERN = '@Apache Tomcat.*<pre>([^<]*)</pre>@m';
 
 	function __construct($delegate) {
 		$this->delegate = $delegate;
 	}
 
 	public function get($url) {
-		return $this->check($this->delegate->get($url));
+		return $this->check($url, $this->delegate->get($url));
 	}
 
 	public function post($url, $data) {
-		return $this->check($this->delegate->post($url, $data));
+		return $this->check($url, $this->delegate->post($url, $data));
 	}
 
 	public function addCookie($name, $value, $expire, $path, $domain, $secure = true, $tailmatch = false) {
@@ -50,12 +51,17 @@ class AIS2ErrorCheckingConnection implements AIS2Connection {
 		return $this->delegate->clearCookies();
 	}
 
-	private function check($response) {
+	private function check($url, $response) {
 		$matches = array();
 		if (preg_match(self::INTERNAL_ERROR_PATTERN, $response, $matches))
 		{
-			throw new Exception('<b>Nastala chyba pri requeste.</b><br/>Zdôvodnenie od AISu:'.hescape($matches[1]).'<br/>Požadovaná url: '.hescape($url));
-		}
+			throw new Exception('<b>Nastala chyba pri requeste.</b><br/>Zdôvodnenie od AISu: '.hescape($matches[1]).
+                          '<br/>Požadovaná url: '.hescape($url));
+    }
+    if (preg_match(self::APACHE_ERROR_PATTERN, $response, $matches)) {
+      throw new Exception('<b>Nastala chyba pri requeste.</b><br/>Zdôvodnenie od AISu: '.nl2br(hescape($matches[1])).
+                          '<br/>Požadovaná url: '.hescape($url));
+    }
 		return $response;
 	}
 
