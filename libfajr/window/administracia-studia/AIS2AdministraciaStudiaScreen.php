@@ -31,28 +31,30 @@ Copyright (c) 2010 Martin Králik
  */
 class AIS2AdministraciaStudiaScreen extends AIS2AbstractScreen
 {
-	protected $tabulka_zoznam_studii = array(
-		// {{{
-		'rocnik',
-		'skratka',
-		'kruzok',
-		'studijnyProgram',
-		'doplnujuceUdaje',
-		'zaciatokStudia',
-		'koniecStudia',
-		'dlzkaVSemestroch',
-		'dlzkaStudia',
-		'cisloDiplomu',
-		'cisloZMatriky',
-		'cisloVysvedcenia',
-		'cisloDodatku',
-		'cisloEVI',
-		'cisloProgramu',
-		'priznak',
-		'organizacnaJednotka',
-		'rokStudia',
-		// }}}
-	);
+  const APP_LOCATION_PATTERN = '@webui\(\)\.startApp\("([^"]+)","([^"]+)"\);@';
+
+  public static function get_tabulka_zoznam_studii() {
+    return array( // {{{
+      'rocnik',
+      'skratka',
+      'kruzok',
+      'studijnyProgram',
+      'doplnujuceUdaje',
+      'zaciatokStudia',
+      'koniecStudia',
+      'dlzkaVSemestroch',
+      'dlzkaStudia',
+      'cisloDiplomu',
+      'cisloZMatriky',
+      'cisloVysvedcenia',
+      'cisloDodatku',
+      'cisloEVI',
+      'cisloProgramu',
+      'priznak',
+      'organizacnaJednotka',
+      'rokStudia',
+    ); // }}}
+  }
 
 	protected $tabulka_zoznam_zapisnych_listov = array(
 		// {{{
@@ -86,7 +88,7 @@ class AIS2AdministraciaStudiaScreen extends AIS2AbstractScreen
 	{
 		$this->open();
 		$data = match($this->data, AIS2Utils::DATA_PATTERN);
-		return new AIS2Table($this->tabulka_zoznam_studii, $data);
+		return new AIS2Table($this->get_tabulka_zoznam_studii(), $data);
 	}
 
 	public function getZapisneListy($studiumIndex)
@@ -127,30 +129,39 @@ class AIS2AdministraciaStudiaScreen extends AIS2AbstractScreen
 		$this->open();
 		if (empty($this->idCache[$zapisnyListIndex]))
 		{
-			$data = $this->requestData(array(
+			$response = $this->requestData(array(
 				'compName' => 'terminyHodnoteniaAction',
 				'objProperties' => array(
 					'x' => -4,
 					'y' => -4,
-					'focusedComponent' => 'zapisneListyTable',
+					'focusedComponent' => 'runZapisneListyButton',
 				),
 				'embObj' => array(
-					'objName' => 'zapisneListyTable',
+					'objName' => 'zoznamTemTable',
 					'dataView' => array(
 						'activeIndex' => $zapisnyListIndex,
 						'selectedIndexes' => $zapisnyListIndex,
 					),
 				),
 			));
+      $data = $this->parseIdFromZapisnyListIndexFromResponse($response);
+      if ($data == null) {
+        throw new Exception("Neviem parsovať dáta z AISu");
+      }
 		
-			// FIXME: toto tunak spravit nejak krajsie
-			$data = matchAll($data, AIS2Utils::APP_LOCATION_PATTERN, true);
-			$data = matchAll($data[2], '@&idZapisnyList\=(?P<idZapisnyList>[0-9]*)&idStudium\=(?P<idStudium>[0-9]*)@', true);
-			foreach (array_keys($data) as $key) if (is_numeric($key)) unset($data[$key]);
 			$this->idCache[$zapisnyListIndex] = $data;
 		}
 		return $this->idCache[$zapisnyListIndex][$idType];
 	}
+
+  public function parseIdFromZapisnyListIndexFromResponse($response) {
+      // FIXME: toto tunak spravit nejak krajsie
+      $data = matchAll($response, self::APP_LOCATION_PATTERN, true);
+      if ($data === false) return null;
+      $data = matchAll($data[2], '@&idZapisnyList\=(?P<idZapisnyList>[0-9]*)&idStudium\=(?P<idStudium>[0-9]*)@', true);
+      if ($data === false) return null;
+      return removeIntegerIndexesFromArray($data);
+  }
 
 }
 ?>

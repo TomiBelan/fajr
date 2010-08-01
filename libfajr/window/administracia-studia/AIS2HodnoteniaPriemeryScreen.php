@@ -31,29 +31,31 @@ Copyright (c) 2010 Martin Králik
  */
 class AIS2HodnoteniaPriemeryScreen extends AIS2AbstractScreen
 {
-	protected $tabulka_hodnotenia = array(
-		// {{{
-		'semester',
-		'kodCastSP',
-		'kodTypVyucbySP',
-		'skratka',
-		'nazov',
-		'kredit',
-		'kodSposUkon',
-		'termin',
-		'znamka',
-		'datum',
-		'uznane',
-		'blokPopis',
-		'poplatok',
-		'nahradzaMa',
-		'nahradzam',
-		'dovezene',
-		'mozePrihlasit',
-		'rozsah',
-		'priebHodn',
-		// }}}
-	);
+  public static function get_tabulka_hodnotenia() {
+    return array( // {{{
+      'semester',
+      'kodCastSP',
+      'kodTypVyucbySP',
+      'skratka',
+      'nazov',
+      'kredit',
+      'kodSposUkon',
+      'termin',
+      'znamka',
+      'datum',
+      'uznane',
+      'blokPopis',
+      'poplatok',
+      'nahradzaMa',
+      'nahradzam',
+      'znamkaPopis',
+      'dovezene',
+      'mozePrihlasit',
+      'rozsah',
+      'priebHodn',
+    ); // }}}
+  }
+
 	protected $tabulka_priemery = array(
 		// {{{
 		'priemerInfoPopisAkadRok',
@@ -93,7 +95,7 @@ class AIS2HodnoteniaPriemeryScreen extends AIS2AbstractScreen
 	{
 		$this->open();
 		$data = matchAll($this->data, AIS2Utils::DATA_PATTERN);
-		return new AIS2Table($this->tabulka_hodnotenia, $data[0][1]);
+		return new AIS2Table($this->get_tabulka_hodnotenia(), $data[0][1]);
 	}
 
 	public function getPriemery()
