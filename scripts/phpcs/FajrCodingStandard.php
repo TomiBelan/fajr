@@ -32,10 +32,13 @@ class PHP_CodeSniffer_Standards_Fajr_FajrCodingStandard extends PHP_CodeSniffer_
         return array(
                 'PEAR/Sniffs/Commenting/FileCommentSniff.php',
                 'PEAR/Sniffs/Commenting/ClassCommentSniff.php',
+                'PEAR/Sniffs/NamingConventions/ValidFunctionNameSniff.php',
                 'PEAR/Sniffs/NamingConventions/ValidVariableNameSniff.php',
+                'Zend/Sniffs/NamingConventions/ValidVariableNameSniff.php',
                 'PEAR/Sniffs/Functions/FunctionCallSignatureSniff.php',
                 'Generic/Sniffs/Files/LineLengthSniff.php',
                 'Generic/Sniffs/WhiteSpace/ScopeIndentSniff.php',
+                'PEAR/Sniffs/WhiteSpace/ScopeIndentSniff.php',
                 'PEAR/Sniffs/Files/LineLengthSniff.php',
                 'Zend/Sniffs/Files/LineLengthSniff.php',
                 );
