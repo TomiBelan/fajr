@@ -49,6 +49,19 @@ Copyright (c) 2010 Martin Králik
 			else return $matches[0];
 		}
 	}
+
+  /**
+   * Function which removes all integer-indexed entries from array.
+   * Useful for removing unnamed matches after matchAll with named patterns.
+   * @param array() $data Array containing string&integer indexed values 
+   * @return array() Data wihout any integer-indexed values
+   */
+  function removeIntegerIndexesFromArray($data) {
+    foreach (array_keys($data) as $key) {
+      if (is_numeric($key)) unset($data[$key]);
+    }
+    return $data;
+  }
 	
 	function dump($s)
 	{
