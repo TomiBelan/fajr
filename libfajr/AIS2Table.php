@@ -37,8 +37,13 @@ class AIS2Table {
 	
 	public function __construct($tableDefinition, $html) {
 		$this->definition = $tableDefinition;
-		$this->data = matchAll($html, $this->getPattern());
-		if ($this->data === false) $this->data = array();
+		$data = matchAll($html, $this->getPattern());
+    $this->data = array();
+		if ($data !== false) {
+      foreach ($data as $row) {
+        $this->data[] = removeIntegerIndexesFromArray($row);
+      }
+    }
 	}
 	
 	public function getData() {
@@ -59,7 +64,7 @@ class AIS2Table {
 		$pattern = '@\<tr id\=\'row_(?P<index>[^\']*)\' rid\=\'[^\']*\'[^>]*\>';
 		foreach ($this->definition as $column)
 		{
-			$pattern .= '\<td[^>]*\>\<div\>(?P<'.substr($column,0,32).'>[^<]*)\</div\>\</td\>';
+			$pattern .= '\<td[^>]*\>(\<div\>){0,1}(?P<'.substr($column,0,32).'>[^<]*)(\</div\>){0,1}\</td\>';
 		}
 		$pattern .= '\</tr\>@';
 		return $pattern;
