@@ -12,17 +12,18 @@ class PHP_CodeSniffer_Standards_Fajr_FajrCodingStandard extends PHP_CodeSniffer_
                 'Generic/Sniffs/ControlStructures/InlineControlStructureSniff.php',
                 'Generic/Sniffs/Formatting/DisallowMultipleStatementsSniff.php',
                 'Generic/Sniffs/Formatting/SpaceAfterCastSniff.php',
+                'Generic/Sniffs/Functions/OpeningFunctionBraceBsdAllmanSniff.php',
                 'Generic/Sniffs/Metrics/CyclomaticComplexitySniff.php',
                 'Generic/Sniffs/Metrics/NestingLevelSniff.php',
-                'Generic/Sniffs/PHP/ForbiddenFunctionsSniff.php',
-                'Generic/Sniffs/PHP/DisallowShortOpenTagSniff.php',
-                'Generic/Sniffs/PHP/LowerCaseConstantSniff.php',
                 'Generic/Sniffs/NamingConventions/UpperCaseConstantNameSniff.php',
+                'Generic/Sniffs/PHP/DisallowShortOpenTagSniff.php',
+                'Generic/Sniffs/PHP/ForbiddenFunctionsSniff.php',
+                'Generic/Sniffs/PHP/LowerCaseConstantSniff.php',
                 'Generic/Sniffs/PHP/NoSilencedErrorsSniff.php',
                 'Generic/Sniffs/WhiteSpace/DisallowTabIndentSniff.php',
                 'Generic/Sniffs/Files/LineEndingsSniff.php',
                 'PEAR',
-                'Zend',
+                'Squiz/Sniffs/Functions/GlobalFunctionSniff.php',
                );
 
     }//end getIncludedSniffs()
@@ -30,17 +31,14 @@ class PHP_CodeSniffer_Standards_Fajr_FajrCodingStandard extends PHP_CodeSniffer_
     public function getExcludedSniffs()
     {
         return array(
+                'Generic/Sniffs/Files/LineLengthSniff.php',
+                'Generic/Sniffs/WhiteSpace/ScopeIndentSniff.php',
                 'PEAR/Sniffs/Commenting/FileCommentSniff.php',
                 'PEAR/Sniffs/Commenting/ClassCommentSniff.php',
                 'PEAR/Sniffs/NamingConventions/ValidFunctionNameSniff.php',
                 'PEAR/Sniffs/NamingConventions/ValidVariableNameSniff.php',
-                'Zend/Sniffs/NamingConventions/ValidVariableNameSniff.php',
-                'PEAR/Sniffs/Functions/FunctionCallSignatureSniff.php',
-                'Generic/Sniffs/Files/LineLengthSniff.php',
-                'Generic/Sniffs/WhiteSpace/ScopeIndentSniff.php',
                 'PEAR/Sniffs/WhiteSpace/ScopeIndentSniff.php',
                 'PEAR/Sniffs/Files/LineLengthSniff.php',
-                'Zend/Sniffs/Files/LineLengthSniff.php',
                 );
     }
 
