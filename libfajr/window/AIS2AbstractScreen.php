@@ -29,14 +29,21 @@ Copyright (c) 2010 Martin Králik
  *
  * @author majak
  */
-abstract class AIS2AbstractScreen extends AIS2AbstractWindow
+abstract class AIS2AbstractScreen
 {
 	protected $appId = null;
-	protected $serial = null;
 	protected $appClassName = null;
 	protected $identifiers = null;
 
+	protected $formName = null;
+	protected $data = null;
+	protected $inUse = false;
+  public function getFormName() {
+    return $this->formName;
+  }
+
 	public $openedDialog = false;
+  protected $requestBuilder = null;
 
 	/**
 	 * Konštruktor.
@@ -46,10 +53,13 @@ abstract class AIS2AbstractScreen extends AIS2AbstractWindow
 	 */
 	public function __construct($appClassName, $identifiers)
 	{
-		$this->serial = 0;
+		$this->requestBuilder = new AIS2\RequestBuilderImpl();
 		$this->appClassName = $appClassName;
 		$this->identifiers = $identifiers;
 	}
+  public function getXmlInterfaceLocation() {
+    return $this->requestBuilder->getRequestUrl($this->getAppId());
+  }
 
 	/**
  	 * Nadviaže spojenie, spustí danú "aplikáciu" v AISe
@@ -93,48 +103,70 @@ abstract class AIS2AbstractScreen extends AIS2AbstractWindow
 		$this->close();
 	}
 
-	/**
-	 * Vygeneruje nové sériové číslo používané v XML protokole na komunikáciu s AISom.
-	 * @return int Nové seriové číslo v poradí.
-	 */
-	protected function getSerial()
-	{
-		return $this->serial++;
-	}
 	
-	protected function getAppId()
+	public function getAppId()
 	{
 		$this->open();
 		return $this->appId;
 	}
 	
+  const APPID_PATTERN = '@\<body onload\=\'window\.setTimeout\("WebUI_init\(\\\"([0-9]+)\\\", \\\"ais\\\", \\\"ais/webui2\\\"\)", 1\)\'@';
+
+  public function parseAppIdFromResponse($response) {
+    $matches = array();
+    if (preg_match(self::APPID_PATTERN, $response, $matches)) {
+      return $matches[1];
+    } else {
+      return null;
+    }
+  }
+
 	/**
 	 * Nastaví atribút $appId, ktorý pomocou regulárneho výrazu nájde vo vstupných dátach.
 	 * @param string $response Odpoveď AISu v HTML formáte z inicializačnej časti komunikácie.
 	 */
 	protected function setAppId($response)
 	{
-		$matches = array();
-		if (preg_match('@\<body onload\=\'window\.setTimeout\("WebUI_init\(\\\"([0-9]+)\\\", \\\"ais\\\", \\\"ais/webui2\\\"\)", 1\)\'@', $response, $matches))
-		{
-			$this->appId = $matches[1];
-		}
-		else throw new Exception('Neviem nájsť appId v odpovedi vo fáze inicializácie triedy '.__CLASS__.'!');
+    $appId = $this->parseAppIdFromResponse($response);
+    if ($appId !== null) {
+			$this->appId = $appId;
+		} else {
+      throw new Exception('Neviem nájsť appId v odpovedi vo fáze inicializácie triedy '.__CLASS__.'!');
+    }
 	}
 
-	/**
-	 * Nastaví atribút $formName, ktorý pomocou regulárneho výrazu nájde vo vstupných dátach.
-	 * @param string $response Odpoveď AISu v HTML formáte z inicializačnej časti komunikácie.
-	 */
-	protected function setFormName($response)
-	{
-		$matches = array();
-		if (preg_match('@dialogManager\.openMainDialog\("(?P<formName>[^"]*)","(?P<name>[^"]*)","(?P<formId>[^"]*)",[0-9]*,[^,]*,[^,]*,[^,]*,[^,]*,[^,]*,[^,]*,[^,]*,[^,]*\);@', $response, $matches))
-		{
-			$this->formName = $matches['formName'];
-		}
-		else throw new Exception('Neviem nájsť formName v odpovedi vo fáze inicializácie triedy '.__CLASS__.'!');
-	}
+  const FORM_NAME_PATTERN = '@dm\(\)\.openMainDialog\("(?P<formName>[^"]*)","(?P<name>[^"]*)","(?P<formId>[^"]*)",[0-9]*,[^,]*,[^,]*,[^,]*,[^,]*,[^,]*,[^,]*,[^,]*,[^,]*\);@';
 
+  public function parseFormNameFromResponse($response) {
+    $matches = array();
+    if (preg_match(self::FORM_NAME_PATTERN, $response, $matches)) {
+      return $matches['formName'];
+    } else {
+      return null;
+    }
+  }
+
+  /**
+   * Nastaví atribút $formName, ktorý pomocou regulárneho výrazu nájde vo vstupných dátach.
+   * @param string $response Odpoveď AISu v HTML formáte z inicializačnej časti komunikácie.
+   */
+  protected function setFormName($response)
+  {
+    $name = $this->parseFormNameFromResponse($response);
+    if ($name !== null) {
+      $this->formName = $name;
+    } else {
+      throw new Exception('Neviem nájsť formName v odpovedi vo fáze inicializácie triedy '.get_class().'!');
+    }
+  }
+
+  public function getSerial() {
+    return $this->requestBuilder->newSerial();
+  }
+
+  public function requestData($options, $debug=false) {
+    $data = $this->requestBuilder->buildRequestData($this->formName, $options);
+    return AIS2Utils::request($this->getXmlInterfaceLocation(), $data);
+  }
 }
 ?>

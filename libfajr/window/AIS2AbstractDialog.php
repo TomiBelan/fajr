@@ -29,7 +29,7 @@ Copyright (c) 2010 Martin Králik
  *
  * @author majak
  */
-abstract class AIS2AbstractDialog extends AIS2AbstractWindow
+class AIS2AbstractDialog
 {
 	protected $parent = null;
 	protected $terminated = false;
@@ -37,6 +37,12 @@ abstract class AIS2AbstractDialog extends AIS2AbstractWindow
 	private $compName = null;
 	private $embObjName = null;
 	private $index = null;
+  protected $requestBuilder = null;
+  protected $formName = null;
+  protected $data = null;
+  protected $inUse = false;
+
+  const DIALOG_NAME_PATTERN = '@dm\(\)\.openDialog\("(?P<dialogName>[^"]+)",@';
 
 	/**
 	 * Konštruktor.
@@ -50,7 +56,17 @@ abstract class AIS2AbstractDialog extends AIS2AbstractWindow
 		$this->compName = $compName;
 		$this->embObjName = $embObjName;
 		$this->index = $index;
+		$this->requestBuilder = new AIS2\RequestBuilderImpl();
 	}
+
+  public function parseDialogNameFromResponse($response) {
+    $matches = array();
+    if (preg_match(self::DIALOG_NAME_PATTERN, $response, $matches)) {
+      return $matches['dialogName'];
+    } else {
+      return null;
+    }
+  }
 
 	/**
 	 * Nadviaže spojenie, spustí danú "aplikáciu" v AISe
@@ -69,7 +85,7 @@ abstract class AIS2AbstractDialog extends AIS2AbstractWindow
 		$this->parent->open();
 
 		$response = $this->requestData(array(
-			'dlgName' => $this->parent->formName,
+			'dlgName' => $this->parent->getformName(),
 			'compName' => $this->compName,
 			'embObj' => array(
 				'objName' => $this->embObjName,
@@ -80,10 +96,13 @@ abstract class AIS2AbstractDialog extends AIS2AbstractWindow
 			),
 		));
 
-		$formName = match($response, AIS2Utils::DIALOG_NAME_PATTERN);
-		if ($formName === false) throw new Exception('Nepodarilo sa nájsť názov dialógu pre triedu '.__CLASS__.'.');
+		$formName = $this->parseDialogNameFromResponse($response);
+    if ($formName != null) {
+      $this->formName = $formName;
+    } else {
+      throw new Exception('Nepodarilo sa nájsť názov dialógu pre triedu '.get_class().'.');
+    }
 
-		$this->formName = $formName;
 		$this->data = AIS2Utils::request('https://ais2.uniba.sk/ais/servlets/WebUIServlet?appId='.$this->getAppId().'&form='.$this->formName.'&antiCache='.random());
 
 		$this->parent->openedDialog = true;
@@ -130,6 +149,15 @@ abstract class AIS2AbstractDialog extends AIS2AbstractWindow
 	{
 		return $this->parent->getAppId();
 	}
+
+  public function requestData($options, $debug=false) {
+    $data = $this->requestBuilder->buildRequestData($this->formName, $options);
+    return AIS2Utils::request($this->getXmlInterfaceLocation(), $data);
+  }
+
+  public function getXmlInterfaceLocation() {
+    return $this->requestBuilder->getRequestUrl($this->getAppId());
+  }
 
 }
 ?>
