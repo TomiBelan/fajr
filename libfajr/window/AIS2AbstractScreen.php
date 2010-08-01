@@ -31,85 +31,85 @@ Copyright (c) 2010 Martin Králik
  */
 abstract class AIS2AbstractScreen
 {
-	protected $appId = null;
-	protected $appClassName = null;
-	protected $identifiers = null;
+  protected $appId = null;
+  protected $appClassName = null;
+  protected $identifiers = null;
 
-	protected $formName = null;
-	protected $data = null;
-	protected $inUse = false;
+  protected $formName = null;
+  protected $data = null;
+  protected $inUse = false;
   public function getFormName() {
     return $this->formName;
   }
 
-	public $openedDialog = false;
+  public $openedDialog = false;
   protected $requestBuilder = null;
 
-	/**
-	 * Konštruktor.
-	 *
-	 * @param string $appClassName Názov "triedy" obsluhujúcej danú obrazovku v AISe.
-	 * @param string $identifiers Konkrétne parametre pre vyvolanie danej obrazovky.
-	 */
-	public function __construct($appClassName, $identifiers)
-	{
-		$this->requestBuilder = new AIS2\RequestBuilderImpl();
-		$this->appClassName = $appClassName;
-		$this->identifiers = $identifiers;
-	}
+  /**
+   * Konštruktor.
+   *
+   * @param string $appClassName Názov "triedy" obsluhujúcej danú obrazovku v AISe.
+   * @param string $identifiers Konkrétne parametre pre vyvolanie danej obrazovky.
+   */
+  public function __construct($appClassName, $identifiers)
+  {
+    $this->requestBuilder = new AIS2\RequestBuilderImpl();
+    $this->appClassName = $appClassName;
+    $this->identifiers = $identifiers;
+  }
   public function getXmlInterfaceLocation() {
     return $this->requestBuilder->getRequestUrl($this->getAppId());
   }
 
-	/**
- 	 * Nadviaže spojenie, spustí danú "aplikáciu" v AISe
-	 * a natiahne prvotné dáta do atribútu $data.
-	 */
-	public function open() {
-		if ($this->inUse) return;
-		$this->inUse = true;
-		
-		$location = 'https://ais2.uniba.sk/ais/servlets/WebUIServlet?appClassName='.$this->appClassName.$this->identifiers.'&viewer=web&antiCache='.random();
-		$response = AIS2Utils::request($location);
-		$this->setAppId($response);
+  /**
+   * Nadviaže spojenie, spustí danú "aplikáciu" v AISe
+   * a natiahne prvotné dáta do atribútu $data.
+   */
+  public function open() {
+    if ($this->inUse) return;
+    $this->inUse = true;
+    
+    $location = 'https://ais2.uniba.sk/ais/servlets/WebUIServlet?appClassName='.$this->appClassName.$this->identifiers.'&viewer=web&antiCache='.random();
+    $response = AIS2Utils::request($location);
+    $this->setAppId($response);
 
-		$response = AIS2Utils::request($this->getXmlInterfaceLocation(), array('xml_spec' => '<request><serial>'.$this->getSerial().'</serial><events><ev><event class=\'avc.ui.event.AVCComponentEvent\'><command>INIT</command></event></ev></events></request>'));
-		if (preg_match("/Neautorizovaný prístup!/", $response)) {
-			// logoutni aby to nemusel robit uzivatel
-			throw new AIS2LoginException("AIS hlási neautorizovaný prístup -
-				pravdepodobne vypršala platnosť cookie");
-		}
-		$this->setFormName($response);
+    $response = AIS2Utils::request($this->getXmlInterfaceLocation(), array('xml_spec' => '<request><serial>'.$this->getSerial().'</serial><events><ev><event class=\'avc.ui.event.AVCComponentEvent\'><command>INIT</command></event></ev></events></request>'));
+    if (preg_match("/Neautorizovaný prístup!/", $response)) {
+      // logoutni aby to nemusel robit uzivatel
+      throw new AIS2LoginException("AIS hlási neautorizovaný prístup -
+        pravdepodobne vypršala platnosť cookie");
+    }
+    $this->setFormName($response);
 
-		$this->data = AIS2Utils::request('https://ais2.uniba.sk/ais/servlets/WebUIServlet?appId='.$this->getAppId().'&form='.$this->formName.'&antiCache='.random());
-	}
+    $this->data = AIS2Utils::request('https://ais2.uniba.sk/ais/servlets/WebUIServlet?appId='.$this->getAppId().'&form='.$this->formName.'&antiCache='.random());
+  }
 
-	/**
-	 * Zatvorí danú "aplikáciu" v AISe,
-	 */
-	public function close() {
-		if (!$this->inUse) return;
-		AIS2Utils::request($this->getXmlInterfaceLocation(), array('xml_spec' => '<request><serial>'.$this->getSerial().'</serial><events><ev><event class=\'avc.framework.webui.WebUIKillEvent\'/></ev></events></request>'));
-		$this->inUse = false;
-	}
+  /**
+   * Zatvorí danú "aplikáciu" v AISe,
+   */
+  public function close() {
+    if (!$this->inUse) return;
+    AIS2Utils::request($this->getXmlInterfaceLocation(), array('xml_spec' => '<request><serial>'.$this->getSerial().'</serial><events><ev><event class=\'avc.framework.webui.WebUIKillEvent\'/></ev></events></request>'));
+    $this->inUse = false;
+  }
 
-	/**
-	 * Deštruktor.
-	 * Zatvorí danú "aplikáciu" v AISe,
-	 * aby sa nevyčerpal limit otvorených aplikácii na session.
-	 */
-	public function  __destruct()
-	{
-		$this->close();
-	}
+  /**
+   * Deštruktor.
+   * Zatvorí danú "aplikáciu" v AISe,
+   * aby sa nevyčerpal limit otvorených aplikácii na session.
+   */
+  public function  __destruct()
+  {
+    $this->close();
+  }
 
-	
-	public function getAppId()
-	{
-		$this->open();
-		return $this->appId;
-	}
-	
+  
+  public function getAppId()
+  {
+    $this->open();
+    return $this->appId;
+  }
+  
   const APPID_PATTERN = '@\<body onload\=\'window\.setTimeout\("WebUI_init\(\\\"([0-9]+)\\\", \\\"ais\\\", \\\"ais/webui2\\\"\)", 1\)\'@';
 
   public function parseAppIdFromResponse($response) {
@@ -121,19 +121,19 @@ abstract class AIS2AbstractScreen
     }
   }
 
-	/**
-	 * Nastaví atribút $appId, ktorý pomocou regulárneho výrazu nájde vo vstupných dátach.
-	 * @param string $response Odpoveď AISu v HTML formáte z inicializačnej časti komunikácie.
-	 */
-	protected function setAppId($response)
-	{
+  /**
+   * Nastaví atribút $appId, ktorý pomocou regulárneho výrazu nájde vo vstupných dátach.
+   * @param string $response Odpoveď AISu v HTML formáte z inicializačnej časti komunikácie.
+   */
+  protected function setAppId($response)
+  {
     $appId = $this->parseAppIdFromResponse($response);
     if ($appId !== null) {
-			$this->appId = $appId;
-		} else {
+      $this->appId = $appId;
+    } else {
       throw new Exception('Neviem nájsť appId v odpovedi vo fáze inicializácie triedy '.__CLASS__.'!');
     }
-	}
+  }
 
   const FORM_NAME_PATTERN = '@dm\(\)\.openMainDialog\("(?P<formName>[^"]*)","(?P<name>[^"]*)","(?P<formId>[^"]*)",[0-9]*,[^,]*,[^,]*,[^,]*,[^,]*,[^,]*,[^,]*,[^,]*,[^,]*\);@';
 
