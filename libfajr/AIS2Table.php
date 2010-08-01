@@ -27,7 +27,7 @@ Copyright (c) 2010 Martin Králik
 /**
  * Tento súbor obsahuje parser AIS html tabuliek do poľa stringov.
  *
- * @package Libfajr
+ * @package libfajr
  * @author Peter Peresini <ppershing+fajr@gmail.com>
  * @filesource
  */
@@ -36,7 +36,7 @@ Copyright (c) 2010 Martin Králik
  * Trieda, ktorá poparsuje AIS html tabuľku a vyrobí z nej pole
  * jednotlivých riadkov.
  *
- * @package Libfajr
+ * @package libfajr
  * @author Peter Peresini <ppershing+fajr@gmail.com>
  */
 class AIS2Table {
@@ -47,17 +47,19 @@ class AIS2Table {
   private $definition = null;
 
   /**
-   * Samotné dáta poparsovaní pri konštrukcii objektu
+   * Samotné dáta poparsované pri konštrukcii objektu.
    * @var array(array(string=>string))
    */
   private $data = null;
 
   /**
-   * Konštruktor, z html kódu vyrobí dáta
+   * Konštruktor, z html kódu vyrobí dáta.
+   *
    * @param array(string) $tableDefinition  názvy stĺpcov
    * @param string        $html             html vygenerované AISom
    */
-  public function __construct($tableDefinition, $html) {
+  public function __construct($tableDefinition, $html)
+  {
     $this->definition = $tableDefinition;
     $data = matchAll($html, $this->getPattern());
     $this->data = array();
@@ -70,25 +72,38 @@ class AIS2Table {
     }
   }
 
-  public function getData() {
+  /**
+   * Vráti riadky tabuľky.
+   *
+   * @return array(array(string=>string)) riadky tabuľky
+   */
+  public function getData()
+  {
     return $this->data;
   }
 
-  public function getTableDefinition() {
+  /**
+   * Vráti definíciu stĺpcov použitú v konštruktore a pri parsovaní.
+   *
+   * @return array(string) názvy stĺpcov.
+   */
+  public function getTableDefinition()
+  {
     return $this->definition;
   }
 
   /**
    * Vráti regulárny výraz použitý na matchovanie tabuľky v HTML výstupe z AISu.
    * Na jeho konštrukciu sa používa definícia tabuľky.
+   *
    * @return string Regulárny výraz.
    */
   private function getPattern()
   {
     $pattern = '@\<tr id\=\'row_(?P<index>[^\']*)\' rid\=\'[^\']*\'[^>]*\>';
-    foreach ($this->definition as $column)
-    {
-      $pattern .= '\<td[^>]*\>(\<div\>){0,1}(?P<'.substr($column,0,32).'>[^<]*)(\</div\>){0,1}\</td\>';
+    foreach ($this->definition as $column) {
+      $pattern .= '\<td[^>]*\>(\<div\>){0,1}(?P<'.substr($column, 0, 32).
+                  '>[^<]*)(\</div\>){0,1}\</td\>';
     }
     $pattern .= '\</tr\>@';
     return $pattern;

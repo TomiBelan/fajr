@@ -5,8 +5,8 @@
  *
  * PHP version 5.2.6
  *
- * @package    Databaza
- * @subpackage Global
+ * @package    libfajr
+ * @subpackage Misc
  * @author     Peter Peresini <ppershing@fks.sk>
  * @filesource
  */
@@ -18,8 +18,8 @@
  * so when PHP tries to use undefined class, it will be first tried
  * to be autoloaded from files. 
  *
- * @package    Databaza
- * @subpackage Global
+ * @package    libfajr
+ * @subpackage Misc
  * @author     Peter Peresini <ppershing@fks.sk>
  * @see        http://sk.php.net/autoload
  */
