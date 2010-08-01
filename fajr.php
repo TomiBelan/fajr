@@ -25,7 +25,10 @@ Copyright (c) 2010 Martin Králik
  }}} */
 
 if (!defined('_FAJR')) {
-  die('<html><head><title>Varovanie</title></head><body>'.
+  die('<html><head>'.
+      '<title>Varovanie</title>'.
+      '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />'.
+      '</head><body>'.
       '<h1>Varovanie</h1>'.
       '<p>Máte zle nastavený server, tento súbor by nemal byť '.
       'priamo prístupný. Prosím nastavte server tak, aby sa dalo '.
