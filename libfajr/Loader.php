@@ -65,6 +65,10 @@ class Loader
     public static function getClassPath($className)
     {
         assert(is_string($className));
+        // TODO(ppershing): make Loader namespace-aware
+        // in case of name collisions.
+        // get rid of namespace
+        $className = preg_replace("@.*\\\\@", "", $className); 
         if (isset(self::$_classPaths[$className])) {
             return self::$_classPaths[$className];
         }
