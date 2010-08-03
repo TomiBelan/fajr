@@ -1,4 +1,5 @@
-TEMPLATE='/scripts/phpdoc/template.xml'
+#!/bin/bash
+TEMPLATE=`dirname $0`/template.xml
 
 (
 echo '<?xml version="1.0" encoding="ISO-8859-1"?>'

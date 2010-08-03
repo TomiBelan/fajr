@@ -29,7 +29,7 @@ Thanatos
 # Get the file name
 ($directory) = @ARGV;
 $COMMAND = "cat $directory/report/documentation/li_*.html | grep 'new WebFXTreeItem(' | grep 'classe' | grep -v -e '---' ";
-$COMMAND = "$COMMAND | sed \"s/.*, '//\" | sed \"s/');//\" | grep -E '[a-z]' | sed 's/[^\\/]*\\///'";
+$COMMAND = "$COMMAND | sed \"s/.*, '//\" | sed \"s/');//\" | grep -E '[a-z]' "; #| sed 's/[^\\/]*\\///'";
 $COMMAND = "$COMMAND | sed 's/\\.html//' | ";
 
 open (INPUT, "$COMMAND")
@@ -55,19 +55,19 @@ digraph G
 START
 
 # Make nodes for the command line argument directory
-my @split = split /\//, $directory;
+#my @split = split /\//, $directory;
 my $key="";
-my $prev=undef;
-for $key (@split)
-{
-    my $KEY=$key;
-    $key =~ s/[^[a-zA-Z0-9]/_/g;
-    $key = $prev."_".$key;
-    $prev = $key;
-    print OUTPUT "\t".$prev;
-    print OUTPUT " [shape=box, label=\"$KEY\", style=\"filled\"];";
-    print OUTPUT "\n";
-}
+#my $prev=undef;
+#for $key (@split)
+#{
+#    my $KEY=$key;
+#    $key =~ s/[^[a-zA-Z0-9]/_/g;
+#    $key = $prev."_".$key;
+#    $prev = $key;
+#    print OUTPUT "\t".$prev;
+#    print OUTPUT " [shape=box, label=\"$KEY\", style=\"filled\"];";
+#    print OUTPUT "\n";
+#}
 
 my $lastpart = "";
 while (<INPUT>)

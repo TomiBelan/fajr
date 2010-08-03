@@ -4,7 +4,7 @@
 
 SCRIPT_PATH=`dirname $0`
 SCRIPT_PATH=`readlink -f $SCRIPT_PATH`
-TEST_PATH="$SCRIPT_PATH/.."
+TEST_PATH=`readlink -f $SCRIPT_PATH/..`
 REPORT_PATH="$SCRIPT_PATH/../report/tests"
 rm -rf "$REPORT_PATH"
 mkdir -p $REPORT_PATH
