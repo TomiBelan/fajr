@@ -61,6 +61,12 @@ class AIS2Table {
   public function __construct($tableDefinition, $html)
   {
     $this->definition = $tableDefinition;
+    // Ak v tabulke nie su ziadne data, matchAll nic nenajde, ale nemame vyhodit vynimku
+    if (trim($html) == '') {
+      $this->data = array();
+      return;
+    }
+
     $data = matchAll($html, $this->getPattern());
     $this->data = array();
     if ($data !== false) {
