@@ -24,6 +24,8 @@ Copyright (c) 2010 Martin Králik
  OTHER DEALINGS IN THE SOFTWARE.
 }}} */
 
+use \fajr\libfajr\Trace;
+use \fajr\libfajr\NullTrace;
 /**
  * Trieda reprezentujúca jednu obrazovku so zoznamom štúdií a zápisných listov.
  *
@@ -84,16 +86,19 @@ class AIS2AdministraciaStudiaScreen extends AIS2AbstractScreen
     parent::__construct('ais.gui.vs.es.VSES017App', '&kodAplikacie=VSES017');
   }
 
-  public function getZoznamStudii()
+  public function getZoznamStudii(Trace $trace)
   {
-    $this->open();
+    $trace || $trace = new NullTrace();
+    $this->open($trace);
     $data = match($this->data, AIS2Utils::DATA_PATTERN);
+    $trace->addChild("Matched data")->tlogData($data);
     return new AIS2Table($this->get_tabulka_zoznam_studii(), $data);
   }
 
-  public function getZapisneListy($studiumIndex)
+  public function getZapisneListy($studiumIndex, Trace $trace = null)
   {
-    $this->open();
+    $trace || $trace = new NullTrace();
+    $this->open($trace);
     $data = $this->requestData(array(
       'compName' => 'nacitatDataAction',
       'objProperties' => array(
@@ -108,7 +113,7 @@ class AIS2AdministraciaStudiaScreen extends AIS2AbstractScreen
           'selectedIndexes' => $studiumIndex,
         ),
       ),
-    ));
+    ), $trace->addChild("Requesting data:"));
     
     $data = match($data, AIS2Utils::DATA_PATTERN);
     return new AIS2Table($this->tabulka_zoznam_zapisnych_listov, $data);
@@ -124,9 +129,10 @@ class AIS2AdministraciaStudiaScreen extends AIS2AbstractScreen
     return $this->getIdFromZapisnyListIndex($zapisnyListIndex, 'idStudium');
   }
 
-  protected function getIdFromZapisnyListIndex($zapisnyListIndex, $idType)
+  protected function getIdFromZapisnyListIndex($zapisnyListIndex, $idType, Trace $trace = null)
   {
-    $this->open();
+    $trace || $trace = new NullTrace();
+    $this->open($trace);
     if (empty($this->idCache[$zapisnyListIndex]))
     {
       $response = $this->requestData(array(
@@ -143,7 +149,7 @@ class AIS2AdministraciaStudiaScreen extends AIS2AbstractScreen
             'selectedIndexes' => $zapisnyListIndex,
           ),
         ),
-      ));
+      ), $trace->addChild("Requesting data:"));
       $data = $this->parseIdFromZapisnyListIndexFromResponse($response);
       if ($data == null) {
         throw new Exception("Neviem parsovať dáta z AISu");

@@ -24,6 +24,8 @@ Copyright (c) 2010 Martin Králik
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
+use \fajr\libfajr\Trace;
+use \fajr\libfajr\NullTrace;
 /**
  * Abstraktná trieda reprezentujúca jednu obrazovku v AISe.
  *
@@ -65,15 +67,27 @@ abstract class AIS2AbstractScreen
    * Nadviaže spojenie, spustí danú "aplikáciu" v AISe
    * a natiahne prvotné dáta do atribútu $data.
    */
-  public function open() {
+  public function open(Trace $trace = null) {
+    $trace || $trace = new NullTrace();
     if ($this->inUse) return;
     $this->inUse = true;
     
-    $location = 'https://ais2.uniba.sk/ais/servlets/WebUIServlet?appClassName='.$this->appClassName.$this->identifiers.'&viewer=web&antiCache='.random();
-    $response = AIS2Utils::request($location);
+    $location =
+        'https://ais2.uniba.sk/ais/servlets/WebUIServlet?appClassName=' .
+        $this->appClassName . $this->identifiers .
+        '&viewer=web&antiCache=' . random();
+
+    $response = AIS2Utils::request($location, null,
+                                   $trace->addChild("setAppId"));
     $this->setAppId($response);
 
-    $response = AIS2Utils::request($this->getXmlInterfaceLocation(), array('xml_spec' => '<request><serial>'.$this->getSerial().'</serial><events><ev><event class=\'avc.ui.event.AVCComponentEvent\'><command>INIT</command></event></ev></events></request>'));
+    $response = AIS2Utils::request($this->getXmlInterfaceLocation(),
+        array('xml_spec' => '<request><serial>' . $this->getSerial() . 
+                            '</serial><events><ev><event class=\'avc.ui.event.AVCComponentEvent\'>'.
+                            '<command>INIT</command></event></ev>'.
+                            '</events></request>'),
+        $trace->addChild("Main command"));
+
     if (preg_match("/Neautorizovaný prístup!/", $response)) {
       // logoutni aby to nemusel robit uzivatel
       throw new AIS2LoginException("AIS hlási neautorizovaný prístup -
@@ -81,7 +95,11 @@ abstract class AIS2AbstractScreen
     }
     $this->setFormName($response);
 
-    $this->data = AIS2Utils::request('https://ais2.uniba.sk/ais/servlets/WebUIServlet?appId='.$this->getAppId().'&form='.$this->formName.'&antiCache='.random());
+    $this->data = AIS2Utils::request(
+        'https://ais2.uniba.sk/ais/servlets/WebUIServlet?appId=' .
+        $this->getAppId() . '&form=' . $this->formName .
+        '&antiCache=' . random(),
+        $trace->addChild("?????"));
   }
 
   /**
@@ -156,7 +174,8 @@ abstract class AIS2AbstractScreen
     if ($name !== null) {
       $this->formName = $name;
     } else {
-      throw new Exception('Neviem nájsť formName v odpovedi vo fáze inicializácie triedy '.get_class().'!');
+      throw new Exception('Neviem nájsť formName v odpovedi ' .
+                          'vo fáze inicializácie triedy '.get_class().'!');
     }
   }
 
@@ -164,9 +183,9 @@ abstract class AIS2AbstractScreen
     return $this->requestBuilder->newSerial();
   }
 
-  public function requestData($options, $debug=false) {
+  public function requestData($options, Trace $trace = null) {
     $data = $this->requestBuilder->buildRequestData($this->formName, $options);
-    return AIS2Utils::request($this->getXmlInterfaceLocation(), $data);
+    return AIS2Utils::request($this->getXmlInterfaceLocation(), $data, $trace);
   }
 }
 ?>

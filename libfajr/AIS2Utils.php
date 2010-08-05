@@ -23,7 +23,7 @@ Copyright (c) 2010 Martin Králik
  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
-
+use \fajr\libfajr\Trace;
 /**
  * Trieda združujúca rôzne základné veci pre prácu s AISom
  *
@@ -61,15 +61,15 @@ class AIS2Utils
 	 * @return string Načítaná stránka.
 	 * @deprecated Bude sa priamo používať inštancia AIS2Connection
 	 */
-	public static function request($url, $post = null)
+	public static function request($url, $post = null, Trace $trace = null)
 	{
 		$connection = self::connection();
 
 		if (is_array($post)) {
-			$response = $connection->post($url, $post);
+			$response = $connection->post($url, $post, $trace);
 		}
 		else {
-			$response = $connection->get($url);
+			$response = $connection->get($url, $trace);
 		}
 
 		return $response;

@@ -24,6 +24,9 @@ Copyright (c) 2010 Martin Sucha
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
+use \fajr\libfajr\Trace;
+use \fajr\libfajr\NullTrace;
+
 /**
  * Zbiera základné štatistické informácie o vykonaných spojeniach
  */
@@ -41,7 +44,8 @@ class AIS2DebugConnection implements AIS2Connection {
 		$this->requests = array();
 	}
 
-	public function get($url) {
+	public function get($url, Trace $trace = null) {
+    $trace || $trace = new NullTrace();
 		$requestInfo = array();
 		$requestInfo['url'] = $url;
 		$requestInfo['method'] = 'GET';
@@ -55,6 +59,10 @@ class AIS2DebugConnection implements AIS2Connection {
 			$requestInfo['endTime'] = $endTime;
 			$requestInfo['responseData'] = $result;
 			$this->requests[] = $requestInfo;
+      $trace->tlog("DebugConnection:");
+      $trace->tlogData("GET: $url");
+      $child = $trace->addChild("Response:");
+      $child->tlogData($result);
 			
 			return $result;
 		}
@@ -66,7 +74,8 @@ class AIS2DebugConnection implements AIS2Connection {
 		}
 	}
 
-	public function post($url, $data) {
+	public function post($url, $data, Trace $trace = null) {
+    $trace || $trace = new NullTrace();
 		$requestInfo = array();
 		$requestInfo['url'] = $url;
 		$requestInfo['method'] = 'POST';
@@ -81,7 +90,12 @@ class AIS2DebugConnection implements AIS2Connection {
 			$requestInfo['endTime'] = $endTime;
 			$requestInfo['responseData'] = $result;
 			$this->requests[] = $requestInfo;
-
+      $trace->tlog("DebugConnection:");
+      $trace->tlogData("POST: $url");
+      $child = $trace->addChild("Request:");
+      $child->tlogData(var_export($data, true));
+      $child = $trace->addChild("Response:");
+      $child->tlogData($result);
 			return $result;
 		}
 		catch (Exception $e) {
