@@ -3,8 +3,13 @@
 	cursor:pointer;
 }
 
+.collapsibleheader {
+  margin-bottom: 0px;
+  border-bottom: 1px solid gray;
+}
+
 div.collapsible h2.togglevisibility {
-	padding-left: 22px;
+	padding-left: 30px;
 	background-image: url('../images/arrow_in.png');
 	background-position: 3px 3px;
 	background-repeat: no-repeat;
@@ -217,4 +222,14 @@ button.tableButton
 
 .login-box input {
 	width: 100%;
+}
+
+.trace {
+  padding-left: 20px;
+  background-image: url('../images/trace.png');
+  background-position: 3px 3px;
+  background-repeat: no-repeat;
+
+  margin-top: 5px;
+  margin-bottom: 5px;
 }

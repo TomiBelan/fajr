@@ -110,7 +110,7 @@ class Collapsible implements Renderable
     $id = DisplayManager::getUniqueHTMLId('collapsible');
 
     $html = '<div class="collapsible" id="'.$id.'"'."\n";
-    $html .= '<h2 class="togglevisibility" onclick=\'toggleVisibility("'.$id.'");\' >';
+    $html .= '<h2 class="collapsibleheader togglevisibility" onclick=\'toggleVisibility("'.$id.'");\' >';
     $html .= $this->title.'</h2>'."\n";
     $html .= '<div class="collapsiblecontent">';
     $html .= $this->content->getHtml();
