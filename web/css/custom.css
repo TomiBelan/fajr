@@ -8,14 +8,14 @@
   border-bottom: 1px solid gray;
 }
 
-div.collapsible h2.togglevisibility {
+div.collapsible div.togglevisibility {
 	padding-left: 30px;
 	background-image: url('../images/arrow_in.png');
 	background-position: 3px 3px;
 	background-repeat: no-repeat;
 }
 
-div.collapsible.collapsed h2.togglevisibility {
+div.collapsible.collapsed div.togglevisibility {
 	background-image: url('../images/arrow_out.png');
 }
 
@@ -232,4 +232,8 @@ button.tableButton
 
   margin-top: 5px;
   margin-bottom: 5px;
+}
+
+.trace_s {
+  color: gray;
 }
