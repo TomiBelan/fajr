@@ -77,6 +77,18 @@ interface Trace {
   public function tlogData($string_data);
 
   /**
+   * Convenient way of appending any variable definition to tracer.
+   * Implementations should use var_export() or similar function to
+   * obtain string version of variable.
+   *
+   * @param string $name     name of the variable to be dumped
+   * @param mixed  $variable variable to be dumped
+   *
+   * @return void
+   */
+  public function tlogVariable($name, $variable);
+
+  /**
    * Create a new child node of this trace object and return it.
    *
    * @param string $header Optional child header
@@ -98,5 +110,6 @@ class NullTrace implements Trace {
   public function setHeader($header) {}
   public function tlog($text) {}
   public function tlogData($text) {}
+  public function tlogVariable($name, $variable) {}
   public function addChild($header = "") {return new NullTrace();}
 }
