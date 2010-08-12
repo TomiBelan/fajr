@@ -24,9 +24,30 @@ Copyright (c) 2010 Martin Sucha
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
+/**
+ * Provides connection to http server utilizing
+ * GET and POST requests.
+ *
+ * PHP version 5.3.0
+ *
+ * @package    fajr
+ * @subpackage libfajr__connection
+ * @author     Martin Sucha <ppershing@gjh.sk>
+ * @filesource
+ */
 namespace fajr\libfajr\connection;
+
 use \fajr\libfajr\Trace;
 
+/**
+ * Interface to any http connection with cookie management.
+ *
+ * If you need only basic request functionality, @see SimpleConnection.
+ *
+ * @package    fajr
+ * @subpackage libfajr__connection
+ * @author     Martin Sucha <anty@gjh.sk>
+ */
 interface HttpConnection {
 
 	/**
