@@ -23,86 +23,60 @@ Copyright (c) 2010 Martin Sucha
  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
+namespace fajr\libfajr\connection;
 
-use \fajr\libfajr\Trace;
-use \fajr\libfajr\NullTrace;
-
+use fajr\libfajr\Trace;
 /**
  * Zbiera základné štatistické informácie o vykonaných spojeniach
  */
-class AIS2DebugConnection implements AIS2Connection {
+class StatsConnection implements HttpConnection {
 
-	private $requests = null;
+	private $counts = null;
+	private $sizes = null;
+	private $times = null;
+	private $errorCount = 0;
 	private $delegate = null;
 
-	function __construct($delegate) {
+	function __construct(HttpConnection $delegate) {
 		$this->delegate = $delegate;
 		$this->clear();
 	}
 
 	public function clear() {
-		$this->requests = array();
+		$this->counts = array('POST'=>0, 'GET'=>0);
+		$this->sizes = array('POST'=>0, 'GET'=>0);
+		$this->times = array('POST'=>0, 'GET'=>0);
+		$this->errorCount = 0;
 	}
 
-	public function get($url, Trace $trace = null) {
-    $trace || $trace = new NullTrace();
-		$requestInfo = array();
-		$requestInfo['url'] = $url;
-		$requestInfo['method'] = 'GET';
-		$startTime = 0;
+	public function get(Trace $trace, $url) {
 		try {
 			$startTime = microtime(true);
-			$result = $this->delegate->get($url);
+			$result = $this->delegate->get($trace, $url);
 			$endTime = microtime(true);
-
-			$requestInfo['startTime'] = $startTime;
-			$requestInfo['endTime'] = $endTime;
-			$requestInfo['responseData'] = $result;
-			$this->requests[] = $requestInfo;
-      $trace->tlog("DebugConnection:");
-      $trace->tlogData("GET: $url");
-      $child = $trace->addChild("Response:");
-      $child->tlogData($result);
-			
-			return $result;
-		}
-		catch (Exception $e) {
-			$requestInfo['endTime'] = $endTime;
-			$requestInfo['exception'] = $e;
-			$this->requests[] = $requestInfo;
-			throw $e;
-		}
-	}
-
-	public function post($url, $data, Trace $trace = null) {
-    $trace || $trace = new NullTrace();
-		$requestInfo = array();
-		$requestInfo['url'] = $url;
-		$requestInfo['method'] = 'POST';
-		$requestInfo['requestData'] = $data;
-		$startTime = 0;
-		try {
-			$startTime = microtime(true);
-			$result = $this->delegate->post($url, $data);
-			$endTime = microtime(true);
-
-			$requestInfo['startTime'] = $startTime;
-			$requestInfo['endTime'] = $endTime;
-			$requestInfo['responseData'] = $result;
-			$this->requests[] = $requestInfo;
-      $trace->tlog("DebugConnection:");
-      $trace->tlogData("POST: $url");
-      $child = $trace->addChild("Request:");
-      $child->tlogData(var_export($data, true));
-      $child = $trace->addChild("Response:");
-      $child->tlogData($result);
+			$this->counts['GET']++;
+			$this->sizes['GET']+=strlen($result);
+			$this->times['GET']+=$endTime-$startTime;
 			return $result;
 		}
 		catch (Exception $e) {
 			$this->errorCount++;
-			$requestInfo['endTime'] = $endTime;
-			$requestInfo['exception'] = $e;
-			$this->requests[] = $requestInfo;
+			throw $e;
+		}
+	}
+
+	public function post(Trace $trace, $url, $data) {
+		try {
+			$startTime = microtime(true);
+			$result = $this->delegate->post($trace, $url, $data);
+			$endTime = microtime(true);
+			$this->counts['POST']++;
+			$this->sizes['POST']+=strlen($result);
+			$this->times['POST']+=$endTime-$startTime;
+			return $result;
+		}
+		catch (Exception $e) {
+			$this->errorCount++;
 			throw $e;
 		}
 	}
@@ -115,8 +89,44 @@ class AIS2DebugConnection implements AIS2Connection {
 		return $this->delegate->clearCookies();
 	}
 
-	public function getRequests() {
-		return $this->requests;
+	public function getCount($type) {
+		return $this->counts[$type];
+	}
+
+	public function getSize($type) {
+		return $this->sizes[$type];
+	}
+
+	public function getTime($type) {
+		return $this->times[$type];
+	}
+
+	public function getTotalCount() {
+		$sum = 0;
+		foreach ($this->counts as $k => $v) {
+			$sum += $v;
+		}
+		return $sum;
+	}
+
+	public function getTotalSize() {
+		$sum = 0;
+		foreach ($this->sizes as $k => $v) {
+			$sum += $v;
+		}
+		return $sum;
+	}
+
+	public function getTotalTime() {
+		$sum = 0;
+		foreach ($this->times as $k => $v) {
+			$sum += $v;
+		}
+		return $sum;
+	}
+
+	public function getTotalErrors() {
+		return $this->errorCount;
 	}
 
 }

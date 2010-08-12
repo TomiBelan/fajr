@@ -24,23 +24,26 @@ Copyright (c) 2010 Martin Králik
  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
+namespace fajr\libfajr\connection;
 
-class AIS2DecompressingConnection implements AIS2Connection {
+use fajr\libfajr\Trace;
+
+class DecompressingConnection implements HttpConnection {
 
 	private $tempDir = null;
 	private $delegate = null;
 
-	function __construct(AIS2Connection $delegate, $tempDir) {
+	function __construct(HttpConnection $delegate, $tempDir) {
 		$this->tempDir = $tempDir;
 		$this->delegate = $delegate;
 	}
 
-	public function get($url) {
-		return $this->decompress($this->delegate->get($url));
+	public function get(Trace $trace, $url) {
+		return $this->decompress($trace, $this->delegate->get($trace, $url));
 	}
 
-	public function post($url, $data) {
-		return $this->decompress($this->delegate->post($url, $data));
+	public function post(Trace $trace, $url, $data) {
+		return $this->decompress($trace, $this->delegate->post($trace, $url, $data));
 	}
 
 	public function addCookie($name, $value, $expire, $path, $domain, $secure = true, $tailmatch = false) {
@@ -51,14 +54,16 @@ class AIS2DecompressingConnection implements AIS2Connection {
 		return $this->delegate->clearCookies();
 	}
 
-	private function decompress($response) {
+	private function decompress(Trace $trace, $response) {
 		if (strlen($response) >= 8 && substr_compare($response, "\x1f\x8b\x08\x00\x00\x00\x00\x00",0,8) === 0) {
+      $child = $trace->addChild("Content is gzipped, decompressing");
 			$gzippedTempFile = tempnam($this->tempDir, 'gzip');
 			@file_put_contents($gzippedTempFile, $response);
 			ob_start();
 			readgzfile($gzippedTempFile);
 			$response = ob_get_clean();
 			unlink($gzippedTempFile);
+      $child->tlogVariable("Unzipped response", $response);
 		}
 		return $response;
 	}

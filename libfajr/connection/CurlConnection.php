@@ -25,7 +25,11 @@ Copyright (c) 2010 Martin Králik
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
-class AIS2CurlConnection implements AIS2Connection {
+namespace fajr\libfajr\connection;
+
+use fajr\libfajr\Trace;
+
+class CurlConnection implements HttpConnection {
 
 	const USER_AGENT = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; sk; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7';
 
@@ -54,14 +58,19 @@ class AIS2CurlConnection implements AIS2Connection {
 		$this->curl = $ch;
 	}
 
-	public function get($url) {
+	public function get(Trace $trace, $url) {
+    $trace->tlog(__CLASS__.": Http GET");
+    $trace->tlogVariable("URL", $url);
 		curl_setopt($this->curl, CURLOPT_URL, $url);
 		curl_setopt($this->curl, CURLOPT_HTTPGET, true);
-
-		return $this->exec();
+		return $this->exec($trace);
 	}
 
-	public function post($url, $data) {
+	public function post(Trace $trace, $url, $data) {
+    $trace->tlog(__CLASS__.": Http POST");
+    $trace->tlogVariable("URL", $url);
+    $child=$trace->addChild("POST data");
+    $child->tlogVariable("post_data", $data);
 		curl_setopt($this->curl, CURLOPT_URL, $url);
 		curl_setopt($this->curl, CURLOPT_POST, true);
 
@@ -71,7 +80,7 @@ class AIS2CurlConnection implements AIS2Connection {
 
 		curl_setopt($this->curl, CURLOPT_POSTFIELDS, $post);
 
-		return $this->exec();
+		return $this->exec($trace);
 	}
 
 	public function addCookie($name, $value, $expire, $path, $domain,
@@ -92,9 +101,16 @@ class AIS2CurlConnection implements AIS2Connection {
 		unlink($this->cookieFile);
 	}
 
-	private function exec() {
+	private function exec(Trace $trace) {
 		$output = curl_exec($this->curl);
+    $child = $trace->addChild("Response");
+    $child->tlogVariable("Http resonse code",
+        curl_getinfo($this->curl, CURLINFO_HTTP_CODE));
+    $child->tlogVariable("Http content type",
+        curl_getinfo($this->curl, CURLINFO_CONTENT_TYPE));
+    $child->tlogVariable("Response", $output);
 		if (curl_errno($this->curl)) {
+      $child->tlog("There was an error receiving data");
 			throw new Exception("Chyba pri nadväzovaní spojenia:".
 					curl_error($this->curl));
 		}

@@ -24,20 +24,23 @@ Copyright (c) 2010 Martin Sucha
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
-interface AIS2Connection {
+namespace fajr\libfajr\connection;
+use \fajr\libfajr\Trace;
+
+interface HttpConnection {
 
 	/**
 	 * Spravi get request vramci tohto spojenia
 	 * @param string $url
 	 */
-	public function get($url);
+	public function get(Trace $trace, $url);
 
 	/**
 	 * Spravi post request vramci tohto spojenia
 	 * @param string $url
 	 * @param array $data asociativne pole dat na poslanie
 	 */
-	public function post($url, $data);
+	public function post(Trace $trace, $url, $data);
 
 	/**
 	 * Pridá cookie do spojenia
