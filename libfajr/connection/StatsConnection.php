@@ -31,102 +31,102 @@ use fajr\libfajr\Trace;
  */
 class StatsConnection implements HttpConnection {
 
-	private $counts = null;
-	private $sizes = null;
-	private $times = null;
-	private $errorCount = 0;
-	private $delegate = null;
+  private $counts = null;
+  private $sizes = null;
+  private $times = null;
+  private $errorCount = 0;
+  private $delegate = null;
 
-	function __construct(HttpConnection $delegate) {
-		$this->delegate = $delegate;
-		$this->clear();
-	}
+  function __construct(HttpConnection $delegate) {
+    $this->delegate = $delegate;
+    $this->clear();
+  }
 
-	public function clear() {
-		$this->counts = array('POST'=>0, 'GET'=>0);
-		$this->sizes = array('POST'=>0, 'GET'=>0);
-		$this->times = array('POST'=>0, 'GET'=>0);
-		$this->errorCount = 0;
-	}
+  public function clear() {
+    $this->counts = array('POST'=>0, 'GET'=>0);
+    $this->sizes = array('POST'=>0, 'GET'=>0);
+    $this->times = array('POST'=>0, 'GET'=>0);
+    $this->errorCount = 0;
+  }
 
-	public function get(Trace $trace, $url) {
-		try {
-			$startTime = microtime(true);
-			$result = $this->delegate->get($trace, $url);
-			$endTime = microtime(true);
-			$this->counts['GET']++;
-			$this->sizes['GET']+=strlen($result);
-			$this->times['GET']+=$endTime-$startTime;
-			return $result;
-		}
-		catch (Exception $e) {
-			$this->errorCount++;
-			throw $e;
-		}
-	}
+  public function get(Trace $trace, $url) {
+    try {
+      $startTime = microtime(true);
+      $result = $this->delegate->get($trace, $url);
+      $endTime = microtime(true);
+      $this->counts['GET']++;
+      $this->sizes['GET']+=strlen($result);
+      $this->times['GET']+=$endTime-$startTime;
+      return $result;
+    }
+    catch (Exception $e) {
+      $this->errorCount++;
+      throw $e;
+    }
+  }
 
-	public function post(Trace $trace, $url, $data) {
-		try {
-			$startTime = microtime(true);
-			$result = $this->delegate->post($trace, $url, $data);
-			$endTime = microtime(true);
-			$this->counts['POST']++;
-			$this->sizes['POST']+=strlen($result);
-			$this->times['POST']+=$endTime-$startTime;
-			return $result;
-		}
-		catch (Exception $e) {
-			$this->errorCount++;
-			throw $e;
-		}
-	}
+  public function post(Trace $trace, $url, $data) {
+    try {
+      $startTime = microtime(true);
+      $result = $this->delegate->post($trace, $url, $data);
+      $endTime = microtime(true);
+      $this->counts['POST']++;
+      $this->sizes['POST']+=strlen($result);
+      $this->times['POST']+=$endTime-$startTime;
+      return $result;
+    }
+    catch (Exception $e) {
+      $this->errorCount++;
+      throw $e;
+    }
+  }
 
-	public function addCookie($name, $value, $expire, $path, $domain, $secure = true, $tailmatch = false) {
-		return $this->delegate->addCookie($name, $value, $expire, $path, $domain, $secure, $tailmatch);
-	}
+  public function addCookie($name, $value, $expire, $path, $domain, $secure = true, $tailmatch = false) {
+    return $this->delegate->addCookie($name, $value, $expire, $path, $domain, $secure, $tailmatch);
+  }
 
-	public function clearCookies() {
-		return $this->delegate->clearCookies();
-	}
+  public function clearCookies() {
+    return $this->delegate->clearCookies();
+  }
 
-	public function getCount($type) {
-		return $this->counts[$type];
-	}
+  public function getCount($type) {
+    return $this->counts[$type];
+  }
 
-	public function getSize($type) {
-		return $this->sizes[$type];
-	}
+  public function getSize($type) {
+    return $this->sizes[$type];
+  }
 
-	public function getTime($type) {
-		return $this->times[$type];
-	}
+  public function getTime($type) {
+    return $this->times[$type];
+  }
 
-	public function getTotalCount() {
-		$sum = 0;
-		foreach ($this->counts as $k => $v) {
-			$sum += $v;
-		}
-		return $sum;
-	}
+  public function getTotalCount() {
+    $sum = 0;
+    foreach ($this->counts as $k => $v) {
+      $sum += $v;
+    }
+    return $sum;
+  }
 
-	public function getTotalSize() {
-		$sum = 0;
-		foreach ($this->sizes as $k => $v) {
-			$sum += $v;
-		}
-		return $sum;
-	}
+  public function getTotalSize() {
+    $sum = 0;
+    foreach ($this->sizes as $k => $v) {
+      $sum += $v;
+    }
+    return $sum;
+  }
 
-	public function getTotalTime() {
-		$sum = 0;
-		foreach ($this->times as $k => $v) {
-			$sum += $v;
-		}
-		return $sum;
-	}
+  public function getTotalTime() {
+    $sum = 0;
+    foreach ($this->times as $k => $v) {
+      $sum += $v;
+    }
+    return $sum;
+  }
 
-	public function getTotalErrors() {
-		return $this->errorCount;
-	}
+  public function getTotalErrors() {
+    return $this->errorCount;
+  }
 
 }

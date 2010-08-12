@@ -31,91 +31,91 @@ use fajr\libfajr\Trace;
 
 class CurlConnection implements HttpConnection {
 
-	const USER_AGENT = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; sk; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7';
+  const USER_AGENT = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; sk; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7';
 
-	private $curl = null;
-	private $cookieFile = null;
+  private $curl = null;
+  private $cookieFile = null;
 
-	public function  __construct($cookieFile, $userAgent = null) {
-		if ($userAgent === null) {
-			$userAgent = self::USER_AGENT;
-		}
+  public function  __construct($cookieFile, $userAgent = null) {
+    if ($userAgent === null) {
+      $userAgent = self::USER_AGENT;
+    }
 
-		$this->cookieFile = $cookieFile;
+    $this->cookieFile = $cookieFile;
 
-		$ch = curl_init(); // prvy krat inicializujeme curl
-		curl_setopt($ch, CURLOPT_FORBID_REUSE, false); // Keepalive konekcie
-		curl_setopt($ch, CURLOPT_HEADER, false);
-		curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile);
-		curl_setopt($ch, CURLOPT_COOKIEJAR, $cookieFile);
-		curl_setopt($ch, CURLOPT_USERAGENT, $userAgent);
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_VERBOSE, false);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, true);
+    $ch = curl_init(); // prvy krat inicializujeme curl
+    curl_setopt($ch, CURLOPT_FORBID_REUSE, false); // Keepalive konekcie
+    curl_setopt($ch, CURLOPT_HEADER, false);
+    curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile);
+    curl_setopt($ch, CURLOPT_COOKIEJAR, $cookieFile);
+    curl_setopt($ch, CURLOPT_USERAGENT, $userAgent);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_VERBOSE, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, true);
 
-		$this->curl = $ch;
-	}
+    $this->curl = $ch;
+  }
 
-	public function get(Trace $trace, $url) {
+  public function get(Trace $trace, $url) {
     $trace->tlog(__CLASS__.": Http GET");
     $trace->tlogVariable("URL", $url);
-		curl_setopt($this->curl, CURLOPT_URL, $url);
-		curl_setopt($this->curl, CURLOPT_HTTPGET, true);
-		return $this->exec($trace);
-	}
+    curl_setopt($this->curl, CURLOPT_URL, $url);
+    curl_setopt($this->curl, CURLOPT_HTTPGET, true);
+    return $this->exec($trace);
+  }
 
-	public function post(Trace $trace, $url, $data) {
+  public function post(Trace $trace, $url, $data) {
     $trace->tlog(__CLASS__.": Http POST");
     $trace->tlogVariable("URL", $url);
     $child=$trace->addChild("POST data");
     $child->tlogVariable("post_data", $data);
-		curl_setopt($this->curl, CURLOPT_URL, $url);
-		curl_setopt($this->curl, CURLOPT_POST, true);
+    curl_setopt($this->curl, CURLOPT_URL, $url);
+    curl_setopt($this->curl, CURLOPT_POST, true);
 
-		$newPost = '';
-		foreach ($data as $key => $value) $newPost .= urlencode($key).'='.urlencode($value).'&';
-		$post = substr($newPost, 0, -1);
+    $newPost = '';
+    foreach ($data as $key => $value) $newPost .= urlencode($key).'='.urlencode($value).'&';
+    $post = substr($newPost, 0, -1);
 
-		curl_setopt($this->curl, CURLOPT_POSTFIELDS, $post);
+    curl_setopt($this->curl, CURLOPT_POSTFIELDS, $post);
 
-		return $this->exec($trace);
-	}
+    return $this->exec($trace);
+  }
 
-	public function addCookie($name, $value, $expire, $path, $domain,
-								$secure = true, $tailmatch = false) {
-		$fh = fopen($this->cookieFile, 'a');
-		if (!$fh) throw new Exception('Neviem otvoriť súbor s cookies.');
+  public function addCookie($name, $value, $expire, $path, $domain,
+                $secure = true, $tailmatch = false) {
+    $fh = fopen($this->cookieFile, 'a');
+    if (!$fh) throw new Exception('Neviem otvoriť súbor s cookies.');
 
-		$cookieLine = $domain."\t".($tailmatch?'TRUE':'FALSE')."\t";
-		$cookieLine .= $path."\t".($secure?'TRUE':'FALSE')."\t";
-		$cookieLine .= $expire."\t".$name."\t".str_replace(' ', '+',$value);
-		$cookieLine .= "\n";
+    $cookieLine = $domain."\t".($tailmatch?'TRUE':'FALSE')."\t";
+    $cookieLine .= $path."\t".($secure?'TRUE':'FALSE')."\t";
+    $cookieLine .= $expire."\t".$name."\t".str_replace(' ', '+',$value);
+    $cookieLine .= "\n";
 
-		fwrite($fh, $cookieLine);
-		fclose($fh);
-	}
+    fwrite($fh, $cookieLine);
+    fclose($fh);
+  }
 
-	public function clearCookies() {
-		unlink($this->cookieFile);
-	}
+  public function clearCookies() {
+    unlink($this->cookieFile);
+  }
 
-	private function exec(Trace $trace) {
-		$output = curl_exec($this->curl);
+  private function exec(Trace $trace) {
+    $output = curl_exec($this->curl);
     $child = $trace->addChild("Response");
     $child->tlogVariable("Http resonse code",
         curl_getinfo($this->curl, CURLINFO_HTTP_CODE));
     $child->tlogVariable("Http content type",
         curl_getinfo($this->curl, CURLINFO_CONTENT_TYPE));
     $child->tlogVariable("Response", $output);
-		if (curl_errno($this->curl)) {
+    if (curl_errno($this->curl)) {
       $child->tlog("There was an error receiving data");
-			throw new Exception("Chyba pri nadväzovaní spojenia:".
-					curl_error($this->curl));
-		}
+      throw new Exception("Chyba pri nadväzovaní spojenia:".
+          curl_error($this->curl));
+    }
 
-		return $output;
-	}
+    return $output;
+  }
 
 }

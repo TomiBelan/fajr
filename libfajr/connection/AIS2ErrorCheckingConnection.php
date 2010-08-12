@@ -29,36 +29,36 @@ namespace fajr\libfajr\connection;
 use fajr\libfajr\Trace;
 class AIS2ErrorCheckingConnection implements HttpConnection {
 
-	private $delegate = null;
-	const INTERNAL_ERROR_PATTERN = '@^function main\(\) { (?:alert|webui\.onAppClosedOnServer)\(\'([^\']*)\'\);? }$@m';
-	const APACHE_ERROR_PATTERN = '@Apache Tomcat.*<pre>([^<]*)</pre>@m';
+  private $delegate = null;
+  const INTERNAL_ERROR_PATTERN = '@^function main\(\) { (?:alert|webui\.onAppClosedOnServer)\(\'([^\']*)\'\);? }$@m';
+  const APACHE_ERROR_PATTERN = '@Apache Tomcat.*<pre>([^<]*)</pre>@m';
 
-	function __construct(HttpConnection $delegate) {
-		$this->delegate = $delegate;
-	}
+  function __construct(HttpConnection $delegate) {
+    $this->delegate = $delegate;
+  }
 
-	public function get(Trace $trace, $url) {
-		return $this->check($trace, $url, $this->delegate->get($trace, $url));
-	}
+  public function get(Trace $trace, $url) {
+    return $this->check($trace, $url, $this->delegate->get($trace, $url));
+  }
 
-	public function post(Trace $trace, $url, $data) {
-		return $this->check($trace, $url, $this->delegate->post($trace, $url, $data));
-	}
+  public function post(Trace $trace, $url, $data) {
+    return $this->check($trace, $url, $this->delegate->post($trace, $url, $data));
+  }
 
-	public function addCookie($name, $value, $expire, $path, $domain, $secure = true, $tailmatch = false) {
-		return $this->delegate->addCookie($name, $value, $expire, $path, $domain, $secure, $tailmatch);
-	}
+  public function addCookie($name, $value, $expire, $path, $domain, $secure = true, $tailmatch = false) {
+    return $this->delegate->addCookie($name, $value, $expire, $path, $domain, $secure, $tailmatch);
+  }
 
-	public function clearCookies() {
-		return $this->delegate->clearCookies();
-	}
+  public function clearCookies() {
+    return $this->delegate->clearCookies();
+  }
 
-	private function check(Trace $trace, $url, $response) {
-		$matches = array();
-		if (preg_match(self::INTERNAL_ERROR_PATTERN, $response, $matches))
-		{
+  private function check(Trace $trace, $url, $response) {
+    $matches = array();
+    if (preg_match(self::INTERNAL_ERROR_PATTERN, $response, $matches))
+    {
       $trace->tlog("Expection encountered");
-			throw new Exception('<b>Nastala chyba pri requeste.</b><br/>Zdôvodnenie od AISu: '.hescape($matches[1]).
+      throw new Exception('<b>Nastala chyba pri requeste.</b><br/>Zdôvodnenie od AISu: '.hescape($matches[1]).
                           '<br/>Požadovaná url: '.hescape($url));
     }
     if (preg_match(self::APACHE_ERROR_PATTERN, $response, $matches)) {
@@ -66,8 +66,8 @@ class AIS2ErrorCheckingConnection implements HttpConnection {
       throw new Exception('<b>Nastala chyba pri requeste.</b><br/>Zdôvodnenie od AISu: '.nl2br(hescape($matches[1])).
                           '<br/>Požadovaná url: '.hescape($url));
     }
-		return $response;
-	}
+    return $response;
+  }
 
 
 

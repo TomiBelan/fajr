@@ -50,35 +50,35 @@ use \fajr\libfajr\Trace;
  */
 interface HttpConnection {
 
-	/**
-	 * Spravi get request vramci tohto spojenia
-	 * @param string $url
-	 */
-	public function get(Trace $trace, $url);
+  /**
+   * Spravi get request vramci tohto spojenia
+   * @param string $url
+   */
+  public function get(Trace $trace, $url);
 
-	/**
-	 * Spravi post request vramci tohto spojenia
-	 * @param string $url
-	 * @param array $data asociativne pole dat na poslanie
-	 */
-	public function post(Trace $trace, $url, $data);
+  /**
+   * Spravi post request vramci tohto spojenia
+   * @param string $url
+   * @param array $data asociativne pole dat na poslanie
+   */
+  public function post(Trace $trace, $url, $data);
 
-	/**
-	 * Pridá cookie do spojenia
-	 * @param string $name Názov cookie
-	 * @param string $value Hodnota cookie
-	 * @param int $expire Unix timestamp, kedy expiruje (co znamena 0 treba este zistit)
-	 * @param string $path Korenova cesta platnosti cookie. / znamena celu domenu
-	 * @param string $domain Domena, kde cookie plati
-	 * @param boolean $secure Ci je potrebne HTTPS na odovzdanie cookie
-	 * @param boolean $tailmatch Ci mozu vsetky poddomeny dostat tuto cookie
-	 */
-	public function addCookie($name, $value, $expire, $path, $domain,
-		$secure=true, $tailmatch=false);
+  /**
+   * Pridá cookie do spojenia
+   * @param string $name Názov cookie
+   * @param string $value Hodnota cookie
+   * @param int $expire Unix timestamp, kedy expiruje (co znamena 0 treba este zistit)
+   * @param string $path Korenova cesta platnosti cookie. / znamena celu domenu
+   * @param string $domain Domena, kde cookie plati
+   * @param boolean $secure Ci je potrebne HTTPS na odovzdanie cookie
+   * @param boolean $tailmatch Ci mozu vsetky poddomeny dostat tuto cookie
+   */
+  public function addCookie($name, $value, $expire, $path, $domain,
+    $secure=true, $tailmatch=false);
 
-	/**
-	 * Vymaze vsetky cookie, pripadne aj ich asociovane ulozisko
-	 */
-	public function clearCookies();
+  /**
+   * Vymaze vsetky cookie, pripadne aj ich asociovane ulozisko
+   */
+  public function clearCookies();
 
 }
