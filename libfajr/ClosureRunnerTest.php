@@ -32,7 +32,7 @@ class ClosureTest extends PHPUnit_Framework_TestCase
           $data->arg1 = true;
         };
 
-    $closure = new ClosureiRunner($f, $data);
+    $closure = new ClosureRunner($f, $data);
     // Stupid PHP do not have nested variable scopes, simulate destruction.
     unset($closure);
 
