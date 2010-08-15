@@ -28,22 +28,47 @@ namespace fajr\libfajr\connection;
 
 use fajr\libfajr\Trace;
 
-class DecompressingConnection implements HttpConnection {
-
+class GzipDecompressingConnection implements HttpConnection {
+  /**
+   * temporary directory for output files.
+   * Deprecate when PHP 6 is available!
+   */
   private $tempDir = null;
+
+  /**
+   * @var HttpConnection Delegate connection over which we are working.
+   */
   private $delegate = null;
 
-  function __construct(HttpConnection $delegate, $tempDir) {
-    $this->tempDir = $tempDir;
+  function __construct(HttpConnection $delegate, $tempDir)
+  {
     $this->delegate = $delegate;
+    $this->tempDir = $tempDir;
   }
 
+  /**
+   * GET request. @see HttpConnection::get
+   *
+   * @param string $url URL to get
+   *
+   * @returns string (decompressed) content retrieved from $url
+   */
   public function get(Trace $trace, $url) {
-    return $this->decompress($trace, $this->delegate->get($trace, $url));
+    return $this->decompressIfGzip($trace,
+                                   $this->delegate->get($trace, $url));
   }
 
+  /**
+   * POST request. @see HttpConnection::post
+   *
+   * @param string $url URL to get
+   * @param array $data post data
+   *
+   * @returns string (decompressed) content retrieved from $url
+   */
   public function post(Trace $trace, $url, $data) {
-    return $this->decompress($trace, $this->delegate->post($trace, $url, $data));
+    return $this->decompressIfGzip($trace,
+                                $this->delegate->post($trace, $url, $data));
   }
 
   public function addCookie($name, $value, $expire, $path, $domain, $secure = true, $tailmatch = false) {
@@ -54,20 +79,24 @@ class DecompressingConnection implements HttpConnection {
     return $this->delegate->clearCookies();
   }
 
-  private function decompress(Trace $trace, $response) {
-    if (strlen($response) >= 8 && substr_compare($response, "\x1f\x8b\x08\x00\x00\x00\x00\x00",0,8) === 0) {
-      $child = $trace->addChild("Content is gzipped, decompressing");
+  const GZIP_HEADER = "\x1f\x8b\x08\x00\x00\x00\x00\x00";
+
+  private function decompressIfGzip(Trace $trace, $response)
+  {
+    if (strlen($response) >= 8 &&
+        substr_compare($response, self::GZIP_HEADER, 0, 8) === 0) {
+      $child = $trace->addChild("Content is gzipped, decompressing...");
       $gzippedTempFile = tempnam($this->tempDir, 'gzip');
       @file_put_contents($gzippedTempFile, $response);
       ob_start();
       readgzfile($gzippedTempFile);
-      $response = ob_get_clean();
-      unlink($gzippedTempFile);
-      $child->tlogVariable("Unzipped response", $response);
+      $decoded = ob_get_clean();
+      @unlink($gzippedTempFile);
+      // USE THIS IN PHP6: $decoded = gzdecode($response);
+      $child->tlogVariable("Gzip decoded response", $decoded);
+      return $decoded;
+    } else {
+      return $response;
     }
-    return $response;
   }
-
-
-
 }
