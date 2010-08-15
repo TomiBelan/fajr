@@ -57,12 +57,11 @@ class CurlConnection implements HttpConnection {
 
   private $curl = null;
   private $cookieFile = null;
+  private $userAgent = null;
 
 
   public function  __construct($cookieFile, $userAgent = null) {
-    if ($userAgent === null) {
-      $userAgent = self::USER_AGENT;
-    }
+    $this->userAgent = $userAgent ? $userAgent: self::USER_AGENT;
 
     $this->cookieFile = $cookieFile;
     $this->_curlInit();
@@ -76,7 +75,7 @@ class CurlConnection implements HttpConnection {
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_FORBID_REUSE, false); // Keepalive konekcie
     curl_setopt($ch, CURLOPT_HEADER, false);
-    curl_setopt($ch, CURLOPT_USERAGENT, $userAgent);
+    curl_setopt($ch, CURLOPT_USERAGENT, $this->userAgent);
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_VERBOSE, false);
