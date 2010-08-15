@@ -27,6 +27,7 @@
 namespace fajr\libfajr\connection;
 
 use fajr\libfajr\Trace;
+use \Exception;
 class AIS2ErrorCheckingConnection implements HttpConnection {
 
   private $delegate = null;
