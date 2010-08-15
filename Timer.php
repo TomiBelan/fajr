@@ -29,9 +29,9 @@ Copyright (c) 2010 Peter Perešíni
  *
  * PHP version 5.3.0
  *
- * @package    fajr
+ * @package    Fajr
  * @subpackage TODO
- * @author     Peter Peresini <ppershing@fks.sk>
+ * @author     Peter Peresini <ppershing+fajr@gmail.com>
  * @filesource
  */
 namespace fajr;
@@ -39,7 +39,7 @@ namespace fajr;
 /**
  * Simple timer which can measure elapsed time.
  *
- * @package    fajr
+ * @package    Fajr
  * @subpackage TODO
  * @author     Peter Peresini <ppershing@fks.sk>
  */

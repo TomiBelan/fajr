@@ -2,9 +2,9 @@
 /**
  * This file contains tests for SystemTimer class
  *
- * @package Fajr
- * @subpackage Tests
- * @author Peter Peresini <ppershing+fajr@gmail.com>
+ * @package    Fajr
+ * @subpackage TODO
+ * @author     Peter Peresini <ppershing+fajr@gmail.com>
  */
 
 /**
