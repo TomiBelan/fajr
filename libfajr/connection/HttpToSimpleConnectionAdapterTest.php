@@ -12,6 +12,7 @@
 require_once 'test_include.php';
 
 use fajr\libfajr\connection\HttpToSimpleConnectionAdapter;
+use fajr\libfajr\NullTrace;
 /**
  * @ignore
  */
@@ -37,10 +38,10 @@ class HttpToSimpleConnectionAdapterTest extends PHPUnit_Framework_TestCase
                    ->will($this->returnValue('post'));
 
     $response = $adapter->request(new NullTrace, 'fmph.uniba.sk');
-    $this->assertEquals('get', $reponse);
+    $this->assertEquals('get', $response);
 
     $response = $adapter->request(new NullTrace, 'fmph.uniba.sk', array());
-    $this->assertEquals('post', $reponse);
+    $this->assertEquals('post', $response);
   }
 }
 
