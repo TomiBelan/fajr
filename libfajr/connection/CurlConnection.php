@@ -28,6 +28,7 @@ Copyright (c) 2010 Martin Králik
 namespace fajr\libfajr\connection;
 
 use fajr\libfajr\Trace;
+use fajr\libfajr\ClosureRunner;
 
 class CurlConnection implements HttpConnection {
 
@@ -36,24 +37,32 @@ class CurlConnection implements HttpConnection {
   private $curl = null;
   private $cookieFile = null;
 
+
   public function  __construct($cookieFile, $userAgent = null) {
     if ($userAgent === null) {
       $userAgent = self::USER_AGENT;
     }
 
     $this->cookieFile = $cookieFile;
+    $this->_curlInit();
+  }
 
+  public function __destruct() {
+    curl_close($this->curl);
+  }
+
+  public function _curlInit() {
     $ch = curl_init(); // prvy krat inicializujeme curl
     curl_setopt($ch, CURLOPT_FORBID_REUSE, false); // Keepalive konekcie
     curl_setopt($ch, CURLOPT_HEADER, false);
-    curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile);
-    curl_setopt($ch, CURLOPT_COOKIEJAR, $cookieFile);
     curl_setopt($ch, CURLOPT_USERAGENT, $userAgent);
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_VERBOSE, false);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, true);
+    curl_setopt($ch, CURLOPT_COOKIEFILE, $this->cookieFile);
+    curl_setopt($ch, CURLOPT_COOKIEJAR, $this->cookieFile);
 
     $this->curl = $ch;
   }
@@ -85,23 +94,41 @@ class CurlConnection implements HttpConnection {
 
   public function addCookie($name, $value, $expire, $path, $domain,
                 $secure = true, $tailmatch = false) {
+    // Closing+reopening handle seems to be the only way how to force save/reload
+    // of cookies. We loose reusable connection though.
+    $closureRunner = new ClosureRunner(array($this, '_curlInit'));
+    curl_close($this->curl);
+
     $fh = fopen($this->cookieFile, 'a');
-    if (!$fh) throw new Exception('Neviem otvoriť súbor s cookies.');
+    if (!$fh) {
+      throw new Exception('Neviem otvoriť súbor s cookies.');
+    }
 
     $cookieLine = $domain."\t".($tailmatch?'TRUE':'FALSE')."\t";
     $cookieLine .= $path."\t".($secure?'TRUE':'FALSE')."\t";
     $cookieLine .= $expire."\t".$name."\t".str_replace(' ', '+',$value);
     $cookieLine .= "\n";
 
-    fwrite($fh, $cookieLine);
-    fclose($fh);
+    if (fwrite($fh, $cookieLine) < strlen($cookieLine)) {
+      throw new Exception('Failed to add cookies.');
+    }
+    if (!fclose($fh)) {
+      throw new Exception('Failed to add cookies.');
+    };
   }
 
   public function clearCookies() {
-    unlink($this->cookieFile);
+    // Closing+reopening handle seems to be the only way how to force save/reload
+    // of cookies. We loose reusable connection though.
+    curl_close($this->curl);
+    @unlink($this->cookieFile);
+    $this->_curlInit();
   }
 
   private function exec(Trace $trace) {
+    // read cookie file
+    curl_setopt($this->curl, CURLOPT_COOKIEFILE, $this->cookieFile);
+
     $output = curl_exec($this->curl);
     $child = $trace->addChild("Response");
     $child->tlogVariable("Http resonse code",
@@ -114,6 +141,8 @@ class CurlConnection implements HttpConnection {
       throw new Exception("Chyba pri nadväzovaní spojenia:".
           curl_error($this->curl));
     }
+    // Do not forget to save current file content
+    curl_setopt($this->curl, CURLOPT_COOKIEJAR, $this->cookieFile);
 
     return $output;
   }
