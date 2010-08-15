@@ -24,17 +24,19 @@ Copyright (c) 2010 Martin Sucha
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
+use fajr\libfajr\connection\HttpConnection;
+
 interface AIS2Login {
 	/**
 	 * Prihlási používateľa
 	 * @return boolean true ak sa podarilo prihlásiť, false inak
 	 */
-	public function login(AIS2Connection $connection);
+	public function login(HttpConnection $connection);
 
 	/**
 	 * Odhlási používateľa
 	 */
-	public function logout(AIS2Connection $connection);
+	public function logout(HttpConnection $connection);
 
 	/**
 	 * @return true ak je používateľ momentálne prihlásený

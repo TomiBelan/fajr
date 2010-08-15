@@ -25,6 +25,8 @@ Copyright (c) 2010 Martin Králik
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
+use \fajr\libfajr\connection\HttpConnection;
+use \fajr\libfajr\Trace;
 /**
  * Trieda reprezentujúca prihlasovanie pomocou cosign
  *
@@ -46,7 +48,7 @@ class AIS2CosignLogin extends AIS2AbstractLogin {
 		$this->krbpwd = $krbpwd;
 	}
 
-	public function login(AIS2Connection $connection) {
+	public function login(HttpConnection $connection) {
 		$login = $this->username;
 		$krbpwd = $this->krbpwd;
 
@@ -54,10 +56,10 @@ class AIS2CosignLogin extends AIS2AbstractLogin {
 		$this->username = null;
 		$this->krbpwd = null;
 
-		$data = $connection->get(self::LOGIN);
+		$data = $connection->get(new NullTrace(), self::LOGIN);
 		if (preg_match('@\<title\>IIKS \- Prihlásenie\</title\>@', $data)) {
 			assert($login !== null && $krbpwd !== null);
-			$data = $connection->post(self::COSIGN_LOGIN, array('ref' => self::LOGIN, 'login'=> $login, 'krbpwd' => $krbpwd));
+			$data = $connection->post(new NullTrace(), self::COSIGN_LOGIN, array('ref' => self::LOGIN, 'login'=> $login, 'krbpwd' => $krbpwd));
 			if (!preg_match('@\<base href\="https://ais2\.uniba\.sk/ais/portal/pages/portal_layout\.jsp"\>@', $data)) {
 				if (preg_match('@Pri pokuse o prihlásenie sa vyskytol problém:@', $data)) {
 					if ($reason = match($data, '@\<div style\="color:#FF0000;"\>\<b\>([^<]*)\<\/b\>@')) {
@@ -76,8 +78,8 @@ class AIS2CosignLogin extends AIS2AbstractLogin {
 		return true;
 	}
 
-	public function logout(AIS2Connection $connection) {
-		$connection->post(self::COSIGN_LOGOUT, array('verify' => 'Odhlásiť', 'url'=> self::MAIN_PAGE));
+	public function logout(HttpConnection $connection) {
+		$connection->post(new NullTrace(), self::COSIGN_LOGOUT, array('verify' => 'Odhlásiť', 'url'=> self::MAIN_PAGE));
 		return parent::logout($connection);
 	}
 

@@ -23,6 +23,7 @@ Copyright (c) 2010 Martin Sucha
  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
+use fajr\libfajr\connection\HttpConnection;
 
 abstract class AIS2AbstractLogin implements AIS2Login {
 
@@ -34,7 +35,7 @@ abstract class AIS2AbstractLogin implements AIS2Login {
 		return $this->loggedIn;
 	}
 
-	public function logout(AIS2Connection $connection) {
+	public function logout(HttpConnection $connection) {
 		$connection->clearCookies();
 		$this->loggedIn = false;
 		return true;

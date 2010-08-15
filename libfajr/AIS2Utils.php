@@ -24,6 +24,7 @@ Copyright (c) 2010 Martin Králik
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 use \fajr\libfajr\Trace;
+use \fajr\libfajr\connection\SimpleConnection;
 /**
  * Trieda združujúca rôzne základné veci pre prácu s AISom
  *
@@ -40,7 +41,7 @@ class AIS2Utils
 	 * @return AIS2Connection
 	 * @deprecated po zrefaktorovani zmizne
 	 */
-	public static function connection(AIS2Connection $set_to=null) {
+	public static function connection(SimpleConnection $set_to=null) {
 		static $connection = null;
 
 		if ($set_to !== null) {
@@ -61,18 +62,10 @@ class AIS2Utils
 	 * @return string Načítaná stránka.
 	 * @deprecated Bude sa priamo používať inštancia AIS2Connection
 	 */
-	public static function request($url, $post = null, Trace $trace = null)
+	public static function request(Trace $trace, $url, $post = null)
 	{
 		$connection = self::connection();
-
-		if (is_array($post)) {
-			$response = $connection->post($url, $post, $trace);
-		}
-		else {
-			$response = $connection->get($url, $trace);
-		}
-
-		return $response;
+    return $connection->request($trace, $url, $post);
 	}
 	
 	/**
