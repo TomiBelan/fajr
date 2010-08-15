@@ -27,8 +27,9 @@ Copyright (c) 2010 Martin Králik
 /**
  * Tento súbor obsahuje parser AIS html tabuliek do poľa stringov.
  *
- * @package libfajr
- * @author Peter Peresini <ppershing+fajr@gmail.com>
+ * @package    Fajr
+ * @subpackage Libfajr
+ * @author     Peter Peresini <ppershing+fajr@gmail.com>
  * @filesource
  */
 
@@ -36,8 +37,9 @@ Copyright (c) 2010 Martin Králik
  * Trieda, ktorá poparsuje AIS html tabuľku a vyrobí z nej pole
  * jednotlivých riadkov.
  *
- * @package libfajr
- * @author Peter Peresini <ppershing+fajr@gmail.com>
+ * @package    Fajr
+ * @subpackage Libfajr
+ * @author     Peter Peresini <ppershing+fajr@gmail.com>
  */
 class AIS2Table {
   /**

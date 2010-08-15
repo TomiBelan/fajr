@@ -2,9 +2,9 @@
 /**
  * This file contains tests for AIS2 utility class
  *
- * @package libfajr
- * @subpackage Tests
- * @author Peter Peresini <ppershing+fajr@gmail.com>
+ * @package    Fajr
+ * @subpackage Libfajr
+ * @author     Peter Peresini <ppershing+fajr@gmail.com>
  */
 
 /**

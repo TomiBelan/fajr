@@ -30,9 +30,9 @@ Copyright (c) 2010 Peter Perešíni
  *
  * PHP version 5.2.6
  *
- * @package    libfajr
- * @subpackage Misc
- * @author     Peter Peresini <ppershing@fks.sk>
+ * @package    Fajr
+ * @subpackage Libfajr
+ * @author     Peter Peresini <ppershing+fajr@gmail.com>
  * @filesource
  */
 
@@ -43,9 +43,9 @@ Copyright (c) 2010 Peter Perešíni
  * so when PHP tries to use undefined class, it will be first tried
  * to be autoloaded from files. 
  *
- * @package    fajr
- * @subpackage libfajr
- * @author     Peter Peresini <ppershing@fks.sk>
+ * @package    Fajr
+ * @subpackage Libfajr
+ * @author     Peter Peresini <ppershing+fajr@gmail.com>
  * @see        http://sk.php.net/autoload
  */
 class Loader
