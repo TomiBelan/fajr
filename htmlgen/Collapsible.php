@@ -66,9 +66,8 @@ class Collapsible implements Renderable
    * @param Renderable  $content    Obsah schovavanej oblasti
    * @param bool        $collapsed  Je oblast schovana?
    */
-  function __construct($title, Renderable $content, $collapsed = false)
+  function __construct(Renderable $title, Renderable $content, $collapsed = false)
   {
-    assert($content != null);
     $this->setTitle($title);
     $this->setContent($content);
     $this->setCollapsed($collapsed);
@@ -79,9 +78,8 @@ class Collapsible implements Renderable
     return $this->title;
   }
 
-  public function setTitle($title)
+  public function setTitle(Renderable $title)
   {
-    assert($title != null);
     $this->title = $title;
   }
 
@@ -110,8 +108,8 @@ class Collapsible implements Renderable
     $id = DisplayManager::getUniqueHTMLId('collapsible');
 
     $html = '<div class="collapsible" id="'.$id.'"'."\n";
-    $html .= '<h2 class="collapsibleheader togglevisibility" onclick=\'toggleVisibility("'.$id.'");\' >';
-    $html .= $this->title.'</h2>'."\n";
+    $html .= '<div class="collapsibleheader togglevisibility" onclick=\'toggleVisibility("'.$id.'");\' >';
+    $html .= $this->title->getHtml().'</div>'."\n";
     $html .= '<div class="collapsiblecontent">';
     $html .= $this->content->getHtml();
     $html .= '</div>';
