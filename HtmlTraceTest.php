@@ -19,7 +19,7 @@ use \fajr\HtmlTrace;
 class HtmlTraceTest extends PHPUnit_Framework_TestCase
 {
   private function newTimer() {
-    return $this->getMock('fajr\Timer', array('getElapsedTime', 'reset'));
+    return $this->getMock('\fajr\libfajr\base\Timer', array('getElapsedTime', 'reset'));
   }
 
   public function testRecursiveOutput()

@@ -1,11 +1,11 @@
 <?php
 
 namespace fajr;
-use \fajr\libfajr\Trace;
+use \fajr\libfajr\base\Trace;
 use \Renderable;
 use \Label;
 use \Collapsible;
-use \fajr\Timer;
+use \fajr\libfajr\base\Timer;
 
 // TODO(ppershing): documentation
 
