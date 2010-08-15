@@ -26,7 +26,7 @@ Copyright (c) 2010 Martin Králik
  }}} */
 
 use \fajr\libfajr\connection\HttpConnection;
-use \fajr\libfajr\Trace;
+use \fajr\libfajr\base\NullTrace;
 /**
  * Trieda reprezentujúca prihlasovanie pomocou cosign
  *
