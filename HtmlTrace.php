@@ -5,6 +5,7 @@ use \fajr\libfajr\Trace;
 use \Renderable;
 use \Label;
 use \Collapsible;
+use \fajr\Timer;
 
 // TODO(ppershing): documentation
 
@@ -12,10 +13,12 @@ class HtmlTrace implements Trace, Renderable{
   private $header;
   private $children = array();
   private $constructTime = null;
+  private $timer = null;
 
-  public function __construct($header = "", $escape = true){
+  public function __construct(Timer $timer, $header = "", $escape = true){
     $this->header = $escape ? hescape($header) : $header;
     $this->constructTime = microtime(true);
+    $this->timer = $timer;
   }
 
   public function setHeader($header) {
@@ -40,7 +43,7 @@ class HtmlTrace implements Trace, Renderable{
   }
 
   public function addChild($header = "") {
-    $child = new HtmlTrace($this->getStatusString().hescape($header), false);
+    $child = new HtmlTrace($this->timer, $this->getStatusString().hescape($header), false);
     $this->children[] = $child;
     return $child;
   }
@@ -64,12 +67,12 @@ class HtmlTrace implements Trace, Renderable{
   }
 
   private function getStatusString() {
-    $time = microtime(true) - $this->constructTime;
     $caller = $this->getCallerData(2);
     $class = isset($caller['class']) ? $caller['class'] : "";
     $class = preg_replace("@.*\\\\@", "", $class);
     $function = $caller['function'];
-    return sprintf("<span class='trace_s'> %+0.2fs %s::%s(): </span>", $time, $class, $function);
+    return sprintf("<span class='trace_s'> %+0.2fs %s::%s(): </span>",
+                   $this->timer->getElapsedTime(), $class, $function);
   }
 
   public function getHtml() {

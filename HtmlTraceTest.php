@@ -18,11 +18,15 @@ use \fajr\HtmlTrace;
  */
 class HtmlTraceTest extends PHPUnit_Framework_TestCase
 {
+  private function newTimer() {
+    return $this->getMock('fajr\Timer', array('getElapsedTime', 'reset'));
+  }
 
   public function testRecursiveOutput()
   {
-    $root = new HtmlTrace("root_h");
-    $other = new HtmlTrace("other");
+    $timer = $this->newTimer();
+    $root = new HtmlTrace($timer, "root_h");
+    $other = new HtmlTrace($timer, "other");
     $root->tlog("root_text");
     $c1 = $root->addChild("c1_h");
     $c2 = $root->addChild("c2_h");
@@ -53,7 +57,8 @@ class HtmlTraceTest extends PHPUnit_Framework_TestCase
   }
 
   public function testVariableOutput() {
-    $trace = new HtmlTrace("root");
+    $timer = $this->newTimer();
+    $trace = new HtmlTrace($timer, "root");
     $trace->tlogVariable("var1", false);
     $trace->tlogVariable("var2", 4.7);
     $trace->tlogVariable("var3", array('str'));
@@ -64,14 +69,15 @@ class HtmlTraceTest extends PHPUnit_Framework_TestCase
     $this->assertRegExp("@array.*str@s", $html);
     $this->assertRegExp("@null@i", $html);
 
-    $trace = new HtmlTrace("root");
+    $trace = new HtmlTrace($timer, "root");
     $trace->tlogVariable("var", "a'b");
     $html = $trace->getHtml();
     $this->assertRegExp("@a&#039;b@", $html);
   }
 
   public function testEscaping() {
-    $trace = new HtmlTrace();
+    $timer = $this->newTimer();
+    $trace = new HtmlTrace($timer);
     $trace->tlog("<&x");
     $trace->tlogData("&x>");
     $trace->tlogVariable("a'a", "a\"a");
@@ -85,7 +91,6 @@ class HtmlTraceTest extends PHPUnit_Framework_TestCase
     $this->assertRegExp("@&amp;@", $html);
     $this->assertRegExp("@a&#039;a@", $html);
     $this->assertRegExp("@a&quot;a@", $html);
-
   }
 
 }
