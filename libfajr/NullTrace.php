@@ -29,8 +29,8 @@ Copyright (c) 2010 Peter Perešíni
  *
  * PHP version 5.3.0
  *
- * @package    fajr
- * @subpackage libfajr
+ * @package    Fajr
+ * @subpackage Libfajr
  * @author     Peter Peresini <ppershing@fks.sk>
  * @filesource
  */
@@ -41,8 +41,9 @@ use fajr\libfajr\Trace;
  * Represents tracer object which does nothing. It shoud be convenient to
  * pass around as default value of trace parameter.
  *
- * @package fajr
- * @subpackage libfajr
+ * @package    Fajr
+ * @subpackage Libfajr
+ * @author     Peter Peresini <ppershing@fks.sk>
  */
 class NullTrace implements Trace {
   public function setHeader($header)

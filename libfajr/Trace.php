@@ -30,9 +30,9 @@ Copyright (c) 2010 Peter Perešíni
  *
  * PHP version 5.3.0
  *
- * @package    fajr
- * @subpackage libfajr
- * @author     Peter Peresini <ppershing@fks.sk>
+ * @package    Fajr
+ * @subpackage Libfajr
+ * @author     Peter Peresini <ppershing+fajr@gmail.com>
  * @filesource
  */
 namespace fajr\libfajr;
@@ -43,9 +43,9 @@ namespace fajr\libfajr;
  * You can pass this object along your call tree
  * and log important information alogn with it.
  *
- * @package    fajr
- * @subpackage libfajr
- * @author     Peter Peresini <ppershing@fks.sk>
+ * @package    Fajr
+ * @subpackage Libfajr
+ * @author     Peter Peresini <ppershing+fajr@gmail.com>
  */
 interface Trace {
   /**
