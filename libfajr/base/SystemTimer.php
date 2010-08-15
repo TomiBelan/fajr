@@ -34,7 +34,7 @@ Copyright (c) 2010 Peter Perešíni
  * @author     Peter Peresini <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace fajr;
+namespace fajr\libfajr\base;
 
 use \fajr\libfajr\base\Timer;
 /**
