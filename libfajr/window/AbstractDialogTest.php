@@ -1,9 +1,9 @@
 <?php
 /**
  *
- * @package libfajr
- * @subpackage Tests
- * @author Peter Peresini <ppershing+fajr@gmail.com>
+ * @package    Fajr
+ * @subpackage Libfajr__Window
+ * @author     Peter Peresini <ppershing+fajr@gmail.com>
  */
 
 /**

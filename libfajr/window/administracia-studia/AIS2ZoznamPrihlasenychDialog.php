@@ -25,9 +25,22 @@ Copyright (c) 2010 Martin Králik
  }}} */
 
 /**
+ * TODO
+ *
+ * PHP version 5.3.0
+ *
+ * @package    Fajr
+ * @subpackage Libfajr__Window__Administracia-studia
+ * @author     Martin Kralik <majak47@gmail.com>
+ * @filesource
+ */
+
+/**
  * Trieda pre dialóg so zoznamom prihlásených študentov na termín.
  *
- * @author majak
+ * @package    Fajr
+ * @subpackage Libfajr__Window__Administracia-studia
+ * @author     Martin Kralik <majak47@gmail.com>
  */
 class AIS2ZoznamPrihlasenychDialog extends AIS2AbstractDialog
 {

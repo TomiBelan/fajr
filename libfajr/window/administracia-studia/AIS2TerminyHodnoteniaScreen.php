@@ -24,13 +24,26 @@ Copyright (c) 2010 Martin Králik
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
+/**
+ * TODO
+ *
+ * PHP version 5.3.0
+ *
+ * @package    Fajr
+ * @subpackage Libfajr__Window__Administracia-studia
+ * @author     Martin Kralik <majak47@gmail.com>
+ * @filesource
+ */
+
 use fajr\libfajr\Trace;
 use fajr\libfajr\connection\SimpleConnection;
 /**
  * Trieda reprezentujúca jednu obrazovku so zoznamom predmetov zápisného listu
  * a termínov hodnotenia.
  *
- * @author majak
+ * @package    Fajr
+ * @subpackage Libfajr__Window__Administracia-studia
+ * @author     Martin Kralik <majak47@gmail.com>
  */
 class AIS2TerminyHodnoteniaScreen extends AIS2AbstractScreen
 {

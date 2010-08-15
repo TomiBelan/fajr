@@ -25,9 +25,22 @@ Copyright (c) 2010 Martin Králik
  }}} */
 
 /**
+ * TODO
+ *
+ * PHP version 5.3.0
+ *
+ * @package    Fajr
+ * @subpackage Libfajr__Window__Administracia-studia
+ * @author     Martin Kralik <majak47@gmail.com>
+ * @filesource
+ */
+
+/**
  * Trieda pre dialóg s termínmi skúšok k jednému predmetu.
  *
- * @author majak
+ * @package    Fajr
+ * @subpackage Libfajr__Window__Administracia-studia
+ * @author     Martin Kralik <majak47@gmail.com>
  */
 /*abstract */class AIS2TerminyDialog extends AIS2AbstractDialog
 {
