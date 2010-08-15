@@ -25,11 +25,12 @@
   }}} */
 
 require_once 'FajrRouter.php';
+use \fajr\libfajr\connection\HttpConnection;
 
 class FajrUtils
 {
 
-  public static function login(AIS2Login $login, AIS2Connection $connection)
+  public static function login(AIS2Login $login, HttpConnection $connection)
   {
     $session = new AIS2Session($login);
 
@@ -43,7 +44,7 @@ class FajrUtils
   /**
    * Odhlási z Cosignu a zmaže lokálne cookies.
    */
-  public static function logout(AIS2Connection $connection)
+  public static function logout(HttpConnection $connection)
   {
     if (!isset($_SESSION['AISSession'])) return false;
     if ($_SESSION['AISSession']->logout($connection)) {
