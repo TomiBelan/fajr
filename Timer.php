@@ -53,6 +53,7 @@ interface Timer {
 
   /**
    * Get time in seconds elapsed from last resetting.
+   * Note that calling this function does not reset timer.
    *
    * @returns double elapsed time
    */
