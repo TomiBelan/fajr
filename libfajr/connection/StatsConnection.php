@@ -25,7 +25,9 @@ Copyright (c) 2010 Martin Sucha
  }}} */
 namespace fajr\libfajr\connection;
 
-use fajr\libfajr\Trace;
+use fajr\libfajr\base\Trace;
+use fajr\libfajr\base\Timer;
+use \Exception;
 /**
  * Zbiera základné štatistické informácie o vykonaných spojeniach
  */
@@ -36,9 +38,15 @@ class StatsConnection implements HttpConnection {
   private $times = null;
   private $errorCount = 0;
   private $delegate = null;
+  private $timer = null;
 
-  function __construct(HttpConnection $delegate) {
+  /**
+   * @var Timer $timer Timer to time requests.
+   * Note that timer WILL BE RESETTED.
+   */
+  function __construct(HttpConnection $delegate, Timer $timer) {
     $this->delegate = $delegate;
+    $this->timer = $timer;
     $this->clear();
   }
 
@@ -51,32 +59,34 @@ class StatsConnection implements HttpConnection {
 
   public function get(Trace $trace, $url) {
     try {
-      $startTime = microtime(true);
+      $this->timer->reset();;
       $result = $this->delegate->get($trace, $url);
-      $endTime = microtime(true);
       $this->counts['GET']++;
-      $this->sizes['GET']+=strlen($result);
-      $this->times['GET']+=$endTime-$startTime;
+      $this->sizes['GET'] += strlen($result);
+      $this->times['GET'] += $this->timer->getElapsedTime();
       return $result;
     }
     catch (Exception $e) {
       $this->errorCount++;
+      $this->counts['GET']++;
+      $this->times['GET'] += $this->timer->getElapsedTime();
       throw $e;
     }
   }
 
   public function post(Trace $trace, $url, $data) {
     try {
-      $startTime = microtime(true);
+      $this->timer->reset();
       $result = $this->delegate->post($trace, $url, $data);
-      $endTime = microtime(true);
       $this->counts['POST']++;
-      $this->sizes['POST']+=strlen($result);
-      $this->times['POST']+=$endTime-$startTime;
+      $this->sizes['POST'] += strlen($result);
+      $this->times['POST'] += $this->timer->getElapsedTime();
       return $result;
     }
     catch (Exception $e) {
       $this->errorCount++;
+      $this->counts['POST']++;
+      $this->times['POST'] += $this->timer->getElapsedTime();
       throw $e;
     }
   }
