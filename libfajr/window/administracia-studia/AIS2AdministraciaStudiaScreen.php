@@ -24,8 +24,8 @@ Copyright (c) 2010 Martin Králik
  OTHER DEALINGS IN THE SOFTWARE.
 }}} */
 
-use \fajr\libfajr\Trace;
-use \fajr\libfajr\NullTrace;
+use fajr\libfajr\Trace;
+use fajr\libfajr\connection\SimpleConnection;
 /**
  * Trieda reprezentujúca jednu obrazovku so zoznamom štúdií a zápisných listov.
  *
@@ -81,81 +81,84 @@ class AIS2AdministraciaStudiaScreen extends AIS2AbstractScreen
 
   protected $idCache = array();
 
-  public function __construct()
+  public function __construct(Trace $trace, SimpleConnection $connection)
   {
-    parent::__construct('ais.gui.vs.es.VSES017App', '&kodAplikacie=VSES017');
+    parent::__construct($trace, $connection, 'ais.gui.vs.es.VSES017App', '&kodAplikacie=VSES017');
   }
 
   public function getZoznamStudii(Trace $trace)
   {
-    $trace || $trace = new NullTrace();
     $this->open($trace);
     $data = match($this->data, AIS2Utils::DATA_PATTERN);
     $trace->addChild("Matched data")->tlogData($data);
     return new AIS2Table($this->get_tabulka_zoznam_studii(), $data);
   }
 
-  public function getZapisneListy($studiumIndex, Trace $trace = null)
+  public function getZapisneListy(Trace $trace, $studiumIndex)
   {
-    $trace || $trace = new NullTrace();
     $this->open($trace);
-    $data = $this->requestData(array(
-      'compName' => 'nacitatDataAction',
-      'objProperties' => array(
-        'x' => -4,
-        'y' => -4,
-        'focusedComponent' => 'nacitatButton',
-      ),
-      'embObj' => array(
-        'objName' => 'studiaTable',
-        'dataView' => array(
-          'activeIndex' => $studiumIndex,
-          'selectedIndexes' => $studiumIndex,
-        ),
-      ),
-    ), $trace->addChild("Requesting data:"));
+    $data = $this->requestData(
+        $trace->addChild("Requesting data:"),
+        array('compName' => 'nacitatDataAction',
+              'objProperties' => array(
+                'x' => -4,
+                'y' => -4,
+                'focusedComponent' => 'nacitatButton',
+              ),
+              'embObj' => array(
+                'objName' => 'studiaTable',
+                'dataView' => array(
+                  'activeIndex' => $studiumIndex,
+                  'selectedIndexes' => $studiumIndex,
+                ),
+              ),
+            ));
     
     $data = match($data, AIS2Utils::DATA_PATTERN);
+    $trace->tlogVariable("Matched data", $data);
     return new AIS2Table($this->tabulka_zoznam_zapisnych_listov, $data);
   }
 
-  public function getIdZapisnyList($zapisnyListIndex)
+  public function getIdZapisnyList(Trace $trace, $zapisnyListIndex)
   {
-    return $this->getIdFromZapisnyListIndex($zapisnyListIndex, 'idZapisnyList');
+    return $this->getIdFromZapisnyListIndex($trace, $zapisnyListIndex, 'idZapisnyList');
   }
 
-  public function getIdStudium($zapisnyListIndex)
+  public function getIdStudium(Trace $trace, $zapisnyListIndex)
   {
-    return $this->getIdFromZapisnyListIndex($zapisnyListIndex, 'idStudium');
+    return $this->getIdFromZapisnyListIndex($trace, $zapisnyListIndex, 'idStudium');
   }
 
-  protected function getIdFromZapisnyListIndex($zapisnyListIndex, $idType, Trace $trace = null)
+  protected function getIdFromZapisnyListIndex(Trace $trace, $zapisnyListIndex, $idType)
   {
-    $trace || $trace = new NullTrace();
     $this->open($trace);
     if (empty($this->idCache[$zapisnyListIndex]))
     {
-      $response = $this->requestData(array(
-        'compName' => 'terminyHodnoteniaAction',
-        'objProperties' => array(
-          'x' => -4,
-          'y' => -4,
-          'focusedComponent' => 'runZapisneListyButton',
-        ),
-        'embObj' => array(
-          'objName' => 'zoznamTemTable',
-          'dataView' => array(
-            'activeIndex' => $zapisnyListIndex,
-            'selectedIndexes' => $zapisnyListIndex,
-          ),
-        ),
-      ), $trace->addChild("Requesting data:"));
+      $response = $this->requestData(
+          $trace->addChild("Requesting data:"),
+          array('compName' => 'terminyHodnoteniaAction',
+                'objProperties' => array(
+                  'x' => -4,
+                  'y' => -4,
+                  'focusedComponent' => 'runZapisneListyButton',
+                ),
+                'embObj' => array(
+                  'objName' => 'zoznamTemTable',
+                  'dataView' => array(
+                    'activeIndex' => $zapisnyListIndex,
+                    'selectedIndexes' => $zapisnyListIndex,
+                  ),
+                ),
+              ));
+
       $data = $this->parseIdFromZapisnyListIndexFromResponse($response);
       if ($data == null) {
         throw new Exception("Neviem parsovať dáta z AISu");
       }
     
       $this->idCache[$zapisnyListIndex] = $data;
+    } else {
+      $trace->tlogVariable("data from cache", $this->idCache[$zapisnyListIndex]);
     }
     return $this->idCache[$zapisnyListIndex][$idType];
   }

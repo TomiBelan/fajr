@@ -24,6 +24,8 @@ Copyright (c) 2010 Martin Králik
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
+use fajr\libfajr\Trace;
+use fajr\libfajr\connection\SimpleConnection;
 /**
  * Trieda reprezentujúca jednu obrazovku so zoznamom predmetov zápisného listu
  * a termínov hodnotenia.
@@ -71,22 +73,23 @@ class AIS2TerminyHodnoteniaScreen extends AIS2AbstractScreen
 		// }}}
 	);
 
-	public function __construct($idZapisnyList, $idStudium)
+	public function __construct(Trace $trace, SimpleConnection $connection, $idZapisnyList, $idStudium)
 	{
-		parent::__construct('ais.gui.vs.es.VSES007App', '&kodAplikacie=VSES007&idZapisnyList='.$idZapisnyList.'&idStudium='.$idStudium);
+		parent::__construct($trace, $connection, 'ais.gui.vs.es.VSES007App', '&kodAplikacie=VSES007&idZapisnyList='.$idZapisnyList.'&idStudium='.$idStudium);
 	}
 
-	public function getPredmetyZapisnehoListu()
+	public function getPredmetyZapisnehoListu(Trace $trace)
 	{
-		$this->open();
+		$this->open($trace);
 		$data = matchAll($this->data, AIS2Utils::DATA_PATTERN);
 		return new AIS2Table($this->tabulka_predmety_zapisneho_listu, $data[0][1]);
 	}
 
-	public function getTerminyHodnotenia()
+	public function getTerminyHodnotenia(Trace $trace)
 	{
-		$this->open();
+		$this->open($trace);
 		$data = matchAll($this->data, AIS2Utils::DATA_PATTERN);
+    $trace->tlogVariable("Matched data", $data);
 		return new AIS2Table($this->tabulka_terminy_hodnotenia, $data[1][1]);
 	}
 
@@ -100,7 +103,7 @@ class AIS2TerminyHodnoteniaScreen extends AIS2AbstractScreen
 		return new AIS2ZoznamPrihlasenychDialog($this, 'zoznamPrihlasenychStudentovAction', 'terminyTable', $terminIndex);
 	}
 	
-	public function odhlasZTerminu($terminIndex)
+	public function odhlasZTerminu(Trace $trace, $terminIndex)
 	{
 		$this->open();
 		// Posleme request ze sa chceme odhlasit.

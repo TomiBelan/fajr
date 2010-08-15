@@ -24,6 +24,8 @@ Copyright (c) 2010 Martin Králik
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
+use fajr\libfajr\Trace;
+use fajr\libfajr\connection\SimpleConnection;
 /**
  * Trieda reprezentujúca jednu obrazovku s hodnoteniami a priemermi za jeden rok.
  *
@@ -86,14 +88,14 @@ class AIS2HodnoteniaPriemeryScreen extends AIS2AbstractScreen
     // }}}
   );
 
-  public function __construct($idZapisnyList)
+  public function __construct(Trace $trace, SimpleConnection $connection, $idZapisnyList)
   {
-    parent::__construct('ais.gui.vs.es.VSES212App', '&kodAplikacie=VSES212&idZapisnyList='.$idZapisnyList);
+    parent::__construct($trace, $connection, 'ais.gui.vs.es.VSES212App', '&kodAplikacie=VSES212&idZapisnyList='.$idZapisnyList);
   }
 
-  public function getHodnotenia()
+  public function getHodnotenia(Trace $trace)
   {
-    $this->open();
+    $this->open($trace);
     $data = matchAll($this->data, AIS2Utils::DATA_PATTERN);
     return new AIS2Table($this->get_tabulka_hodnotenia(), $data[0][1]);
   }
