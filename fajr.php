@@ -24,6 +24,9 @@ Copyright (c) 2010 Martin Králik
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
+use \fajr\HtmlTrace;
+use \fajr\libfajr\base\SystemTimer;
+use \fajr\libfajr\connection;
 if (!defined('_FAJR')) {
   die('<html><head>'.
       '<title>Varovanie</title>'.
@@ -47,27 +50,37 @@ require_once 'libfajr/libfajr.php';
 Loader::register();
 Loader::searchForClasses(dirname(__FILE__), true);
 
-// cache expire, u browsera
-session_cache_expire(600);
-// cache expire, u servera
-ini_set("session.gc_maxlifetime", "36000");
-// custom cache expire je mozny iba pre custom session adresar
-session_save_path(FajrConfig::getDirectory('Path.Temporary.Sessions'));
-session_start();
-
-$startTime = microtime(true);
-
 if (!FajrConfig::isConfigured()) {
-	DisplayManager::addContent('notConfigured', true);
-	echo DisplayManager::display();
-	session_write_close();
-	die();
+  DisplayManager::addContent('notConfigured', true);
+  echo DisplayManager::display();
+  session_write_close();
+  die();
 }
 
+class Fajr {
+  private function startSession()
+  {
+    $sessionLifeTime = 36000;
+    session_cache_expire($sessionLifeTime/60);
+    session_set_cookie_params($sessionLifeTime, '/', '.' . $_SERVER['HTTP_HOST']);
+    // cache expire, u servera
+    ini_set("session.gc_maxlifetime", $sessionLifeTime);
+    ini_set("session.cookie_lifetime", $sessionLifeTime);
+    // custom cache expire je mozny iba pre custom session adresar
+    session_save_path(FajrConfig::getDirectory('Path.Temporary.Sessions'));
+    session_start();
+  }
+
+  public function run()
+  {
+
+$timer = new SystemTimer();
 $connection = null;
-$debugConnection = null;
 $statsConnection = null;
 $rawStatsConnection = null;
+
+$trace = new HtmlTrace($timer, "--Trace--");
+
 try
 {
   Input::prepare();
@@ -87,23 +100,19 @@ try
     FajrUtils::dropSession();
   }
 
-	$connection = new AIS2CurlConnection(FajrUtils::getCookieFile());
+	$connection = new connection\CurlConnection(FajrUtils::getCookieFile());
 
-	$rawStatsConnection = new AIS2StatsConnection($connection);
+	$rawStatsConnection = new connection\StatsConnection($connection, new SystemTimer());
 	$connection = $rawStatsConnection;
 
-	$connection = new AIS2DecompressingConnection($connection, FajrConfig::getDirectory('Path.Temporary'));
-	$connection = new AIS2ErrorCheckingConnection($connection);
+	$connection = new connection\GzipDecompressingConnection($connection, FajrConfig::getDirectory('Path.Temporary'));
+	$connection = new connection\AIS2ErrorCheckingConnection($connection);
 
-	$statsConnection = new AIS2StatsConnection($connection);
+	$statsConnection = new connection\StatsConnection($connection, new SystemTimer());
 	$connection = $statsConnection;
+  $simpleConnection = new connection\HttpToSimpleConnectionAdapter($connection);
 
-	if (FajrConfig::get('Debug.Connections')) {
-		$debugConnection = new AIS2DebugConnection($connection);
-		$connection = $debugConnection;
-	}
-
-	AIS2Utils::connection($connection); // toto tu je docasne
+	AIS2Utils::connection($simpleConnection); // toto tu je docasne
 
 	if (Input::get('logout') !== null) {
     FajrUtils::logout($connection);
@@ -126,22 +135,22 @@ try
 		'<div class=\'logout\'><a class="button negative" href="'.FajrUtils::linkUrl(array('logout'=>true)).'">
 	  <img src="images/door_in.png" alt=""/>Odhlásiť</a></div>'
 		);
-		$adminStudia = new AIS2AdministraciaStudiaScreen();
+		$adminStudia = new AIS2AdministraciaStudiaScreen($trace, $simpleConnection);
 		
 		if (Input::get('studium') === null) Input::set('studium',0);
 		
-		$zoznamStudii = $adminStudia->getZoznamStudii();
+		$zoznamStudii = $adminStudia->getZoznamStudii($trace->addChild("Get Zoznam Studii:"));
 		$zoznamStudiiTable = new Table(TableDefinitions::zoznamStudii(), 'studium',
 			array('tab' => Input::get('tab')));
 		$zoznamStudiiTable->addRows($zoznamStudii->getData());
 		$zoznamStudiiTable->setOption('selected_key', Input::get('studium'));
 		$zoznamStudiiTable->setOption('collapsed', true);
 
-		$zoznamStudiiCollapsible = new Collapsible('Zoznam štúdií', $zoznamStudiiTable, true);
+		$zoznamStudiiCollapsible = new Collapsible(new HtmlHeader('Zoznam štúdií'), $zoznamStudiiTable, true);
 
 		DisplayManager::addContent($zoznamStudiiCollapsible->getHtml());		
 		
-		$zapisneListy = $adminStudia->getZapisneListy(Input::get('studium'));
+		$zapisneListy = $adminStudia->getZapisneListy($trace->addChild('getZapisneListy'), Input::get('studium'));
 		
 		$zapisneListyTable = new
 			Table(TableDefinitions::zoznamZapisnychListov(),
@@ -158,14 +167,17 @@ try
 		$zapisneListyTable->setOption('selected_key', Input::get('list'));
 		$zapisneListyTable->setOption('collapsed', true);
 
-		$zapisneListyCollapsible = new Collapsible('Zoznam zápisných listov', $zapisneListyTable, true);
+		$zapisneListyCollapsible = new Collapsible(new HtmlHeader('Zoznam zápisných listov'), $zapisneListyTable, true);
 
 		DisplayManager::addContent($zapisneListyCollapsible->getHtml());
 		
 		
 		$terminyHodnotenia = new
-			AIS2TerminyHodnoteniaScreen($adminStudia->getIdZapisnyList(Input::get('list')),
-					$adminStudia->getIdStudium(Input::get('list')));
+			AIS2TerminyHodnoteniaScreen(
+          $trace,
+          $simpleConnection,
+          $adminStudia->getIdZapisnyList($trace, Input::get('list')),
+					$adminStudia->getIdStudium($trace, Input::get('list')));
 		
 		if (Input::get('tab') === null) Input::set('tab', 'TerminyHodnotenia');
 		$tabs = new TabManager('tab', array('studium'=>Input::get('studium'),
@@ -173,9 +185,11 @@ try
 		// FIXME: chceme to nejak refaktorovat, aby sme nevytvarali zbytocne
 		// objekty, ktore v konstruktore robia requesty
 		$hodnoteniaScreen = new AIS2HodnoteniaPriemeryScreen(
-					$adminStudia->getIdZapisnyList(Input::get('list')));
+          $trace, $simpleConnection,
+					$adminStudia->getIdZapisnyList($trace,
+            Input::get('list')));
 		$tabs->addTab('TerminyHodnotenia', 'Moje skúšky',
-					new MojeTerminyHodnoteniaCallback($terminyHodnotenia, $hodnoteniaScreen));
+					new MojeTerminyHodnoteniaCallback($trace->addChild("terminy hodnotenia callback"), $terminyHodnotenia, $hodnoteniaScreen));
 		$tabs->addTab('ZapisSkusok', 'Prihlásenie na skúšky',
 					new ZoznamTerminovCallback($terminyHodnotenia, $hodnoteniaScreen));
 		$tabs->addTab('ZapisnyList', 'Zápisný list',
@@ -185,8 +199,7 @@ try
 
 		$tabs->setActive(Input::get('tab'));
 		DisplayManager::addContent($tabs->getHtml());
-		
-		$timeDiff = (microtime(true)-$startTime);
+		;
     $version = '<div>Fajr verzia '.hescape(Version::getVersionString()).'</div>';
     DisplayManager::addContent($version);
 		$statistics = "<div> Fajr made ".$statsConnection->getTotalCount().
@@ -194,7 +207,7 @@ try
 						" bytes (".$statsConnection->getTotalSize().
 						" bytes uncompressed) of data from AIS2 in ".
 						sprintf("%.3f", $statsConnection->getTotalTime()).
-						" seconds. It took ".sprintf("%.3f", $timeDiff).
+						" seconds. It took ".sprintf("%.3f", $timer->getElapsedTime()).
 						" seconds to generate this page.</div>";
 		DisplayManager::addContent($statistics);
 	}
@@ -220,12 +233,25 @@ catch (Exception $e)
 	DisplayManager::addException($e);
 }
 
-if ($debugConnection) {
-	DisplayManager::dumpRequests($debugConnection->getRequests());
-}
-
 DisplayManager::setBase(hescape(FajrUtils::basePath()));
+
+$trace->tlog("everything done, generating html");
+
+if (FajrConfig::get('Debug.Trace')===true) {
+  DisplayManager::addContent('<div class="span-24">' . $trace->getHtml() . '</div>');
+}
 echo DisplayManager::display();
 
+
+  }
+
+  public function main()
+  {
+    $this->startSession();
+    $this->run();
+  }
+}
+
+$fajr = new Fajr();
+$fajr->main();
 session_write_close();
-?>
