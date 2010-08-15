@@ -234,6 +234,12 @@ button.tableButton
   margin-bottom: 5px;
 }
 
+pre.trace {
+  background-image: url('../images/trace_data.png');
+  padding-left: 25px;
+  background-position: 2px 0px;
+}
+
 .trace_s {
   color: gray;
 }
