@@ -43,9 +43,9 @@ namespace fajr\libfajr;
  * You can pass this object along your call tree
  * and log important information alogn with it.
  *
- * @package fajr
+ * @package    fajr
  * @subpackage libfajr
- * @author     Peter Peresine <ppershing@fks.sk>
+ * @author     Peter Peresini <ppershing@fks.sk>
  */
 interface Trace {
   /**
@@ -99,17 +99,3 @@ interface Trace {
   public function addChild($header = "");
 }
 
-/**
- * Represents tracer object which does nothing. It shoud be convenient to
- * pass around as default valeu of trace parameter.
- *
- * @package fajr
- * @subpackage libfajr
- */
-class NullTrace implements Trace {
-  public function setHeader($header) {}
-  public function tlog($text) {}
-  public function tlogData($text) {}
-  public function tlogVariable($name, $variable) {}
-  public function addChild($header = "") {return new NullTrace();}
-}
