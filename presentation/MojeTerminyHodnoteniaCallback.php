@@ -1,7 +1,12 @@
 <?php
 
+use \fajr\libfajr\base\Trace;
+
 class MojeTerminyHodnoteniaCallback implements Renderable {
-	public function __construct($terminyHodnotenia, $hodnotenia) {
+	public function __construct(Trace $trace,
+                              AIS2TerminyHodnoteniaScreen $terminyHodnotenia,
+                              AIS2HodnoteniaPriemeryScreen $hodnotenia) {
+    $this->trace = $trace;
 		$this->terminyHodnoteniaApp = $terminyHodnotenia;
 		$this->hodnoteniaApp = $hodnotenia;
 	}
@@ -37,9 +42,14 @@ class MojeTerminyHodnoteniaCallback implements Renderable {
 	
 	
 	public function getHtml() {
-		$terminyHodnotenia = $this->terminyHodnoteniaApp->getTerminyHodnotenia();
-		$hodnotenia = $this->hodnoteniaApp->getHodnotenia();
+    $trace = $this->trace;
+    $trace->tlog("Executing callback");
+    $terminyHodnotenia = $this->terminyHodnoteniaApp->getTerminyHodnotenia(
+        $trace->addChild("get terminy hodnotenia"));
+    $hodnotenia = $this->hodnoteniaApp->getHodnotenia(
+        $trace->addChild("get hodnotenia"));
 		if (Input::get('action') !== null) {
+      $trace->tlog("odhlasujem zo skusky");
 			assert(Input::get("action")=="odhlasZoSkusky");
 			if ($this->odhlasZoSkusky(Input::get("odhlasIndex")))
 			{
@@ -55,14 +65,16 @@ class MojeTerminyHodnoteniaCallback implements Renderable {
 		$terminyHodnoteniaTableActive =  new
 			Table(TableDefinitions::mojeTerminyHodnotenia(), 'termin', $baseUrlParams);
 
-		$terminyHodnoteniaCollapsibleActive = new Collapsible('Aktuálne termíny hodnotenia',
-			$terminyHodnoteniaTableActive);
+		$terminyHodnoteniaCollapsibleActive = new Collapsible(
+        new HtmlHeader('Aktuálne termíny hodnotenia'),
+        $terminyHodnoteniaTableActive);
 		
 		$terminyHodnoteniaTableOld =  new
 			Table(TableDefinitions::mojeTerminyHodnotenia(), 'termin', $baseUrlParams);
 
-		$terminyHodnoteniaCollapsibleOld = new Collapsible('Staré termíny hodnotenia',
-			$terminyHodnoteniaTableOld);
+		$terminyHodnoteniaCollapsibleOld = new Collapsible(
+        new HtmlHeader('Staré termíny hodnotenia'),
+        $terminyHodnoteniaTableOld);
 		
 		if (Input::get('termin')!=null) {
 			$terminyHodnoteniaTableActive->setOption('selected_key',
