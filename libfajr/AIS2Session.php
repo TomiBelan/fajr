@@ -24,6 +24,7 @@ Copyright (c) 2010 Martin Sucha
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
+use \fajr\libfajr\connection\HttpConnection;
 /**
  * Trieda reprezentujúca session systému (stav prihlásenia, ...)
  *
@@ -39,11 +40,11 @@ class AIS2Session
 		$this->login = $login;
 	}
 
-	public function login(AIS2Connection $connection) {
+	public function login(HttpConnection $connection) {
 		return $this->login->login($connection);
 	}
 
-	public function logout(AIS2Connection $connection) {
+	public function logout(HttpConnection $connection) {
 		return $this->login->logout($connection);
 	}
 
