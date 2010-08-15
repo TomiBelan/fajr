@@ -50,10 +50,8 @@ open (OUTPUT, "> $OUTPUT")
 print OUTPUT <<START;
 digraph G
 {
-   ratio = auto;
-#   rotate=90;
-#   nodesep=.05;
-   node[height=.05, fontsize=7, fillcolor=darkolivegreen1];
+   size="50 30!";
+   node[height=.05, fontsize=14, fillcolor=darkolivegreen1];
 START
 
 # Make nodes for the command line argument directory
