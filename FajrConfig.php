@@ -35,7 +35,7 @@ class FajrConfig
    * @see configuration.example.php for more information
    */
   protected static $defaultOptions = array(
-    'Debug.Connections'=>false,
+    'Debug.Trace'=>false,
     'Debug.Path'=>false,
     'Debug.Rewrite'=>false,
     'Path.Temporary'=>'./temp',

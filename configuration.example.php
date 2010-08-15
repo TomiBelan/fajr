@@ -16,9 +16,9 @@ return array(
    * Ak je táto voľba zapnutá, fajr bude vypisovať komunikáciu medzi
    * ním a AISom. Neodporúčame používať na produkčných inštaláciách, keďže
    * spôsobuje, že na výstupe stránky sa objaví obrovské množstvo dát.
-   * Predvolená hodnota false vypne debugovanie spojení.
+   * Predvolená hodnota false vypne debugovanie spojení a chodu fajru.
    */
-  //'Debug.Connections'=>true,
+  //'Debug.Trace'=>true,
 
   /*
    * Ak je táto voľba zapnutá, budú sa používať cesty tvaru fajr.php/nieco.
