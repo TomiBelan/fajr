@@ -25,11 +25,32 @@ Copyright (c) 2010 Martin Králik
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
+/**
+ * Provides wrapper for Curl library.
+ *
+ * PHP version 5.3.0
+ *
+ * @package    Fajr
+ * @subpackage Libfajr__Connection
+ * @author     Martin Sucha <anty@gjh.sk>
+ * @author     Martin Kralik <majak47@gmail.com>
+ * @filesource
+ */
 namespace fajr\libfajr\connection;
 
-use fajr\libfajr\Trace;
-use fajr\libfajr\ClosureRunner;
+use fajr\libfajr\base\Trace;
+use fajr\libfajr\base\ClosureRunner;
 
+/**
+ * Provides HttpConnection wrapper for Curl library.
+ *
+ * PHP version 5.3.0
+ *
+ * @package    Fajr
+ * @subpackage Libfajr__Connection
+ * @author     Martin Sucha <anty@gjh.sk>
+ * @author     Martin Kralik <majak47@gmail.com>
+ */
 class CurlConnection implements HttpConnection {
 
   const USER_AGENT = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; sk; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7';
@@ -52,7 +73,7 @@ class CurlConnection implements HttpConnection {
   }
 
   public function _curlInit() {
-    $ch = curl_init(); // prvy krat inicializujeme curl
+    $ch = curl_init();
     curl_setopt($ch, CURLOPT_FORBID_REUSE, false); // Keepalive konekcie
     curl_setopt($ch, CURLOPT_HEADER, false);
     curl_setopt($ch, CURLOPT_USERAGENT, $userAgent);

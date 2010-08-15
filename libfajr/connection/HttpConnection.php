@@ -32,12 +32,12 @@ Copyright (c) 2010 Martin Sucha
  *
  * @package    Fajr
  * @subpackage Libfajr__Connection
- * @author     Martin Sucha <ppershing@gjh.sk>
+ * @author     Martin Sucha <anty@gjh.sk>
  * @filesource
  */
 namespace fajr\libfajr\connection;
 
-use \fajr\libfajr\Trace;
+use fajr\libfajr\base\Trace;
 
 /**
  * Interface to any http connection with cookie management.

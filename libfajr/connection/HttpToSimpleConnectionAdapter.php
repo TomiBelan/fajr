@@ -37,7 +37,7 @@ Copyright (c) 2010 Peter Peresini
  */
 namespace fajr\libfajr\connection;
 
-use \fajr\libfajr\Trace;
+use fajr\libfajr\base\Trace;
 
 /**
  * Adapter that provides SimpleConnection interface

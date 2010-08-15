@@ -13,7 +13,7 @@ require_once 'test_include.php';
 
 use fajr\libfajr\connection\HttpConnection;
 use fajr\libfajr\connection\GzipDecompressingConnection;
-use fajr\libfajr\NullTrace;
+use fajr\libfajr\base\NullTrace;
 /**
  * @ignore
  */

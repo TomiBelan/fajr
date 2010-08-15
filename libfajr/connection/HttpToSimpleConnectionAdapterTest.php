@@ -12,7 +12,7 @@
 require_once 'test_include.php';
 
 use fajr\libfajr\connection\HttpToSimpleConnectionAdapter;
-use fajr\libfajr\NullTrace;
+use fajr\libfajr\base\NullTrace;
 /**
  * @ignore
  */
