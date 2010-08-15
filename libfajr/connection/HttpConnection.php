@@ -30,8 +30,8 @@ Copyright (c) 2010 Martin Sucha
  *
  * PHP version 5.3.0
  *
- * @package    fajr
- * @subpackage libfajr__connection
+ * @package    Fajr
+ * @subpackage Libfajr__Connection
  * @author     Martin Sucha <ppershing@gjh.sk>
  * @filesource
  */
@@ -44,8 +44,8 @@ use \fajr\libfajr\Trace;
  *
  * If you need only basic request functionality, @see SimpleConnection.
  *
- * @package    fajr
- * @subpackage libfajr__connection
+ * @package    Fajr
+ * @subpackage Libfajr__Connection
  * @author     Martin Sucha <anty@gjh.sk>
  */
 interface HttpConnection {
