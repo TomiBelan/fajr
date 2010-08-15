@@ -69,9 +69,19 @@ Copyright (c) 2010 Martin Králik
 		else echo '<pre>'.hescape($s).'</pre><hr/>';
 	}
 	
+  function utf8_sanitize($string){
+    $out = @iconv("UTF-8", "UTF-8//IGNORE", $string);
+    if ($string != $out) {
+      $out = "Warning: String not shown for security reasons: " .
+             "String contains invalid utf-8 charactes.";
+    }
+    return $out;
+
+  }
+
 	function hescape($string)
 	{
-		return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
+		return htmlspecialchars(utf8_sanitize($string), ENT_QUOTES, 'UTF-8');
 	}
 
 	function random()
