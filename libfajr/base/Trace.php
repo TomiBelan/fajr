@@ -31,11 +31,11 @@ Copyright (c) 2010 Peter Perešíni
  * PHP version 5.3.0
  *
  * @package    Fajr
- * @subpackage Libfajr
+ * @subpackage Libfajr__Base
  * @author     Peter Peresini <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr;
+namespace fajr\libfajr\base;
 
 /**
  * Interface to objects tracing debug information.

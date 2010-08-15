@@ -2,7 +2,7 @@
 /**
  *
  * @package    Fajr
- * @subpackage Libfajr
+ * @subpackage Libfajr__Base
  * @author     Peter Peresini <ppershing+fajr@gmail.com>
  */
 
@@ -11,7 +11,7 @@
  */
 require_once 'test_include.php';
 
-use fajr\libfajr\ClosureRunner;
+use fajr\libfajr\base\ClosureRunner;
 
 class Data {
   public $arg1;

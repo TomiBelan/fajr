@@ -25,39 +25,49 @@ Copyright (c) 2010 Peter Perešíni
  }}} */
 
 /**
- * Interface wrapping timers.
+ * Dummy Trace object doing nothing
  *
  * PHP version 5.3.0
  *
  * @package    Fajr
- * @subpackage TODO
- * @author     Peter Peresini <ppershing+fajr@gmail.com>
+ * @subpackage Libfajr
+ * @author     Peter Peresini <ppershing@fks.sk>
  * @filesource
  */
-namespace fajr;
 
+namespace fajr\libfajr\base;
+use fajr\libfajr\base\Trace;
 /**
- * Simple timer which can measure elapsed time.
+ * Represents tracer object which does nothing. It shoud be convenient to
+ * pass around as default value of trace parameter.
  *
  * @package    Fajr
- * @subpackage TODO
+ * @subpackage Libfajr
  * @author     Peter Peresini <ppershing@fks.sk>
  */
-interface Timer {
-  /**
-   * Start counting time from this moment.
-   *
-   * @return void
-   */
-  public function reset();
+class NullTrace implements Trace {
+  public function setHeader($header)
+  {
+  }
 
-  /**
-   * Get time in seconds elapsed from last resetting.
-   * Note that calling this function does not reset timer.
-   *
-   * @returns double elapsed time
-   */
-  public function getElapsedTime();
+  public function tlog($text)
+  {
+  }
+
+  public function tlogData($text)
+  {
+  }
+
+  public function tlogVariable($name, $variable)
+  {
+  }
+
+  public function addChild($header = "")
+  {
+    return $this;
+    // TODO(ppershing): is returning $this really safe?
+    // Someone may try to compare instances of childs for
+    // example.
+    // return new NullTrace();
+  }
 }
-
-

@@ -1,6 +1,6 @@
 <?php
 
-namespace fajr\libfajr;
+namespace fajr\libfajr\base;
 
 /**
  * Closure class represents "cleaner". It is used to run callbacks
