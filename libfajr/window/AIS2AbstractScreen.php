@@ -24,8 +24,8 @@ Copyright (c) 2010 Martin Králik
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
-use fajr\libfajr\Trace;
-use fajr\libfajr\NullTrace;
+use fajr\libfajr\base\Trace;
+use fajr\libfajr\base\NullTrace;
 use fajr\libfajr\connection\SimpleConnection;
 
 /**

@@ -34,7 +34,7 @@ Copyright (c) 2010 Martin Králik
  * @author     Martin Kralik <majak47@gmail.com>
  * @filesource
  */
-use fajr\libfajr\Trace;
+use fajr\libfajr\base\Trace;
 use fajr\libfajr\connection\SimpleConnection;
 /**
  * Trieda reprezentujúca jednu obrazovku s hodnoteniami a priemermi za jeden rok.

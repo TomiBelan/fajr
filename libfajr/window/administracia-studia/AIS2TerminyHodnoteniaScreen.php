@@ -35,7 +35,7 @@ Copyright (c) 2010 Martin Králik
  * @filesource
  */
 
-use fajr\libfajr\Trace;
+use fajr\libfajr\base\Trace;
 use fajr\libfajr\connection\SimpleConnection;
 /**
  * Trieda reprezentujúca jednu obrazovku so zoznamom predmetov zápisného listu
