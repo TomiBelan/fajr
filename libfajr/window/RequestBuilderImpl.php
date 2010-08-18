@@ -1,8 +1,9 @@
 <?php
-namespace AIS2;
+namespace fajr\libfajr\window;
 
 class RequestBuilderImpl implements RequestBuilder {
   private $serial = 0;
+  private $webRoot = 'https://ais2.uniba.sk';
 
   /**
    * Vygeneruje nové sériové číslo používané v XML protokole na komunikáciu s AISom.
@@ -18,9 +19,12 @@ class RequestBuilderImpl implements RequestBuilder {
    * @param string $appId AIS2 id aplikácie.
    * @return string Url.
    */
-  public function getRequestUrl($appId)
+  public function getRequestUrl($appId, $formName = null)
   {
-    return 'https://ais2.uniba.sk/ais/servlets/WebUIServlet?appId='.$appId.'&antiCache='.random().'&viewer=web';
+    $form = $formName ? '&form='.$formName : '';
+    return
+      $this->webRoot.'/ais/servlets/WebUIServlet?appId='.$appId.$form.
+        '&antiCache='.random().'&viewer=web';
   }
 
   /**

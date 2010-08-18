@@ -23,7 +23,7 @@ Copyright (c) 2010 Peter Peresini
  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
-namespace AIS2;
+namespace fajr\libfajr\window;
 
 interface RequestBuilder {
   /**
@@ -39,7 +39,7 @@ interface RequestBuilder {
    * @param string $appId id AIS aplikácie
    * @return string url
    */
-  public function getRequestUrl($appId);
+  public function getRequestUrl($appId, $formName = null);
 
   /**
    * S každým requestom je treba posielať nový serial.
