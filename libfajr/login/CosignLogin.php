@@ -24,17 +24,20 @@ Copyright (c) 2010 Martin Králik
  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
+namespace fajr\libfajr\login;
 
-use \fajr\libfajr\connection\HttpConnection;
-use \fajr\libfajr\base\NullTrace;
+use fajr\libfajr\connection\HttpConnection;
+use fajr\libfajr\base\NullTrace;
+use \Exception;
 /**
  * Trieda reprezentujúca prihlasovanie pomocou cosign
  *
  * @author majak, ms
  */
-class AIS2CosignLogin extends AIS2AbstractLogin {
+class CosignLogin extends AIS2AbstractLogin {
 
 	const COSIGN_LOGIN = 'https://login.uniba.sk/cosign.cgi';
+
 	const COSIGN_LOGOUT = 'https://login.uniba.sk/logout.cgi';
 	const MAIN_PAGE = 'https://ais2.uniba.sk';
 
@@ -48,6 +51,13 @@ class AIS2CosignLogin extends AIS2AbstractLogin {
 		$this->krbpwd = $krbpwd;
 	}
 
+  const COSIGN_ERROR_PATTERN1 = 
+    '@Pri pokuse o prihlásenie sa vyskytol problém:[^<]*\<div[^>]*\>([^<]*)\<\/div\>@';
+  const COSIGN_ERROR_PATTERN2 = 
+    '@Pri pokuse o prihlásenie sa vyskytol problém:[^<]*\<b\>([^<]*)\<\/b\>@';
+  const COSIGN_ERROR_PATTERN3 = 
+    '@Pri pokuse o prihlásenie sa vyskytol problém:[^<]*\<div[^>]*\>\<b\>([^<]*)\<\/b\>@';
+
 	public function login(HttpConnection $connection) {
 		$login = $this->username;
 		$krbpwd = $this->krbpwd;
@@ -59,15 +69,14 @@ class AIS2CosignLogin extends AIS2AbstractLogin {
 		$data = $connection->get(new NullTrace(), self::LOGIN);
 		if (preg_match('@\<title\>IIKS \- Prihlásenie\</title\>@', $data)) {
 			assert($login !== null && $krbpwd !== null);
-			$data = $connection->post(new NullTrace(), self::COSIGN_LOGIN, array('ref' => self::LOGIN, 'login'=> $login, 'krbpwd' => $krbpwd));
+			$data = $connection->post(new NullTrace(), self::COSIGN_LOGIN, array('ref' => self::LOGIN,
+            'login'=> $login, 'password' => $krbpwd));
 			if (!preg_match('@\<base href\="https://ais2\.uniba\.sk/ais/portal/pages/portal_layout\.jsp"\>@', $data)) {
-				if (preg_match('@Pri pokuse o prihlásenie sa vyskytol problém:@', $data)) {
-					if ($reason = match($data, '@\<div style\="color:#FF0000;"\>\<b\>([^<]*)\<\/b\>@')) {
-						throw new Exception('Nepodarilo sa prihlásiť, dôvod: <b>'.$reason.'</b>');
-					}
-				}
-				if ($reason = match($data, '@\<title\>IIKS - Chyba pri prihlasovaní:([^<]*)\<\/title\>@')) {
+				if (($reason = match($data, self::COSIGN_ERROR_PATTERN1)) ||
+            ($reason = match($data, self::COSIGN_ERROR_PATTERN2)) ||
+            ($reason = match($data, self::COSIGN_ERROR_PATTERN3))) {
 					throw new Exception('Nepodarilo sa prihlásiť, dôvod: <b>'.$reason.'</b>');
+					
 				}
 				throw new Exception('Nepodarilo sa prihlásiť, dôvod neznámy.');
 			}

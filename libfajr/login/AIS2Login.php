@@ -24,6 +24,7 @@ Copyright (c) 2010 Martin Sucha
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
+namespace fajr\libfajr\login;
 use fajr\libfajr\connection\HttpConnection;
 
 interface AIS2Login {

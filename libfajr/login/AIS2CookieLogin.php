@@ -24,7 +24,8 @@ Copyright (c) 2010 Martin Králik
  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
-
+namespace fajr\libfajr\login;
+use fajr\libfajr\connection\HttpConnection;
 /**
  * Trieda reprezentujúca prihlasovanie pomocou cookie
  *
@@ -38,7 +39,7 @@ class AIS2CookieLogin extends AIS2AbstractLogin {
 		$this->cookie = $cookie;
 	}
 
-	public function login(AIS2Connection $connection) {
+	public function login(HttpConnection $connection) {
 		assert($this->cookie !== null);
 		if ($this->loggedIn) return false;
 

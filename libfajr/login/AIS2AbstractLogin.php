@@ -23,6 +23,7 @@ Copyright (c) 2010 Martin Sucha
  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
+namespace fajr\libfajr\login;
 use fajr\libfajr\connection\HttpConnection;
 
 abstract class AIS2AbstractLogin implements AIS2Login {

@@ -25,6 +25,7 @@ Copyright (c) 2010 Martin Sucha
  }}} */
 
 use \fajr\libfajr\connection\HttpConnection;
+use \fajr\libfajr\login\CosignLogin;
 /**
  * Trieda reprezentujúca session systému (stav prihlásenia, ...)
  *
