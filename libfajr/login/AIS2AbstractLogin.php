@@ -28,17 +28,17 @@ use fajr\libfajr\connection\HttpConnection;
 
 abstract class AIS2AbstractLogin implements AIS2Login {
 
-	const LOGIN = 'https://ais2.uniba.sk/ais/login.do';
+  const LOGIN = 'https://ais2.uniba.sk/ais/login.do';
 
-	protected $loggedIn = false;
+  protected $loggedIn = false;
 
-	public function isLoggedIn() {
-		return $this->loggedIn;
-	}
+  public function isLoggedIn() {
+    return $this->loggedIn;
+  }
 
-	public function logout(HttpConnection $connection) {
-		$connection->clearCookies();
-		$this->loggedIn = false;
-		return true;
-	}
+  public function logout(HttpConnection $connection) {
+    $connection->clearCookies();
+    $this->loggedIn = false;
+    return true;
+  }
 }

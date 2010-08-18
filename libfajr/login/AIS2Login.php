@@ -28,19 +28,19 @@ namespace fajr\libfajr\login;
 use fajr\libfajr\connection\HttpConnection;
 
 interface AIS2Login {
-	/**
-	 * Prihlási používateľa
-	 * @return boolean true ak sa podarilo prihlásiť, false inak
-	 */
-	public function login(HttpConnection $connection);
+  /**
+   * Prihlási používateľa
+   * @return boolean true ak sa podarilo prihlásiť, false inak
+   */
+  public function login(HttpConnection $connection);
 
-	/**
-	 * Odhlási používateľa
-	 */
-	public function logout(HttpConnection $connection);
+  /**
+   * Odhlási používateľa
+   */
+  public function logout(HttpConnection $connection);
 
-	/**
-	 * @return true ak je používateľ momentálne prihlásený
-	 */
-	public function isLoggedIn();
+  /**
+   * @return true ak je používateľ momentálne prihlásený
+   */
+  public function isLoggedIn();
 }

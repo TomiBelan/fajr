@@ -25,5 +25,5 @@ Copyright (c) 2010 Martin Sucha
  }}} */
 
 class AIS2LoginException extends Exception {
-	
+  
 }
