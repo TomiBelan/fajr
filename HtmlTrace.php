@@ -1,12 +1,12 @@
 <?php
 
 namespace fajr;
-use \fajr\libfajr\base\Trace;
-use \Renderable;
-use \Label;
-use \Collapsible;
-use \fajr\libfajr\base\Timer;
-
+use fajr\libfajr\base\Trace;
+use Renderable;
+use Label;
+use Collapsible;
+use fajr\libfajr\base\Timer;
+use fajr\libfajr\util\CodeSnippet;
 // TODO(ppershing): documentation
 
 class HtmlTrace implements Trace, Renderable{
@@ -71,8 +71,20 @@ class HtmlTrace implements Trace, Renderable{
     $class = isset($caller['class']) ? $caller['class'] : "";
     $class = preg_replace("@.*\\\\@", "", $class);
     $function = $caller['function'];
-    return sprintf("<span class='trace_s'> %+0.2fs %s::%s(): </span>",
-                   $this->timer->getElapsedTime(), $class, $function);
+
+    $caller = $this->getCallerData(1);
+    $file = $caller['file'];
+    $line = $caller['line'];
+    $snippet = CodeSnippet::getCodeSnippet($file, $line, 5);
+    $tooltipHtml = sprintf(
+        "<span class='trace_tooltip'>Function&nbsp;%s::%s()<br/>\n".
+        "Line:&nbsp;%s<br/>\n".
+        "File:&nbsp'%s'<br/>\n".
+        "<br/>Code snippet:<pre>%s</pre></span>",
+        hescape($class), hescape($function), hescape($line), hescape($file),
+        hescape($snippet));
+    return sprintf("<span class='trace_s'>%+0.2fs %s</span>",
+                   $this->timer->getElapsedTime(), $tooltipHtml);
   }
 
   public function getHtml() {

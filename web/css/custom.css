@@ -242,4 +242,20 @@ pre.trace {
 
 .trace_s {
   color: gray;
+  position: relative;
+}
+.trace_tooltip {
+  display: none;
+}
+
+.trace_s:hover span.trace_tooltip {
+  display:block;
+  position: absolute;
+  top: 2em;
+  left: 2em;
+  padding: 1em;
+  border:1px solid #0cf;
+  background-color:#cff;
+  color:#000;
+  z-index: 1;
 }
