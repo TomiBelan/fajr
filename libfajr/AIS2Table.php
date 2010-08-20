@@ -55,28 +55,30 @@ class AIS2Table {
   private $data = null;
 
   /**
-   * Konštruktor, z html kódu vyrobí dáta.
+   * Konštruktor, z neindexovanej tabulky
+   * vytvori tabulku indexovanu stlpcami z $tableDefinition.
    *
-   * @param array(string) $tableDefinition  názvy stĺpcov
-   * @param string        $html             html vygenerované AISom
+   * @param array(string)        $tableDefinition  názvy stĺpcov
+   * @param array(array(string)) $tableData data
    */
-  public function __construct($tableDefinition, $html)
+  public function __construct($tableDefinition, $tableData)
   {
     $this->definition = $tableDefinition;
-    // Ak v tabulke nie su ziadne data, matchAll nic nenajde, ale nemame vyhodit vynimku
-    if (trim($html) == '') {
-      $this->data = array();
-      return;
-    }
-
-    $data = matchAll($html, $this->getPattern());
+    assert(is_array($tableData));
     $this->data = array();
-    if ($data !== false) {
-      foreach ($data as $row) {
-        $this->data[] = removeIntegerIndexesFromArray($row);
+    foreach ($tableData as $key=>$tableRow) {
+      $myRow = array();
+      $myRow['index'] = $key;
+      assert(count($tableDefinition) == count($tableRow));
+
+      foreach($tableRow as $key=>$value) {
+        assert(is_numeric($key));
+        assert(isset($tableDefinition[$key]));
+        $myRow[$tableDefinition[$key]] = $value;
       }
-    } else {
-      throw new Exception("Problém pri parsovaní dát.");
+
+      $this->data[] = $myRow;
+
     }
   }
 
@@ -98,22 +100,5 @@ class AIS2Table {
   public function getTableDefinition()
   {
     return $this->definition;
-  }
-
-  /**
-   * Vráti regulárny výraz použitý na matchovanie tabuľky v HTML výstupe z AISu.
-   * Na jeho konštrukciu sa používa definícia tabuľky.
-   *
-   * @return string Regulárny výraz.
-   */
-  private function getPattern()
-  {
-    $pattern = '@\<tr id\=\'row_(?P<index>[^\']*)\' rid\=\'[^\']*\'[^>]*\>';
-    foreach ($this->definition as $column) {
-      $pattern .= '\<td[^>]*\>(\<div\>){0,1}(?P<'.substr($column, 0, 32).
-                  '>[^<]*)(\</div\>){0,1}\</td\>';
-    }
-    $pattern .= '\</tr\>@';
-    return $pattern;
   }
 }
