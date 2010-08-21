@@ -34,7 +34,7 @@ Copyright (c) 2010 Martin Králik
  * @author     Martin Kralik <majak47@gmail.com>
  * @filesource
  */
-
+use fajr\libfajr\base\Trace;
 /**
  * Trieda pre dialóg so zoznamom prihlásených študentov na termín.
  *
@@ -44,25 +44,13 @@ Copyright (c) 2010 Martin Králik
  */
 class AIS2ZoznamPrihlasenychDialog extends AIS2AbstractDialog
 {
-
-	protected $tabulka_zoznam_prihlasenych = array(
-		// {{{
-		'meno',
-		'priezvisko',
-		'skratka',
-		'datumPrihlas',
-		'plneMeno',
-		'rocnik',
-		'kruzok',
-		// }}}
-	);
-	
-	public function getZoznamPrihlasenych()
-	{
-		$this->open();
-		$data = matchAll($this->data, AIS2Utils::DATA_PATTERN);
-		return new AIS2Table($this->tabulka_zoznam_prihlasenych, $data[0][1]);
-	}
-	
+  public function getZoznamPrihlasenych(Trace $trace)
+  {
+  $this->openIfNotAlready($trace);
+    $response = $this->executor->requestContent($trace);
+    $constructor = new AIS2TableConstructor();
+    return $constructor->createTableFromHtml($trace->addChild("Parsing table"), $response,
+        'prihlaseniTable_dataView');
+  }
 }
 ?>

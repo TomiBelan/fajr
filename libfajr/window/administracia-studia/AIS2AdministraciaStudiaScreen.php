@@ -47,50 +47,6 @@ class AIS2AdministraciaStudiaScreen extends AIS2AbstractScreen
 {
   const APP_LOCATION_PATTERN = '@webui\(\)\.startApp\("([^"]+)","([^"]+)"\);@';
 
-  public static function get_tabulka_zoznam_studii() {
-    return array( // {{{
-      'rocnik',
-      'skratka',
-      'kruzok',
-      'studijnyProgram',
-      'doplnujuceUdaje',
-      'zaciatokStudia',
-      'koniecStudia',
-      'dlzkaVSemestroch',
-      'dlzkaStudia',
-      'cisloDiplomu',
-      'cisloZMatriky',
-      'cisloVysvedcenia',
-      'cisloDodatku',
-      'cisloEVI',
-      'cisloProgramu',
-      'priznak',
-      'organizacnaJednotka',
-      'rokStudia',
-    ); // }}}
-  }
-
-  protected $tabulka_zoznam_zapisnych_listov = array(
-    // {{{
-    'akademickyRok',
-    'rocnik',
-    'studProgramSkratka',
-    'studijnyProgram',
-    'doplnujuceUdaje',
-    'datumZapisu',
-    'potvrdenyZapis',
-    'podmienecnyZapis',
-    'dlzkaVSemestroch',
-    'cisloEVI',
-    'cisloProgramu',
-    'datumSplnenia',
-    'priznak',
-    'organizacnaJednotka',
-    'typFinacovania',
-    'skratkaTypuFinacovania',
-    // }}}
-  );
-
   protected $idCache = array();
 
   public function __construct(Trace $trace, SimpleConnection $connection)
@@ -101,9 +57,8 @@ class AIS2AdministraciaStudiaScreen extends AIS2AbstractScreen
   public function getZoznamStudii(Trace $trace)
   {
     $this->open($trace);
-    $data = match($this->data, AIS2Utils::DATA_PATTERN);
-    $trace->addChild("Matched data")->tlogData($data);
-    return new AIS2Table($this->get_tabulka_zoznam_studii(), $data);
+    $constructor = new AIS2TableConstructor();
+    return $constructor->createTableFromHtml($trace->addChild("Parsing table"), $this->data, 'studiaTable_dataView');
   }
 
   public function getZapisneListy(Trace $trace, $studiumIndex)
@@ -125,10 +80,9 @@ class AIS2AdministraciaStudiaScreen extends AIS2AbstractScreen
                 ),
               ),
             ));
-    
-    $data = match($data, AIS2Utils::DATA_PATTERN);
-    $trace->tlogVariable("Matched data", $data);
-    return new AIS2Table($this->tabulka_zoznam_zapisnych_listov, $data);
+    $constructor = new AIS2TableConstructor();
+    return $constructor->createTableFromHtml($trace->addChild("Parsing table"),
+        $data, 'VSES017_StudentZapisneListyDlg0_zapisneListyTable_dataView');
   }
 
   public function getIdZapisnyList(Trace $trace, $zapisnyListIndex)

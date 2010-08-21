@@ -34,7 +34,9 @@ Copyright (c) 2010 Martin Králik
  * @author     Martin Kralik <majak47@gmail.com>
  * @filesource
  */
-
+use fajr\libfajr\base\Trace;
+use fajr\libfajr\window\DialogData;
+use fajr\libfajr\window\DialogParent;
 /**
  * Trieda pre dialóg s termínmi skúšok k jednému predmetu.
  *
@@ -42,37 +44,22 @@ Copyright (c) 2010 Martin Králik
  * @subpackage Libfajr__Window__Administracia-studia
  * @author     Martin Kralik <majak47@gmail.com>
  */
-/*abstract */class AIS2TerminyDialog extends AIS2AbstractDialog
+class AIS2TerminyDialog extends AIS2AbstractDialog
 {
-
-	protected $tabulka_vyber_terminu_hodnotenia = array(
-		// {{{
-		'kodFaza',
-		'dat',
-		'cas',
-		'miestnosti',
-		'pocetPrihlasenych',
-		'maxPocet',
-		'pocetHodn',
-		'hodnotiaci',
-		'prihlasovanie',
-		'odhlasovanie',
-		'poznamka',
-		'zaevidoval',
-		// }}}
-	);
 	
-	public function getZoznamTerminov()
+	public function getZoznamTerminov(Trace $trace)
 	{
-		$this->open();
-		$data = matchAll($this->data, AIS2Utils::DATA_PATTERN);
-		return new AIS2Table($this->tabulka_vyber_terminu_hodnotenia, $data[0][1]);
+    $this->openIfNotAlready($trace);
+		$response = $this->executor->requestContent($trace);
+    $constructor = new AIS2TableConstructor();
+    return $constructor->createTableFromHtml($trace->addChild("Parsing table"), $response,
+        'zoznamTerminovTable_dataView');
 	}
 	
-	public function prihlasNaTermin($terminIndex)
+	public function prihlasNaTermin(Trace $trace, $terminIndex)
 	{
-		$this->open();
-		$data = $this->requestData(array(
+		$this->openIfNotAlready($trace);
+		$data = $this->requestData($trace, array(
 			'compName' => 'enterAction',
 			'eventClass' => 'avc.ui.event.AVCActionEvent',
 			'embObj' => array(
@@ -93,7 +80,11 @@ Copyright (c) 2010 Martin Králik
 	
 	public function getZoznamPrihlasenychDialog($terminIndex)
 	{
-		return new AIS2ZoznamPrihlasenychDialog($this, 'zobrazitZoznamPrihlasenychAction', 'zoznamTerminovTable', $terminIndex);
+    $data = new DialogData();
+    $data->compName = 'zobrazitZoznamPrihlasenychAction';
+    $data->embObjName = 'zoznamTerminovTable';
+    $data->index = $terminIndex;
+		return new AIS2ZoznamPrihlasenychDialog($trace, $this, $this->requestBuilder, $data);
 	}
 	
 }

@@ -37,6 +37,7 @@ Copyright (c) 2010 Martin Králik
 
 use fajr\libfajr\base\Trace;
 use fajr\libfajr\connection\SimpleConnection;
+use fajr\libfajr\window\DialogData;
 /**
  * Trieda reprezentujúca jednu obrazovku so zoznamom predmetov zápisného listu
  * a termínov hodnotenia.
@@ -47,44 +48,6 @@ use fajr\libfajr\connection\SimpleConnection;
  */
 class AIS2TerminyHodnoteniaScreen extends AIS2AbstractScreen
 {
-	protected $tabulka_predmety_zapisneho_listu = array(
-		// {{{
-		'kodCastStPlanu',
-		'kodTypVyucby',
-		'skratka',
-		'nazov',
-		'kredit',
-		'semester',
-		'sposobUkoncenia',
-		'pocetTerminov',
-		'pocetAktualnychTerminov',
-		'aktualnost',
-		// }}}
-	);
-	protected $tabulka_terminy_hodnotenia = array(
-		// {{{
-		'prihlaseny',
-		'faza',
-		'datum',
-		'cas',
-		'miestnosti',
-		'pocetPrihlasenych',
-		'datumPrihlasenia',
-		'datumOdhlasenia',
-		'zapisal',
-		'pocetHodnotiacich',
-		'hodnotiaci',
-		'maxPocet',
-		'znamka',
-		'prihlasovanie',
-		'odhlasovanie',
-		'poznamka',
-		'zaevidoval',
-		'mozeOdhlasit',
-		'skratkaPredmetu',
-		'predmet',
-		// }}}
-	);
 
 	public function __construct(Trace $trace, SimpleConnection $connection, $idZapisnyList, $idStudium)
 	{
@@ -94,26 +57,36 @@ class AIS2TerminyHodnoteniaScreen extends AIS2AbstractScreen
 	public function getPredmetyZapisnehoListu(Trace $trace)
 	{
 		$this->open($trace);
-		$data = matchAll($this->data, AIS2Utils::DATA_PATTERN);
-		return new AIS2Table($this->tabulka_predmety_zapisneho_listu, $data[0][1]);
+    $constructor = new AIS2TableConstructor();
+    return $constructor->createTableFromHtml($trace->addChild("Parsing table"), $this->data,
+        'predmetyTable_dataView');
 	}
 
 	public function getTerminyHodnotenia(Trace $trace)
 	{
 		$this->open($trace);
-		$data = matchAll($this->data, AIS2Utils::DATA_PATTERN);
-    $trace->tlogVariable("Matched data", $data);
-		return new AIS2Table($this->tabulka_terminy_hodnotenia, $data[1][1]);
+
+    $constructor = new AIS2TableConstructor();
+    return $constructor->createTableFromHtml($trace->addChild("Parsing table"),
+                $this->data, 'terminyTable_dataView');
 	}
 
-	public function getZoznamTerminovDialog($predmetIndex)
+	public function getZoznamTerminovDialog(Trace $trace, $predmetIndex)
 	{
-		return new AIS2TerminyDialog($this, 'pridatTerminAction', 'predmetyTable', $predmetIndex);
-	}
-	
-	public function getZoznamPrihlasenychDialog($terminIndex)
+    $data = new DialogData();
+    $data->compName = 'pridatTerminAction';
+    $data->embObjName = 'predmetyTable';
+    $data->index = $predmetIndex;
+
+		return new AIS2TerminyDialog($trace, $this, $this->requestBuilder, $data);
+  }
+	public function getZoznamPrihlasenychDialog(Trace $trace, $terminIndex)
 	{
-		return new AIS2ZoznamPrihlasenychDialog($this, 'zoznamPrihlasenychStudentovAction', 'terminyTable', $terminIndex);
+    $data = new DialogData();
+    $data->compName = 'zoznamPrihlasenychStudentovAction';
+    $data->embObjName = 'terminyTable';
+    $data->index = $terminIndex;
+		return new AIS2ZoznamPrihlasenychDialog($trace, $this, $this->requestBuilder, $data);
 	}
 	
 	public function odhlasZTerminu(Trace $trace, $terminIndex)

@@ -45,61 +45,6 @@ use fajr\libfajr\connection\SimpleConnection;
  */
 class AIS2HodnoteniaPriemeryScreen extends AIS2AbstractScreen
 {
-  public static function get_tabulka_hodnotenia() {
-    return array( // {{{
-      'semester',
-      'kodCastSP',
-      'kodTypVyucbySP',
-      'skratka',
-      'nazov',
-      'kredit',
-      'kodSposUkon',
-      'termin',
-      'znamka',
-      'datum',
-      'uznane',
-      'blokPopis',
-      'poplatok',
-      'nahradzaMa',
-      'nahradzam',
-      'znamkaPopis',
-      'dovezene',
-      'mozePrihlasit',
-      'rozsah',
-      'priebHodn',
-    ); // }}}
-  }
-
-  protected $tabulka_priemery = array(
-    // {{{
-    'priemerInfoPopisAkadRok',
-    'priemerInfoKodSemester',
-    'vazPriemer',
-    'studPriemer',
-    'pocetPredmetov',
-    'pocetNeabs',
-    'pokusyPriemer',
-    'ziskanyKredit',
-    'prerusUkon',
-    'priemerInfoDatum',
-    'priemerInfoDatum1Hodn',
-    'priemerInfoDatum2Hodn',
-    'priemerNazov',
-    'priemerZaAkRok',
-    'priemerZaSemester',
-    'priemerLenStudPlan',
-    'priemerUznanePredm',
-    'priemerAjDatum1Hodn',
-    'priemerAjDatum2Hodn',
-    'priemerPocitatNeabs',
-    'priemerVahaNeabsolvovanych',
-    'priemerSkratkaOrganizacnaJednotka',
-    'priemerPocitatNeabsC',
-    'pocetPredmetovVyp',
-    'priemerInfoStudentiVypoctu',
-    // }}}
-  );
-
   public function __construct(Trace $trace, SimpleConnection $connection, $idZapisnyList)
   {
     parent::__construct($trace, $connection, 'ais.gui.vs.es.VSES212App', '&kodAplikacie=VSES212&idZapisnyList='.$idZapisnyList);
@@ -108,15 +53,17 @@ class AIS2HodnoteniaPriemeryScreen extends AIS2AbstractScreen
   public function getHodnotenia(Trace $trace)
   {
     $this->open($trace);
-    $data = matchAll($this->data, AIS2Utils::DATA_PATTERN);
-    return new AIS2Table($this->get_tabulka_hodnotenia(), $data[0][1]);
+    $constructor = new AIS2TableConstructor();
+    return $constructor->createTableFromHtml($trace->addChild("Parsing table"),
+                $this->data, 'hodnoteniaTable_dataView');
   }
 
-  public function getPriemery()
+  public function getPriemery(Trace $trace)
   {
-    $this->open();
-    $data = matchAll($this->data, AIS2Utils::DATA_PATTERN);
-    return new AIS2Table($this->tabulka_priemery, $data[1][1]);
+    $this->open($trace);
+    $constructor = new AIS2TableConstructor();
+    return $constructor->createTableFromHtml($trace->addChild("Parsing table"),
+                $this->data, 'priemeryTable_dataView');
   }
 
 }
