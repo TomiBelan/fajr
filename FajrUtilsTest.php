@@ -1,11 +1,4 @@
 <?php
-/**
- * This file contains tests for FajrUtils class
- *
- * @package Fajr
- * @subpackage Tests
- * @author Martin Sucha
- */
 /* {{{
   Copyright (c) 2010 Martin Sucha
 
@@ -30,6 +23,14 @@
   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
   OTHER DEALINGS IN THE SOFTWARE.
   }}} */
+
+/**
+ * This file contains tests for FajrUtils class
+ *
+ * @package    Fajr
+ * @subpackage TODO
+ * @author     Martin Sucha <anty@gjh.sk>
+ */
 
 /**
  * @ignore
