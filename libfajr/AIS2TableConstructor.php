@@ -37,6 +37,7 @@ class AIS2TableConstructor {
   public function prettyFormatXml($dom, $element) {
     $outXML = '<?xml version="1.0" encoding="UTF-8"?>'.$dom->saveXML($element);
     $tmp = new DOMDocument();
+    $tmp->encoding='UTF-8';
     $tmp->preserveWhiteSpace = false;
     $tmp->formatOutput = true;
     $tmp->loadXML($outXML);
@@ -56,6 +57,26 @@ class AIS2TableConstructor {
     return new AIS2Table($headers, $data);
   }
 
+  public function getCellContent(DOMElement $element) {
+    // special fix for checkboxes
+    if ($element->hasAttribute('datatype')) {
+      assert($element->getAttribute('datatype')=='boolean');
+      foreach ($element->getElementsByTagName('img') as $img) {
+        assert($img->hasAttribute('class'));
+        assert($img->getAttribute('class')=='checkedImg');
+        return "TRUE";
+      }
+      assert($element->textContent == "\302\240");
+      return "FALSE";
+    }
+    $value = $element->textContent;
+
+    // special fix for &nbsp;
+    if ($value == ' ') return '';
+    assert($value != ''); // probably the is some inner element which we don't know about
+    return $value;
+  }
+
   public function getTableData(Trace $trace, $dom) {
     $data = array();
     $trace->tlog("finding tbody element");
@@ -63,7 +84,7 @@ class AIS2TableConstructor {
     if ($element == null) {
       throw new Exception("Can't find table data");
     }
-    assert($element->hasChildNodes());
+
     foreach ($element->childNodes as $ais_row) {
       assert($ais_row->tagName == "tr");
       assert($ais_row->hasAttribute("rid"));
@@ -72,11 +93,11 @@ class AIS2TableConstructor {
       $index = $ais_row->getAttribute("rid");
       foreach ($ais_row->childNodes as $ais_td) {
         assert($ais_td->tagName == "td");
-        $row[] = $ais_td->textContent;
+        $row[] = $this->getCellContent($ais_td);
       }
       $data[$index] = $row;
     }
-    $trace->tlogVariable("", $data);
+    $trace->tlogVariable("data", $data);
     return $data;
   }
 
