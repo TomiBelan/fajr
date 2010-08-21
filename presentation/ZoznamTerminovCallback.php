@@ -1,9 +1,14 @@
 <?php
+use fajr\libfajr\base\Trace;
+
 class ZoznamTerminovCallback implements Renderable {
 	private $skusky;
 	private $hodnotenia;
+  private $trace;
+  private $connection;
 	
-	public function __construct($skusky, $hodnotenia) {
+	public function __construct(Trace $trace, $skusky, $hodnotenia) {
+    $this->trace = $trace;
 		$this->skusky = $skusky;
 		$this->hodnotenia = $hodnotenia;
 	}
@@ -89,10 +94,10 @@ class ZoznamTerminovCallback implements Renderable {
 	}
 	
 	public function getHtml() {
-		$predmetyZapisnehoListu = $this->skusky->getPredmetyZapisnehoListu();
+		$predmetyZapisnehoListu = $this->skusky->getPredmetyZapisnehoListu($this->trace);
 		$hodnoteniaData = array();
 		
-		foreach ($this->hodnotenia->getHodnotenia()->getData() as $row) {
+		foreach ($this->hodnotenia->getHodnotenia($this->trace)->getData() as $row) {
 			$hodnoteniaData[$row['nazov']]=$row;;
 		}
 		$this->hodnoteniaData = $hodnoteniaData;
@@ -114,14 +119,16 @@ class ZoznamTerminovCallback implements Renderable {
 			Table(TableDefinitions::vyberTerminuHodnoteniaJoined(), array('termin'=>'index',
 						'predmet'=>'predmetIndex'), $baseUrlParams);
 
-		$terminyCollapsible = new Collapsible('Termíny, na ktoré sa môžem prihlásiť',
+		$terminyCollapsible = new Collapsible(new HtmlHeader('Termíny, na ktoré sa môžem prihlásiť'),
 			$terminyTable);
 		
 		$actionUrl=FajrUtils::linkUrl($baseUrlParams);
 		
 		foreach ($predmetyZapisnehoListu->getData() as $predmetRow) {
 			
-			$terminy = $this->skusky->getZoznamTerminovDialog($predmetRow['index'])->getZoznamTerminov();
+      $dialog = $this->skusky->getZoznamTerminovDialog(
+          $this->trace->addChild('Get zoznam terminov'), $predmetRow['index']);
+			$terminy = $dialog->getZoznamTerminov($this->trace->addChild('Get zoznam terminov'));
 			foreach($terminy->getData() as $row) {
 				$row['predmet']=$predmetRow['nazov'];
 				$row['predmetIndex']=$predmetRow['index'];

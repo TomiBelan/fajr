@@ -24,7 +24,8 @@ class MojeTerminyHodnoteniaCallback implements Renderable {
   
   private function odhlasZoSkusky($terminIndex) {
     
-    $terminy = $this->terminyHodnoteniaApp->getTerminyHodnotenia()->getData();
+    $terminy = $this->terminyHodnoteniaApp->getTerminyHodnotenia($this->trace->addChild('get terminy
+          hodnotenia '))->getData();
     $terminKey = -1;
     foreach ($terminy as $key=>$row) {
       if ($row['index']==$terminIndex) $terminKey = $key;
@@ -42,7 +43,7 @@ class MojeTerminyHodnoteniaCallback implements Renderable {
   
   
   public function getHtml() {
-    $trace = $this->trace;
+    $trace = $this->trace->addChild("MojeTerminyHodnoteniaCallback");
     $trace->tlog("Executing callback");
     $terminyHodnotenia = $this->terminyHodnoteniaApp->getTerminyHodnotenia(
         $trace->addChild("get terminy hodnotenia"));
@@ -91,7 +92,7 @@ class MojeTerminyHodnoteniaCallback implements Renderable {
     }
     
     foreach($terminyHodnotenia->getData() as $row) {
-      $datum = AIS2Utils::parseAISDateTime($row['datum']." ".$row['cas']);
+      $datum = AIS2Utils::parseAISDateTime($row['dat']." ".$row['cas']);
       
       if ($row['znamka']=="") { // skusme najst znamku v hodnoteniach
         if (isset($hodnoteniePredmetu[$row['predmet']]) &&
@@ -103,7 +104,7 @@ class MojeTerminyHodnoteniaCallback implements Renderable {
           
       if ($datum < time()) {
         $row['odhlas']="Skúška už bola.";
-        if ($row['prihlaseny']=='A') {
+        if ($row['jePrihlaseny']=='A') {
           $terminyHodnoteniaTableOld->addRow($row, null);
         }
       } else {
@@ -135,12 +136,13 @@ class MojeTerminyHodnoteniaCallback implements Renderable {
     $html = $terminyHodnoteniaCollapsibleActive->getHtml();
     $html .= $terminyHodnoteniaCollapsibleOld->getHtml();
     if (Input::get('termin')!=null) {
-      $prihlaseni = $this->terminyHodnoteniaApp->getZoznamPrihlasenychDialog(Input::get('termin'))->getZoznamPrihlasenych();
+      $prihlaseni = $this->terminyHodnoteniaApp->getZoznamPrihlasenychDialog($trace,
+          Input::get('termin'))->getZoznamPrihlasenych($trace);
       $zoznamPrihlasenychTable = new
       Table(TableDefinitions::zoznamPrihlasenych(), null, array('studium', 'list'));
       $zoznamPrihlasenychTable->addRows($prihlaseni->getData());
-      $zoznamPrihlasenychCollapsible = new Collapsible('Zoznam prihlásených
-          na vybratý termín', $zoznamPrihlasenychTable);
+      $zoznamPrihlasenychCollapsible = new Collapsible(new HtmlHeader('Zoznam prihlásených
+          na vybratý termín'), $zoznamPrihlasenychTable);
       $html .= $zoznamPrihlasenychCollapsible->getHtml();
     }
     return $html;

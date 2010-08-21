@@ -1,14 +1,17 @@
 <?php
 
+use fajr\libfajr\base\Trace;
 class HodnoteniaCallback implements Renderable {
 	private $app;
 	
-	public function __construct($app) {
+	public function __construct(Trace $trace, AIS2HodnoteniaPriemeryScreen $app) {
 		$this->app = $app;
+    $this->trace = $trace;
 	}
 	
 	public function getHtml() {
-		$hodnotenia = $this->app->getHodnotenia();
+    $trace = $this->trace->addChild("HodnoteniaCallback");
+		$hodnotenia = $this->app->getHodnotenia($trace);
 		$hodnoteniaTable = new Table(TableDefinitions::hodnotenia());
 		$priemeryCalculator = new PriemeryCalculator();
 
@@ -28,9 +31,9 @@ class HodnoteniaCallback implements Renderable {
 		}
 
 
-		$hodnoteniaCollapsible = new Collapsible('Hodnotenia', $hodnoteniaTable);
+		$hodnoteniaCollapsible = new Collapsible(new HtmlHeader('Hodnotenia'), $hodnoteniaTable);
 		
-		$priemery = $this->app->getPriemery();
+		$priemery = $this->app->getPriemery($trace);
 		$priemeryTable = new Table(TableDefinitions::priemery());
 		$priemeryTable->addRows($priemery->getData());
 
@@ -47,7 +50,7 @@ class HodnoteniaCallback implements Renderable {
 		}
 		
 
-		$priemeryCollapsible = new Collapsible('Priemery', $priemeryContainer);
+		$priemeryCollapsible = new Collapsible(new HtmlHeader('Priemery'), $priemeryContainer);
 		
 		return $hodnoteniaCollapsible->getHtml().$priemeryCollapsible->getHtml();
 	}

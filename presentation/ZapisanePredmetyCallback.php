@@ -1,24 +1,29 @@
 <?php
+
+use fajr\libfajr\base\Trace;
+
 class ZapisanePredmetyCallback implements Renderable {
 	private $skusky;
 	
-	public function __construct($skusky) {
+	public function __construct(Trace $trace, $skusky) {
+    $this->trace = $trace;
 		$this->skusky = $skusky;
 	}
 	
 	public function getHtml() {
-		$predmetyZapisnehoListu = $this->skusky->getPredmetyZapisnehoListu();
+    $trace = $this->trace->addChild("ZapisanePredmetyCallback");;
+		$predmetyZapisnehoListu = $this->skusky->getPredmetyZapisnehoListu($trace);
 		$predmetyZapisnehoListuTable = new
 			Table(TableDefinitions::predmetyZapisnehoListu());
-		$predmetyZapisnehoListuCollapsible = new Collapsible('Predmety zápisného listu',
+		$predmetyZapisnehoListuCollapsible = new Collapsible(new HtmlHeader('Predmety zápisného listu'),
 			$predmetyZapisnehoListuTable);
 		$kreditovCelkomLeto = 0;
     $kreditovCelkomZima = 0;
     $pocetPredmetovLeto = 0;
     $pocetPredmetovZima = 0;
 		foreach (Sorter::sort($predmetyZapisnehoListu->getData(),
-					array("semester"=>-1, "nazov"=>1)) as $row) {
-			if ($row['semester']=='L') {
+					array("kodSemester"=>-1, "nazov"=>1)) as $row) {
+			if ($row['kodSemester']=='L') {
         $pocetPredmetovLeto += 1;
         $kreditovCelkomLeto += $row['kredit'];
         $class='leto';
