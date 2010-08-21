@@ -7,7 +7,7 @@
  * @author Peter Peresini <ppershing+fajr@gmail.com>
  */
 namespace fajr\libfajr\login;
-use fajr\libfajr\login\AIS2CosignLogin;
+use fajr\libfajr\login\CosignLogin;
 
 /**
  * @ignore
@@ -47,7 +47,7 @@ class CosignLoginTest extends PHPUnit_Framework_TestCase
     $connection->expects($this->once())
                ->method('get')
                ->will($this->returnValue($this->responseAlreadyLogged));
-    $login = new AIS2CosignLogin('user', 'passwd');
+    $login = new CosignLogin('user', 'passwd');
     $ok = $login->login($connection);
     $this->assertTrue($ok);
   }
@@ -60,7 +60,7 @@ class CosignLoginTest extends PHPUnit_Framework_TestCase
     $connection->expects($this->once())
                ->method('post')
                ->will($this->returnValue($this->responseLoginOk));
-    $login = new AIS2CosignLogin('user', 'passwd');
+    $login = new CosignLogin('user', 'passwd');
     $ok = $login->login($connection);
     $this->assertTrue($ok);
   }
@@ -73,7 +73,7 @@ class CosignLoginTest extends PHPUnit_Framework_TestCase
     $connection->expects($this->once())
                ->method('post')
                ->will($this->returnValue($this->responseWrongPassword1));
-    $login = new AIS2CosignLogin('user', 'passwd');
+    $login = new CosignLogin('user', 'passwd');
     try {
       $login->login($connection);
       $this->fail("login should have failed");
@@ -91,7 +91,7 @@ class CosignLoginTest extends PHPUnit_Framework_TestCase
     $connection->expects($this->once())
                ->method('post')
                ->will($this->returnValue($this->responseWrongPassword2));
-    $login = new AIS2CosignLogin('user', 'passwd');
+    $login = new CosignLogin('user', 'passwd');
     try {
       $login->login($connection);
       $this->fail("login should have failed");
@@ -109,7 +109,7 @@ class CosignLoginTest extends PHPUnit_Framework_TestCase
     $connection->expects($this->once())
                ->method('post')
                ->will($this->returnValue($this->responseWrongPassword3));
-    $login = new AIS2CosignLogin('user', 'passwd');
+    $login = new CosignLogin('user', 'passwd');
     try {
       $login->login($connection);
       $this->fail("login should have failed");
