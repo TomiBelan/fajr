@@ -26,30 +26,31 @@ Copyright (c) 2010 Peter Peresini
 
 class TableDefinitions
 {
+  // done
   public static function zoznamStudii() {
     return array(
       // {{{
-      'rocnik' => array(
+      'rokDoporuceny' => array(
             'title' => 'ročník',
             'sortorder' => '0',
             'visible' => true,
             'col' => -100),
-      'skratka' => array(
+      'studijnyProgramSkratka' => array(
             'title' => 'skratka',
             'sortorder' => '0',
             'visible' => true,
             'col' => -80),
-      'kruzok' => array(
+      'kodKruzok' => array(
             'title' => 'krúžok',
             'sortorder' => '0',
             'visible' => false,
             'col' => 100),
-      'studijnyProgram' => array(
+      'studijnyProgramPopis' => array(
             'title' => 'študijný program',
             'sortorder' => '0',
             'visible'=>true,
             'col' => -70),
-      'doplnujuceUdaje' => array(
+      'studijnyProgramDoplnUdaje' => array(
             'title' => 'doplňujúce údaje',
             'sortorder' => '0',
             'visible' => true,
@@ -64,12 +65,12 @@ class TableDefinitions
             'sortorder' => '0',
             'visible' => true,
             'col' => -20),
-      'dlzkaVSemestroch' => array(
+      'studijnyProgramDlzka' => array(
             'title' => 'dĺžka v semestroch',
             'sortorder' => '0',
             'visible' => true,
             'col' => -40),
-      'dlzkaStudia' => array(
+      'dobaStudia' => array(
             'title' => 'dĺžka štúdia',
             'sortorder' => '0',
             'visible' => true,
@@ -78,7 +79,7 @@ class TableDefinitions
             'title' => 'číslo diplomu',
             'sortorder' => '0',
             'visible' => false),
-      'cisloZMatriky' => array(
+      'cisloMatriky' => array(
             'title' => 'číslo z matriky',
             'sortorder' => '0',
             'visible' => false),
@@ -90,11 +91,11 @@ class TableDefinitions
             'title' => 'číslo dodatku',
             'sortorder' => '0',
             'visible' => false),
-      'cisloEVI' => array(
+      'studijnyProgramIdEviCRS' => array(
             'title' => 'číslo EVI',
             'sortorder' => '0',
             'visible' => false),
-      'cisloProgramu' => array(
+      'studijnyProgramIdProgramCRS' => array(
             'title' => 'číslo programu',
             'sortorder' => '0',
             'visible' => true,
@@ -103,7 +104,7 @@ class TableDefinitions
             'title' => 'príznak',
             'sortorder' => '0',
             'visible' => false),
-      'organizacnaJednotka' => array(
+      'studijnyProgramSkratkaAkreditOJ' => array(
             'title' => 'organizačná jednotka',
             'sortorder' => '0',
             'visible' => false),
@@ -116,15 +117,16 @@ class TableDefinitions
     );
   }
   
+  // done
   public static function zoznamZapisnychListov() {
     return array(
       // {{{
-      'akademickyRok' => array(
+      'popisAkadRok' => array(
             'title' => 'akademický rok',
             'sortorder' => '0',
             'visible' => true,
             'col' => -100),
-      'rocnik' => array(
+      'rokRocnik' => array(
             'title' => 'ročník',
             'sortorder' => '0',
             'visible' => true,
@@ -134,12 +136,12 @@ class TableDefinitions
             'sortorder' => '0',
             'visible' => true,
             'col' => -80),
-      'studijnyProgram' => array(
+      'studProgramPopis' => array(
             'title' => 'skratka',
             'sortorder' => '0',
             'visible' => true,
             'col' => -70),
-      'doplnujuceUdaje' => array(
+      'studProgramDoplnUdaje' => array(
             'title' => 'doplňujúce údaje',
             'sortorder' => '0',
             'visible' => true,
@@ -149,24 +151,24 @@ class TableDefinitions
             'sortorder' => '0',
             'visible' => true,
             'col' => -40),
-      'potvrdenyZapis' => array(
+      'poplatok' => array(
             'title' => 'potvrdený zápis',
             'sortorder' => '0',
             'visible' => false),
-      'podmienecnyZapis' => array(
+      'podmienecne' => array(
             'title' => 'podmienečný zápis',
             'sortorder' => '0',
             'visible' => false),
-      'dlzkaVSemestroch' => array(
+      'studProgramDlzka' => array(
             'title' => 'dĺžka v semestroch',
             'sortorder' => '0',
             'visible' => true,
             'col' => -50),
-      'cisloEVI' => array(
+      'studProgramIdEviCRS' => array(
             'title' => 'číslo EVI',
             'sortorder' => '0',
             'visible' => false),
-      'cisloProgramu' => array(
+      'studProgramIdProgramCRS' => array(
             'title' => 'číslo programu',
             'sortorder' => '0',
             'visible' => true,
@@ -179,22 +181,24 @@ class TableDefinitions
             'title' => 'príznak',
             'sortorder' => '0',
             'visible' => false),
-      'organizacnaJednotka' => array(
+      'studProgramSkratkaAkreditOJ' => array(
             'title' => 'organizačná jednotka',
             'sortorder' => '0',
             'visible' => false),
-      'typFinacovania' => array(
+      'typFinacovaniaPopis' => array(
             'title' => 'typ financovania',
             'sortorder' => '0',
             'visible' => false),
-      'skratkaTypuFinacovania' => array(
+      'typFinacovaniaSkratPopis' => array(
             'title' => 'skratka typu finacovania',
             'sortorder' => '0',
             'visible' => false),
       // }}}
     );
   }
-  
+
+
+  // done
   public static function hodnotenia() {
     return array(
       // {{{
@@ -265,6 +269,10 @@ class TableDefinitions
             'title' => 'Nahrádzam',
             'sortorder' => '0',
             'visible' => false),
+      'znamkaPopis' => array(
+            'title' => 'Známka popis',
+            'sortorder' => '0',
+            'visible' => true), // TODO(ppershing): check me out
       'dovezene' => array(
             'title' => 'Dovezené hodnotenie',
             'sortorder' => '0',
@@ -400,7 +408,8 @@ class TableDefinitions
       // }}}
     );
   }
-  
+ 
+  // done
   public static function predmetyZapisnehoListu() {
     return array(
       // {{{
@@ -428,12 +437,12 @@ class TableDefinitions
             'sortorder' => '0',
             'visible' => true,
             'col' => -80),
-      'semester' => array(
+      'kodSemester' => array(
             'title' => 'semester',
             'sortorder' => '0',
             'visible' => true,
             'col' => -100),
-      'sposobUkoncenia' => array(
+      'kodSposUkon' => array(
             'title' => 'spôsob ukončenia',
             'sortorder' => '0',
             'visible' => false),
@@ -462,16 +471,16 @@ class TableDefinitions
             'sortorder' => '0',
             'visible' => true),
       // originalne
-      'prihlaseny' => array(
+      'jePrihlaseny' => array(
             'title' => 'prihlásený',
             'sortorder' => '0',
             'visible' => false,
             'col' => 0),
-      'faza' => array(
+      'kodFaza' => array(
             'title' => 'fáza',
             'sortorder' => '0',
             'visible' => false),
-      'datum' => array(
+      'dat' => array(
             'title' => 'dátum',
             'sortorder' => '0',
             'visible' => true,
@@ -491,11 +500,11 @@ class TableDefinitions
             'sortorder' => '0',
             'visible' => true,
             'col' => -60),
-      'datumPrihlasenia' => array(
+      'datumPrihlas' => array(
             'title' => 'dátum prihlásenia',
             'sortorder' => '0',
             'visible' => false),
-      'datumOdhlasenia' => array(
+      'datumOdhlas' => array(
             'title' => 'dátum odhlásenia',
             'sortorder' => '0',
             'visible' => false),
@@ -503,7 +512,7 @@ class TableDefinitions
             'title' => 'zapísal',
             'sortorder' => '0',
             'visible' => false),
-      'pocetHodnotiacich' => array(
+      'pocetHodn' => array(
             'title' => 'počet hodnotiacich',
             'sortorder' => '0',
             'visible' => false),
@@ -544,11 +553,11 @@ class TableDefinitions
             'title' => 'može odhlásiť',
             'sortorder' => '0',
             'visible' => false),
-      'skratkaPredmetu' => array(
+      'predmetSkratka' => array(
             'title' => 'skratka predmetu',
             'sortorder' => '0',
             'visible' => false),
-      'predmet' => array(
+      'predmetNazov' => array(
             'title' => 'predmet',
             'sortorder' => '0',
             'visible' => true,
@@ -636,6 +645,8 @@ class TableDefinitions
     );
   }
   
+
+  // done
   public static function zoznamPrihlasenych() {
     return array(
       // {{{
