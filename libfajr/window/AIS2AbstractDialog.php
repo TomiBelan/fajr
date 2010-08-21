@@ -23,24 +23,29 @@ Copyright (c) 2010 Martin Králik
  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
+namespace fajr\libfajr\window;
 
+use fajr\libfajr\base\Trace;
+use fajr\libfajr\window\RequestBuilder;
+use fajr\libfajr\window\DialogData;
+use fajr\libfajr\window\DialogParent;
 /**
  * Abstraktná trieda reprezentujúca jednu obrazovku v AISe.
  *
  * @author majak
  */
-class AIS2AbstractDialog
+class AIS2AbstractDialog implements DialogParent
 {
   protected $parent = null;
   protected $terminated = false;
-  protected $openedDialog = false;
-  private $compName = null;
-  private $embObjName = null;
-  private $index = null;
   protected $requestBuilder = null;
   protected $formName = null;
-  protected $data = null;
   protected $inUse = false;
+  protected $executor;
+  protected $openedDialog = null;
+
+  private $trace = null;
+  private $uid;
 
   const DIALOG_NAME_PATTERN = '@dm\(\)\.openDialog\("(?P<dialogName>[^"]+)",@';
 
@@ -50,79 +55,40 @@ class AIS2AbstractDialog
    * @param string $appClassName Názov "triedy" obsluhujúcej danú obrazovku v AISe.
    * @param string $identifiers Konkrétne parametre pre vyvolanie danej obrazovky.
    */
-  public function __construct($parent, $compName, $embObjName, $index)
+  public function __construct(Trace $trace, DialogParent $parent,
+      RequestBuilder $requestBuilder, DialogData $data)
   {
+    $this->trace = $trace;
     $this->parent = $parent;
-    $this->compName = $compName;
-    $this->embObjName = $embObjName;
-    $this->index = $index;
-    $this->requestBuilder = new AIS2\RequestBuilderImpl();
-  }
-
-  public function parseDialogNameFromResponse($response) {
-    $matches = array();
-    if (preg_match(self::DIALOG_NAME_PATTERN, $response, $matches)) {
-      return $matches['dialogName'];
-    } else {
-      return null;
-    }
+    $this->data = $data;
+    $this->requestBuilder = $requestBuilder;
+    $this->uid = random();
   }
 
   /**
    * Nadviaže spojenie, spustí danú "aplikáciu" v AISe
    * a natiahne prvotné dáta do atribútu $data.
    */
-  public function open() {
+  public function openIfNotAlready(Trace $trace)
+  {
     if ($this->inUse) return;
-
-    if ($this->parent->openedDialog)
-    {
-      throw new Exception('V nadradenom screene "'.$this->parent->formName.'" už existuje otvorený dialog. Pre otvorenie nového treba pôvodný zatvoriť.');
-    }
-
+    $this->executor = $this->parent->openDialogAndGetExecutor($trace, $this->uid, $this->data);
+    $this->formName = $this->executor->requestOpen($trace);
     $this->inUse = true;
-
-    $this->parent->open();
-
-    $response = $this->requestData(array(
-      'dlgName' => $this->parent->getformName(),
-      'compName' => $this->compName,
-      'embObj' => array(
-        'objName' => $this->embObjName,
-        'dataView' => array(
-          'activeIndex' =>  $this->index,
-          'selectedIndexes' => $this->index,
-        ),
-      ),
-    ));
-
-    $formName = $this->parseDialogNameFromResponse($response);
-    if ($formName != null) {
-      $this->formName = $formName;
-    } else {
-      throw new Exception('Nepodarilo sa nájsť názov dialógu pre triedu '.get_class().'.');
-    }
-
-    $this->data = AIS2Utils::request('https://ais2.uniba.sk/ais/servlets/WebUIServlet?appId='.$this->getAppId().'&form='.$this->formName.'&antiCache='.random());
-
-    $this->parent->openedDialog = true;
     $this->terminated = false;
   }
 
   /**
    * Zatvorí danú "aplikáciu" v AISe
    */
-  public function close() {
+  public function closeIfNeeded(Trace $trace)
+  {
     if (!$this->inUse) return;
-    if (!$this->terminated)
-    {
-      $response = $this->requestData(array(
-        'eventClass' => 'avc.ui.event.AVCComponentEvent',
-        'command' => 'CLOSE',
-      ));
+    if (!$this->terminated) {
+      $this->executor->requestClose($trace);
     }
-    $this->parent->openedDialog = false;
     $this->inUse = false;
+    $this->parent->closeDialog($this->uid);
   }
 
   /**
@@ -133,30 +99,25 @@ class AIS2AbstractDialog
    */
   public function  __destruct()
   {
-    $this->close();
+    $this->closeIfNeeded($this->trace);
   }
 
-  /**
-   * Získa nové sériové číslo používané v XML protokole na komunikáciu s AISom od materského screenu.
-   * @return int Nové seriové číslo v poradí.
-   */
-  protected function getSerial()
-  {
-    return $this->parent->getSerial();
-  }
-  
-  protected function getAppId()
-  {
-    return $this->parent->getAppId();
+  public function openDialogAndGetExecutor(Trace $trace, $dialogUid, DialogData $data) {
+    $this->openIfNotAlready($trace->addChild("opening dialog parent"));
+    if ($this->openedDialog !== null) {
+      throw new IllegalStateException('V AIS2 screene "'.$this->formName.
+          '" už existuje otvorený dialog. Pre otvorenie nového treba pôvodný zatvoriť.');
+    }
+    $this->openedDialog = $dialogUid;
+    $executor = $this->executor->spawnChild($data, $this->formName);
+    return $executor;
   }
 
-  public function requestData($options, $debug=false) {
-    $data = $this->requestBuilder->buildRequestData($this->formName, $options);
-    return AIS2Utils::request($this->getXmlInterfaceLocation(), $data);
-  }
-
-  public function getXmlInterfaceLocation() {
-    return $this->requestBuilder->getRequestUrl($this->getAppId());
+  public function closeDialog($dialogUid) {
+    if ($this->openedDialog != $dialogUid) {
+      throw new IllegalStateException("Zatváram zlý dialóg!");
+    }
+    $this->openedDialog = null;
   }
 
 }

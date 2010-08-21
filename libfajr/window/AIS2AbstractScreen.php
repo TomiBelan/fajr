@@ -24,16 +24,21 @@ Copyright (c) 2010 Martin Králik
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
+
+namespace fajr\libfajr\window;
+
 use fajr\libfajr\base\Trace;
 use fajr\libfajr\base\NullTrace;
 use fajr\libfajr\connection\SimpleConnection;
-
+use fajr\libfajr\base\IllegalStateException;
+use fajr\libfajr\login\AIS2LoginException;
+use \AIS2Utils;
 /**
  * Abstraktná trieda reprezentujúca jednu obrazovku v AISe.
  *
  * @author majak
  */
-abstract class AIS2AbstractScreen
+abstract class AIS2AbstractScreen implements DialogParent
 {
   protected $appId = null;
   protected $appClassName = null;
@@ -46,7 +51,7 @@ abstract class AIS2AbstractScreen
     return $this->formName;
   }
 
-  public $openedDialog = false;
+  protected $openedDialog = null;
   protected $requestBuilder = null;
   protected $connection = null;
   protected $trace = null;
@@ -59,7 +64,7 @@ abstract class AIS2AbstractScreen
    */
   public function __construct(Trace $trace, SimpleConnection $connection, $appClassName, $identifiers)
   {
-    $this->requestBuilder = new AIS2\RequestBuilderImpl();
+    $this->requestBuilder = new RequestBuilderImpl();
     $this->appClassName = $appClassName;
     $this->identifiers = $identifiers;
     $this->connection = $connection;
@@ -113,6 +118,8 @@ abstract class AIS2AbstractScreen
    */
   public function close() {
     if (!$this->inUse) return;
+    assert($this->openedDialog == null);
+
     AIS2Utils::request(
         $this->trace,
         $this->getXmlInterfaceLocation(), array('xml_spec' => '<request><serial>'.$this->getSerial().'</serial><events><ev><event class=\'avc.framework.webui.WebUIKillEvent\'/></ev></events></request>'));
@@ -194,6 +201,24 @@ abstract class AIS2AbstractScreen
   public function requestData(Trace $trace, $options) {
     $data = $this->requestBuilder->buildRequestData($this->formName, $options);
     return AIS2Utils::request($trace, $this->getXmlInterfaceLocation(), $data);
+  }
+
+  public function openDialogAndGetExecutor(Trace $trace, $dialogUid, DialogData $data) {
+    $this->open($trace->addChild("opening dialog parent"));
+    if ($this->openedDialog != null) {
+      throw new IllegalStateException('V AIS2 screene "'.$this->formName.
+          '" už existuje otvorený dialog. Pre otvorenie nového treba pôvodný zatvoriť.');
+    }
+    $this->openedDialog = $dialogUid;
+    $executor = new DialogRequestExecutor($data, $this->requestBuilder, $this->appId, $this->formName);
+    return $executor;
+  }
+
+  public function closeDialog($dialogUid) {
+    if ($this->openedDialog != $dialogUid) {
+      throw new IllegalStateException("Zatváram zlý dialóg!");
+    }
+    $this->openedDialog = null;
   }
 }
 ?>
