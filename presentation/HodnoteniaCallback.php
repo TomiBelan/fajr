@@ -1,10 +1,12 @@
 <?php
 
 use fajr\libfajr\base\Trace;
+use fajr\libfajr\window\VSES017_administracia_studia as VSES017;
+
 class HodnoteniaCallback implements Renderable {
 	private $app;
 	
-	public function __construct(Trace $trace, AIS2HodnoteniaPriemeryScreen $app) {
+	public function __construct(Trace $trace, VSES017\HodnoteniaPriemeryScreen $app) {
 		$this->app = $app;
     $this->trace = $trace;
 	}

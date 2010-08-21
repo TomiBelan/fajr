@@ -24,9 +24,13 @@ Copyright (c) 2010 Martin Králik
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
-use \fajr\HtmlTrace;
-use \fajr\libfajr\base\SystemTimer;
-use \fajr\libfajr\connection;
+use fajr\HtmlTrace;
+use fajr\libfajr\base\SystemTimer;
+use fajr\libfajr\connection;
+use fajr\libfajr\login\CosignLogin;
+
+use fajr\libfajr\window\VSES017_administracia_studia as VSES017; // *
+
 if (!defined('_FAJR')) {
   die('<html><head>'.
       '<title>Varovanie</title>'.
@@ -49,6 +53,7 @@ mb_internal_encoding("UTF-8");
 require_once 'libfajr/libfajr.php';
 Loader::register();
 Loader::searchForClasses(dirname(__FILE__), true);
+require_once 'libfajr/Assert.php';
 
 if (!FajrConfig::isConfigured()) {
   DisplayManager::addContent('notConfigured', true);
@@ -119,7 +124,7 @@ class Fajr {
       }
 
       if ($login !== null && $krbpwd !== null) {
-        $loggedIn = FajrUtils::login(new AIS2CosignLogin($login, $krbpwd), $connection);
+        $loggedIn = FajrUtils::login(new CosignLogin($login, $krbpwd), $connection);
         $login = null;
         $krbpwd = null;
       } else if ($cosignCookie !== null) {
@@ -134,7 +139,7 @@ class Fajr {
         '<div class=\'logout\'><a class="button negative" href="'.FajrUtils::linkUrl(array('logout'=>true)).'">
         <img src="images/door_in.png" alt=""/>Odhlásiť</a></div>'
         );
-        $adminStudia = new AIS2AdministraciaStudiaScreen($trace, $simpleConnection);
+        $adminStudia = new VSES017\AdministraciaStudiaScreen($trace, $simpleConnection);
         
         if (Input::get('studium') === null) Input::set('studium',0);
         
@@ -172,7 +177,7 @@ class Fajr {
         
         
         $terminyHodnotenia = new
-          AIS2TerminyHodnoteniaScreen(
+          VSES017\TerminyHodnoteniaScreen(
               $trace,
               $simpleConnection,
               $adminStudia->getIdZapisnyList($trace, Input::get('list')),
@@ -183,18 +188,18 @@ class Fajr {
               'list'=>Input::get('list')));
         // FIXME: chceme to nejak refaktorovat, aby sme nevytvarali zbytocne
         // objekty, ktore v konstruktore robia requesty
-        $hodnoteniaScreen = new AIS2HodnoteniaPriemeryScreen(
+        $hodnoteniaScreen = new VSES017\HodnoteniaPriemeryScreen(
               $trace, $simpleConnection,
               $adminStudia->getIdZapisnyList($trace,
                 Input::get('list')));
         $tabs->addTab('TerminyHodnotenia', 'Moje skúšky',
-              new MojeTerminyHodnoteniaCallback($trace->addChild("terminy hodnotenia callback"), $terminyHodnotenia, $hodnoteniaScreen));
+              new MojeTerminyHodnoteniaCallback($trace, $terminyHodnotenia, $hodnoteniaScreen));
         $tabs->addTab('ZapisSkusok', 'Prihlásenie na skúšky',
-              new ZoznamTerminovCallback($terminyHodnotenia, $hodnoteniaScreen));
+              new ZoznamTerminovCallback($trace, $terminyHodnotenia, $hodnoteniaScreen));
         $tabs->addTab('ZapisnyList', 'Zápisný list',
-              new ZapisanePredmetyCallback($terminyHodnotenia));
+              new ZapisanePredmetyCallback($trace, $terminyHodnotenia));
         $tabs->addTab('Hodnotenia', 'Hodnotenia/Priemery',
-            new HodnoteniaCallback($hodnoteniaScreen));
+            new HodnoteniaCallback($trace, $hodnoteniaScreen));
 
         $tabs->setActive(Input::get('tab'));
         DisplayManager::addContent($tabs->getHtml());
