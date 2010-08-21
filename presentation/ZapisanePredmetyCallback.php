@@ -3,27 +3,27 @@
 use fajr\libfajr\base\Trace;
 
 class ZapisanePredmetyCallback implements Renderable {
-	private $skusky;
-	
-	public function __construct(Trace $trace, $skusky) {
+  private $skusky;
+  
+  public function __construct(Trace $trace, $skusky) {
     $this->trace = $trace;
-		$this->skusky = $skusky;
-	}
-	
-	public function getHtml() {
+    $this->skusky = $skusky;
+  }
+  
+  public function getHtml() {
     $trace = $this->trace->addChild("ZapisanePredmetyCallback");;
-		$predmetyZapisnehoListu = $this->skusky->getPredmetyZapisnehoListu($trace);
-		$predmetyZapisnehoListuTable = new
-			Table(TableDefinitions::predmetyZapisnehoListu());
-		$predmetyZapisnehoListuCollapsible = new Collapsible(new HtmlHeader('Predmety zápisného listu'),
-			$predmetyZapisnehoListuTable);
-		$kreditovCelkomLeto = 0;
+    $predmetyZapisnehoListu = $this->skusky->getPredmetyZapisnehoListu($trace);
+    $predmetyZapisnehoListuTable = new
+      Table(TableDefinitions::predmetyZapisnehoListu());
+    $predmetyZapisnehoListuCollapsible = new Collapsible(new HtmlHeader('Predmety zápisného listu'),
+      $predmetyZapisnehoListuTable);
+    $kreditovCelkomLeto = 0;
     $kreditovCelkomZima = 0;
     $pocetPredmetovLeto = 0;
     $pocetPredmetovZima = 0;
-		foreach (Sorter::sort($predmetyZapisnehoListu->getData(),
-					array("kodSemester"=>-1, "nazov"=>1)) as $row) {
-			if ($row['kodSemester']=='L') {
+    foreach (Sorter::sort($predmetyZapisnehoListu->getData(),
+          array("kodSemester"=>-1, "nazov"=>1)) as $row) {
+      if ($row['kodSemester']=='L') {
         $pocetPredmetovLeto += 1;
         $kreditovCelkomLeto += $row['kredit'];
         $class='leto';
@@ -33,9 +33,9 @@ class ZapisanePredmetyCallback implements Renderable {
         $kreditovCelkomZima += $row['kredit'];
         $class='zima';
       }
-			$predmetyZapisnehoListuTable->addRow($row, array('class'=>$class));
-			
-		}
+      $predmetyZapisnehoListuTable->addRow($row, array('class'=>$class));
+      
+    }
 
     $pocetPredmetovText = 'Celkom ';
     $pocetPredmetovText .= FajrUtils::formatPlural($pocetPredmetovLeto+$pocetPredmetovZima,
@@ -49,10 +49,10 @@ class ZapisanePredmetyCallback implements Renderable {
       $kreditovCelkomText .= sprintf(' (%d+%d)', $kreditovCelkomZima, $kreditovCelkomLeto);
     }
 
-		$predmetyZapisnehoListuTable->addFooter(array('nazov'=>$pocetPredmetovText,'kredit'=>$kreditovCelkomText), array());
-		$predmetyZapisnehoListuTable->setUrlParams(array('studium' =>
-					Input::get('studium'), 'list' => Input::get('list')));
-		
-		return $predmetyZapisnehoListuTable->getHtml();
-	}
+    $predmetyZapisnehoListuTable->addFooter(array('nazov'=>$pocetPredmetovText,'kredit'=>$kreditovCelkomText), array());
+    $predmetyZapisnehoListuTable->setUrlParams(array('studium' =>
+          Input::get('studium'), 'list' => Input::get('list')));
+    
+    return $predmetyZapisnehoListuTable->getHtml();
+  }
 }
