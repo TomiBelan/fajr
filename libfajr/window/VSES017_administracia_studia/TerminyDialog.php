@@ -30,21 +30,24 @@ Copyright (c) 2010 Martin Králik
  * PHP version 5.3.0
  *
  * @package    Fajr
- * @subpackage Libfajr__Window__Administracia-studia
+ * @subpackage Libfajr__Window__VSES017_administracia_studia
  * @author     Martin Kralik <majak47@gmail.com>
  * @filesource
  */
+namespace fajr\libfajr\window\VSES017_administracia_studia;
 use fajr\libfajr\base\Trace;
 use fajr\libfajr\window\DialogData;
 use fajr\libfajr\window\DialogParent;
+use fajr\libfajr\window\AIS2AbstractDialog;
+use fajr\libfajr\AIS2TableConstructor;
 /**
  * Trieda pre dialóg s termínmi skúšok k jednému predmetu.
  *
  * @package    Fajr
- * @subpackage Libfajr__Window__Administracia-studia
+ * @subpackage Libfajr__Window__VSES017_administracia_studia
  * @author     Martin Kralik <majak47@gmail.com>
  */
-class AIS2TerminyDialog extends AIS2AbstractDialog
+class TerminyDialog extends AIS2AbstractDialog
 {
 	
 	public function getZoznamTerminov(Trace $trace)
@@ -84,7 +87,7 @@ class AIS2TerminyDialog extends AIS2AbstractDialog
     $data->compName = 'zobrazitZoznamPrihlasenychAction';
     $data->embObjName = 'zoznamTerminovTable';
     $data->index = $terminIndex;
-		return new AIS2ZoznamPrihlasenychDialog($trace, $this, $this->requestBuilder, $data);
+		return new ZoznamPrihlasenychDialog($trace, $this, $this->requestBuilder, $data);
 	}
 	
 }

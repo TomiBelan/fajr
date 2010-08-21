@@ -30,27 +30,46 @@ Copyright (c) 2010 Martin Králik
  * PHP version 5.3.0
  *
  * @package    Fajr
- * @subpackage Libfajr__Window__Administracia-studia
+ * @subpackage Libfajr__Window__VSES017_administracia_studia
  * @author     Martin Kralik <majak47@gmail.com>
  * @filesource
  */
+namespace fajr\libfajr\window\VSES017_administracia_studia;
+
+use fajr\libfajr\window\AIS2AbstractScreen;
 use fajr\libfajr\base\Trace;
+use fajr\libfajr\connection\SimpleConnection;
+use fajr\libfajr\AIS2TableConstructor;
 /**
- * Trieda pre dialóg so zoznamom prihlásených študentov na termín.
+ * Trieda reprezentujúca jednu obrazovku s hodnoteniami a priemermi za jeden rok.
  *
  * @package    Fajr
- * @subpackage Libfajr__Window__Administracia-studia
+ * @subpackage Libfajr__Window__VSES017_administracia_studia
  * @author     Martin Kralik <majak47@gmail.com>
  */
-class AIS2ZoznamPrihlasenychDialog extends AIS2AbstractDialog
+class HodnoteniaPriemeryScreen extends AIS2AbstractScreen
 {
-  public function getZoznamPrihlasenych(Trace $trace)
+  public function __construct(Trace $trace, SimpleConnection $connection, $idZapisnyList)
   {
-  $this->openIfNotAlready($trace);
-    $response = $this->executor->requestContent($trace);
-    $constructor = new AIS2TableConstructor();
-    return $constructor->createTableFromHtml($trace->addChild("Parsing table"), $response,
-        'prihlaseniTable_dataView');
+    parent::__construct($trace, $connection, 'ais.gui.vs.es.VSES212App', '&kodAplikacie=VSES212&idZapisnyList='.$idZapisnyList);
   }
+
+  public function getHodnotenia(Trace $trace)
+  {
+    $this->open($trace);
+    $constructor = new AIS2TableConstructor();
+    return $constructor->createTableFromHtml($trace->addChild("Parsing table"),
+                $this->data, 'hodnoteniaTable_dataView');
+  }
+
+  public function getPriemery(Trace $trace)
+  {
+    $this->open($trace);
+    $constructor = new AIS2TableConstructor();
+    return $constructor->createTableFromHtml($trace->addChild("Parsing table"),
+                $this->data, 'priemeryTable_dataView');
+  }
+
 }
+
 ?>

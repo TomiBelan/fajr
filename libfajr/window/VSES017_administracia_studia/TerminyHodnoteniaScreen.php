@@ -30,23 +30,26 @@ Copyright (c) 2010 Martin Králik
  * PHP version 5.3.0
  *
  * @package    Fajr
- * @subpackage Libfajr__Window__Administracia-studia
+ * @subpackage Libfajr__Window__VSES017_administracia_studia
  * @author     Martin Kralik <majak47@gmail.com>
  * @filesource
  */
+namespace fajr\libfajr\window\VSES017_administracia_studia;
 
 use fajr\libfajr\base\Trace;
 use fajr\libfajr\connection\SimpleConnection;
 use fajr\libfajr\window\DialogData;
+use fajr\libfajr\window\AIS2AbstractScreen;
+use fajr\libfajr\AIS2TableConstructor;
 /**
  * Trieda reprezentujúca jednu obrazovku so zoznamom predmetov zápisného listu
  * a termínov hodnotenia.
  *
  * @package    Fajr
- * @subpackage Libfajr__Window__Administracia-studia
+ * @subpackage Libfajr__Window__VSES017_administracia_studia
  * @author     Martin Kralik <majak47@gmail.com>
  */
-class AIS2TerminyHodnoteniaScreen extends AIS2AbstractScreen
+class TerminyHodnoteniaScreen extends AIS2AbstractScreen
 {
 
 	public function __construct(Trace $trace, SimpleConnection $connection, $idZapisnyList, $idStudium)
@@ -78,7 +81,7 @@ class AIS2TerminyHodnoteniaScreen extends AIS2AbstractScreen
     $data->embObjName = 'predmetyTable';
     $data->index = $predmetIndex;
 
-		return new AIS2TerminyDialog($trace, $this, $this->requestBuilder, $data);
+		return new TerminyDialog($trace, $this, $this->requestBuilder, $data);
   }
 	public function getZoznamPrihlasenychDialog(Trace $trace, $terminIndex)
 	{
@@ -86,7 +89,7 @@ class AIS2TerminyHodnoteniaScreen extends AIS2AbstractScreen
     $data->compName = 'zoznamPrihlasenychStudentovAction';
     $data->embObjName = 'terminyTable';
     $data->index = $terminIndex;
-		return new AIS2ZoznamPrihlasenychDialog($trace, $this, $this->requestBuilder, $data);
+		return new ZoznamPrihlasenychDialog($trace, $this, $this->requestBuilder, $data);
 	}
 	
 	public function odhlasZTerminu(Trace $trace, $terminIndex)

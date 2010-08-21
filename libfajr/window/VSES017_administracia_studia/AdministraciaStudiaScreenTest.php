@@ -2,9 +2,10 @@
 /**
  *
  * @package    Fajr
- * @subpackage Libfajr__Window__Administracia-studia
+ * @subpackage Libfajr__Window__VSES017_administracia_studia
  * @author     Peter Peresini <ppershing+fajr@gmail.com>
  */
+namespace fajr\libfajr\window\VSES017_administracia_studia;
 
 /**
  * @ignore
@@ -23,7 +24,7 @@ class AdministraciaStudiaScreenTest extends PHPUnit_Framework_TestCase
     $mockConnection = $this->getMock('fajr\libfajr\connection\SimpleConnection', array('request'));
 
     $response = file_get_contents(__DIR__.'/testdata/idFromZapisnyList.dat');
-    $screen = new AIS2AdministraciaStudiaScreen(new NullTrace(), $mockConnection);
+    $screen = new AdministraciaStudiaScreen(new NullTrace(), $mockConnection);
     $data = $screen->parseIdFromZapisnyListIndexFromResponse($response);
     $expected = array("idZapisnyList" => 138174, "idStudium" => "53043");
     $this->assertEquals($expected, $data);

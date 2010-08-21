@@ -1,7 +1,11 @@
 <?php
+namespace fajr\libfajr;
+
 use fajr\libfajr\base\Trace;
-use \Exception;
-use \DOMDocument;
+use Exception;
+use DOMDocument;
+use DOMElement;
+use fajr\libfajr\DataTable;
 
 class AIS2TableConstructor {
   public function fixProblematicTags(Trace $trace, $html) {
@@ -54,7 +58,7 @@ class AIS2TableConstructor {
     // ok, now we have restricted document
     $headers = $this->getTableDefinition($trace->addChild("Get table definition"), $dom);
     $data = $this->getTableData($trace->addChild("Get table data"), $dom);
-    return new AIS2Table($headers, $data);
+    return new DataTable($headers, $data);
   }
 
   public function getCellContent(DOMElement $element) {

@@ -30,20 +30,24 @@ Copyright (c) 2010 Martin Králik
  * PHP version 5.3.0
  *
  * @package    Fajr
- * @subpackage Libfajr__Window__Administracia-studia
+ * @subpackage Libfajr__Window__VSES017_administracia_studia
  * @author     Martin Kralik <majak47@gmail.com>
  * @filesource
  */
+namespace fajr\libfajr\window\VSES017_administracia_studia;
+
 use fajr\libfajr\base\Trace;
 use fajr\libfajr\connection\SimpleConnection;
+use fajr\libfajr\window\AIS2AbstractScreen;
+use fajr\libfajr\AIS2TableConstructor;
 /**
  * Trieda reprezentujúca jednu obrazovku so zoznamom štúdií a zápisných listov.
  *
  * @package    Fajr
- * @subpackage Libfajr__Window__Administracia-studia
+ * @subpackage Libfajr__Window__VSES017_administracia_studia
  * @author     Martin Kralik <majak47@gmail.com>
  */
-class AIS2AdministraciaStudiaScreen extends AIS2AbstractScreen
+class AdministraciaStudiaScreen extends AIS2AbstractScreen
 {
   const APP_LOCATION_PATTERN = '@webui\(\)\.startApp\("([^"]+)","([^"]+)"\);@';
 

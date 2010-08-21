@@ -25,7 +25,7 @@ Copyright (c) 2010 Martin Králik
  }}} */
 
 /**
- * Tento súbor obsahuje parser AIS html tabuliek do poľa stringov.
+ * Tento súbor obsahuje objekt zaobaľujúci tabuľku dát.
  *
  * @package    Fajr
  * @subpackage Libfajr
@@ -33,15 +33,16 @@ Copyright (c) 2010 Martin Králik
  * @filesource
  */
 
+namespace fajr\libfajr;
+
 /**
- * Trieda, ktorá poparsuje AIS html tabuľku a vyrobí z nej pole
- * jednotlivých riadkov.
+ * Trieda zastrešujúca tabuľku dát.
  *
  * @package    Fajr
  * @subpackage Libfajr
  * @author     Peter Peresini <ppershing+fajr@gmail.com>
  */
-class AIS2Table {
+class DataTable {
   /**
    * Definícia stĺpcov tabuľky
    * @var array(string)
