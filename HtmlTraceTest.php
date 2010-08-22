@@ -25,29 +25,32 @@ class HtmlTraceTest extends PHPUnit_Framework_TestCase
   public function testRecursiveOutput()
   {
     $timer = $this->newTimer();
-    $root = new HtmlTrace($timer, "root_h");
-    $other = new HtmlTrace($timer, "other");
-    $root->tlog("root_text");
-    $c1 = $root->addChild("c1_h");
-    $c2 = $root->addChild("c2_h");
-    $cc = $c1->addChild("cc_h");
-    $cc->tlog("cc_text");
+    $root = new HtmlTrace($timer, "ROOT_H");
+    $other = new HtmlTrace($timer, "OTHER");
+    $root->tlog("ROOT_TEXT");
+    $c1 = $root->addChild("C1_H");
+    $c2 = $root->addChild("C2_H");
+    $cc = $c1->addChild("CC_H");
+    $cc->tlog("CC_TEXT");
 
     $root_html = $root->getHtml();
     $c1_html = $c1->getHtml();
     // all texts and headers should appear in the output
-    $this->assertRegExp("@root_h@", $root_html);
-    $this->assertRegExp("@root_text@", $root_html);
-    $this->assertRegExp("@c1_h@", $root_html);
-    $this->assertRegExp("@c2_h@", $root_html);
-    $this->assertRegExp("@cc_h@", $root_html);
-    $this->assertRegExp("@cc_text@", $root_html);
+    $this->assertRegExp("@ROOT_H@", $root_html);
+    $this->assertRegExp("@ROOT_TEXT@", $root_html);
+    $this->assertRegExp("@C1_H@", $root_html);
+    $this->assertRegExp("@C2_H@", $root_html);
+    $this->assertRegExp("@CC_H@", $root_html);
+    $this->assertRegExp("@CC_TEXT@", $root_html);
 
-    $this->assertNotRegExp("@other@", $root_html);
+    //Asserthing NotRegExp is quite tricky as some lines of this file
+    //are included in the trace itself (CodeSnippet feature)
+    // We need to watch about @ $ &quot; ]
+    $this->assertNotRegExp("@[^$;\@\]]OTHER@", $root_html);
     // root nodes shoudn't be shown in child
-    $this->assertNotRegExp("@root_h@", $c1_html);
-    $this->assertNotRegExp("@root_text@", $c1_html);
-    $this->assertRegExp("@c1_h@", $c1_html);
+    $this->assertNotRegExp("@[^$;\@\]]ROOT_H@", $c1_html);
+    $this->assertNotRegExp("@[^$;\@\]]ROOT_TEXT@", $c1_html);
+    $this->assertRegExp("@C1_H@", $c1_html);
   }
 
   public function testCallerData() {
