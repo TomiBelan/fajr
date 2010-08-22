@@ -41,6 +41,7 @@ namespace fajr\libfajr\connection;
 
 use fajr\libfajr\base\Trace;
 use \Exception;
+use fajr\libfajr\login\AIS2LoginException;
 
 /**
  * HttpConnection which checks for generic
@@ -66,6 +67,11 @@ class AIS2ErrorCheckingConnection implements HttpConnection {
    * AIS2 java stacktrace in response.
    */
   const APACHE_ERROR_PATTERN = '@Apache Tomcat.*<pre>([^<]*)</pre>@m';
+
+  /**
+   * AIS2 unauthorized.
+   */
+  const UNAUTHORIZED = "@Neautorizovaný prístup!@";
 
   function __construct(HttpConnection $delegate) {
     $this->delegate = $delegate;
@@ -110,6 +116,11 @@ class AIS2ErrorCheckingConnection implements HttpConnection {
     if (preg_match(self::APACHE_ERROR_PATTERN, $response, $matches)) {
       $trace->tlog("Expection encountered");
       throw $this->newException($matches[1], $url);
+    }
+    if (preg_match(self::UNAUTHORIZED, $response)) {
+      $trace->tlog("Exception encountered");
+      throw new AIS2LoginException("AIS hlási neautorizovaný prístup -
+        pravdepodobne vypršala platnosť cookie");
     }
     return $response;
   }
