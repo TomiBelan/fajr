@@ -39,21 +39,21 @@ class DisplayManager
 <div class="span-5 prepend-1">
   <form method="post" action="">
     <fieldset class="login-box">
-		<legend>Prihlásenie cez Cosign</legend>
-		<div>
-		<label for="login">Prihlasovacie meno</label>
-		<br/>
-		<input type="text" name="login" id="login"/>
-		<br/>
-		<label for="krbpwd">Heslo</label>
-		<br/>
-		<input type="password" name="krbpwd" id="krbpwd"/>
-		<br/>
-		<button type="submit" name="submit">
-		  <img alt="" src="images/key_go.png"/>
-		  Prihlásiť
-		</button>
-	  </div>
+    <legend>Prihlásenie cez Cosign</legend>
+    <div>
+    <label for="login">Prihlasovacie meno</label>
+    <br/>
+    <input type="text" name="login" id="login"/>
+    <br/>
+    <label for="krbpwd">Heslo</label>
+    <br/>
+    <input type="password" name="krbpwd" id="krbpwd"/>
+    <br/>
+    <button type="submit" name="submit">
+      <img alt="" src="images/key_go.png"/>
+      Prihlásiť
+    </button>
+    </div>
     </fieldset>
   </form>
 </div>
@@ -61,20 +61,20 @@ class DisplayManager
   <form method="post" action="">
     <fieldset class="login-box">
       <legend>Prihlásenie cez cookie</legend>
-	  <div>
-		bezpečne sa <a
-		href=\'https://login.uniba.sk/?cosign-filter-ais2.uniba.sk&amp;https://ais2.uniba.sk/ais/login.do?\'>
-		  prihlás</a> do AISu a skopíruj si cookie.
-		<hr/>
-		<label for="cosignCookie">cosign-filter-ais2.uniba.sk</label>
-		<br/>
-		<input type="password" name="cosignCookie" id="cosignCookie"/>
-		<br/>
-		<button type="submit" name="submit">
-		  <img alt="" src="images/key_add.png"/>
-		  Prihlásiť
-		</button>
-	  </div>
+    <div>
+    bezpečne sa <a
+    href=\'https://login.uniba.sk/?cosign-filter-ais2.uniba.sk&amp;https://ais2.uniba.sk/ais/login.do?\'>
+      prihlás</a> do AISu a skopíruj si cookie.
+    <hr/>
+    <label for="cosignCookie">cosign-filter-ais2.uniba.sk</label>
+    <br/>
+    <input type="password" name="cosignCookie" id="cosignCookie"/>
+    <br/>
+    <button type="submit" name="submit">
+      <img alt="" src="images/key_add.png"/>
+      Prihlásiť
+    </button>
+    </div>
     </fieldset>
   </form>
 </div>
