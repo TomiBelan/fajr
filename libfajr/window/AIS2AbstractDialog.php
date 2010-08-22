@@ -26,7 +26,6 @@ Copyright (c) 2010 Martin Králik
 namespace fajr\libfajr\window;
 
 use fajr\libfajr\base\Trace;
-use fajr\libfajr\window\RequestBuilder;
 use fajr\libfajr\window\DialogData;
 use fajr\libfajr\window\DialogParent;
 /**
@@ -38,7 +37,6 @@ class AIS2AbstractDialog implements DialogParent
 {
   protected $parent = null;
   protected $terminated = false;
-  protected $requestBuilder = null;
   protected $formName = null;
   protected $inUse = false;
   protected $executor;
@@ -55,13 +53,11 @@ class AIS2AbstractDialog implements DialogParent
    * @param string $appClassName Názov "triedy" obsluhujúcej danú obrazovku v AISe.
    * @param string $identifiers Konkrétne parametre pre vyvolanie danej obrazovky.
    */
-  public function __construct(Trace $trace, DialogParent $parent,
-      RequestBuilder $requestBuilder, DialogData $data)
+  public function __construct(Trace $trace, DialogParent $parent, DialogData $data)
   {
     $this->trace = $trace;
     $this->parent = $parent;
     $this->data = $data;
-    $this->requestBuilder = $requestBuilder;
     $this->uid = random();
   }
 

@@ -38,7 +38,6 @@ namespace fajr\libfajr\window\VSES017_administracia_studia;
 use fajr\libfajr\base\Trace;
 use fajr\libfajr\window\DialogData;
 use fajr\libfajr\window\DialogParent;
-use fajr\libfajr\window\RequestBuilder;
 use fajr\libfajr\window\AIS2AbstractDialog;
 use fajr\libfajr\data_manipulation\AIS2TableParser;
 /**
@@ -56,9 +55,9 @@ class TerminyDialog extends AIS2AbstractDialog
   private $parser;
 
   public function __construct(Trace $trace, DialogParent $parent,
-      RequestBuilder $requestBuilder, DialogData $data, AIS2TableParser $parser = null)
+      DialogData $data, AIS2TableParser $parser = null)
   {
-    parent::__construct($trace, $parent, $requestBuilder, $data);
+    parent::__construct($trace, $parent, $data);
     $this->parser = ($parser !== null) ? $parser :  new AIS2TableParser;
   }
 	
@@ -73,7 +72,7 @@ class TerminyDialog extends AIS2AbstractDialog
 	public function prihlasNaTermin(Trace $trace, $terminIndex)
 	{
 		$this->openIfNotAlready($trace);
-		$data = $this->requestData($trace, array(
+		$data = $this->executor->doRequest($trace, array(
 			'compName' => 'enterAction',
 			'eventClass' => 'avc.ui.event.AVCActionEvent',
 			'embObj' => array(
@@ -98,7 +97,7 @@ class TerminyDialog extends AIS2AbstractDialog
     $data->compName = 'zobrazitZoznamPrihlasenychAction';
     $data->embObjName = 'zoznamTerminovTable';
     $data->index = $terminIndex;
-		return new ZoznamPrihlasenychDialog($trace, $this, $this->requestBuilder, $data);
+		return new ZoznamPrihlasenychDialog($trace, $this, $data);
 	}
 	
 }

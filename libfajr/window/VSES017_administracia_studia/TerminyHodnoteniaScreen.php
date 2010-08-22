@@ -85,7 +85,7 @@ class TerminyHodnoteniaScreen extends AIS2AbstractScreen
     $data->embObjName = 'predmetyTable';
     $data->index = $predmetIndex;
 
-		return new TerminyDialog($trace, $this, $this->requestBuilder, $data);
+		return new TerminyDialog($trace, $this, $data);
   }
 	public function getZoznamPrihlasenychDialog(Trace $trace, $terminIndex)
 	{
@@ -93,7 +93,7 @@ class TerminyHodnoteniaScreen extends AIS2AbstractScreen
     $data->compName = 'zoznamPrihlasenychStudentovAction';
     $data->embObjName = 'terminyTable';
     $data->index = $terminIndex;
-		return new ZoznamPrihlasenychDialog($trace, $this, $this->requestBuilder, $data);
+		return new ZoznamPrihlasenychDialog($trace, $this, $data);
 	}
 	
 	public function odhlasZTerminu(Trace $trace, $terminIndex)
