@@ -88,7 +88,7 @@ class CurlConnection implements HttpConnection {
   }
 
   public function get(Trace $trace, $url) {
-    $trace->tlog(__CLASS__.": Http GET");
+    $trace->tlog("Http GET");
     $trace->tlogVariable("URL", $url);
     curl_setopt($this->curl, CURLOPT_URL, $url);
     curl_setopt($this->curl, CURLOPT_HTTPGET, true);
@@ -96,7 +96,7 @@ class CurlConnection implements HttpConnection {
   }
 
   public function post(Trace $trace, $url, $data) {
-    $trace->tlog(__CLASS__.": Http POST");
+    $trace->tlog("Http POST");
     $trace->tlogVariable("URL", $url);
     $child=$trace->addChild("POST data");
     $child->tlogVariable("post_data", $data);
