@@ -156,7 +156,7 @@ class Fajr {
 
         $zoznamStudiiCollapsible = new Collapsible(new HtmlHeader('Zoznam štúdií'), $zoznamStudiiTable, true);
 
-        DisplayManager::addContent($zoznamStudiiCollapsible->getHtml());		
+        DisplayManager::addContent($zoznamStudiiCollapsible->getHtml());    
         
         $zapisneListy = $adminStudia->getZapisneListy($trace->addChild('getZapisneListy'), Input::get('studium'));
         
@@ -221,7 +221,7 @@ class Fajr {
       }
       else
       {
-        DisplayManager::addContent('loginBox', true);	
+        DisplayManager::addContent('loginBox', true); 
         DisplayManager::addContent('warnings', true);
         DisplayManager::addContent('terms', true);
         DisplayManager::addContent('credits', true);

@@ -33,25 +33,25 @@ use \fajr\libfajr\login\CosignLogin;
  */
 class AIS2Session
 {
-	private $login = null;
+  private $login = null;
 
-	public function  __construct($login) {
-		assert($login !== null); // OK, toto by mozno malo byt ako exception...
+  public function  __construct($login) {
+    assert($login !== null); // OK, toto by mozno malo byt ako exception...
 
-		$this->login = $login;
-	}
+    $this->login = $login;
+  }
 
-	public function login(HttpConnection $connection) {
-		return $this->login->login($connection);
-	}
+  public function login(HttpConnection $connection) {
+    return $this->login->login($connection);
+  }
 
-	public function logout(HttpConnection $connection) {
-		return $this->login->logout($connection);
-	}
+  public function logout(HttpConnection $connection) {
+    return $this->login->logout($connection);
+  }
 
-	public function isLoggedIn() {
-		return $this->login->isLoggedIn();
-	}
+  public function isLoggedIn() {
+    return $this->login->isLoggedIn();
+  }
     
 
 }

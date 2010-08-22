@@ -60,45 +60,45 @@ class TerminyDialog extends AIS2AbstractDialog
     parent::__construct($trace, $parent, $data);
     $this->parser = ($parser !== null) ? $parser :  new AIS2TableParser;
   }
-	
-	public function getZoznamTerminov(Trace $trace)
-	{
+  
+  public function getZoznamTerminov(Trace $trace)
+  {
     $this->openIfNotAlready($trace);
-		$response = $this->executor->requestContent($trace);
+    $response = $this->executor->requestContent($trace);
     return $this->parser->createTableFromHtml($trace->addChild("Parsing table"), $response,
         'zoznamTerminovTable_dataView');
-	}
-	
-	public function prihlasNaTermin(Trace $trace, $terminIndex)
-	{
-		$this->openIfNotAlready($trace);
-		$data = $this->executor->doRequest($trace, array(
-			'compName' => 'enterAction',
-			'eventClass' => 'avc.ui.event.AVCActionEvent',
-			'embObj' => array(
-				'objName' => 'zoznamTerminovTable',
-				'dataView' => array(
-					'activeIndex' => $terminIndex,
-					'selectedIndexes' => $terminIndex,
-				),
-			),
-		));
-		
-		$error = match($data, '@webui\.messageBox\("([^"]*)",@');
-		if ($error) throw new Exception('Nepodarilo sa prihlásiť na zvolený termín.<br/>Dôvod: <b>'.$error.'</b>');
-		
-		$this->terminated = true; // po uspesnom prihlaseni za dialog hned zavrie
-		return true;
-	}
-	
-	public function getZoznamPrihlasenychDialog($terminIndex)
-	{
+  }
+  
+  public function prihlasNaTermin(Trace $trace, $terminIndex)
+  {
+    $this->openIfNotAlready($trace);
+    $data = $this->executor->doRequest($trace, array(
+      'compName' => 'enterAction',
+      'eventClass' => 'avc.ui.event.AVCActionEvent',
+      'embObj' => array(
+        'objName' => 'zoznamTerminovTable',
+        'dataView' => array(
+          'activeIndex' => $terminIndex,
+          'selectedIndexes' => $terminIndex,
+        ),
+      ),
+    ));
+    
+    $error = match($data, '@webui\.messageBox\("([^"]*)",@');
+    if ($error) throw new Exception('Nepodarilo sa prihlásiť na zvolený termín.<br/>Dôvod: <b>'.$error.'</b>');
+    
+    $this->terminated = true; // po uspesnom prihlaseni za dialog hned zavrie
+    return true;
+  }
+  
+  public function getZoznamPrihlasenychDialog($terminIndex)
+  {
     $data = new DialogData();
     $data->compName = 'zobrazitZoznamPrihlasenychAction';
     $data->embObjName = 'zoznamTerminovTable';
     $data->index = $terminIndex;
-		return new ZoznamPrihlasenychDialog($trace, $this, $data);
-	}
-	
+    return new ZoznamPrihlasenychDialog($trace, $this, $data);
+  }
+  
 }
 ?>
