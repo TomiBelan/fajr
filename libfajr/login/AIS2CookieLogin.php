@@ -26,6 +26,7 @@ Copyright (c) 2010 Martin Králik
  }}} */
 namespace fajr\libfajr\login;
 use fajr\libfajr\connection\HttpConnection;
+use fajr\libfajr\base\NullTrace;
 /**
  * Trieda reprezentujúca prihlasovanie pomocou cookie
  *
@@ -45,7 +46,7 @@ class AIS2CookieLogin extends AIS2AbstractLogin {
 
     $connection->addCookie('cosign-filter-ais2.uniba.sk', $this->cookie,
                   0, '/', 'ais2.uniba.sk');
-    $data = $connection->get(self::LOGIN);
+    $data = $connection->get(new NullTrace(), self::LOGIN);
     if (preg_match('@\<title\>IIKS \- Prihlásenie\</title\>@', $data))
       return false;
     $this->loggedIn = true;

@@ -29,6 +29,7 @@ use fajr\libfajr\base\NullTrace;
 use fajr\libfajr\base\SystemTimer;
 use fajr\libfajr\connection;
 use fajr\libfajr\login\CosignLogin;
+use fajr\libfajr\login\AIS2CookieLogin;
 
 use fajr\libfajr\window\VSES017_administracia_studia as VSES017; // *
 
