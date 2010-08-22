@@ -4,6 +4,7 @@ namespace fajr\libfajr\window;
 class RequestBuilderImpl implements RequestBuilder {
   private $serial = 0;
   private $webRoot = 'https://ais2.uniba.sk';
+  const SERVLET_ROOT_PATH = '/ais/servlets/WebUIServlet';
 
   /**
    * Vygeneruje nové sériové číslo používané v XML protokole na komunikáciu s AISom.
@@ -21,10 +22,26 @@ class RequestBuilderImpl implements RequestBuilder {
    */
   public function getRequestUrl($appId, $formName = null)
   {
-    $form = $formName ? '&form='.$formName : '';
-    return
-      $this->webRoot.'/ais/servlets/WebUIServlet?appId='.$appId.$form.
-        '&antiCache='.random().'&viewer=web';
+    $url = $this->webRoot . self::SERVLET_ROOT_PATH;
+    $url .= '?appId=' . $appId;
+    if ($formName !== null) {
+      $url .= '&form='.$formName;
+    }
+    // $url .= '&viewer=web&antiCache=' . random();
+    return $url;
+  }
+
+
+  public function getAppInitializationUrl(ScreenData $data) {
+    $url = $this->webRoot . self::SERVLET_ROOT_PATH;
+    $url .= '?appClassName=' . $data->appClassName;
+    if ($data->additionalParams !== null) {
+      foreach ($data->additionalParams as $key => $value) {
+        $url .= '&' . $key . '=' . $value;
+      }
+    }
+    // $url .= '&viewer=web&antiCache=' . random();
+    return $url;
   }
 
   /**
@@ -54,7 +71,8 @@ class RequestBuilderImpl implements RequestBuilder {
     $xml_spec = '<request><serial>'.$this->newSerial().'</serial>';
     if ($events === true)
     {
-      $xml_spec .= '<events><ev><dlgName>'.$dlgName.'</dlgName>';
+      $xml_spec .= '<events><ev>';
+      if ($dlgName !== null) $xml_spec .= '<dlgName>'.$dlgName.'</dlgName>';
       if ($compName !== null) $xml_spec .= '<compName>'.$compName.'</compName>';
       $xml_spec .= '<event class=\''.$eventClass.'\'>';
       if ($command !== null) $xml_spec .= '<command>'.$command.'</command>';

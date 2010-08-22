@@ -39,6 +39,9 @@ namespace fajr\libfajr\window\VSES017_administracia_studia;
 use fajr\libfajr\base\Trace;
 use fajr\libfajr\connection\SimpleConnection;
 use fajr\libfajr\window\AIS2AbstractScreen;
+use fajr\libfajr\window\RequestBuilderImpl;
+use fajr\libfajr\window\ScreenRequestExecutor;
+use fajr\libfajr\window\ScreenData;
 use fajr\libfajr\data_manipulation\AIS2TableParser;
 /**
  * Trieda reprezentujúca jednu obrazovku so zoznamom štúdií a zápisných listov.
@@ -60,20 +63,26 @@ class AdministraciaStudiaScreen extends AIS2AbstractScreen
 
   public function __construct(Trace $trace, SimpleConnection $connection, AIS2TableParser $parser = null)
   {
-    parent::__construct($trace, $connection, 'ais.gui.vs.es.VSES017App', '&kodAplikacie=VSES017');
+    $data = new ScreenData();
+    $data->appClassName = 'ais.gui.vs.es.VSES017App';
+    $data->additionalParams = array('kodAplikacie' => 'VSES017');
+    $requestBuilder = new RequestBuilderImpl();
+    $executor = new ScreenRequestExecutor($requestBuilder);
+    parent::__construct($trace, $executor, $data);
     $this->parser = ($parser !== null) ? $parser :  new AIS2TableParser;
   }
 
   public function getZoznamStudii(Trace $trace)
   {
-    $this->open($trace);
-    return $this->parser->createTableFromHtml($trace->addChild("Parsing table"), $this->data, 'studiaTable_dataView');
+    $this->openIfNotAlready($trace);
+    $response = $this->executor->requestContent($trace->addChild("get content"));
+    return $this->parser->createTableFromHtml($trace->addChild("Parsing table"), $response, 'studiaTable_dataView');
   }
 
   public function getZapisneListy(Trace $trace, $studiumIndex)
   {
-    $this->open($trace);
-    $data = $this->requestData(
+    $this->openIfNotAlready($trace);
+    $data = $this->executor->doRequest(
         $trace->addChild("Requesting data:"),
         array('compName' => 'nacitatDataAction',
               'objProperties' => array(
@@ -105,10 +114,10 @@ class AdministraciaStudiaScreen extends AIS2AbstractScreen
 
   protected function getIdFromZapisnyListIndex(Trace $trace, $zapisnyListIndex, $idType)
   {
-    $this->open($trace);
+    $this->openIfNotAlready($trace);
     if (empty($this->idCache[$zapisnyListIndex]))
     {
-      $response = $this->requestData(
+      $response = $this->executor->doRequest(
           $trace->addChild("Requesting data:"),
           array('compName' => 'terminyHodnoteniaAction',
                 'objProperties' => array(

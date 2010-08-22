@@ -1,17 +1,17 @@
 <?php
-
-
 namespace fajr\libfajr\window;
 use fajr\libfajr\base\Trace;
-use \AIS2Utils;
-use \Exception;
+use AIS2Utils;
+use Exception;
+use fajr\libfajr\base\DisableEvilCallsObject;
 
-class DialogRequestExecutor
+class DialogRequestExecutor extends DisableEvilCallsObject
 {
   protected $data;
   protected $requestBuilder;
   protected $parentFormName;
   protected $parentAppId;
+  protected $formName = null;
 
   const DIALOG_NAME_PATTERN = '@dm\(\)\.openDialog\("(?P<dialogName>[^"]+)",@';
 

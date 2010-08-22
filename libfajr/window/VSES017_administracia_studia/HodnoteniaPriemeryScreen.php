@@ -37,6 +37,9 @@ Copyright (c) 2010 Martin Králik
 namespace fajr\libfajr\window\VSES017_administracia_studia;
 
 use fajr\libfajr\window\AIS2AbstractScreen;
+use fajr\libfajr\window\ScreenData;
+use fajr\libfajr\window\ScreenRequestExecutor;
+use fajr\libfajr\window\RequestBuilderImpl;
 use fajr\libfajr\base\Trace;
 use fajr\libfajr\connection\SimpleConnection;
 use fajr\libfajr\data_manipulation\AIS2TableParser;
@@ -57,22 +60,32 @@ class HodnoteniaPriemeryScreen extends AIS2AbstractScreen
   public function __construct(Trace $trace, SimpleConnection $connection, $idZapisnyList,
       AIS2TableParser $parser = null)
   {
-    parent::__construct($trace, $connection, 'ais.gui.vs.es.VSES212App', '&kodAplikacie=VSES212&idZapisnyList='.$idZapisnyList);
+    $data = new ScreenData();
+    $data->appClassName = 'ais.gui.vs.es.VSES212App';
+    $data->additionalParams = array('kodAplikacie' => 'VSES212',
+        'idZapisnyList' => $idZapisnyList);
+    $requestBuilder = new RequestBuilderImpl();
+    $executor = new ScreenRequestExecutor($requestBuilder);
+    parent::__construct($trace, $executor, $data);
     $this->parser = ($parser !== null) ? $parser :  new AIS2TableParser;
   }
 
+  // TODO(ppershing): Maybe cache data between getHodnotenia && getPriemery
+
   public function getHodnotenia(Trace $trace)
   {
-    $this->open($trace);
+    $this->openIfNotAlready($trace);
+    $data = $this->executor->requestContent($trace);
     return $this->parser->createTableFromHtml($trace->addChild("Parsing table"),
-                $this->data, 'hodnoteniaTable_dataView');
+                $data, 'hodnoteniaTable_dataView');
   }
 
   public function getPriemery(Trace $trace)
   {
-    $this->open($trace);
+    $this->openIfNotAlready($trace);
+    $data = $this->executor->requestContent($trace);
     return $this->parser->createTableFromHtml($trace->addChild("Parsing table"),
-                $this->data, 'priemeryTable_dataView');
+                $data, 'priemeryTable_dataView');
   }
 
 }

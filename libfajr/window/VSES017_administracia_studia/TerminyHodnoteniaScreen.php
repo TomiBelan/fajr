@@ -39,6 +39,9 @@ namespace fajr\libfajr\window\VSES017_administracia_studia;
 use fajr\libfajr\base\Trace;
 use fajr\libfajr\connection\SimpleConnection;
 use fajr\libfajr\window\DialogData;
+use fajr\libfajr\window\ScreenData;
+use fajr\libfajr\window\RequestBuilderImpl;
+use fajr\libfajr\window\ScreenRequestExecutor;
 use fajr\libfajr\window\AIS2AbstractScreen;
 use fajr\libfajr\data_manipulation\AIS2TableParser;
 /**
@@ -59,23 +62,32 @@ class TerminyHodnoteniaScreen extends AIS2AbstractScreen
   public function __construct(Trace $trace, SimpleConnection $connection, $idZapisnyList,
       $idStudium, AIS2TableParser $parser = null)
   {
-    parent::__construct($trace, $connection, 'ais.gui.vs.es.VSES007App', '&kodAplikacie=VSES007&idZapisnyList='.$idZapisnyList.'&idStudium='.$idStudium);
+    $data = new ScreenData();
+    $data->appClassName = 'ais.gui.vs.es.VSES007App';
+    $data->additionalParams = array('kodAplikacie' => 'VSES007',
+        'idZapisnyList' => $idZapisnyList,
+        'idStudium' => $idStudium);
+    $requestBuilder = new RequestBuilderImpl();
+    $executor = new ScreenRequestExecutor($requestBuilder);
+    parent::__construct($trace, $executor, $data);
     $this->parser = ($parser !== null) ? $parser :  new AIS2TableParser;
   }
 
   public function getPredmetyZapisnehoListu(Trace $trace)
   {
-    $this->open($trace);
-    return $this->parser->createTableFromHtml($trace->addChild("Parsing table"), $this->data,
+    $this->openIfNotAlready($trace);
+    $data = $this->executor->requestContent($trace);
+    return $this->parser->createTableFromHtml($trace->addChild("Parsing table"), $data,
         'predmetyTable_dataView');
   }
 
   public function getTerminyHodnotenia(Trace $trace)
   {
-    $this->open($trace);
+    $this->openIfNotAlready($trace);
+    $data = $this->executor->requestContent($trace);
 
     return $this->parser->createTableFromHtml($trace->addChild("Parsing table"),
-                $this->data, 'terminyTable_dataView');
+                $data, 'terminyTable_dataView');
   }
 
   public function getZoznamTerminovDialog(Trace $trace, $predmetIndex)
@@ -98,7 +110,7 @@ class TerminyHodnoteniaScreen extends AIS2AbstractScreen
   
   public function odhlasZTerminu(Trace $trace, $terminIndex)
   {
-    $this->open();
+    $this->openIfNotAlready($trace);
     // Posleme request ze sa chceme odhlasit.
     $data = $this->requestData(array(
       'compName' => 'odstranitTerminAction',

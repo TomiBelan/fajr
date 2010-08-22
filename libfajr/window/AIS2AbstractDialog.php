@@ -28,12 +28,13 @@ namespace fajr\libfajr\window;
 use fajr\libfajr\base\Trace;
 use fajr\libfajr\window\DialogData;
 use fajr\libfajr\window\DialogParent;
+use fajr\libfajr\base\DisableEvilCallsObject;
 /**
  * Abstraktná trieda reprezentujúca jednu obrazovku v AISe.
  *
  * @author majak
  */
-class AIS2AbstractDialog implements DialogParent
+class AIS2AbstractDialog extends DisableEvilCallsObject implements DialogParent
 {
   protected $parent = null;
   protected $terminated = false;
@@ -44,6 +45,7 @@ class AIS2AbstractDialog implements DialogParent
 
   private $trace = null;
   private $uid;
+  protected $data;
 
   const DIALOG_NAME_PATTERN = '@dm\(\)\.openDialog\("(?P<dialogName>[^"]+)",@';
 
