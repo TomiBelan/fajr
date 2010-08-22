@@ -40,7 +40,7 @@ use fajr\libfajr\base\Trace;
 use fajr\libfajr\connection\SimpleConnection;
 use fajr\libfajr\window\DialogData;
 use fajr\libfajr\window\AIS2AbstractScreen;
-use fajr\libfajr\AIS2TableConstructor;
+use fajr\libfajr\data_manipulation\AIS2TableParser;
 /**
  * Trieda reprezentujúca jednu obrazovku so zoznamom predmetov zápisného listu
  * a termínov hodnotenia.
@@ -51,17 +51,22 @@ use fajr\libfajr\AIS2TableConstructor;
  */
 class TerminyHodnoteniaScreen extends AIS2AbstractScreen
 {
+  /**
+   * @var AIS2TableParser
+   */
+  private $parser;
 
-	public function __construct(Trace $trace, SimpleConnection $connection, $idZapisnyList, $idStudium)
+	public function __construct(Trace $trace, SimpleConnection $connection, $idZapisnyList,
+      $idStudium, AIS2TableParser $parser = null)
 	{
 		parent::__construct($trace, $connection, 'ais.gui.vs.es.VSES007App', '&kodAplikacie=VSES007&idZapisnyList='.$idZapisnyList.'&idStudium='.$idStudium);
+    $this->parser = ($parser !== null) ? $parser :  new AIS2TableParser;
 	}
 
 	public function getPredmetyZapisnehoListu(Trace $trace)
 	{
 		$this->open($trace);
-    $constructor = new AIS2TableConstructor();
-    return $constructor->createTableFromHtml($trace->addChild("Parsing table"), $this->data,
+    return $this->parser->createTableFromHtml($trace->addChild("Parsing table"), $this->data,
         'predmetyTable_dataView');
 	}
 
@@ -69,8 +74,7 @@ class TerminyHodnoteniaScreen extends AIS2AbstractScreen
 	{
 		$this->open($trace);
 
-    $constructor = new AIS2TableConstructor();
-    return $constructor->createTableFromHtml($trace->addChild("Parsing table"),
+    return $this->parser->createTableFromHtml($trace->addChild("Parsing table"),
                 $this->data, 'terminyTable_dataView');
 	}
 

@@ -7,6 +7,8 @@
  */
 namespace fajr\libfajr\window\VSES017_administracia_studia;
 
+use PHPUnit_Framework_TestCase;
+
 /**
  * @ignore
  */

@@ -38,7 +38,10 @@ namespace fajr\libfajr\window\VSES017_administracia_studia;
 
 use fajr\libfajr\base\Trace;
 use fajr\libfajr\window\AIS2AbstractDialog;
-use fajr\libfajr\AIS2TableConstructor;
+use fajr\libfajr\data_manipulation\AIS2TableParser;
+use fajr\libfajr\window\DialogParent;
+use fajr\libfajr\window\DialogData;
+use fajr\libfajr\window\RequestBuilder;
 /**
  * Trieda pre dialóg so zoznamom prihlásených študentov na termín.
  *
@@ -48,12 +51,23 @@ use fajr\libfajr\AIS2TableConstructor;
  */
 class ZoznamPrihlasenychDialog extends AIS2AbstractDialog
 {
+  /**
+   * @var AIS2TableParser
+   */
+  private $parser;
+
+  public function __construct(Trace $trace, DialogParent $parent,
+      RequestBuilder $requestBuilder, DialogData $data, AIS2TableParser $parser = null)
+  {
+    parent::__construct($trace, $parent, $requestBuilder, $data);
+    $this->parser = ($parser !== null) ? $parser :  new AIS2TableParser;
+  }
+
   public function getZoznamPrihlasenych(Trace $trace)
   {
   $this->openIfNotAlready($trace);
     $response = $this->executor->requestContent($trace);
-    $constructor = new AIS2TableConstructor();
-    return $constructor->createTableFromHtml($trace->addChild("Parsing table"), $response,
+    return $this->parser->createTableFromHtml($trace->addChild("Parsing table"), $response,
         'prihlaseniTable_dataView');
   }
 }

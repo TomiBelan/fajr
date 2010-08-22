@@ -1,5 +1,5 @@
 <?php
-namespace fajr\libfajr;
+namespace fajr\libfajr\data_manipulation;
 
 use fajr\libfajr\base\Trace;
 use Exception;
@@ -7,7 +7,7 @@ use DOMDocument;
 use DOMElement;
 use fajr\libfajr\DataTable;
 
-class AIS2TableConstructor {
+class AIS2TableParser {
   public function fixProblematicTags(Trace $trace, $html) {
     $html = str_replace("<!--", "", $html);
     $html = str_replace("-->", "", $html);

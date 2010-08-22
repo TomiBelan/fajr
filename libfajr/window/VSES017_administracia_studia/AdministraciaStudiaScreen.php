@@ -39,7 +39,7 @@ namespace fajr\libfajr\window\VSES017_administracia_studia;
 use fajr\libfajr\base\Trace;
 use fajr\libfajr\connection\SimpleConnection;
 use fajr\libfajr\window\AIS2AbstractScreen;
-use fajr\libfajr\AIS2TableConstructor;
+use fajr\libfajr\data_manipulation\AIS2TableParser;
 /**
  * Trieda reprezentujúca jednu obrazovku so zoznamom štúdií a zápisných listov.
  *
@@ -53,16 +53,21 @@ class AdministraciaStudiaScreen extends AIS2AbstractScreen
 
   protected $idCache = array();
 
-  public function __construct(Trace $trace, SimpleConnection $connection)
+  /**
+   * @var AIS2TableParser
+   */
+  private $parser;
+
+  public function __construct(Trace $trace, SimpleConnection $connection, AIS2TableParser $parser = null)
   {
     parent::__construct($trace, $connection, 'ais.gui.vs.es.VSES017App', '&kodAplikacie=VSES017');
+    $this->parser = ($parser !== null) ? $parser :  new AIS2TableParser;
   }
 
   public function getZoznamStudii(Trace $trace)
   {
     $this->open($trace);
-    $constructor = new AIS2TableConstructor();
-    return $constructor->createTableFromHtml($trace->addChild("Parsing table"), $this->data, 'studiaTable_dataView');
+    return $this->parser->createTableFromHtml($trace->addChild("Parsing table"), $this->data, 'studiaTable_dataView');
   }
 
   public function getZapisneListy(Trace $trace, $studiumIndex)
@@ -84,8 +89,7 @@ class AdministraciaStudiaScreen extends AIS2AbstractScreen
                 ),
               ),
             ));
-    $constructor = new AIS2TableConstructor();
-    return $constructor->createTableFromHtml($trace->addChild("Parsing table"),
+    return $this->parser->createTableFromHtml($trace->addChild("Parsing table"),
         $data, 'VSES017_StudentZapisneListyDlg0_zapisneListyTable_dataView');
   }
 

@@ -39,7 +39,7 @@ namespace fajr\libfajr\window\VSES017_administracia_studia;
 use fajr\libfajr\window\AIS2AbstractScreen;
 use fajr\libfajr\base\Trace;
 use fajr\libfajr\connection\SimpleConnection;
-use fajr\libfajr\AIS2TableConstructor;
+use fajr\libfajr\data_manipulation\AIS2TableParser;
 /**
  * Trieda reprezentujúca jednu obrazovku s hodnoteniami a priemermi za jeden rok.
  *
@@ -49,24 +49,29 @@ use fajr\libfajr\AIS2TableConstructor;
  */
 class HodnoteniaPriemeryScreen extends AIS2AbstractScreen
 {
-  public function __construct(Trace $trace, SimpleConnection $connection, $idZapisnyList)
+  /**
+   * @var AIS2TableParser
+   */
+  private $parser;
+
+  public function __construct(Trace $trace, SimpleConnection $connection, $idZapisnyList,
+      AIS2TableParser $parser = null)
   {
     parent::__construct($trace, $connection, 'ais.gui.vs.es.VSES212App', '&kodAplikacie=VSES212&idZapisnyList='.$idZapisnyList);
+    $this->parser = ($parser !== null) ? $parser :  new AIS2TableParser;
   }
 
   public function getHodnotenia(Trace $trace)
   {
     $this->open($trace);
-    $constructor = new AIS2TableConstructor();
-    return $constructor->createTableFromHtml($trace->addChild("Parsing table"),
+    return $this->parser->createTableFromHtml($trace->addChild("Parsing table"),
                 $this->data, 'hodnoteniaTable_dataView');
   }
 
   public function getPriemery(Trace $trace)
   {
     $this->open($trace);
-    $constructor = new AIS2TableConstructor();
-    return $constructor->createTableFromHtml($trace->addChild("Parsing table"),
+    return $this->parser->createTableFromHtml($trace->addChild("Parsing table"),
                 $this->data, 'priemeryTable_dataView');
   }
 
