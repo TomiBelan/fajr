@@ -25,6 +25,7 @@ Copyright (c) 2010 Martin Králik
  }}} */
 
 use fajr\HtmlTrace;
+use fajr\libfajr\base\NullTrace;
 use fajr\libfajr\base\SystemTimer;
 use fajr\libfajr\connection;
 use fajr\libfajr\login\CosignLogin;
@@ -82,8 +83,11 @@ class Fajr {
     $connection = null;
     $statsConnection = null;
     $rawStatsConnection = null;
+    $trace = new NullTrace();
 
-    $trace = new HtmlTrace($timer, "--Trace--");
+    if (FajrConfig::get('Debug.Trace') === true) {
+      $trace = new HtmlTrace($timer, "--Trace--");
+    }
 
     try
     {
@@ -242,7 +246,11 @@ class Fajr {
     $trace->tlog("everything done, generating html");
 
     if (FajrConfig::get('Debug.Trace')===true) {
-      DisplayManager::addContent('<div class="span-24">' . $trace->getHtml() . '</div>');
+      $traceHtml = $trace->getHtml();
+      DisplayManager::addContent('<div class="span-24">' . $traceHtml . 
+          '<div> Trace size:' .
+          sprintf("%.2f", strlen($traceHtml) / 1024.0 / 1024.0) .
+          ' MB</div></div>');
     }
     echo DisplayManager::display();
   }
