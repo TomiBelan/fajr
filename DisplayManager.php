@@ -185,12 +185,12 @@ len na zapisovanie a použitie, t.j. <code>d----wx---</code>.
 </div>
 '
   );
-  
+
   public static function setBase($base)
   {
     self::$base = $base;
   }
-  
+
   public static function addContent($content, $predefinedContent = false)
   {
     if ($predefinedContent) self::$content[] = self::$predefinedContent[$content];
@@ -199,10 +199,16 @@ len na zapisovanie a použitie, t.j. <code>d----wx---</code>.
 
   public static function addException($ex)
   {
-    self::addContent('<div class="error"><h2>Pri spracúvaní požiadavky nastala chyba:</h2>'.
-          $ex->getMessage().'<br/><br/>Stacktrace:<br/>'.nl2br($ex->getTraceAsString()).'</div>');
+    $stackTrace = '';
+    if (FajrConfig::get('Debug.Exception.ShowStacktrace')) {
+      $stackTrace = "\n<b>Stacktrace:</b>\n" . hescape($ex->getTraceAsString());
+      $stackTrace = nl2br($stackTrace);
+    }
+    $info = '<h2>Pri spracúvaní požiadavky nastala chyba:</h2>';
+    $info .= nl2br(hescape($ex->getMessage()));
+    self::addContent('<div class="error">' . $info . $stackTrace . '</div>');
   }
-  
+
   public static function display()
   {
     $html = '';
@@ -233,46 +239,12 @@ len na zapisovanie a použitie, t.j. <code>d----wx---</code>.
 </script>';
   }
 
-  public static function dumpRequests($requests) {
-    $html = '<div class="debug">';
-    foreach ($requests as $request) {
-      $html .= '<div class="debug_connection">';
-      $html .= '<div class="debug_connection_header"><span class="debug_connection_method">'.hescape($request['method']).'</span> '.hescape($request['url']).'</div>';
-      $html .= '<div class="debug_connection_auxinfo">'.sprintf("%.3f", $request['startTime']);
-      $html .= 's - '.sprintf("%.3f", $request['endTime']).'s (';
-      $html .= sprintf("%.3f", $request['endTime']-$request['startTime']);
-      $html .= 's)</div>';
-      if (isset($request['requestData'])) {
-        $html .= '<div class="debug_connection_block"><div class="debug_connection_block_title">Request data:</div><pre>';
-        foreach ($request['requestData'] as $name => $value) {
-          $html .= hescape($name).': '.hescape($value);
-        }
-        $html .= '</pre></div>';
-      }
-      if (isset($request['responseData'])) {
-        $html .= '<div class="debug_connection_block"><div class="debug_connection_block_title">Response data:</div><pre>';
-        $html .= hescape($request['responseData']);
-        $html .= '</pre></div>';
-      }
-      if (isset($request['exception'])) {
-        $html .= '<div class="debug_connection_block"><div class="debug_connection_block_title">Response data:</div><pre>';
-        $html .= hescape($request['exception']->getTraceAsString());
-        $html .= '</pre></div>';
-      }
-      $html .= '</div>';
-      
-    }
-    $html .= '</div>';
-    self::addContent($html);
-  }
-
   public static function getUniqueHTMLId($idType = 'id') {
     $uniquePart = self::$nextHtmlId;
     self::$nextHtmlId += 1;
 
     return $idType.$uniquePart;
   }
-      
 }
 
 ?>

@@ -20,6 +20,11 @@ return array(
    */
   //'Debug.Trace'=>true,
 
+  /**
+   * Ak je táto voľba zapnutá, pri zobrazovaní výnimiek sa vypíše ja kompletný stacktrace.
+   */
+  //'Debug.Exception.ShowStacktrace',
+
   /*
    * Ak je táto voľba zapnutá, budú sa používať cesty tvaru fajr.php/nieco.
    * Predvolená hodnota false znamená, že sa takéto cesty nebudú používať

@@ -38,6 +38,7 @@ class FajrConfig
     'Debug.Trace'=>false,
     'Debug.Path'=>false,
     'Debug.Rewrite'=>false,
+    'Debug.Exception.ShowStacktrace'=>false,
     'Path.Temporary'=>'./temp',
     'Path.Temporary.Cookies'=>'./cookies',
     'Path.Temporary.Sessions'=>'./sessions',
