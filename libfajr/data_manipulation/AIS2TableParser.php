@@ -5,6 +5,7 @@ use fajr\libfajr\base\Trace;
 use Exception;
 use DOMDocument;
 use DOMElement;
+use DOMXPath;
 use fajr\libfajr\DataTable;
 
 class AIS2TableParser {
@@ -16,6 +17,15 @@ class AIS2TableParser {
     return $html;
   }
 
+  public function fixIdAttributes(DOMDocument $dom) {
+    $xpath = new DOMXPath($dom);
+    $nodes = $xpath->query("//*[@id]");
+    for ($i = 0; $i < $nodes->length; $i++) {
+      $node = $nodes->item($i);
+      $node->setIdAttribute('id', true);
+    }
+  }
+
   public function createDomFromHtml(Trace $trace, $html) {
     $dom = new DOMDocument();
     $trace->tlog("Loading html to DOM");
@@ -23,6 +33,7 @@ class AIS2TableParser {
     if (!$loaded) {
       throw new Exception("Problem parsing ais2 response html");
     }
+    $this->fixIdAttributes($dom);
     return $dom;
   }
 
