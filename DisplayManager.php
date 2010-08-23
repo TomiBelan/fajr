@@ -39,21 +39,21 @@ class DisplayManager
 <div class="span-5 prepend-1">
   <form method="post" action="">
     <fieldset class="login-box">
-		<legend>Prihlásenie cez Cosign</legend>
-		<div>
-		<label for="login">Prihlasovacie meno</label>
-		<br/>
-		<input type="text" name="login" id="login"/>
-		<br/>
-		<label for="krbpwd">Heslo</label>
-		<br/>
-		<input type="password" name="krbpwd" id="krbpwd"/>
-		<br/>
-		<button type="submit" name="submit">
-		  <img alt="" src="images/key_go.png"/>
-		  Prihlásiť
-		</button>
-	  </div>
+    <legend>Prihlásenie cez Cosign</legend>
+    <div>
+    <label for="login">Prihlasovacie meno</label>
+    <br/>
+    <input type="text" name="login" id="login"/>
+    <br/>
+    <label for="krbpwd">Heslo</label>
+    <br/>
+    <input type="password" name="krbpwd" id="krbpwd"/>
+    <br/>
+    <button type="submit" name="submit">
+      <img alt="" src="images/key_go.png"/>
+      Prihlásiť
+    </button>
+    </div>
     </fieldset>
   </form>
 </div>
@@ -61,20 +61,20 @@ class DisplayManager
   <form method="post" action="">
     <fieldset class="login-box">
       <legend>Prihlásenie cez cookie</legend>
-	  <div>
-		bezpečne sa <a
-		href=\'https://login.uniba.sk/?cosign-filter-ais2.uniba.sk&amp;https://ais2.uniba.sk/ais/login.do?\'>
-		  prihlás</a> do AISu a skopíruj si cookie.
-		<hr/>
-		<label for="cosignCookie">cosign-filter-ais2.uniba.sk</label>
-		<br/>
-		<input type="password" name="cosignCookie" id="cosignCookie"/>
-		<br/>
-		<button type="submit" name="submit">
-		  <img alt="" src="images/key_add.png"/>
-		  Prihlásiť
-		</button>
-	  </div>
+    <div>
+    bezpečne sa <a
+    href=\'https://login.uniba.sk/?cosign-filter-ais2.uniba.sk&amp;https://ais2.uniba.sk/ais/login.do?\'>
+      prihlás</a> do AISu a skopíruj si cookie.
+    <hr/>
+    <label for="cosignCookie">cosign-filter-ais2.uniba.sk</label>
+    <br/>
+    <input type="password" name="cosignCookie" id="cosignCookie"/>
+    <br/>
+    <button type="submit" name="submit">
+      <img alt="" src="images/key_add.png"/>
+      Prihlásiť
+    </button>
+    </div>
     </fieldset>
   </form>
 </div>
@@ -185,12 +185,12 @@ len na zapisovanie a použitie, t.j. <code>d----wx---</code>.
 </div>
 '
   );
-  
+
   public static function setBase($base)
   {
     self::$base = $base;
   }
-  
+
   public static function addContent($content, $predefinedContent = false)
   {
     if ($predefinedContent) self::$content[] = self::$predefinedContent[$content];
@@ -199,10 +199,16 @@ len na zapisovanie a použitie, t.j. <code>d----wx---</code>.
 
   public static function addException($ex)
   {
-    self::addContent('<div class="error"><h2>Pri spracúvaní požiadavky nastala chyba:</h2>'.
-          $ex->getMessage().'<br/><br/>Stacktrace:<br/>'.nl2br($ex->getTraceAsString()).'</div>');
+    $stackTrace = '';
+    if (FajrConfig::get('Debug.Exception.ShowStacktrace')) {
+      $stackTrace = "\n<b>Stacktrace:</b>\n" . hescape($ex->getTraceAsString());
+      $stackTrace = nl2br($stackTrace);
+    }
+    $info = '<h2>Pri spracúvaní požiadavky nastala chyba:</h2>';
+    $info .= nl2br(hescape($ex->getMessage()));
+    self::addContent('<div class="error">' . $info . $stackTrace . '</div>');
   }
-  
+
   public static function display()
   {
     $html = '';
@@ -233,46 +239,12 @@ len na zapisovanie a použitie, t.j. <code>d----wx---</code>.
 </script>';
   }
 
-  public static function dumpRequests($requests) {
-    $html = '<div class="debug">';
-    foreach ($requests as $request) {
-      $html .= '<div class="debug_connection">';
-      $html .= '<div class="debug_connection_header"><span class="debug_connection_method">'.hescape($request['method']).'</span> '.hescape($request['url']).'</div>';
-      $html .= '<div class="debug_connection_auxinfo">'.sprintf("%.3f", $request['startTime']);
-      $html .= 's - '.sprintf("%.3f", $request['endTime']).'s (';
-      $html .= sprintf("%.3f", $request['endTime']-$request['startTime']);
-      $html .= 's)</div>';
-      if (isset($request['requestData'])) {
-        $html .= '<div class="debug_connection_block"><div class="debug_connection_block_title">Request data:</div><pre>';
-        foreach ($request['requestData'] as $name => $value) {
-          $html .= hescape($name).': '.hescape($value);
-        }
-        $html .= '</pre></div>';
-      }
-      if (isset($request['responseData'])) {
-        $html .= '<div class="debug_connection_block"><div class="debug_connection_block_title">Response data:</div><pre>';
-        $html .= hescape($request['responseData']);
-        $html .= '</pre></div>';
-      }
-      if (isset($request['exception'])) {
-        $html .= '<div class="debug_connection_block"><div class="debug_connection_block_title">Response data:</div><pre>';
-        $html .= hescape($request['exception']->getTraceAsString());
-        $html .= '</pre></div>';
-      }
-      $html .= '</div>';
-      
-    }
-    $html .= '</div>';
-    self::addContent($html);
-  }
-
   public static function getUniqueHTMLId($idType = 'id') {
     $uniquePart = self::$nextHtmlId;
     self::$nextHtmlId += 1;
 
     return $idType.$uniquePart;
   }
-      
 }
 
 ?>

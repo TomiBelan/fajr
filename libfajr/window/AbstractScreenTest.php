@@ -1,35 +1,49 @@
 <?php
 /**
  *
- * @package libfajr
- * @subpackage Tests
- * @author Peter Peresini <ppershing+fajr@gmail.com>
+ * @package    Fajr
+ * @subpackage Libfajr__Window
+ * @author     Peter Peresini <ppershing+fajr@gmail.com>
  */
+namespace fajr\libfajr\window;
 
 /**
  * @ignore
  */
 require_once 'test_include.php';
 
+use \PHPUnit_Framework_TestCase;
+use fajr\libfajr\connection\SimpleConnection;
+use fajr\libfajr\window\AbstractScreen;
+use fajr\libfajr\base\NullTrace;
 /**
  * @ignore
  */
-class AbstractScreenTest extends PHPUnit_Framework_TestCase
+class AIS2AbstractScreenTest extends PHPUnit_Framework_TestCase
 {
+  public function getScreenStub()
+  {
+    $connection = $this->getMock('\fajr\libfajr\connection\SimpleConnection', array('request'));
+    $screen = $this->getMock('\fajr\libfajr\window\AIS2AbstractScreen',
+        array('thisArrayCannotBeEmptyOtherwisePHPUnitGoesCrazy'),
+        array(new NullTrace(), $connection, null, null));
+    return $screen;
+  }
+
   public function testAppIdParsing()
   {
+    $screen = $this->getScreenStub();
     $response = file_get_contents(__DIR__.'/testdata/appid.dat');
-    $screen = new AIS2AdministraciaStudiaScreen();
     $appId = $screen->parseAppIdFromResponse($response);
-    $this->assertEquals($appId, 21767494);
+    $this->assertEquals(21767494, $appId);
   }
 
   public function testFormNameParsing()
   {
+    $screen = $this->getScreenStub();
     $response = file_get_contents(__DIR__.'/testdata/formName.dat');
-    $screen = new AIS2AdministraciaStudiaScreen();
     $formName = $screen->parseFormNameFromResponse($response);
-    $this->assertEquals($formName, "VSES017_StudentZapisneListyDlg0");
+    $this->assertEquals("VSES017_StudentZapisneListyDlg0", $formName);
   }
 
 }

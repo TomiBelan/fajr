@@ -32,23 +32,23 @@ require_once 'Renderable.php';
  */
 class Label implements Renderable {
 
-	protected $text;
+  protected $text;
 
-	function __construct($text) {
-		$this->setText($text);
-	}
+  function __construct($text) {
+    $this->setText($text);
+  }
 
-	public function getText() {
-		return $this->text;
-	}
+  public function getText() {
+    return $this->text;
+  }
 
-	public function setText($text) {
-		$this->text = $text;
-	}
+  public function setText($text) {
+    $this->text = $text;
+  }
 
-	public function getHtml() {
-		return $this->text;
-	}
+  public function getHtml() {
+    return $this->text;
+  }
 
 
 }

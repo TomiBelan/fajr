@@ -13,5 +13,5 @@ PARAMS="--coverage-html $REPORT_PATH/coverage"
 PARAMS="$PARAMS --colors  --process-isolation"
 PARAMS="$PARAMS --testdox-html $REPORT_PATH/report.html"
 
-cd $TEST_PATH && phpunit $PARAMS $TEST_PATH
+cd $TEST_PATH && phpunit $PARAMS $@ $TEST_PATH
 chmod a+rw -R $REPORT_PATH

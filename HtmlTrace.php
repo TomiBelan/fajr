@@ -1,21 +1,24 @@
 <?php
 
 namespace fajr;
-use \fajr\libfajr\Trace;
-use \Renderable;
-use \Label;
-use \Collapsible;
-
+use fajr\libfajr\base\Trace;
+use Renderable;
+use Label;
+use Collapsible;
+use fajr\libfajr\base\Timer;
+use fajr\libfajr\util\CodeSnippet;
 // TODO(ppershing): documentation
 
 class HtmlTrace implements Trace, Renderable{
   private $header;
   private $children = array();
   private $constructTime = null;
+  private $timer = null;
 
-  public function __construct($header = "", $escape = true){
+  public function __construct(Timer $timer, $header = "", $escape = true){
     $this->header = $escape ? hescape($header) : $header;
     $this->constructTime = microtime(true);
+    $this->timer = $timer;
   }
 
   public function setHeader($header) {
@@ -40,7 +43,7 @@ class HtmlTrace implements Trace, Renderable{
   }
 
   public function addChild($header = "") {
-    $child = new HtmlTrace($this->getStatusString().hescape($header), false);
+    $child = new HtmlTrace($this->timer, $this->getStatusString().hescape($header), false);
     $this->children[] = $child;
     return $child;
   }
@@ -64,12 +67,24 @@ class HtmlTrace implements Trace, Renderable{
   }
 
   private function getStatusString() {
-    $time = microtime(true) - $this->constructTime;
     $caller = $this->getCallerData(2);
     $class = isset($caller['class']) ? $caller['class'] : "";
     $class = preg_replace("@.*\\\\@", "", $class);
     $function = $caller['function'];
-    return sprintf("<span class='trace_s'> %+0.2fs %s::%s(): </span>", $time, $class, $function);
+
+    $caller = $this->getCallerData(1);
+    $file = $caller['file'];
+    $line = $caller['line'];
+    $snippet = CodeSnippet::getCodeSnippet($file, $line, 5);
+    $tooltipHtml = sprintf(
+        "<span class='trace_tooltip'>Function&nbsp;%s::%s()<br/>\n".
+        "Line:&nbsp;%s<br/>\n".
+        "File:&nbsp'%s'<br/>\n".
+        "<br/>Code snippet:<pre>%s</pre></span>",
+        hescape($class), hescape($function), hescape($line), hescape($file),
+        hescape($snippet));
+    return sprintf("<span class='trace_s'>%+0.2fs %s</span>",
+                   $this->timer->getElapsedTime(), $tooltipHtml);
   }
 
   public function getHtml() {

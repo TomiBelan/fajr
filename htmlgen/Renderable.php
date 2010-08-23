@@ -42,9 +42,9 @@ Copyright (c) 2010 Martin Sucha
  */
 interface Renderable {
 
-	/**
-	 * Vráti obsah tohto objektu ako html reťazec
-	 * @returns string html kód
-	 */
-	public function getHtml();
+  /**
+   * Vráti obsah tohto objektu ako html reťazec
+   * @returns string html kód
+   */
+  public function getHtml();
 }

@@ -28,9 +28,10 @@ Thanatos
 
 # Get the file name
 ($directory) = @ARGV;
-$COMMAND = "cat $directory/report/documentation/li_*.html | grep 'new WebFXTreeItem(' | grep 'classe' | grep -v -e '---' ";
+$COMMAND = "cat $directory/report/documentation/li_*.html | grep 'new WebFXTreeItem(' ";
+$COMMAND = "$COMMAND | grep -E 'classe|file .*Test' "; #| grep -v -e '---' ";
 $COMMAND = "$COMMAND | sed \"s/.*, '//\" | sed \"s/');//\" | grep -E '[a-z]' "; #| sed 's/[^\\/]*\\///'";
-$COMMAND = "$COMMAND | sed 's/\\.html//' | ";
+$COMMAND = "$COMMAND | sed 's/\\.html//' | sed 's/__/\\//' | ";
 
 open (INPUT, "$COMMAND")
    || die "Cannot run the ".$COMMAND.": $!\n";

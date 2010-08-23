@@ -31,23 +31,23 @@ Copyright (c) 2010 Martin Sucha
 
 class Container implements Renderable {
 
-	protected $children = null;
+  protected $children = null;
 
-	public function __construct() {
-		$this->children = array();
-	}
+  public function __construct() {
+    $this->children = array();
+  }
 
-	public function addChild(Renderable $child) {
-		$this->children[] = $child;
-	}
+  public function addChild(Renderable $child) {
+    $this->children[] = $child;
+  }
 
-	public function getHtml() {
-		$html = '';
-		foreach ($this->children as $child) {
-			$html .= $child->getHtml();
-		}
-		return $html;
-	}
+  public function getHtml() {
+    $html = '';
+    foreach ($this->children as $child) {
+      $html .= $child->getHtml();
+    }
+    return $html;
+  }
 
 
 

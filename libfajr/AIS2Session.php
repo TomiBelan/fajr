@@ -24,6 +24,8 @@ Copyright (c) 2010 Martin Sucha
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
+use \fajr\libfajr\connection\HttpConnection;
+use \fajr\libfajr\login\CosignLogin;
 /**
  * Trieda reprezentujúca session systému (stav prihlásenia, ...)
  *
@@ -31,25 +33,25 @@ Copyright (c) 2010 Martin Sucha
  */
 class AIS2Session
 {
-	private $login = null;
+  private $login = null;
 
-	public function  __construct($login) {
-		assert($login !== null); // OK, toto by mozno malo byt ako exception...
+  public function  __construct($login) {
+    assert($login !== null); // OK, toto by mozno malo byt ako exception...
 
-		$this->login = $login;
-	}
+    $this->login = $login;
+  }
 
-	public function login(AIS2Connection $connection) {
-		return $this->login->login($connection);
-	}
+  public function login(HttpConnection $connection) {
+    return $this->login->login($connection);
+  }
 
-	public function logout(AIS2Connection $connection) {
-		return $this->login->logout($connection);
-	}
+  public function logout(HttpConnection $connection) {
+    return $this->login->logout($connection);
+  }
 
-	public function isLoggedIn() {
-		return $this->login->isLoggedIn();
-	}
+  public function isLoggedIn() {
+    return $this->login->isLoggedIn();
+  }
     
 
 }

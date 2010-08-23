@@ -24,31 +24,31 @@ Copyright (c) 2010 Martin Králik
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
-	/**
-	 * Function that searchs haystack for perl-like pattern and
-	 * returns first sub-match from pattern.
-	 * I.e. If the pattern is "example:(.*)",
-	 * the full match is example:something and this
-	 * function returns "something"
-	 */
-	function match($haystack, $pattern)
-	{
-		$matches = array();
-		if (!preg_match($pattern, $haystack, $matches)) return false;
-		assert(isset($matches[1]));
-		return $matches[1];
-	}
-	
-	function matchAll($haystack, $pattern, $singleMatch = false)
-	{
-		$matches = array();
-		if (!preg_match_all($pattern, $haystack, $matches, PREG_SET_ORDER)) return false;
-		else
-		{
-			if ($singleMatch == false) return $matches;
-			else return $matches[0];
-		}
-	}
+  /**
+   * Function that searchs haystack for perl-like pattern and
+   * returns first sub-match from pattern.
+   * I.e. If the pattern is "example:(.*)",
+   * the full match is example:something and this
+   * function returns "something"
+   */
+  function match($haystack, $pattern)
+  {
+    $matches = array();
+    if (!preg_match($pattern, $haystack, $matches)) return false;
+    assert(isset($matches[1]));
+    return $matches[1];
+  }
+  
+  function matchAll($haystack, $pattern, $singleMatch = false)
+  {
+    $matches = array();
+    if (!preg_match_all($pattern, $haystack, $matches, PREG_SET_ORDER)) return false;
+    else
+    {
+      if ($singleMatch == false) return $matches;
+      else return $matches[0];
+    }
+  }
 
   /**
    * Function which removes all integer-indexed entries from array.
@@ -62,21 +62,31 @@ Copyright (c) 2010 Martin Králik
     }
     return $data;
   }
-	
-	function dump($s)
-	{
-		if (is_array($s)) foreach ($s as $value) dump($value);
-		else echo '<pre>'.hescape($s).'</pre><hr/>';
-	}
-	
-	function hescape($string)
-	{
-		return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
-	}
+  
+  function dump($s)
+  {
+    if (is_array($s)) foreach ($s as $value) dump($value);
+    else echo '<pre>'.hescape($s).'</pre><hr/>';
+  }
+  
+  function utf8_sanitize($string){
+    $out = @iconv("UTF-8", "UTF-8//IGNORE", $string);
+    if ($string != $out) {
+      $out = "Warning: String not shown for security reasons: " .
+             "String contains invalid utf-8 charactes.";
+    }
+    return $out;
 
-	function random()
-	{
-		return rand(100000,999999);
-	}
-	
+  }
+
+  function hescape($string)
+  {
+    return htmlspecialchars(utf8_sanitize($string), ENT_QUOTES, 'UTF-8');
+  }
+
+  function random()
+  {
+    return rand(100000,999999);
+  }
+  
 ?>

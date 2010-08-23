@@ -33,101 +33,101 @@ require_once 'Validator.php';
  */
 class Input
 {
-	protected static $inputParameters = array();
-	protected static $_get = array();
-	protected static $_post = array();
-	
-	protected static $allowedParamters = array(
-		'_get' => array(
-			'studium' => 'int',
-			'list' => 'int',
-			'predmet' => 'int',
-			'termin' => 'int',
-			'tab' => 'string',
-		),
-		'_post' => array(
-			'prihlasPredmetIndex' => 'int',
-			'prihlasTerminIndex' => 'int',
-			'odhlasIndex' => 'int',
-			'hash' => 'string',
-			'action' => 'string',
-			'login' => 'string',
-			'krbpwd' => 'string',
-			'cosignCookie' => 'string',
-		),
-	);
-	
-	protected static $conditions = array(
-		'int' => array(
-			'cond' => 'number',
-			'options' => array(),
-			'message' => 'Vstupný parameter "%%NAME%%" musí byť typu integer.',
-		),
-		'string' => array(
-			'cond' => 'string',
-			'options' => array('minLength' => 1),
-			'message' => 'Vstupný parameter "%%NAME%%" nesmie byť prázdny.',
-		),
-	);
-	
+  protected static $inputParameters = array();
+  protected static $_get = array();
+  protected static $_post = array();
+  
+  protected static $allowedParamters = array(
+    '_get' => array(
+      'studium' => 'int',
+      'list' => 'int',
+      'predmet' => 'int',
+      'termin' => 'int',
+      'tab' => 'string',
+    ),
+    '_post' => array(
+      'prihlasPredmetIndex' => 'int',
+      'prihlasTerminIndex' => 'int',
+      'odhlasIndex' => 'int',
+      'hash' => 'string',
+      'action' => 'string',
+      'login' => 'string',
+      'krbpwd' => 'string',
+      'cosignCookie' => 'string',
+    ),
+  );
+  
+  protected static $conditions = array(
+    'int' => array(
+      'cond' => 'number',
+      'options' => array(),
+      'message' => 'Vstupný parameter "%%NAME%%" musí byť typu integer.',
+    ),
+    'string' => array(
+      'cond' => 'string',
+      'options' => array('minLength' => 1),
+      'message' => 'Vstupný parameter "%%NAME%%" nesmie byť prázdny.',
+    ),
+  );
+  
 
-	public static function prepare()
-	{
-		if (FajrConfig::get('URL.Path')) {
-			$_get = array_merge(FajrRouter::pathToParams(FajrUtils::pathInfo()),$_GET);
-		}
-		else {
-			$_get = $_GET;
-		}
-		$_post = $_POST;
-	
-		// podla pola definujeceho vstupne parametre overim ich platnost
-		foreach (self::$allowedParamters as $input => $params)
-		{
-			foreach ($params as $name => $type) if (isset(${$input}[$name]))
-			{
-				$checker = self::$conditions[$type]['cond'];
-				if (!Validator::$checker(${$input}[$name], self::$conditions[$type]['options']))
-					throw new Exception(str_replace('%%NAME%%', $name, self::$conditions[$type]['message']));
-				self::$inputParameters[$name] = ${$input}[$name];
-				self::${$input}[$name] = ${$input}[$name];
-			}
-		}
-		
-		// specialne vynimky
-		if (isset($_get['logout']))
-		{
-			self::$inputParameters['logout'] = true;
-			//self::$_GET['logout'] = true; FIXME: Majak, co tu robilo toto?
-			//Pravdepodobne to chceme umazat.
-		}
-		
-		// budeme pouzivat uz len Input
-		unset($_GET);
-		unset($_POST);
-	}
+  public static function prepare()
+  {
+    if (FajrConfig::get('URL.Path')) {
+      $_get = array_merge(FajrRouter::pathToParams(FajrUtils::pathInfo()),$_GET);
+    }
+    else {
+      $_get = $_GET;
+    }
+    $_post = $_POST;
+  
+    // podla pola definujeceho vstupne parametre overim ich platnost
+    foreach (self::$allowedParamters as $input => $params)
+    {
+      foreach ($params as $name => $type) if (isset(${$input}[$name]))
+      {
+        $checker = self::$conditions[$type]['cond'];
+        if (!Validator::$checker(${$input}[$name], self::$conditions[$type]['options']))
+          throw new Exception(str_replace('%%NAME%%', $name, self::$conditions[$type]['message']));
+        self::$inputParameters[$name] = ${$input}[$name];
+        self::${$input}[$name] = ${$input}[$name];
+      }
+    }
+    
+    // specialne vynimky
+    if (isset($_get['logout']))
+    {
+      self::$inputParameters['logout'] = true;
+      //self::$_GET['logout'] = true; FIXME: Majak, co tu robilo toto?
+      //Pravdepodobne to chceme umazat.
+    }
+    
+    // budeme pouzivat uz len Input
+    unset($_GET);
+    unset($_POST);
+  }
 
-	public static function get($key = null)
-	{
-		if ($key === null) return self::$inputParameters;
-		if (!isset(self::$inputParameters[$key]))
-		{
-			return null;
-		}
-		else
-		{
-			return self::$inputParameters[$key];
-		}
-	}
-	
-	public static function set($key, $value)
-	{
-		self::$inputParameters[$key] = $value;
-	}
-	
-	public static function getUrlParams()
-	{
-		return self::$_get;
-	}
+  public static function get($key = null)
+  {
+    if ($key === null) return self::$inputParameters;
+    if (!isset(self::$inputParameters[$key]))
+    {
+      return null;
+    }
+    else
+    {
+      return self::$inputParameters[$key];
+    }
+  }
+  
+  public static function set($key, $value)
+  {
+    self::$inputParameters[$key] = $value;
+  }
+  
+  public static function getUrlParams()
+  {
+    return self::$_get;
+  }
 }
 ?>

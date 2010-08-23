@@ -24,90 +24,53 @@ Copyright (c) 2010 Martin Králik
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
-use \fajr\libfajr\Trace;
-use \fajr\libfajr\NullTrace;
+
+namespace fajr\libfajr\window;
+
+use fajr\libfajr\base\Trace;
+use fajr\libfajr\base\NullTrace;
+use fajr\libfajr\base\IllegalStateException;
+use fajr\libfajr\login\AIS2LoginException;
+use AIS2Utils;
+use fajr\libfajr\base\DisableEvilCallsObject;
 /**
  * Abstraktná trieda reprezentujúca jednu obrazovku v AISe.
  *
  * @author majak
  */
-abstract class AIS2AbstractScreen
+abstract class AIS2AbstractScreen extends DisableEvilCallsObject implements DialogParent
 {
-  protected $appId = null;
-  protected $appClassName = null;
-  protected $identifiers = null;
-
-  protected $formName = null;
-  protected $data = null;
   protected $inUse = false;
-  public function getFormName() {
-    return $this->formName;
-  }
 
-  public $openedDialog = false;
-  protected $requestBuilder = null;
+  protected $openedDialog = null;
+  protected $trace = null;
+  protected $data = null;
+  protected $executor = null;
 
   /**
    * Konštruktor.
    *
-   * @param string $appClassName Názov "triedy" obsluhujúcej danú obrazovku v AISe.
-   * @param string $identifiers Konkrétne parametre pre vyvolanie danej obrazovky.
    */
-  public function __construct($appClassName, $identifiers)
+  public function __construct(Trace $trace, ScreenRequestExecutor $executor, ScreenData $data)
   {
-    $this->requestBuilder = new AIS2\RequestBuilderImpl();
-    $this->appClassName = $appClassName;
-    $this->identifiers = $identifiers;
-  }
-  public function getXmlInterfaceLocation() {
-    return $this->requestBuilder->getRequestUrl($this->getAppId());
+    $this->executor = $executor;
+    $this->trace = $trace;
+    $this->data = $data;
   }
 
-  /**
-   * Nadviaže spojenie, spustí danú "aplikáciu" v AISe
-   * a natiahne prvotné dáta do atribútu $data.
-   */
-  public function open(Trace $trace = null) {
-    $trace || $trace = new NullTrace();
+  public function openIfNotAlready(Trace $trace) {
     if ($this->inUse) return;
+    $this->executor->requestOpen($trace, $this->data);
     $this->inUse = true;
-    
-    $location =
-        'https://ais2.uniba.sk/ais/servlets/WebUIServlet?appClassName=' .
-        $this->appClassName . $this->identifiers .
-        '&viewer=web&antiCache=' . random();
-
-    $response = AIS2Utils::request($location, null,
-                                   $trace->addChild("setAppId"));
-    $this->setAppId($response);
-
-    $response = AIS2Utils::request($this->getXmlInterfaceLocation(),
-        array('xml_spec' => '<request><serial>' . $this->getSerial() . 
-                            '</serial><events><ev><event class=\'avc.ui.event.AVCComponentEvent\'>'.
-                            '<command>INIT</command></event></ev>'.
-                            '</events></request>'),
-        $trace->addChild("Main command"));
-
-    if (preg_match("/Neautorizovaný prístup!/", $response)) {
-      // logoutni aby to nemusel robit uzivatel
-      throw new AIS2LoginException("AIS hlási neautorizovaný prístup -
-        pravdepodobne vypršala platnosť cookie");
-    }
-    $this->setFormName($response);
-
-    $this->data = AIS2Utils::request(
-        'https://ais2.uniba.sk/ais/servlets/WebUIServlet?appId=' .
-        $this->getAppId() . '&form=' . $this->formName .
-        '&antiCache=' . random(),
-        $trace->addChild("?????"));
   }
 
   /**
    * Zatvorí danú "aplikáciu" v AISe,
    */
-  public function close() {
+  public function closeIfNeeded() {
     if (!$this->inUse) return;
-    AIS2Utils::request($this->getXmlInterfaceLocation(), array('xml_spec' => '<request><serial>'.$this->getSerial().'</serial><events><ev><event class=\'avc.framework.webui.WebUIKillEvent\'/></ev></events></request>'));
+    assert($this->openedDialog == null);
+    $this->executor->requestClose($this->trace->addChild("Screen close"));
     $this->inUse = false;
   }
 
@@ -118,74 +81,25 @@ abstract class AIS2AbstractScreen
    */
   public function  __destruct()
   {
-    $this->close();
+    $this->closeIfNeeded($this->trace);
   }
 
-  
-  public function getAppId()
-  {
-    $this->open();
-    return $this->appId;
-  }
-  
-  const APPID_PATTERN = '@\<body onload\=\'window\.setTimeout\("WebUI_init\(\\\"([0-9]+)\\\", \\\"ais\\\", \\\"ais/webui2\\\"\)", 1\)\'@';
 
-  public function parseAppIdFromResponse($response) {
-    $matches = array();
-    if (preg_match(self::APPID_PATTERN, $response, $matches)) {
-      return $matches[1];
-    } else {
-      return null;
+  public function openDialogAndGetExecutor(Trace $trace, $dialogUid, DialogData $data) {
+    $this->openIfNotAlready($trace->addChild("opening dialog parent"));
+    if ($this->openedDialog != null) {
+      throw new IllegalStateException('V AIS2 screene "'.$this->formName.
+          '" už existuje otvorený dialog. Pre otvorenie nového treba pôvodný zatvoriť.');
     }
+    $this->openedDialog = $dialogUid;
+    return $this->executor->spawnDialogExecutor($data);
   }
 
-  /**
-   * Nastaví atribút $appId, ktorý pomocou regulárneho výrazu nájde vo vstupných dátach.
-   * @param string $response Odpoveď AISu v HTML formáte z inicializačnej časti komunikácie.
-   */
-  protected function setAppId($response)
-  {
-    $appId = $this->parseAppIdFromResponse($response);
-    if ($appId !== null) {
-      $this->appId = $appId;
-    } else {
-      throw new Exception('Neviem nájsť appId v odpovedi vo fáze inicializácie triedy '.__CLASS__.'!');
+  public function closeDialog($dialogUid) {
+    if ($this->openedDialog != $dialogUid) {
+      throw new IllegalStateException("Zatváram zlý dialóg!");
     }
-  }
-
-  const FORM_NAME_PATTERN = '@dm\(\)\.openMainDialog\("(?P<formName>[^"]*)","(?P<name>[^"]*)","(?P<formId>[^"]*)",[0-9]*,[^,]*,[^,]*,[^,]*,[^,]*,[^,]*,[^,]*,[^,]*,[^,]*\);@';
-
-  public function parseFormNameFromResponse($response) {
-    $matches = array();
-    if (preg_match(self::FORM_NAME_PATTERN, $response, $matches)) {
-      return $matches['formName'];
-    } else {
-      return null;
-    }
-  }
-
-  /**
-   * Nastaví atribút $formName, ktorý pomocou regulárneho výrazu nájde vo vstupných dátach.
-   * @param string $response Odpoveď AISu v HTML formáte z inicializačnej časti komunikácie.
-   */
-  protected function setFormName($response)
-  {
-    $name = $this->parseFormNameFromResponse($response);
-    if ($name !== null) {
-      $this->formName = $name;
-    } else {
-      throw new Exception('Neviem nájsť formName v odpovedi ' .
-                          'vo fáze inicializácie triedy '.get_class().'!');
-    }
-  }
-
-  public function getSerial() {
-    return $this->requestBuilder->newSerial();
-  }
-
-  public function requestData($options, Trace $trace = null) {
-    $data = $this->requestBuilder->buildRequestData($this->formName, $options);
-    return AIS2Utils::request($this->getXmlInterfaceLocation(), $data, $trace);
+    $this->openedDialog = null;
   }
 }
 ?>

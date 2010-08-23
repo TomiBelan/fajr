@@ -24,31 +24,33 @@ Copyright (c) 2010 Martin Králik
  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
-
+namespace fajr\libfajr\login;
+use fajr\libfajr\connection\HttpConnection;
+use fajr\libfajr\base\NullTrace;
 /**
  * Trieda reprezentujúca prihlasovanie pomocou cookie
  *
  * @author majak, ms
  */
 class AIS2CookieLogin extends AIS2AbstractLogin {
-	private $cookie = null;
+  private $cookie = null;
 
-	public function  __construct($cookie) {
-		assert($cookie !== null);
-		$this->cookie = $cookie;
-	}
+  public function  __construct($cookie) {
+    assert($cookie !== null);
+    $this->cookie = $cookie;
+  }
 
-	public function login(AIS2Connection $connection) {
-		assert($this->cookie !== null);
-		if ($this->loggedIn) return false;
+  public function login(HttpConnection $connection) {
+    assert($this->cookie !== null);
+    if ($this->loggedIn) return false;
 
-		$connection->addCookie('cosign-filter-ais2.uniba.sk', $this->cookie,
-									0, '/', 'ais2.uniba.sk');
-		$data = $connection->get(self::LOGIN);
-		if (preg_match('@\<title\>IIKS \- Prihlásenie\</title\>@', $data))
-			return false;
-		$this->loggedIn = true;
-		return true;
-	}
+    $connection->addCookie('cosign-filter-ais2.uniba.sk', $this->cookie,
+                  0, '/', 'ais2.uniba.sk');
+    $data = $connection->get(new NullTrace(), self::LOGIN);
+    if (preg_match('@\<title\>IIKS \- Prihlásenie\</title\>@', $data))
+      return false;
+    $this->loggedIn = true;
+    return true;
+  }
 
 }

@@ -23,7 +23,8 @@ Copyright (c) 2010 Martin Sucha
  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
-
+namespace fajr\libfajr\login;
+use \Exception;
 class AIS2LoginException extends Exception {
-	
+  
 }

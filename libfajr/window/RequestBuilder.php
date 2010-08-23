@@ -23,7 +23,7 @@ Copyright (c) 2010 Peter Peresini
  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
-namespace AIS2;
+namespace fajr\libfajr\window;
 
 interface RequestBuilder {
   /**
@@ -36,10 +36,21 @@ interface RequestBuilder {
 
   /**
    * Vygeneruje url na ktorú treba robiť request
+   *
    * @param string $appId id AIS aplikácie
    * @return string url
    */
-  public function getRequestUrl($appId);
+  public function getRequestUrl($appId, $formName = null);
+
+  /**
+   * Vygeneruje url na ktorú treba robiť request pri inicializovaní
+   * novej AIS aplikácie
+   *
+   * @param string $appClassName
+   * @param string $kodAplikacie
+   * @return string url
+   */
+  public function getAppInitializationUrl(ScreenData $data);
 
   /**
    * S každým requestom je treba posielať nový serial.

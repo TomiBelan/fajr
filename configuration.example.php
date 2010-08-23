@@ -16,12 +16,17 @@ return array(
    * Ak je táto voľba zapnutá, fajr bude vypisovať komunikáciu medzi
    * ním a AISom. Neodporúčame používať na produkčných inštaláciách, keďže
    * spôsobuje, že na výstupe stránky sa objaví obrovské množstvo dát.
-   * Predvolená hodnota false vypne debugovanie spojení.
+   * Predvolená hodnota false vypne debugovanie spojení a chodu fajru.
    */
-  //'Debug.Connections'=>true,
+  //'Debug.Trace'=>true,
+
+  /**
+   * Ak je táto voľba zapnutá, pri zobrazovaní výnimiek sa vypíše kompletný stacktrace.
+   */
+  //'Debug.Exception.ShowStacktrace'=>true,
 
   /*
-   * Ak je táto voľba zapnutá, budú sa používať cesty tvaru fajr.php/nieco.
+   * Ak je táto voľba zapnutá, budú sa používať cesty tvaru index.php/nieco.
    * Predvolená hodnota false znamená, že sa takéto cesty nebudú používať
    * (najväčšia kompatibilita).
    */
@@ -29,7 +34,7 @@ return array(
 
   /*
    * Ak je táto voľba zapnutá, URL-ka aplikácie nebudú obsahovať časť
-   * "fajr.php". Aplikácia v tomto prípade bude fungovať, len ak je správne
+   * "index.php". Aplikácia v tomto prípade bude fungovať, len ak je správne
    * nastavený a povolený mod_rewrite, či jeho ekvivalent.
    * Táto voľba má účinok len vtedy, keď je zapnutá voľba URL.Path
    */
