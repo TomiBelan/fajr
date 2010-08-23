@@ -21,9 +21,9 @@ return array(
   //'Debug.Trace'=>true,
 
   /**
-   * Ak je táto voľba zapnutá, pri zobrazovaní výnimiek sa vypíše ja kompletný stacktrace.
+   * Ak je táto voľba zapnutá, pri zobrazovaní výnimiek sa vypíše kompletný stacktrace.
    */
-  //'Debug.Exception.ShowStacktrace',
+  //'Debug.Exception.ShowStacktrace'=>true,
 
   /*
    * Ak je táto voľba zapnutá, budú sa používať cesty tvaru fajr.php/nieco.
