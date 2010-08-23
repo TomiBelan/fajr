@@ -17,7 +17,7 @@ class AIS2TableParser {
     return $html;
   }
 
-  public function fixIdAttributes(DOMDocument $dom) {
+  public function fixIdAttributes(Trace $trace, DOMDocument $dom) {
     $xpath = new DOMXPath($dom);
     $nodes = $xpath->query("//*[@id]");
     for ($i = 0; $i < $nodes->length; $i++) {
@@ -33,12 +33,13 @@ class AIS2TableParser {
     if (!$loaded) {
       throw new Exception("Problem parsing ais2 response html");
     }
-    $this->fixIdAttributes($dom);
+    $trace->tlog('Fixing id attributes in the DOM');
+    $this->fixIdAttributes($trace, $dom);
     return $dom;
   }
 
   public function findEnclosingElement(Trace $trace, DOMDocument $dom, $elementId) {
-    $trace->tlog("Finding emenent with id '$elementId'");
+    $trace->tlog("Finding element with id '$elementId'");
     $element = $dom->getElementById($elementId);
     if ($element === null) {
       throw new Exception("Problem parsing ais2 response: Element not found");
