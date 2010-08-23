@@ -20,8 +20,11 @@ class AIS2TableParser {
   public function fixIdAttributes(Trace $trace, DOMDocument $dom) {
     $xpath = new DOMXPath($dom);
     $nodes = $xpath->query("//*[@id]");
-    for ($i = 0; $i < $nodes->length; $i++) {
-      $node = $nodes->item($i);
+    foreach ($nodes as $node) {
+      // Note: do not erase next line. @see
+      // http://www.navioo.com/php/docs/function.dom-domelement-setidattribute.php
+      // for explanation!
+      $node->setIdAttribute('id', false);
       $node->setIdAttribute('id', true);
     }
   }
