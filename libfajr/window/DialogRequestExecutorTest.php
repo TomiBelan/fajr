@@ -23,7 +23,7 @@ class DialogRequestExecutorTest extends PHPUnit_Framework_TestCase
   public function testDialogNameParsing()
   {
     $requestBuilder = $this->getMock('fajr\libfajr\window\RequestBuilder', array('buildRequestData',
-          'getRequestUrl', 'newSerial'));
+          'getRequestUrl', 'newSerial', 'getAppInitializationUrl'));
     $data = new DialogData();
     $executor = new DialogRequestExecutor($data, $requestBuilder, null, null);
 
