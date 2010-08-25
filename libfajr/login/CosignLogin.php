@@ -58,6 +58,9 @@ class CosignLogin extends AIS2AbstractLogin {
   const COSIGN_ERROR_PATTERN3 = 
     '@Pri pokuse o prihlásenie sa vyskytol problém:[^<]*\<div[^>]*\>\<b\>([^<]*)\<\/b\>@';
 
+  const IIKS_OK = '@\<title\>IIKS \- Prihlásenie\</title\>@';
+  const IIKS_ERROR = '@\<title\>IIKS \- ([^,]*)\<\/title\>@';
+
   public function login(HttpConnection $connection) {
     $login = $this->username;
     $krbpwd = $this->krbpwd;
@@ -67,16 +70,16 @@ class CosignLogin extends AIS2AbstractLogin {
     $this->krbpwd = null;
 
     $data = $connection->get(new NullTrace(), self::LOGIN);
-    if (preg_match('@\<title\>IIKS \- Prihlásenie\</title\>@', $data)) {
+    if (preg_match(self::IIKS_OK, $data)) {
       assert($login !== null && $krbpwd !== null);
       $data = $connection->post(new NullTrace(), self::COSIGN_LOGIN, array('ref' => self::LOGIN,
-            'login'=> $login, 'password' => $krbpwd));
+            'login'=> $login, 'krbpwd' => $krbpwd));
       if (!preg_match('@\<base href\="https://ais2\.uniba\.sk/ais/portal/pages/portal_layout\.jsp"\>@', $data)) {
         if (($reason = match($data, self::COSIGN_ERROR_PATTERN1)) ||
             ($reason = match($data, self::COSIGN_ERROR_PATTERN2)) ||
-            ($reason = match($data, self::COSIGN_ERROR_PATTERN3))) {
+            ($reason = match($data, self::COSIGN_ERROR_PATTERN3)) ||
+            ($reason = match($data, self::IIKS_ERROR))) {
           throw new Exception('Nepodarilo sa prihlásiť, dôvod: <b>'.$reason.'</b>');
-          
         }
         throw new Exception('Nepodarilo sa prihlásiť, dôvod neznámy.');
       }
