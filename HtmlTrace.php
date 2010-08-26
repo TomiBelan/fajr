@@ -1,7 +1,7 @@
 <?php
 
 namespace fajr;
-use fajr\libfajr\base\Trace;
+use fajr\libfajr\pub\base\Trace;
 use Renderable;
 use Label;
 use Collapsible;

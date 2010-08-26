@@ -39,7 +39,7 @@
  */
 namespace fajr\libfajr\connection;
 
-use fajr\libfajr\base\Trace;
+use fajr\libfajr\pub\base\Trace;
 use \Exception;
 use fajr\libfajr\login\AIS2LoginException;
 

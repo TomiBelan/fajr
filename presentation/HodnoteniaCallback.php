@@ -1,6 +1,6 @@
 <?php
 
-use fajr\libfajr\base\Trace;
+use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\window\VSES017_administracia_studia as VSES017;
 
 class HodnoteniaCallback implements Renderable {

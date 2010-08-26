@@ -25,7 +25,7 @@ Copyright (c) 2010 Martin Sucha
  }}} */
 
 namespace fajr\libfajr\connection;
-use fajr\libfajr\base\Trace;
+use fajr\libfajr\pub\base\Trace;
 
 /**
  * Zjednodušená verzia konekcie vhodná pre triedy

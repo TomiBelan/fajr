@@ -25,7 +25,7 @@ Copyright (c) 2010 Martin Králik
  }}} */
 namespace fajr\libfajr\window;
 
-use fajr\libfajr\base\Trace;
+use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\window\DialogData;
 use fajr\libfajr\window\DialogParent;
 use fajr\libfajr\base\DisableEvilCallsObject;

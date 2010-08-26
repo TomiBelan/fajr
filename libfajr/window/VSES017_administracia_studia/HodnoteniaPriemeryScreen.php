@@ -40,7 +40,7 @@ use fajr\libfajr\window\AIS2AbstractScreen;
 use fajr\libfajr\window\ScreenData;
 use fajr\libfajr\window\ScreenRequestExecutor;
 use fajr\libfajr\window\RequestBuilderImpl;
-use fajr\libfajr\base\Trace;
+use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\connection\SimpleConnection;
 use fajr\libfajr\data_manipulation\AIS2TableParser;
 /**

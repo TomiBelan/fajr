@@ -1,7 +1,7 @@
 <?php
 namespace fajr\libfajr\data_manipulation;
 
-use fajr\libfajr\base\Trace;
+use fajr\libfajr\pub\base\Trace;
 use Exception;
 use DOMDocument;
 use DOMElement;

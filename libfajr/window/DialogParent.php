@@ -2,7 +2,7 @@
 namespace fajr\libfajr\window;
 
 use fajr\libfajr\window\DialogData;
-use fajr\libfajr\base\Trace;
+use fajr\libfajr\pub\base\Trace;
 interface DialogParent {
   /**
    * @returns DialogRequestExecutor

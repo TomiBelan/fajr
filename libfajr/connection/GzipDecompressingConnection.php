@@ -26,7 +26,7 @@ Copyright (c) 2010 Martin Králik
  }}} */
 namespace fajr\libfajr\connection;
 
-use fajr\libfajr\base\Trace;
+use fajr\libfajr\pub\base\Trace;
 
 class GzipDecompressingConnection implements HttpConnection {
   /**

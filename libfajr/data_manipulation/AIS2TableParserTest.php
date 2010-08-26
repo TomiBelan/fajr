@@ -11,7 +11,7 @@ namespace fajr\libfajr\data_manipulation;
 use \PHPUnit_Framework_TestCase;
 use fajr\libfajr\data_manipulation\DataTable;
 use fajr\libfajr\data_manipulation\AIS2TableParser;
-use fajr\libfajr\base\NullTrace;
+use fajr\libfajr\pub\base\NullTrace;
 /**
  * @ignore
  */

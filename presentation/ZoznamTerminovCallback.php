@@ -1,5 +1,5 @@
 <?php
-use fajr\libfajr\base\Trace;
+use fajr\libfajr\pub\base\Trace;
 
 class ZoznamTerminovCallback implements Renderable {
   private $skusky;
@@ -129,6 +129,7 @@ class ZoznamTerminovCallback implements Renderable {
       $dialog = $this->skusky->getZoznamTerminovDialog(
           $this->trace->addChild('Get zoznam terminov'), $predmetRow['index']);
       $terminy = $dialog->getZoznamTerminov($this->trace->addChild('Get zoznam terminov'));
+      unset($dialog);
       foreach($terminy->getData() as $row) {
         $row['predmet']=$predmetRow['nazov'];
         $row['predmetIndex']=$predmetRow['index'];
@@ -173,15 +174,16 @@ class ZoznamTerminovCallback implements Renderable {
     
     $html = $terminyCollapsible->getHtml();
     if (Input::get('termin') != null && Input::get('predmet')!=null) {
-      $prihlaseni = $this->skusky->getZoznamTerminovDialog(Input::get('predmet'))
-        ->getZoznamPrihlasenychDialog(Input::get('termin'))
-        ->getZoznamPrihlasenych();
+      $prihlaseni = $this->skusky->getZoznamTerminovDialog($this->trace, Input::get('predmet'))
+        ->getZoznamPrihlasenychDialog($this->trace, Input::get('termin'))
+        ->getZoznamPrihlasenych($this->trace);
       
       $zoznamPrihlasenychTable =  new
       Table(TableDefinitions::zoznamPrihlasenych(), null, array('studium', 'list'));
 
-      $zoznamPrihlasenychCollapsible = new Collapsible('Zoznam prihlásených
-          na vybratý termín', $zoznamPrihlasenychTable);
+      $zoznamPrihlasenychCollapsible = new Collapsible(
+          new HtmlHeader('Zoznam prihlásených na vybratý termín'),
+          $zoznamPrihlasenychTable);
       
       $zoznamPrihlasenychTable->addRows($prihlaseni->getData());
       $html .= $zoznamPrihlasenychCollapsible->getHtml();

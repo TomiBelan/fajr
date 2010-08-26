@@ -27,8 +27,7 @@ Copyright (c) 2010 Martin Králik
 
 namespace fajr\libfajr\window;
 
-use fajr\libfajr\base\Trace;
-use fajr\libfajr\base\NullTrace;
+use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\base\IllegalStateException;
 use fajr\libfajr\login\AIS2LoginException;
 use AIS2Utils;
@@ -88,7 +87,7 @@ abstract class AIS2AbstractScreen extends DisableEvilCallsObject implements Dial
   public function openDialogAndGetExecutor(Trace $trace, $dialogUid, DialogData $data) {
     $this->openIfNotAlready($trace->addChild("opening dialog parent"));
     if ($this->openedDialog != null) {
-      throw new IllegalStateException('V AIS2 screene "'.$this->formName.
+      throw new IllegalStateException('V AIS2 screene "'.$this->data->appClassName.
           '" už existuje otvorený dialog. Pre otvorenie nového treba pôvodný zatvoriť.');
     }
     $this->openedDialog = $dialogUid;

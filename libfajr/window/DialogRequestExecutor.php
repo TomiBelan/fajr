@@ -1,6 +1,6 @@
 <?php
 namespace fajr\libfajr\window;
-use fajr\libfajr\base\Trace;
+use fajr\libfajr\pub\base\Trace;
 use AIS2Utils;
 use Exception;
 use fajr\libfajr\base\DisableEvilCallsObject;
@@ -32,7 +32,7 @@ class DialogRequestExecutor extends DisableEvilCallsObject
 
   public function spawnChild(DialogData $data, $parentFormName)
   {
-    return new AIS2DialogRequestExecutor($data, $this->requestBuilder, $this->parentAppId, $parentFormName);
+    return new DialogRequestExecutor($data, $this->requestBuilder, $this->parentAppId, $parentFormName);
   }
 
   public function parseDialogNameFromResponse($response)

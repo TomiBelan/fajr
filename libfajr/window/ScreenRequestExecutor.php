@@ -2,7 +2,7 @@
 
 
 namespace fajr\libfajr\window;
-use fajr\libfajr\base\Trace;
+use fajr\libfajr\pub\base\Trace;
 use AIS2Utils;
 use Exception;
 use fajr\libfajr\base\DisableEvilCallsObject;

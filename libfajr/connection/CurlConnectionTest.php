@@ -12,7 +12,7 @@
 require_once 'test_include.php';
 
 use fajr\libfajr\connection\CurlConnection;
-use fajr\libfajr\base\NullTrace;
+use fajr\libfajr\pub\base\NullTrace;
 /**
  * @ignore
  */

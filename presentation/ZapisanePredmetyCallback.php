@@ -1,6 +1,6 @@
 <?php
 
-use fajr\libfajr\base\Trace;
+use fajr\libfajr\pub\base\Trace;
 
 class ZapisanePredmetyCallback implements Renderable {
   private $skusky;

@@ -25,7 +25,7 @@ Copyright (c) 2010 Martin Sucha
  }}} */
 namespace fajr\libfajr\connection;
 
-use fajr\libfajr\base\Trace;
+use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\base\Timer;
 use \Exception;
 /**

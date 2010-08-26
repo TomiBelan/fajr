@@ -11,7 +11,7 @@
  */
 require_once 'test_include.php';
 
-use fajr\libfajr\base\NullTrace;
+use fajr\libfajr\pub\base\NullTrace;
 use fajr\libfajr\window\DialogRequestExecutor;
 use fajr\libfajr\window\DialogData;
 use fajr\libfajr\window\RequestBuilder;

@@ -23,7 +23,7 @@ Copyright (c) 2010 Martin Králik
  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
-use \fajr\libfajr\base\Trace;
+use \fajr\libfajr\pub\base\Trace;
 use \fajr\libfajr\connection\SimpleConnection;
 /**
  * Trieda združujúca rôzne základné veci pre prácu s AISom

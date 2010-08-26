@@ -36,7 +36,7 @@ Copyright (c) 2010 Martin Králik
  */
 namespace fajr\libfajr\window\VSES017_administracia_studia;
 
-use fajr\libfajr\base\Trace;
+use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\window\AIS2AbstractDialog;
 use fajr\libfajr\data_manipulation\AIS2TableParser;
 use fajr\libfajr\window\DialogParent;

@@ -15,7 +15,7 @@ require_once 'test_include.php';
 use \PHPUnit_Framework_TestCase;
 use fajr\libfajr\window\RequestBuilder;
 use fajr\libfajr\window\ScreenRequestExecutor;
-use fajr\libfajr\base\NullTrace;
+use fajr\libfajr\pub\base\NullTrace;
 /**
  * @ignore
  */

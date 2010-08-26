@@ -27,7 +27,7 @@ Copyright (c) 2010 Martin Králik
 namespace fajr\libfajr\login;
 
 use fajr\libfajr\connection\HttpConnection;
-use fajr\libfajr\base\NullTrace;
+use fajr\libfajr\pub\base\NullTrace;
 use \Exception;
 /**
  * Trieda reprezentujúca prihlasovanie pomocou cosign

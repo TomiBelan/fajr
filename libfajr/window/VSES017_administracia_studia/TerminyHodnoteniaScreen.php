@@ -36,7 +36,7 @@ Copyright (c) 2010 Martin Králik
  */
 namespace fajr\libfajr\window\VSES017_administracia_studia;
 
-use fajr\libfajr\base\Trace;
+use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\connection\SimpleConnection;
 use fajr\libfajr\window\DialogData;
 use fajr\libfajr\window\ScreenData;

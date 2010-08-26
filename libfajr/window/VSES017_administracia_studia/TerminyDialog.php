@@ -35,7 +35,7 @@ Copyright (c) 2010 Martin Králik
  * @filesource
  */
 namespace fajr\libfajr\window\VSES017_administracia_studia;
-use fajr\libfajr\base\Trace;
+use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\window\DialogData;
 use fajr\libfajr\window\DialogParent;
 use fajr\libfajr\window\AIS2AbstractDialog;
@@ -91,7 +91,7 @@ class TerminyDialog extends AIS2AbstractDialog
     return true;
   }
   
-  public function getZoznamPrihlasenychDialog($terminIndex)
+  public function getZoznamPrihlasenychDialog(Trace $trace, $terminIndex)
   {
     $data = new DialogData();
     $data->compName = 'zobrazitZoznamPrihlasenychAction';

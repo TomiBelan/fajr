@@ -13,7 +13,7 @@ require_once 'test_include.php';
 
 use fajr\libfajr\connection\HttpConnection;
 use fajr\libfajr\connection\AIS2ErrorCheckingConnection;
-use fajr\libfajr\base\NullTrace;
+use fajr\libfajr\pub\base\NullTrace;
 use \Exception;
 /**
  * @ignore

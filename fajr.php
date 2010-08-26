@@ -25,7 +25,7 @@ Copyright (c) 2010 Martin Králik
  }}} */
 
 use fajr\HtmlTrace;
-use fajr\libfajr\base\NullTrace;
+use fajr\libfajr\pub\base\NullTrace;
 use fajr\libfajr\base\SystemTimer;
 use fajr\libfajr\connection;
 use fajr\libfajr\login\CosignLogin;
