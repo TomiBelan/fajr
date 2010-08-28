@@ -28,22 +28,17 @@ namespace fajr\libfajr\login;
 
 use fajr\libfajr\connection\HttpConnection;
 use fajr\libfajr\pub\base\NullTrace;
-use \Exception;
+use fajr\libfajr\pub\exceptions\LoginException;
+use fajr\libfajr\util;
 /**
  * Trieda reprezentujúca prihlasovanie pomocou cosign
  *
  * @author majak, ms
  */
-class CosignLogin extends AIS2AbstractLogin {
-
-  const COSIGN_LOGIN = 'https://login.uniba.sk/cosign.cgi';
-
-  const COSIGN_LOGOUT = 'https://login.uniba.sk/logout.cgi';
-  const MAIN_PAGE = 'https://ais2.uniba.sk';
-
+class CosignPasswordLogin extends CosignAbstractLogin {
   private $username = null;
   private $krbpwd = null;
-  
+
   public function __construct($username, $krbpwd) {
     assert($username != null);
     assert($krbpwd != null);
@@ -58,7 +53,6 @@ class CosignLogin extends AIS2AbstractLogin {
   const COSIGN_ERROR_PATTERN3 = 
     '@Pri pokuse o prihlásenie sa vyskytol problém:[^<]*\<div[^>]*\>\<b\>([^<]*)\<\/b\>@';
 
-  const IIKS_OK = '@\<title\>IIKS \- Prihlásenie\</title\>@';
   const IIKS_ERROR = '@\<title\>IIKS \- ([^,]*)\<\/title\>@';
 
   public function login(HttpConnection $connection) {
@@ -68,31 +62,17 @@ class CosignLogin extends AIS2AbstractLogin {
     // Username a password si nebudeme pamatat dlhsie ako treba
     $this->username = null;
     $this->krbpwd = null;
-
-    $data = $connection->get(new NullTrace(), self::LOGIN);
-    if (preg_match(self::IIKS_OK, $data)) {
-      assert($login !== null && $krbpwd !== null);
-      $data = $connection->post(new NullTrace(), self::COSIGN_LOGIN, array('ref' => self::LOGIN,
-            'login'=> $login, 'krbpwd' => $krbpwd));
-      if (!preg_match('@\<base href\="https://ais2\.uniba\.sk/ais/portal/pages/portal_layout\.jsp"\>@', $data)) {
-        if (($reason = match($data, self::COSIGN_ERROR_PATTERN1)) ||
-            ($reason = match($data, self::COSIGN_ERROR_PATTERN2)) ||
-            ($reason = match($data, self::COSIGN_ERROR_PATTERN3)) ||
-            ($reason = match($data, self::IIKS_ERROR))) {
-          throw new Exception('Nepodarilo sa prihlásiť, dôvod: <b>'.$reason.'</b>');
-        }
-        throw new Exception('Nepodarilo sa prihlásiť, dôvod neznámy.');
+    $this->isLoggedIn($connection);
+    $data = $connection->post(new NullTrace(), self::COSIGN_LOGIN,
+                              array('ref' => '', 'login'=> $login, 'krbpwd' => $krbpwd));
+    if (!preg_match(parent::LOGGED_ALREADY_PATTERN, $data)) {
+      if (($reason = util\match(self::COSIGN_ERROR_PATTERN1, $data)) ||
+          ($reason = util\match(self::COSIGN_ERROR_PATTERN2, $data)) ||
+          ($reason = util\match(self::COSIGN_ERROR_PATTERN3, $data)) ||
+          ($reason = util\match(self::IIKS_ERROR, $data))) {
+        throw new LoginException('Nepodarilo sa prihlásiť, dôvod: <b>'.$reason.'</b>');
       }
-      $this->loggedIn = true;
-      return true;
+      throw new LoginException('Nepodarilo sa prihlásiť, dôvod neznámy.');
     }
-    $this->loggedIn = true; // naozaj?
-    return true;
   }
-
-  public function logout(HttpConnection $connection) {
-    $connection->post(new NullTrace(), self::COSIGN_LOGOUT, array('verify' => 'Odhlásiť', 'url'=> self::MAIN_PAGE));
-    return parent::logout($connection);
-  }
-
 }

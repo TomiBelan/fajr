@@ -25,4 +25,5 @@ Copyright (c) 2010 Martin Sucha
  }}} */
 
   require_once 'supporting_functions.php';
+  require_once 'util.php';
   require_once 'Loader.php';

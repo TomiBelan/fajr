@@ -25,32 +25,36 @@ Copyright (c) 2010 Martin Sucha
  }}} */
 
 use \fajr\libfajr\connection\HttpConnection;
-use \fajr\libfajr\login\CosignLogin;
+use \fajr\libfajr\pub\login\Login;
 /**
  * Trieda reprezentujúca session systému (stav prihlásenia, ...)
  *
  * @author majak, ms
  */
+
 class AIS2Session
 {
-  private $login = null;
+  private $aisLogin = null;
+  private $cosignLogin = null;
 
-  public function  __construct($login) {
-    assert($login !== null); // OK, toto by mozno malo byt ako exception...
-
-    $this->login = $login;
+  public function  __construct(Login $aisLogin, Login $cosignLogin) {
+    $this->aisLogin = $aisLogin;
+    $this->cosignLogin = $cosignLogin;
   }
 
   public function login(HttpConnection $connection) {
-    return $this->login->login($connection);
+    $this->cosignLogin->login($connection);
+    $this->aisLogin->login($connection);
+    return true;
   }
 
   public function logout(HttpConnection $connection) {
-    return $this->login->logout($connection);
+    return $this->aisLogin->logout($connection);
+    return $this->cosignLogin->logout($connection);
   }
 
-  public function isLoggedIn() {
-    return $this->login->isLoggedIn();
+  public function isLoggedIn(HttpConnection $connection) {
+    return $this->aisLogin->isLoggedIn($connection) && $this->cosignLogin->isLoggedIn($connection);
   }
     
 

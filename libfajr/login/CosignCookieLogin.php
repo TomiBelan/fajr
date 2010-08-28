@@ -1,6 +1,7 @@
 <?php
 /* {{{
 Copyright (c) 2010 Martin Sucha
+Copyright (c) 2010 Martin Králik
 
  Permission is hereby granted, free of charge, to any person
  obtaining a copy of this software and associated documentation
@@ -23,24 +24,29 @@ Copyright (c) 2010 Martin Sucha
  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
-
 namespace fajr\libfajr\login;
 use fajr\libfajr\connection\HttpConnection;
+use fajr\libfajr\pub\base\NullTrace;
+use fajr\libfajr\pub\exceptions\LoginException;
+/**
+ * Trieda reprezentujúca prihlasovanie pomocou cookie
+ *
+ * @author majak, ms
+ */
+class CosignCookieLogin extends CosignAbstractLogin {
+  private $cookie = null;
 
-interface AIS2Login {
-  /**
-   * Prihlási používateľa
-   * @return boolean true ak sa podarilo prihlásiť, false inak
-   */
-  public function login(HttpConnection $connection);
+  public function  __construct($cookie) {
+    assert($cookie !== null);
+    $this->cookie = $cookie;
+  }
 
-  /**
-   * Odhlási používateľa
-   */
-  public function logout(HttpConnection $connection);
-
-  /**
-   * @return true ak je používateľ momentálne prihlásený
-   */
-  public function isLoggedIn();
+  public function login(HttpConnection $connection) {
+    $connection->addCookie('cosign-filter-ais2.uniba.sk', $this->cookie,
+                  0, '/', 'ais2.uniba.sk');
+    $data = $connection->get(new NullTrace(), parent::COSIGN_LOGIN);
+    if (!preg_match(parent::LOGGED_ALREADY_PATTERN, $data)) {
+      throw new LoginException("Cosign login with cookie failed. Probably wrong cookie.");
+    }
+  }
 }

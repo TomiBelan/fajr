@@ -7,19 +7,19 @@
  * @author Peter Peresini <ppershing+fajr@gmail.com>
  */
 namespace fajr\libfajr\login;
-use fajr\libfajr\login\CosignLogin;
+use PHPUnit_Framework_TestCase;
+use fajr\libfajr\pub\exceptions\LoginException;
+use fajr\libfajr\login\CosignPasswordLogin;
 
 /**
  * @ignore
  */
 require_once 'test_include.php';
 
-use \PHPUnit_Framework_TestCase;
-use \Exception;
 /**
  * @ignore
  */
-class CosignLoginTest extends PHPUnit_Framework_TestCase
+class CosignPasswordLoginTest extends PHPUnit_Framework_TestCase
 {
   private $responseAlreadyLogged;
   private $responseNotLogged;
@@ -31,25 +31,14 @@ class CosignLoginTest extends PHPUnit_Framework_TestCase
   public function setUp() {
     $this->responseAlreadyLogged = file_get_contents(__DIR__.'/testdata/cosignAlreadyLogged.dat');
     $this->responseNotLogged = file_get_contents(__DIR__.'/testdata/cosignNotLogged.dat');
-    $this->responseLoginOk = file_get_contents(__DIR__.'/testdata/cosignLoginOk.dat');
+    $this->responseLoginOk = $this->responseAlreadyLogged;
     $this->responseWrongPassword1 = file_get_contents(__DIR__.'/testdata/cosignWrongPassword.dat');
     $this->responseWrongPassword2 = file_get_contents(__DIR__.'/testdata/cosignWrongPassword2.dat');
     $this->responseWrongPassword3 = file_get_contents(__DIR__.'/testdata/cosignWrongPassword3.dat');
   }
 
   private function newConnection() {
-    return $this->getMock('\fajr\libfajr\connection\HttpConnection',
-        array('get', 'post', 'addCookie', 'clearCookies'));
-  }
-
-  public function testAlreadyLogged() {
-    $connection = $this->newConnection();
-    $connection->expects($this->once())
-               ->method('get')
-               ->will($this->returnValue($this->responseAlreadyLogged));
-    $login = new CosignLogin('user', 'passwd');
-    $ok = $login->login($connection);
-    $this->assertTrue($ok);
+    return $this->getMock('\fajr\libfajr\connection\HttpConnection');
   }
 
   public function testLoginOk() {
@@ -60,9 +49,8 @@ class CosignLoginTest extends PHPUnit_Framework_TestCase
     $connection->expects($this->once())
                ->method('post')
                ->will($this->returnValue($this->responseLoginOk));
-    $login = new CosignLogin('user', 'passwd');
-    $ok = $login->login($connection);
-    $this->assertTrue($ok);
+    $login = new CosignPasswordLogin('user', 'passwd');
+    $login->login($connection);
   }
 
   public function testLoginWrong1() {
@@ -73,11 +61,11 @@ class CosignLoginTest extends PHPUnit_Framework_TestCase
     $connection->expects($this->once())
                ->method('post')
                ->will($this->returnValue($this->responseWrongPassword1));
-    $login = new CosignLogin('user', 'passwd');
+    $login = new CosignPasswordLogin('user', 'passwd');
     try {
       $login->login($connection);
       $this->fail("login should have failed");
-    } catch (Exception $e) {
+    } catch (LoginException $e) {
       $msg = $e->getMessage();
       $this->assertRegExp("@Password or Account Name incorrect@", $msg);
     }
@@ -91,11 +79,11 @@ class CosignLoginTest extends PHPUnit_Framework_TestCase
     $connection->expects($this->once())
                ->method('post')
                ->will($this->returnValue($this->responseWrongPassword2));
-    $login = new CosignLogin('user', 'passwd');
+    $login = new CosignPasswordLogin('user', 'passwd');
     try {
       $login->login($connection);
       $this->fail("login should have failed");
-    } catch (Exception $e) {
+    } catch (LoginException $e) {
       $msg = $e->getMessage();
       $this->assertRegExp("@nesprávne meno alebo heslo@", $msg);
     }
@@ -109,11 +97,11 @@ class CosignLoginTest extends PHPUnit_Framework_TestCase
     $connection->expects($this->once())
                ->method('post')
                ->will($this->returnValue($this->responseWrongPassword3));
-    $login = new CosignLogin('user', 'passwd');
+    $login = new CosignPasswordLogin('user', 'passwd');
     try {
       $login->login($connection);
       $this->fail("login should have failed");
-    } catch (Exception $e) {
+    } catch (LoginException $e) {
       $msg = $e->getMessage();
       $this->assertRegExp("@Chyba - zadané nesprávne meno alebo heslo@", $msg);
     }

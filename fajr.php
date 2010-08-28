@@ -28,8 +28,8 @@ use fajr\HtmlTrace;
 use fajr\libfajr\pub\base\NullTrace;
 use fajr\libfajr\base\SystemTimer;
 use fajr\libfajr\connection;
-use fajr\libfajr\login\CosignLogin;
-use fajr\libfajr\login\AIS2CookieLogin;
+use fajr\libfajr\pub\login\AIS2Login;
+use fajr\libfajr\pub\login\CosignLoginFactoryImpl;
 
 use fajr\libfajr\window\VSES017_administracia_studia as VSES017; // *
 
@@ -50,8 +50,6 @@ error_reporting(E_ALL | E_STRICT);
 date_default_timezone_set('Europe/Bratislava');
 mb_internal_encoding("UTF-8");
 
-// Pretoze v session ukladam objekty libfajru, treba nacitat definicie
-// tried skor, ako sa nacitava session
 require_once 'libfajr/libfajr.php';
 Loader::register();
 Loader::searchForClasses(dirname(__FILE__), true);
@@ -78,6 +76,60 @@ class Fajr {
     session_start();
   }
 
+  /**
+   * WARNING: Must be called before provideConnection().
+   */
+  private function regenerateSessionOnLogin() {
+    $login = Input::get('login');
+    $krbpwd = Input::get('krbpwd');
+    $cosignCookie = Input::get('cosignCookie');
+
+    // FIXME this should be refactored
+    if (($login !== null && $krbpwd !== null) || ($cosignCookie !== null)) {
+      // we are going to log in, so we get a clean session
+      // this needs to be done before a connection
+      // is created, because we pass cookie file name
+      // that contains session_id into AIS2CurlConnection
+      // If we regenerated the session id afterwards,
+      // we could not find the cookie file after a redirect
+      FajrUtils::dropSession();
+    }
+  }
+
+  /**
+   * @returns AIS2Login
+   */
+  private function provideLogin() {
+      $factory = new CosignLoginFactoryImpl();
+
+      $login = Input::get('login'); Input::set('login', null);
+      $krbpwd = Input::get('krbpwd'); Input::set('krbpwd', null);
+      $cosignCookie = Input::get('cosignCookie'); Input::set('cosignCookie', null);
+
+      if ($login !== null && $krbpwd !== null) {
+        return $factory->newLoginUsingCosign($login, $krbpwd);
+      } else if ($cosignCookie !== null) {
+        return $factory->newLoginUsingCookie($cosignCookie);
+      } else {
+        return null;
+      }
+  }
+
+  private $rawStatsConnection;
+  private $statsConnection;
+
+  private function provideConnection() {
+    $connection = new connection\CurlConnection(FajrUtils::getCookieFile());
+
+    $this->rawStatsConnection = new connection\StatsConnection($connection, new SystemTimer());
+
+    $connection = new connection\GzipDecompressingConnection($this->rawStatsConnection, FajrConfig::getDirectory('Path.Temporary'));
+    $connection = new connection\AIS2ErrorCheckingConnection($connection);
+
+    $this->statsConnection = new connection\StatsConnection($connection, new SystemTimer());
+    return $this->statsConnection;
+  }
+
   public function run()
   {
     $timer = new SystemTimer();
@@ -94,31 +146,8 @@ class Fajr {
     {
       Input::prepare();
 
-      $login = Input::get('login'); Input::set('login', null);
-      $krbpwd = Input::get('krbpwd'); Input::set('krbpwd', null);
-      $cosignCookie = Input::get('cosignCookie'); Input::set('cosignCookie', null);
-
-      // FIXME this should be refactored
-      if (($login !== null && $krbpwd !== null) || ($cosignCookie !== null)) {
-        // we are going to log in, so we get a clean session
-        // this needs to be done before a connection
-        // is created, because we pass cookie file name
-        // that contains session_id into AIS2CurlConnection
-        // If we regenerated the session id afterwards,
-        // we could not find the cookie file after a redirect
-        FajrUtils::dropSession();
-      }
-
-      $connection = new connection\CurlConnection(FajrUtils::getCookieFile());
-
-      $rawStatsConnection = new connection\StatsConnection($connection, new SystemTimer());
-      $connection = $rawStatsConnection;
-
-      $connection = new connection\GzipDecompressingConnection($connection, FajrConfig::getDirectory('Path.Temporary'));
-      $connection = new connection\AIS2ErrorCheckingConnection($connection);
-
-      $statsConnection = new connection\StatsConnection($connection, new SystemTimer());
-      $connection = $statsConnection;
+      $this->regenerateSessionOnLogin();
+      $connection = $this->provideConnection();
       $simpleConnection = new connection\HttpToSimpleConnectionAdapter($connection);
 
       AIS2Utils::connection($simpleConnection); // toto tu je docasne
@@ -128,15 +157,12 @@ class Fajr {
         FajrUtils::redirect();
       }
 
-      if ($login !== null && $krbpwd !== null) {
-        $loggedIn = FajrUtils::login(new CosignLogin($login, $krbpwd), $connection);
-        $login = null;
-        $krbpwd = null;
-      } else if ($cosignCookie !== null) {
-        $loggedIn = FajrUtils::login(new AIS2CookieLogin($cosignCookie), $connection);
-        $cosignCookie = null;
-      } else {
-        $loggedIn = FajrUtils::isLoggedIn();
+      $loggedIn = FajrUtils::isLoggedIn($connection);
+
+      $cosignLogin = $this->provideLogin();
+      if (!$loggedIn && $cosignLogin != null) {
+          FajrUtils::login($trace->addChild("logging in"), $cosignLogin, $connection);
+          $loggedIn = true;
       }
 
       if ($loggedIn) {
@@ -211,11 +237,11 @@ class Fajr {
         ;
         $version = '<div>Fajr verzia '.hescape(Version::getVersionString()).'</div>';
         DisplayManager::addContent($version);
-        $statistics = "<div> Fajr made ".$statsConnection->getTotalCount().
-                " requests and downloaded ".$rawStatsConnection->getTotalSize().
-                " bytes (".$statsConnection->getTotalSize().
+        $statistics = "<div> Fajr made ".$this->statsConnection->getTotalCount().
+                " requests and downloaded ".$this->rawStatsConnection->getTotalSize().
+                " bytes (".$this->statsConnection->getTotalSize().
                 " bytes uncompressed) of data from AIS2 in ".
-                sprintf("%.3f", $statsConnection->getTotalTime()).
+                sprintf("%.3f", $this->statsConnection->getTotalTime()).
                 " seconds. It took ".sprintf("%.3f", $timer->getElapsedTime()).
                 " seconds to generate this page.</div>";
         DisplayManager::addContent($statistics);
@@ -233,7 +259,7 @@ class Fajr {
         DisplayManager::addContent(Version::getChangelog(), false);
       }
     }
-    catch (AIS2LoginException $e) {
+    catch (LoginException $e) {
       if ($connection) FajrUtils::logout($connection);
       DisplayManager::addException($e);
     }

@@ -25,16 +25,21 @@
   }}} */
 
 require_once 'FajrRouter.php';
-use \fajr\libfajr\connection\HttpConnection;
-use \fajr\libfajr\login\AIS2Login;
+use fajr\libfajr\connection\HttpConnection;
+use fajr\libfajr\pub\login\Login;
+use fajr\libfajr\pub\base\Trace;
+use fajr\libfajr\login\AIS2LoginImpl;
 class FajrUtils
 {
 
-  public static function login(AIS2Login $login, HttpConnection $connection)
+  public static function login(Trace $trace, Login $login, HttpConnection $connection)
   {
-    $session = new AIS2Session($login);
+    $trace->tlog("Creating AIS2Session");
+    $session = new AIS2Session(new AIS2LoginImpl(), $login);
 
+    $trace->tlog("logging in");
     if (!$session->login($connection)) return false;
+    $trace->tlog("logged in correctly.");
 
     $_SESSION['AISSession'] = $session;
     self::redirect();
@@ -60,10 +65,10 @@ class FajrUtils
     session_regenerate_id(true);
   }
 
-  public static function isLoggedIn()
+  public static function isLoggedIn(HttpConnection $connection)
   {
     if (!isset($_SESSION['AISSession'])) return false;
-    return $_SESSION['AISSession']->isLoggedIn();
+    return $_SESSION['AISSession']->isLoggedIn($connection);
   }
 
   public static function redirect($newParams = array())

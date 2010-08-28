@@ -27,30 +27,42 @@ Copyright (c) 2010 Martin Králik
 namespace fajr\libfajr\login;
 use fajr\libfajr\connection\HttpConnection;
 use fajr\libfajr\pub\base\NullTrace;
+use fajr\libfajr\pub\base\Trace;
+use fajr\libfajr\pub\login\Login;
+use fajr\libfajr\pub\exceptions\LoginException;
 /**
  * Trieda reprezentujúca prihlasovanie pomocou cookie
  *
  * @author majak, ms
  */
-class AIS2CookieLogin extends AIS2AbstractLogin {
-  private $cookie = null;
+class AIS2LoginImpl implements Login {
+  const MAIN_PAGE = 'https://ais2.uniba.sk/ais/start.do';
+  const LOGIN_PAGE = 'https://ais2.uniba.sk/ais/login.do';
+  const LOGOUT_PAGE = 'https://ais2.uniba.sk/ais/logout.do';
 
-  public function  __construct($cookie) {
-    assert($cookie !== null);
-    $this->cookie = $cookie;
-  }
+  const NOT_LOGGED_PATTERN = '@Prihlásenie@';
+  const LOGGED_IN_PATTERN = '@\<div class="user-name"\>[^<]@';
+  const LOGOUT_OK_PATTERN = '@IIKS - Odhlásenie@';
 
   public function login(HttpConnection $connection) {
-    assert($this->cookie !== null);
-    if ($this->loggedIn) return false;
+    $data = $connection->get(new NullTrace(), self::LOGIN_PAGE);
+    if (!preg_match(self::LOGGED_IN_PATTERN, $data)) {
+      throw new LoginException("Login failed.");
+    }
+  }
 
-    $connection->addCookie('cosign-filter-ais2.uniba.sk', $this->cookie,
-                  0, '/', 'ais2.uniba.sk');
-    $data = $connection->get(new NullTrace(), self::LOGIN);
-    if (preg_match('@\<title\>IIKS \- Prihlásenie\</title\>@', $data))
-      return false;
-    $this->loggedIn = true;
-    return true;
+  public function logout(HttpConnection $connection) {
+    $data = $connection->get(new NullTrace(), self::LOGOUT_PAGE);
+    if (!preg_match(self::LOGOUT_OK, $data)) {
+      throw new LoginException("Unexpected response.");
+    }
+  }
+
+  public function isLoggedIn(HttpConnection $connection) {
+    $data = $connection->get(new NullTrace(), self::MAIN_PAGE);
+    if (preg_match(self::NOT_LOGGED_PATTERN, $data)) return false;
+    if (preg_match(self::LOGGED_IN_PATTERN, $data)) return true;
+    throw new LoginException("Unexpected response.");
   }
 
 }
