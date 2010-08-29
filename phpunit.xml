@@ -22,7 +22,6 @@
         <directory suffix=".php">scripts</directory>
         <directory suffix=".php">web</directory>
         <file>fajr.php</file>
-        <file>terms_of_use.php</file>
         <file>configuration.example.php</file>
       </exclude>
     </whitelist>
