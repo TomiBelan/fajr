@@ -9,9 +9,5 @@ REPORT_PATH="$SCRIPT_PATH/../report/tests"
 rm -rf "$REPORT_PATH"
 mkdir -p $REPORT_PATH
 
-PARAMS="--coverage-html $REPORT_PATH/coverage" 
-PARAMS="$PARAMS --colors  --process-isolation"
-PARAMS="$PARAMS --testdox-html $REPORT_PATH/report.html"
-
 cd $TEST_PATH && phpunit $PARAMS $@ $TEST_PATH
 chmod a+rw -R $REPORT_PATH

@@ -1,0 +1,30 @@
+<phpunit backupGlobals="true"
+         backupStaticAttributes="true"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="true"
+         stopOnFailure="true"
+         syntaxCheck="true"
+         testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader">
+  <logging>
+    <log type="coverage-html" target="report/tests/coverage" charset="UTF-8"/>
+    <log type="testdox-html" target="report/tests/report.html"/>
+    <log type="testdox-text" target="report/tests/report.txt"/>
+  </logging>
+
+  <filter>
+    <whitelist>
+      <directory suffix=".php">.</directory>
+      <exclude>
+        <directory suffix="Test.php">.</directory>
+        <directory suffix=".php">scripts</directory>
+        <directory suffix=".php">web</directory>
+        <file>fajr.php</file>
+        <file>terms_of_use.php</file>
+        <file>configuration.example.php</file>
+      </exclude>
+    </whitelist>
+  </filter>
+</phpunit>
