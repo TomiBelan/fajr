@@ -84,7 +84,7 @@
  
 <div class="top"> 
  
-	<div class="user-name">Peter Pere≈°√≠ni</div> 
+	<div class="user-name">Peter PereöÌni</div> 
 	
 	
 		
@@ -94,8 +94,8 @@
 	 
 	<map name="map"> 
 		<area id="logo" shape="circle" coords="900,73,55" 
-				href="http://www.uniba.sk" alt="Univerzita Komensk√©ho v Bratislave"  target="_blank" 
-				title="Univerzita Komensk√©ho v Bratislave"/> 
+				href="http://www.uniba.sk" alt="Univerzita KomenskÈho v Bratislave"  target="_blank" 
+				title="Univerzita KomenskÈho v Bratislave"/> 
 	</map> 
 	
 </div> 
@@ -142,7 +142,7 @@
 		
 	
 		<img src="../images/portal_2/messages_zero.gif" /> 
-		Nov√© spr√°vy:&nbsp;0</a> 
+		NovÈ spr·vy:&nbsp;0</a> 
 		
  
  
@@ -155,7 +155,7 @@
 							
 							
 								<li class="left-menu-item"> 
-									<a href="../changeModul.do?modul=SP" title="Spr√°va pou≈æ√≠vateƒæov">Spr√°va pou≈æ√≠vateƒæov</a> 
+									<a href="../changeModul.do?modul=SP" title="Spr·va pouûÌvateæov">Spr·va pouûÌvateæov</a> 
 								</li> 
 							
 													
@@ -164,7 +164,7 @@
 							
 							
 								<li class="left-menu-item"> 
-									<a href="../changeModul.do?modul=LZ" title="ƒΩudsk√© zdroje">ƒΩudsk√© zdroje</a> 
+									<a href="../changeModul.do?modul=LZ" title="ºudskÈ zdroje">ºudskÈ zdroje</a> 
 								</li> 
 							
 													
@@ -173,7 +173,7 @@
 							
 							
 								<li class="left-menu-item"> 
-									<a href="../changeModul.do?modul=ES" title="Evidencia ≈°t√∫dia">Evidencia ≈°t√∫dia</a> 
+									<a href="../changeModul.do?modul=ES" title="Evidencia öt˙dia">Evidencia öt˙dia</a> 
 								</li> 
 							
 													
@@ -182,7 +182,7 @@
 							
 							
 								<li class="left-menu-item"> 
-									<a href="../changeModul.do?modul=ST" title="≈†tudijn√© programy">≈†tudijn√© programy</a> 
+									<a href="../changeModul.do?modul=ST" title="ätudijnÈ programy">ätudijnÈ programy</a> 
 								</li> 
 							
 													
@@ -209,7 +209,7 @@
 							
 							
 								<li class="left-menu-item"> 
-									<a href="../changeModul.do?modul=AS" title="Administrat√≠vny syst√©m">Administrat√≠vny syst√©m</a> 
+									<a href="../changeModul.do?modul=AS" title="AdministratÌvny systÈm">AdministratÌvny systÈm</a> 
 								</li> 
 							
 													
@@ -252,13 +252,13 @@
 	
 			
 			<li > 
-				<a href="../changeTab.do?tab=5" title="Podporovan√© webov√© prehliadaƒçe, Test prehliadaƒça"> 
+				<a href="../changeTab.do?tab=5" title="PodporovanÈ webovÈ prehliadaËe, Test prehliadaËa"> 
 					Nastavenia</a> 
 			</li> 
 			
 			<li > 
-				<a href="../changeTab.do?tab=4" title="Rie≈°enie probl√©mov - kontakty"> 
-					Rie≈°enie probl√©mov</a> 
+				<a href="../changeTab.do?tab=4" title="Rieöenie problÈmov - kontakty"> 
+					Rieöenie problÈmov</a> 
 			</li> 
  
 		</ul>		
@@ -291,8 +291,8 @@
 				<a class="appStart"
 					url="/ais/servlets/WebUIServlet?appClassName=ais.gui.vs.rh.VSRH009App&kodAplikacie=VSRH009"
 					onclick="linkClick( event, this )" leaf="true"
-					title="Rozvrh hod√≠n"> 
-					Rozvrh hod√≠n
+					title="Rozvrh hodÌn"> 
+					Rozvrh hodÌn
 				</a> 
 			</li> 
 		
@@ -301,8 +301,8 @@
 				<a class="appStart"
 					url="/ais/servlets/WebUIServlet?appClassName=ais.gui.vs.st.VSST157App&kodAplikacie=VSST157"
 					onclick="linkClick( event, this )" leaf="true"
-					title="N√°stenka"> 
-					N√°stenka
+					title="N·stenka"> 
+					N·stenka
 				</a> 
 			</li> 
 		
@@ -311,8 +311,8 @@
 				<a class="appStart"
 					url="/ais/servlets/WebUIServlet?appClassName=ais.gui.vs.es.VSES017App&kodAplikacie=VSES017"
 					onclick="linkClick( event, this )" leaf="true"
-					title="Administr√°cia ≈°t√∫dia"> 
-					Administr√°cia ≈°t√∫dia
+					title="Administr·cia öt˙dia"> 
+					Administr·cia öt˙dia
 				</a> 
 			</li> 
 		
@@ -335,12 +335,12 @@
 			<li> 
 				<img src="../images/portal_2/question.jpeg"/> 
 				<a href="/ais/checkSettings/settings.jsp"
-					title="Spusti≈• test ">Spusti≈• test </a> 
+					title="Spustiù test ">Spustiù test </a> 
 			</li> 
 		</ul>		
 		<br/> 
-		<button onClick="javascript:logout();" class="button" accesskey="x" title='Odhl√°senie'> 
-			Odhl√°senie</button> 
+		<button onClick="javascript:logout();" class="button" accesskey="x" title='Odhl·senie'> 
+			Odhl·senie</button> 
 	
 	
  
@@ -390,18 +390,18 @@
  
 <div class="wellcome"> 
  
-<h1>Vitajte v Akademickom informaƒçnom syst√©me AiS2</h1> 
+<h1>Vitajte v Akademickom informaËnom systÈme AiS2</h1> 
  
 <p> 
 	Dnes je
-	Sobota, 28. august 2010,  August√≠n
+	Sobota, 28. august 2010,  AugustÌn
 </p> 
  
 <p> 
 					
 	<!-- POSLEDNE PRIHLASENIE --> 
 	
-	Posledn√© prihl√°senie:
+	PoslednÈ prihl·senie:
 	27.8.2010 23:49:27 : 46.127.75.3
 	<!--^^ POSLEDNE PRIHLASENIE --> 
 						
@@ -466,8 +466,8 @@
 				<br style="clear:both;"/> 
 								
 				<div class="bottom"><div class="verzia">AiS2 verzia 2.3.12.36</div></div> 
-				<div class="copyright">Akademick√Ω informaƒçn√Ω syst√©m AiS2 &copy; UPJ≈† Ko≈°ice &#169; UPJ≈† 1997-2009</div> 
-				<div class="somsak">dizajn &copy; ≈°om≈°√°k, 2009</div> 
+				<div class="copyright">Akademick˝ informaËn˝ systÈm AiS2 &copy; UPJä Koöice &#169; UPJä 1997-2009</div> 
+				<div class="somsak">dizajn &copy; öomö·k, 2009</div> 
 				
 			</div> 
 			<div class="bottom" style="width: 1055px;"><img src="../images/portal_2/bottom_UK.gif"/></div> 
@@ -476,8 +476,8 @@
 				</div> 
 				
 				<div class="zalozka-ais"> 
-					<a href="http://www.ais2.eu" target="_blank" title="Nov√© okno prezentaƒçn√Ω port√°l AIS"> 
-						<img src="../images/portal_2/zalozka_ais.gif" alt="Informaƒçn√Ω port√°l AiS2"/></a> 
+					<a href="http://www.ais2.eu" target="_blank" title="NovÈ okno prezentaËn˝ port·l AIS"> 
+						<img src="../images/portal_2/zalozka_ais.gif" alt="InformaËn˝ port·l AiS2"/></a> 
 				</div> 
 			</div> 
 				

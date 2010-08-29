@@ -94,8 +94,8 @@
 	 
 	<map name="map"> 
 		<area id="logo" shape="circle" coords="900,73,55" 
-				href="http://www.uniba.sk" alt="Univerzita Komensk√©ho v Bratislave"  target="_blank" 
-				title="Univerzita Komensk√©ho v Bratislave"/> 
+				href="http://www.uniba.sk" alt="Univerzita KomenskÈho v Bratislave"  target="_blank" 
+				title="Univerzita KomenskÈho v Bratislave"/> 
 	</map> 
 	
 </div> 
@@ -147,9 +147,9 @@
  
  
 	<div class="snip"> 
-		<div class="title">Prihl√°senie</div> 
+		<div class="title">Prihl·senie</div> 
 		<form name="LoginForm" method="get" action="/ais/login.do"> 
-		<input type="submit" class="button" value="Prihl√°si≈•" title="Kliknite pre prihlasenie" > 
+		<input type="submit" class="button" value="Prihl·siù" title="Kliknite pre prihlasenie" > 
 		</form> 
 	</div> 
  
@@ -164,20 +164,20 @@
  
 			
 				<div class="snip"> 
-					<div class="title">Test prehliadaƒça</div> 
+					<div class="title">Test prehliadaËa</div> 
 					<div class="body"> 
 						<div class="snip-element"> 
-							<p>Pomocou tohoto testu m√¥≈æete overi≈• spr√°vnos≈• nastaven√≠ v√°≈°ho prehliadaƒça pre pr√°cu s AiS2.</p> 
+							<p>Pomocou tohoto testu mÙûete overiù spr·vnosù nastavenÌ v·öho prehliadaËa pre pr·cu s AiS2.</p> 
 						</div>							
 					</div> 
-					<button class="button" onClick="document.location.href='/ais/checkSettings/settings.jsp'">Spusti≈• test </button> 
+					<button class="button" onClick="document.location.href='/ais/checkSettings/settings.jsp'">Spustiù test </button> 
 				</div> 
 					
 				<div class="snip"> 
 					<div class="title">Projekt AiS2</div> 
 					<div class="body"> 
 						<div class="snip-element"> 
-							<p>Projekt AiS2 bol v rokoch 2005-2007 podporovan√Ω M≈† SR formou centr√°lneho rozvojov√©ho projektu. Viac inform√°ci√≠ je dostupn√Ωch na Port√°li AiS2.</p> 
+							<p>Projekt AiS2 bol v rokoch 2005-2007 podporovan˝ Mä SR formou centr·lneho rozvojovÈho projektu. Viac inform·ciÌ je dostupn˝ch na Port·li AiS2.</p> 
 						</div>							
 					</div> 
 				</div> 
@@ -207,13 +207,13 @@
 	
 			
 			<li > 
-				<a href="../changeTab.do?tab=5" title="Podporovan√© webov√© prehliadaƒçe, Test prehliadaƒça"> 
+				<a href="../changeTab.do?tab=5" title="PodporovanÈ webovÈ prehliadaËe, Test prehliadaËa"> 
 					Nastavenia</a> 
 			</li> 
 			
 			<li > 
-				<a href="../changeTab.do?tab=4" title="Rie≈°enie probl√©mov - kontakty"> 
-					Rie≈°enie probl√©mov</a> 
+				<a href="../changeTab.do?tab=4" title="Rieöenie problÈmov - kontakty"> 
+					Rieöenie problÈmov</a> 
 			</li> 
  
 		</ul>		
@@ -295,8 +295,8 @@
 				<br style="clear:both;"/> 
 								
 				<div class="bottom"><div class="verzia">AiS2 verzia 2.3.12.36</div></div> 
-				<div class="copyright">Akademick√Ω informaƒçn√Ω syst√©m AiS2 &copy; UPJ≈† Ko≈°ice &#169; UPJ≈† 1997-2009</div> 
-				<div class="somsak">dizajn &copy; ≈°om≈°√°k, 2009</div> 
+				<div class="copyright">Akademick˝ informaËn˝ systÈm AiS2 &copy; UPJä Koöice &#169; UPJä 1997-2009</div> 
+				<div class="somsak">dizajn &copy; öomö·k, 2009</div> 
 				
 			</div> 
 			<div class="bottom" style="width: 1055px;"><img src="../images/portal_2/bottom_UK.gif"/></div> 
@@ -305,8 +305,8 @@
 				</div> 
 				
 				<div class="zalozka-ais"> 
-					<a href="http://www.ais2.eu" target="_blank" title="Nov√© okno prezentaƒçn√Ω port√°l AIS"> 
-						<img src="../images/portal_2/zalozka_ais.gif" alt="Informaƒçn√Ω port√°l AiS2"/></a> 
+					<a href="http://www.ais2.eu" target="_blank" title="NovÈ okno prezentaËn˝ port·l AIS"> 
+						<img src="../images/portal_2/zalozka_ais.gif" alt="InformaËn˝ port·l AiS2"/></a> 
 				</div> 
 			</div> 
 				
