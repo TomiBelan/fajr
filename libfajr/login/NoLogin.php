@@ -2,7 +2,7 @@
 namespace fajr\libfajr\login;
 
 use fajr\libfajr\pub\login\Login;
-use fajr\libfajr\connection\HttpConnection;
+use fajr\libfajr\pub\connection\HttpConnection;
 
 class NoLogin implements Login {
   public function login(HttpConnection $unused) {

@@ -1,11 +1,11 @@
 <?php
 namespace fajr\libfajr\login;
 
-use fajr\libfajr\pub\login\AIS2Login;
-use fajr\libfajr\connection\HttpConnection;
+use fajr\libfajr\pub\login\Login;
+use fajr\libfajr\pub\connection\HttpConnection;
 use fajr\libfajr\pub\exceptions\AIS2LoginException;
 
-class FakeLogin implements AIS2Login {
+class FakeLogin implements Login {
   private $loggedIn = false;
   private $shouldLogin = false;
 
@@ -26,7 +26,7 @@ class FakeLogin implements AIS2Login {
     $this->loggedIn = false;
   }
 
-  public function isLoggedIn() {
+  public function isLoggedIn(HttpConnection $unused) {
     return $this->loggedIn;
   }
 }
