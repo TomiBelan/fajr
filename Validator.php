@@ -31,12 +31,12 @@ Copyright (c) 2010 Martin Králik
  */
 class Validator
 {
-  static function number($input, $options)
+  static function isInteger($input, $options)
   {
     return ctype_digit($input);
   }
 
-  static function string($input, $options)
+  static function isString($input, $options)
   {
     $minLength = 0;
     extract($options, EXTR_IF_EXISTS);

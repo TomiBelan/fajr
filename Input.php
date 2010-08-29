@@ -59,12 +59,12 @@ class Input
   
   protected static $conditions = array(
     'int' => array(
-      'cond' => 'number',
+      'cond' => 'isInteger',
       'options' => array(),
       'message' => 'Vstupný parameter "%%NAME%%" musí byť typu integer.',
     ),
     'string' => array(
-      'cond' => 'string',
+      'cond' => 'isString',
       'options' => array('minLength' => 1),
       'message' => 'Vstupný parameter "%%NAME%%" nesmie byť prázdny.',
     ),
