@@ -40,9 +40,9 @@
 namespace fajr\libfajr\connection;
 
 use fajr\libfajr\pub\base\Trace;
-use \Exception;
+use Exception;
 use fajr\libfajr\pub\exceptions\LoginException;
-
+use fajr\libfajr\pub\connection\HttpConnection;
 /**
  * HttpConnection which checks for generic
  * AIS2 error-response strings and throws Exception if found.

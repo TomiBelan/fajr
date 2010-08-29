@@ -25,7 +25,7 @@ Copyright (c) 2010 Martin Králik
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 namespace fajr\libfajr\login;
-use fajr\libfajr\connection\HttpConnection;
+use fajr\libfajr\pub\connection\HttpConnection;
 use fajr\libfajr\pub\base\NullTrace;
 use fajr\libfajr\pub\exceptions\LoginException;
 /**

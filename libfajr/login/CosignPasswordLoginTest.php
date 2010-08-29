@@ -7,10 +7,11 @@
  * @author Peter Peresini <ppershing+fajr@gmail.com>
  */
 namespace fajr\libfajr\login;
+
 use PHPUnit_Framework_TestCase;
 use fajr\libfajr\pub\exceptions\LoginException;
 use fajr\libfajr\login\CosignPasswordLogin;
-
+use fajr\libfajr\pub\connection\HttpConnection;
 /**
  * @ignore
  */
@@ -38,7 +39,7 @@ class CosignPasswordLoginTest extends PHPUnit_Framework_TestCase
   }
 
   private function newConnection() {
-    return $this->getMock('\fajr\libfajr\connection\HttpConnection');
+    return $this->getMock('\fajr\libfajr\pub\connection\HttpConnection');
   }
 
   public function testLoginOk() {

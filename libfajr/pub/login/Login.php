@@ -25,7 +25,7 @@ Copyright (c) 2010 Martin Sucha
  }}} */
 
 namespace fajr\libfajr\pub\login;
-use fajr\libfajr\connection\HttpConnection;
+use fajr\libfajr\pub\connection\HttpConnection;
 
 interface Login {
   /**

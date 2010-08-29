@@ -5,23 +5,23 @@
  * @subpackage Libfajr__Connection
  * @author     Peter Peresini <ppershing+fajr@gmail.com>
  */
-
+namespace fajr\libfajr\connection;
 /**
  * @ignore
  */
 require_once 'test_include.php';
-
-use fajr\libfajr\connection\HttpConnection;
+use PHPUnit_Framework_TestCase;
+use fajr\libfajr\pub\connection\HttpConnection;
 use fajr\libfajr\connection\AIS2ErrorCheckingConnection;
 use fajr\libfajr\pub\base\NullTrace;
-use \Exception;
+use Exception;
 /**
  * @ignore
  */
 class AIS2ErrorCheckingConnectionTest extends PHPUnit_Framework_TestCase
 {
   private function newHttpConnection() {
-    return $this->getMock('fajr\libfajr\connection\HttpConnection',
+    return $this->getMock('fajr\libfajr\pub\connection\HttpConnection',
                           array('get', 'post', 'addCookie', 'clearCookies'));
   }
 
@@ -31,7 +31,7 @@ class AIS2ErrorCheckingConnectionTest extends PHPUnit_Framework_TestCase
     // Neviem ci messageBox nebude potom odchytavany aj pri inych chybach (chyba zapisu, ...)
     // Kazdopadne, mozno by to stalo za to to fixnut a potom odchytavat exception v
     // samotnych aplikaciach, treba sa rozhodnut z dizajnerskeho hladiska.
-    $this->fail('TODO, vid zdrojak testu.');
+    $this->markTestIncomplete('TODO, vid zdrojak testu.');
   }
 
   public function testUi2Error()

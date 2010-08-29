@@ -25,7 +25,7 @@
   }}} */
 
 require_once 'FajrRouter.php';
-use fajr\libfajr\connection\HttpConnection;
+use fajr\libfajr\pub\connection\HttpConnection;
 use fajr\libfajr\pub\login\Login;
 use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\login\AIS2LoginImpl;

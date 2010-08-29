@@ -35,7 +35,7 @@ Copyright (c) 2010 Martin Sucha
  * @author     Martin Sucha <anty@gjh.sk>
  * @filesource
  */
-namespace fajr\libfajr\connection;
+namespace fajr\libfajr\pub\connection;
 
 use fajr\libfajr\pub\base\Trace;
 

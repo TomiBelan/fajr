@@ -5,13 +5,15 @@
  * @subpackage Libfajr__Connection
  * @author     Peter Peresini <ppershing+fajr@gmail.com>
  */
+namespace fajr\libfajr\connection;
 
 /**
  * @ignore
  */
 require_once 'test_include.php';
 
-use fajr\libfajr\connection\HttpConnection;
+use PHPUnit_Framework_TestCase;
+use fajr\libfajr\pub\connection\HttpConnection;
 use fajr\libfajr\connection\GzipDecompressingConnection;
 use fajr\libfajr\pub\base\NullTrace;
 /**
@@ -20,8 +22,7 @@ use fajr\libfajr\pub\base\NullTrace;
 class GzipDecompressingConnectionTest extends PHPUnit_Framework_TestCase
 {
   private function newConnection() {
-    return $this->getMock('fajr\libfajr\connection\HttpConnection',
-                          array('get', 'post', 'addCookie', 'clearCookies'));
+    return $this->getMock('fajr\libfajr\pub\connection\HttpConnection');
   }
 
   public function testDecompress()

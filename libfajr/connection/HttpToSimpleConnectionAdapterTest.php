@@ -5,22 +5,22 @@
  * @subpackage Libfajr__Connection
  * @author Peter Peresini <ppershing+fajr@gmail.com>
  */
-
+namespace fajr\libfajr\connection;
 /**
  * @ignore
  */
 require_once 'test_include.php';
-
+use PHPUnit_Framework_TestCase;
 use fajr\libfajr\connection\HttpToSimpleConnectionAdapter;
 use fajr\libfajr\pub\base\NullTrace;
+use fajr\libfajr\pub\connection\HttpConnection;
 /**
  * @ignore
  */
 class HttpToSimpleConnectionAdapterTest extends PHPUnit_Framework_TestCase
 {
   private function newConnection() {
-    return $this->getMock('fajr\libfajr\connection\HttpConnection',
-                          array('get', 'post', 'addCookie', 'clearCookies'));
+    return $this->getMock('fajr\libfajr\pub\connection\HttpConnection');
   }
 
   public function testRequest()

@@ -24,7 +24,7 @@ Copyright (c) 2010 Martin Sucha
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
-use \fajr\libfajr\connection\HttpConnection;
+use \fajr\libfajr\pub\connection\HttpConnection;
 use \fajr\libfajr\pub\login\Login;
 /**
  * Trieda reprezentujúca session systému (stav prihlásenia, ...)

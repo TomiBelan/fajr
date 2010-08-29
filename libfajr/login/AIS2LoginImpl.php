@@ -25,7 +25,7 @@ Copyright (c) 2010 Martin Králik
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 namespace fajr\libfajr\login;
-use fajr\libfajr\connection\HttpConnection;
+use fajr\libfajr\pub\connection\HttpConnection;
 use fajr\libfajr\pub\base\NullTrace;
 use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\pub\login\Login;
@@ -40,8 +40,10 @@ class AIS2LoginImpl implements Login {
   const LOGIN_PAGE = 'https://ais2.uniba.sk/ais/login.do';
   const LOGOUT_PAGE = 'https://ais2.uniba.sk/ais/logout.do';
 
-  const NOT_LOGGED_PATTERN = '@Prihlásenie@';
+  // Note: ais response is in win-1250 charset, so we can't match accents
+  const NOT_LOGGED_PATTERN = '@Prihl.senie@';
   const LOGGED_IN_PATTERN = '@\<div class="user-name"\>[^<]@';
+
   const LOGOUT_OK_PATTERN = '@IIKS - Odhlásenie@';
 
   public function login(HttpConnection $connection) {

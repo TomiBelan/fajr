@@ -40,6 +40,7 @@ namespace fajr\libfajr\connection;
 
 use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\base\ClosureRunner;
+use fajr\libfajr\pub\connection\HttpConnection;
 use \Exception;
 /**
  * Provides HttpConnection wrapper for Curl library.

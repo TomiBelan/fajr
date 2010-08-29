@@ -5,12 +5,13 @@
  * @subpackage Libfajr__Connection
  * @author     Peter Peresini <ppershing+fajr@gmail.com>
  */
+namespace fajr\libfajr\connection;
 
 /**
  * @ignore
  */
 require_once 'test_include.php';
-
+use PHPUnit_Framework_TestCase;
 use fajr\libfajr\connection\CurlConnection;
 use fajr\libfajr\pub\base\NullTrace;
 /**

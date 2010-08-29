@@ -10,6 +10,7 @@ namespace fajr\libfajr\login;
 use PHPUnit_Framework_TestCase;
 use fajr\libfajr\pub\exceptions\AIS2LoginException;
 use fajr\libfajr\login\CosignLogin;
+use fajr\libfajr\pub\connection\HttpCoonection;
 
 /**
  * @ignore
@@ -32,8 +33,7 @@ class AIS2LoginImplTest extends PHPUnit_Framework_TestCase
   }
 
   private function newConnection() {
-    return $this->getMock('\fajr\libfajr\connection\HttpConnection',
-        array('get', 'post', 'addCookie', 'clearCookies'));
+    return $this->getMock('\fajr\libfajr\pub\connection\HttpConnection');
   }
 
   public function testIsLoggedAlreadyLogged() {

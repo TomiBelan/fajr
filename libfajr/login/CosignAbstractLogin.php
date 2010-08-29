@@ -24,7 +24,7 @@ Copyright (c) 2010 Martin Sucha
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 namespace fajr\libfajr\login;
-use fajr\libfajr\connection\HttpConnection;
+use fajr\libfajr\pub\connection\HttpConnection;
 use fajr\libfajr\pub\login\Login;
 use fajr\libfajr\base\DisableEvilCallsObject;
 use fajr\libfajr\pub\base\NullTrace;

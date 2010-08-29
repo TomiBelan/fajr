@@ -10,7 +10,7 @@ namespace fajr\libfajr\login;
 use PHPUnit_Framework_TestCase;
 use fajr\libfajr\pub\exceptions\LoginException;
 use fajr\libfajr\login\CosignAbstractLogin;
-
+use fajr\libfajr\pub\connection\HttpConnection;
 /**
  * @ignore
  */
@@ -28,7 +28,7 @@ class CosignAbstractLoginTest extends PHPUnit_Framework_TestCase
   public function setUp() {
     $this->responseAlreadyLogged = file_get_contents(__DIR__.'/testdata/cosignAlreadyLogged.dat');
     $this->responseNotLogged = file_get_contents(__DIR__.'/testdata/cosignNotLogged.dat');
-    $this->connection = $this->getMock('\fajr\libfajr\connection\HttpConnection');
+    $this->connection = $this->getMock('\fajr\libfajr\pub\connection\HttpConnection');
     $this->login = $this->getMockForAbstractClass('\fajr\libfajr\login\CosignAbstractLogin');
   }
 
