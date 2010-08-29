@@ -12,6 +12,12 @@ return array(
    */
   //'GoogleAnalytics.Account'=>'UA-680810-11',
 
+  /**
+   * Zapnutím voľby sa začne zobrazovat varujúca hláška o development verzii
+   * a redirect na ostrú verziu fajr.dcs.fmph.uniba.sk
+   */
+  //'Debug.Banner'=>true,
+
   /*
    * Ak je táto voľba zapnutá, fajr bude vypisovať komunikáciu medzi
    * ním a AISom. Neodporúčame používať na produkčných inštaláciách, keďže

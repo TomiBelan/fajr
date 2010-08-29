@@ -107,6 +107,10 @@ class DisplayManager
 <body>
 <div class="container"><h1><img src=\'images/fajr_small.gif\' alt="[logo]" class=\'logo\' /> FAJR beta</h1>
 ',
+      'debugBanner' => '
+  <h2 style="color:red"> Development verzia. Ostrú verziu nájdeš na
+  <a href="http://fajr.dcs.fmph.uniba.sk"> fajr.dcs.fmph.uniba.sk </a> </h2>
+',
 
       'footer' => '
 </div>
@@ -216,6 +220,9 @@ len na zapisovanie a použitie, t.j. <code>d----wx---</code>.
     $header = self::$predefinedContent['header'];
     if (self::$base !== null) $header .= '<base href="'.self::$base.'" />';
     $header .= self::$predefinedContent['header2'];
+    if (FajrConfig::get('Debug.Banner')) {
+      $header .= self::$predefinedContent['debugBanner'];
+    }
     $html = $header . $html;
     $html .= self::$predefinedContent['footer'] . self::googleAnalytics() . self::$predefinedContent['footer2'];
     return $html;
