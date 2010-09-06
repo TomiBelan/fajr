@@ -24,7 +24,7 @@ Copyright (c) 2010 Martin Sucha
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 
-namespace fajr\libfajr\connection;
+namespace fajr\libfajr\pub\connection;
 use fajr\libfajr\pub\base\Trace;
 
 /**

@@ -36,8 +36,9 @@ Copyright (c) 2010 Martin Králik
  */
 namespace fajr\libfajr\window\VSES017_administracia_studia;
 
+use fajr\libfajr\pub\window\VSES017_administracia_studia\AdministraciaStudiaScreen;
 use fajr\libfajr\pub\base\Trace;
-use fajr\libfajr\connection\SimpleConnection;
+use fajr\libfajr\pub\connection\SimpleConnection;
 use fajr\libfajr\window\AIS2AbstractScreen;
 use fajr\libfajr\window\RequestBuilderImpl;
 use fajr\libfajr\window\ScreenRequestExecutor;
@@ -50,7 +51,8 @@ use fajr\libfajr\data_manipulation\AIS2TableParser;
  * @subpackage Libfajr__Window__VSES017_administracia_studia
  * @author     Martin Kralik <majak47@gmail.com>
  */
-class AdministraciaStudiaScreen extends AIS2AbstractScreen
+class AdministraciaStudiaScreenImpl extends AIS2AbstractScreen
+    implements AdministraciaStudiaScreen
 {
   const APP_LOCATION_PATTERN = '@webui\(\)\.startApp\("([^"]+)","([^"]+)"\);@';
 
@@ -61,15 +63,13 @@ class AdministraciaStudiaScreen extends AIS2AbstractScreen
    */
   private $parser;
 
-  public function __construct(Trace $trace, SimpleConnection $connection, AIS2TableParser $parser = null)
+  public function __construct(Trace $trace, ScreenRequestExecutor $executor, AIS2TableParser $parser)
   {
     $data = new ScreenData();
     $data->appClassName = 'ais.gui.vs.es.VSES017App';
     $data->additionalParams = array('kodAplikacie' => 'VSES017');
-    $requestBuilder = new RequestBuilderImpl();
-    $executor = new ScreenRequestExecutor($requestBuilder);
     parent::__construct($trace, $executor, $data);
-    $this->parser = ($parser !== null) ? $parser :  new AIS2TableParser;
+    $this->parser = $parser;
   }
 
   public function getZoznamStudii(Trace $trace)
@@ -102,12 +102,12 @@ class AdministraciaStudiaScreen extends AIS2AbstractScreen
         $data, 'VSES017_StudentZapisneListyDlg0_zapisneListyTable_dataView');
   }
 
-  public function getIdZapisnyList(Trace $trace, $zapisnyListIndex)
+  public function getZapisnyListIdFromZapisnyListIndex(Trace $trace, $zapisnyListIndex)
   {
     return $this->getIdFromZapisnyListIndex($trace, $zapisnyListIndex, 'idZapisnyList');
   }
 
-  public function getIdStudium(Trace $trace, $zapisnyListIndex)
+  public function getStudiumIdFromZapisnyListIndex(Trace $trace, $zapisnyListIndex)
   {
     return $this->getIdFromZapisnyListIndex($trace, $zapisnyListIndex, 'idStudium');
   }

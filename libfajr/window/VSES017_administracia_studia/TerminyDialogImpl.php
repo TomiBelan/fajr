@@ -35,6 +35,8 @@ Copyright (c) 2010 Martin Králik
  * @filesource
  */
 namespace fajr\libfajr\window\VSES017_administracia_studia;
+
+use fajr\libfajr\pub\window\VSES017_administracia_studia\TerminyDialog;
 use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\window\DialogData;
 use fajr\libfajr\window\DialogParent;
@@ -47,7 +49,8 @@ use fajr\libfajr\data_manipulation\AIS2TableParser;
  * @subpackage Libfajr__Window__VSES017_administracia_studia
  * @author     Martin Kralik <majak47@gmail.com>
  */
-class TerminyDialog extends AIS2AbstractDialog
+class TerminyDialogImpl extends AIS2AbstractDialog
+    implements TerminyDialog
 {
   /**
    * @var AIS2TableParser

@@ -33,8 +33,9 @@ Copyright (c) 2010 Martin Králik
  * @filesource
  */
 
-namespace fajr\libfajr;
+namespace fajr\libfajr\data_manipulation;
 
+use fajr\libfajr\pub\data_manipulation\SimpleDataTable;
 /**
  * Trieda zastrešujúca tabuľku dát.
  *
@@ -42,7 +43,8 @@ namespace fajr\libfajr;
  * @subpackage Libfajr
  * @author     Peter Peresini <ppershing+fajr@gmail.com>
  */
-class DataTable {
+class DataTableImpl implements SimpleDataTable
+{
   /**
    * Definícia stĺpcov tabuľky
    * @var array(string)

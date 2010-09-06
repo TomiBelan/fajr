@@ -6,7 +6,7 @@ use Exception;
 use DOMDocument;
 use DOMElement;
 use DOMXPath;
-use fajr\libfajr\DataTable;
+use fajr\libfajr\data_manipulation\DataTableImpl;
 
 class AIS2TableParser {
   public function fixProblematicTags(Trace $trace, $html) {
@@ -73,7 +73,7 @@ class AIS2TableParser {
     // ok, now we have restricted document
     $headers = $this->getTableDefinition($trace->addChild("Get table definition"), $dom);
     $data = $this->getTableData($trace->addChild("Get table data"), $dom);
-    return new DataTable($headers, $data);
+    return new DataTableImpl($headers, $data);
   }
 
   public function getCellContent(DOMElement $element) {

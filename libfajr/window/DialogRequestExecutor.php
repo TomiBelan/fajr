@@ -1,9 +1,9 @@
 <?php
 namespace fajr\libfajr\window;
 use fajr\libfajr\pub\base\Trace;
-use AIS2Utils;
 use Exception;
 use fajr\libfajr\base\DisableEvilCallsObject;
+use fajr\libfajr\pub\connection\SimpleConnection;
 
 class DialogRequestExecutor extends DisableEvilCallsObject
 {
@@ -12,6 +12,7 @@ class DialogRequestExecutor extends DisableEvilCallsObject
   protected $parentFormName;
   protected $parentAppId;
   protected $formName = null;
+  protected $connection;
 
   const DIALOG_NAME_PATTERN = '@dm\(\)\.openDialog\("(?P<dialogName>[^"]+)",@';
 
@@ -21,18 +22,23 @@ class DialogRequestExecutor extends DisableEvilCallsObject
    * @param string $appClassName Názov "triedy" obsluhujúcej danú obrazovku v AISe.
    * @param string $identifiers Konkrétne parametre pre vyvolanie danej obrazovky.
    */
-  public function __construct(DialogData $data, RequestBuilder $requestBuilder, $parentAppId,
+  public function __construct(
+      RequestBuilder $requestBuilder,
+      SimpleConnection $connection,
+      DialogData $data,
+      $parentAppId,
       $parentFormName)
   {
     $this->data = $data;
     $this->requestBuilder = $requestBuilder;
     $this->parentAppId = $parentAppId;
     $this->parentFormName = $parentFormName;
+    $this->connection = $connection;
   }
 
   public function spawnChild(DialogData $data, $parentFormName)
   {
-    return new DialogRequestExecutor($data, $this->requestBuilder, $this->parentAppId, $parentFormName);
+    return new DialogRequestExecutor($this->requestBuilder, $this->connection, $data, $this->parentAppId, $parentFormName);
   }
 
   public function parseDialogNameFromResponse($response)
@@ -59,7 +65,7 @@ class DialogRequestExecutor extends DisableEvilCallsObject
                 ),
               ),
             ));
-    $response = AIS2Utils::request($trace->addChild("dialog opening request"),
+    $response = $this->connection->request($trace->addChild("dialog opening request"),
         $this->getRequestUrl($this->parentAppId), $data);
 
     $dialogName = $this->parseDialogNameFromResponse($response);
@@ -72,7 +78,7 @@ class DialogRequestExecutor extends DisableEvilCallsObject
 
   public function requestContent(Trace $trace)
   {
-    $response = AIS2Utils::request($trace,
+    $response = $this->connection->request($trace,
         $this->requestBuilder->getRequestUrl($this->parentAppId, $this->formName));
     return $response;
   }
@@ -96,7 +102,7 @@ class DialogRequestExecutor extends DisableEvilCallsObject
   public function doRequest(Trace $trace, $options)
   {
     $data = $this->requestBuilder->buildRequestData($this->formName, $options);
-    return AIS2Utils::request($trace, $this->getRequestUrl($this->parentAppId), $data);
+    return $this->connection->request($trace, $this->getRequestUrl($this->parentAppId), $data);
   }
 
 }

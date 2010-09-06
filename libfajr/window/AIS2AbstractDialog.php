@@ -29,12 +29,14 @@ use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\window\DialogData;
 use fajr\libfajr\window\DialogParent;
 use fajr\libfajr\base\DisableEvilCallsObject;
+use fajr\libfajr\pub\window\LazyDialog;
 /**
  * Abstraktná trieda reprezentujúca jednu obrazovku v AISe.
  *
  * @author majak
  */
-class AIS2AbstractDialog extends DisableEvilCallsObject implements DialogParent
+class AIS2AbstractDialog extends DisableEvilCallsObject
+  implements DialogParent, LazyDialog
 {
   protected $parent = null;
   protected $terminated = false;

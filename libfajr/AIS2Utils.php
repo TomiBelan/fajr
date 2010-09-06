@@ -24,7 +24,7 @@ Copyright (c) 2010 Martin Králik
  OTHER DEALINGS IN THE SOFTWARE.
  }}} */
 use \fajr\libfajr\pub\base\Trace;
-use \fajr\libfajr\connection\SimpleConnection;
+use \fajr\libfajr\pub\connection\SimpleConnection;
 /**
  * Trieda združujúca rôzne základné veci pre prácu s AISom
  *
@@ -32,42 +32,6 @@ use \fajr\libfajr\connection\SimpleConnection;
  */
 class AIS2Utils
 {
-  const DATA_PATTERN = '@\<tbody id\=\'dataTabBody0\'\>(.*?)\</tbody\>@s';
-
-  /**
-   * Docasna metoda, nez sa spojenia zrefaktoruju uplne
-   * @staticvar AIS2Connection $connection
-   * @param AIS2Connection $set_to
-   * @return AIS2Connection
-   * @deprecated po zrefaktorovani zmizne
-   */
-  public static function connection(SimpleConnection $set_to=null) {
-    static $connection = null;
-
-    if ($set_to !== null) {
-      $connection = $set_to;
-    }
-
-    if ($connection === null) {
-      throw new Exception("Nie je nastaveny ziaden connection");
-    }
-
-    return $connection;
-  }
-
-  /**
-   * Stiahne zadanú stránku a skontroluje ci pri tom nenastala chyba v AISe.
-   * @param string Požadovaná url.
-   * @param array Pole s POST dátami.
-   * @return string Načítaná stránka.
-   * @deprecated Bude sa priamo používať inštancia AIS2Connection
-   */
-  public static function request(Trace $trace, $url, $post = null)
-  {
-    $connection = self::connection();
-    return $connection->request($trace, $url, $post);
-  }
-  
   /**
    * predpokladame AIS format datumu a casu, t.j.
    * vo formate "11.01.2010 08:30"

@@ -1,7 +1,7 @@
 <?php
 
 use fajr\libfajr\pub\base\Trace;
-use fajr\libfajr\window\VSES017_administracia_studia as VSES017;
+use fajr\libfajr\pub\window\VSES017_administracia_studia as VSES017;
 
 class MojeTerminyHodnoteniaCallback implements Renderable {
   public function __construct(Trace $trace,

@@ -32,12 +32,14 @@ use fajr\libfajr\base\IllegalStateException;
 use fajr\libfajr\login\AIS2LoginException;
 use AIS2Utils;
 use fajr\libfajr\base\DisableEvilCallsObject;
+use fajr\libfajr\pub\window\LazyDialog;
 /**
  * Abstraktná trieda reprezentujúca jednu obrazovku v AISe.
  *
  * @author majak
  */
-abstract class AIS2AbstractScreen extends DisableEvilCallsObject implements DialogParent
+abstract class AIS2AbstractScreen extends DisableEvilCallsObject
+    implements DialogParent, LazyDialog
 {
   protected $inUse = false;
 
@@ -66,10 +68,10 @@ abstract class AIS2AbstractScreen extends DisableEvilCallsObject implements Dial
   /**
    * Zatvorí danú "aplikáciu" v AISe,
    */
-  public function closeIfNeeded() {
+  public function closeIfNeeded(Trace $trace) {
     if (!$this->inUse) return;
     assert($this->openedDialog == null);
-    $this->executor->requestClose($this->trace->addChild("Screen close"));
+    $this->executor->requestClose($trace);
     $this->inUse = false;
   }
 
@@ -80,7 +82,7 @@ abstract class AIS2AbstractScreen extends DisableEvilCallsObject implements Dial
    */
   public function  __destruct()
   {
-    $this->closeIfNeeded($this->trace);
+    $this->closeIfNeeded($this->trace->addChild("Screen close"));
   }
 
 

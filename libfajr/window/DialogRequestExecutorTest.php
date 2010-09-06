@@ -22,10 +22,10 @@ class DialogRequestExecutorTest extends PHPUnit_Framework_TestCase
 {
   public function testDialogNameParsing()
   {
-    $requestBuilder = $this->getMock('fajr\libfajr\window\RequestBuilder', array('buildRequestData',
-          'getRequestUrl', 'newSerial', 'getAppInitializationUrl'));
+    $requestBuilder = $this->getMock('fajr\libfajr\window\RequestBuilder');
     $data = new DialogData();
-    $executor = new DialogRequestExecutor($data, $requestBuilder, null, null);
+    $connection = $this->getMock('fajr\libfajr\pub\connection\SimpleConnection');
+    $executor = new DialogRequestExecutor($requestBuilder, $connection, $data, null, null);
 
     $response = file_get_contents(__DIR__.'/testdata/vyberTerminuDialogName.dat');
     $name = $executor->parseDialogNameFromResponse($response);

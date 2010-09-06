@@ -36,6 +36,8 @@ Copyright (c) 2010 Martin Králik
  */
 namespace fajr\libfajr\window\VSES017_administracia_studia;
 
+use fajr\libfajr\pub\window\VSES017_administracia_studia\ZoznamPrihlasenychDialog;
+
 use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\window\AIS2AbstractDialog;
 use fajr\libfajr\data_manipulation\AIS2TableParser;
@@ -48,7 +50,8 @@ use fajr\libfajr\window\DialogData;
  * @subpackage Libfajr__Window__VSES017_administracia_studia
  * @author     Martin Kralik <majak47@gmail.com>
  */
-class ZoznamPrihlasenychDialog extends AIS2AbstractDialog
+class ZoznamPrihlasenychDialogImpl extends AIS2AbstractDialog
+    implements ZoznamPrihlasenychDialog
 {
   /**
    * @var AIS2TableParser

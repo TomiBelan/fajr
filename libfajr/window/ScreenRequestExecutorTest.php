@@ -26,7 +26,8 @@ class AIS2AbstractScreenTest extends PHPUnit_Framework_TestCase
     $builder = $this->getMock('\fajr\libfajr\window\RequestBuilder',
         array('buildRequestData', 'getRequestUrl', 'newSerial',
               'getAppInitializationUrl'));
-    return new ScreenRequestExecutor($builder);
+    $connection = $this->getMock('\fajr\libfajr\pub\connection\SimpleConnection');
+    return new ScreenRequestExecutorImpl($builder, $connection);
   }
 
   public function testAppIdParsing()

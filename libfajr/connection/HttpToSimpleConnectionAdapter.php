@@ -38,6 +38,7 @@ Copyright (c) 2010 Peter Peresini
 namespace fajr\libfajr\connection;
 
 use fajr\libfajr\pub\connection\HttpConnection;
+use fajr\libfajr\pub\connection\SimpleConnection;
 use fajr\libfajr\pub\base\Trace;
 
 /**

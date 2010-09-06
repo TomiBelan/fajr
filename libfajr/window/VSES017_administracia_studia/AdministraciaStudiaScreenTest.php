@@ -23,10 +23,11 @@ class AdministraciaStudiaScreenTest extends PHPUnit_Framework_TestCase
 {
   public function testIdFromZapisnyListIndexParsing()
   {
-    $mockConnection = $this->getMock('fajr\libfajr\connection\SimpleConnection', array('request'));
+    $mockExecutor = $this->getMock('fajr\libfajr\window\ScreenRequestExecutor');
+    $mockParser = $this->getMock('fajr\libfajr\data_manipulation\AIS2TableParser');
 
     $response = file_get_contents(__DIR__.'/testdata/idFromZapisnyList.dat');
-    $screen = new AdministraciaStudiaScreen(new NullTrace(), $mockConnection);
+    $screen = new AdministraciaStudiaScreenImpl(new NullTrace(), $mockExecutor, $mockParser);
     $data = $screen->parseIdFromZapisnyListIndexFromResponse($response);
     $expected = array("idZapisnyList" => 138174, "idStudium" => "53043");
     $this->assertEquals($expected, $data);

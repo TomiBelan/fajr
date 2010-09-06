@@ -36,8 +36,9 @@ Copyright (c) 2010 Martin Králik
  */
 namespace fajr\libfajr\window\VSES017_administracia_studia;
 
+use fajr\libfajr\pub\window\VSES017_administracia_studia\TerminyHodnoteniaScreen;
 use fajr\libfajr\pub\base\Trace;
-use fajr\libfajr\connection\SimpleConnection;
+use fajr\libfajr\pub\connection\SimpleConnection;
 use fajr\libfajr\window\DialogData;
 use fajr\libfajr\window\ScreenData;
 use fajr\libfajr\window\RequestBuilderImpl;
@@ -52,25 +53,24 @@ use fajr\libfajr\data_manipulation\AIS2TableParser;
  * @subpackage Libfajr__Window__VSES017_administracia_studia
  * @author     Martin Kralik <majak47@gmail.com>
  */
-class TerminyHodnoteniaScreen extends AIS2AbstractScreen
+class TerminyHodnoteniaScreenImpl extends AIS2AbstractScreen
+    implements TerminyHodnoteniaScreen
 {
   /**
    * @var AIS2TableParser
    */
   private $parser;
 
-  public function __construct(Trace $trace, SimpleConnection $connection, $idZapisnyList,
-      $idStudium, AIS2TableParser $parser = null)
+  public function __construct(Trace $trace, ScreenRequestExecutor $executor,
+      AIS2TableParser $parser, $idZapisnyList, $idStudium)
   {
     $data = new ScreenData();
     $data->appClassName = 'ais.gui.vs.es.VSES007App';
     $data->additionalParams = array('kodAplikacie' => 'VSES007',
         'idZapisnyList' => $idZapisnyList,
         'idStudium' => $idStudium);
-    $requestBuilder = new RequestBuilderImpl();
-    $executor = new ScreenRequestExecutor($requestBuilder);
     parent::__construct($trace, $executor, $data);
-    $this->parser = ($parser !== null) ? $parser :  new AIS2TableParser;
+    $this->parser = $parser;
   }
 
   public function getPredmetyZapisnehoListu(Trace $trace)
@@ -97,7 +97,7 @@ class TerminyHodnoteniaScreen extends AIS2AbstractScreen
     $data->embObjName = 'predmetyTable';
     $data->index = $predmetIndex;
 
-    return new TerminyDialog($trace, $this, $data);
+    return new TerminyDialogImpl($trace, $this, $data);
   }
   public function getZoznamPrihlasenychDialog(Trace $trace, $terminIndex)
   {
@@ -105,7 +105,7 @@ class TerminyHodnoteniaScreen extends AIS2AbstractScreen
     $data->compName = 'zoznamPrihlasenychStudentovAction';
     $data->embObjName = 'terminyTable';
     $data->index = $terminIndex;
-    return new ZoznamPrihlasenychDialog($trace, $this, $data);
+    return new ZoznamPrihlasenychDialogImpl($trace, $this, $data);
   }
   
   public function odhlasZTerminu(Trace $trace, $terminIndex)

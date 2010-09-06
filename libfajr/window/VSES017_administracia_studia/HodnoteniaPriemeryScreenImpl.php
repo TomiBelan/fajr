@@ -36,12 +36,13 @@ Copyright (c) 2010 Martin Králik
  */
 namespace fajr\libfajr\window\VSES017_administracia_studia;
 
+use fajr\libfajr\pub\window\VSES017_administracia_studia\HodnoteniaPriemeryScreen;
 use fajr\libfajr\window\AIS2AbstractScreen;
 use fajr\libfajr\window\ScreenData;
 use fajr\libfajr\window\ScreenRequestExecutor;
 use fajr\libfajr\window\RequestBuilderImpl;
 use fajr\libfajr\pub\base\Trace;
-use fajr\libfajr\connection\SimpleConnection;
+use fajr\libfajr\pub\connection\SimpleConnection;
 use fajr\libfajr\data_manipulation\AIS2TableParser;
 /**
  * Trieda reprezentujúca jednu obrazovku s hodnoteniami a priemermi za jeden rok.
@@ -50,24 +51,23 @@ use fajr\libfajr\data_manipulation\AIS2TableParser;
  * @subpackage Libfajr__Window__VSES017_administracia_studia
  * @author     Martin Kralik <majak47@gmail.com>
  */
-class HodnoteniaPriemeryScreen extends AIS2AbstractScreen
+class HodnoteniaPriemeryScreenImpl extends AIS2AbstractScreen
+    implements HodnoteniaPriemeryScreen
 {
   /**
    * @var AIS2TableParser
    */
   private $parser;
 
-  public function __construct(Trace $trace, SimpleConnection $connection, $idZapisnyList,
-      AIS2TableParser $parser = null)
+  public function __construct(Trace $trace, ScreenRequestExecutor $executor,
+      AIS2TableParser $parser, $idZapisnyList)
   {
     $data = new ScreenData();
     $data->appClassName = 'ais.gui.vs.es.VSES212App';
     $data->additionalParams = array('kodAplikacie' => 'VSES212',
         'idZapisnyList' => $idZapisnyList);
-    $requestBuilder = new RequestBuilderImpl();
-    $executor = new ScreenRequestExecutor($requestBuilder);
     parent::__construct($trace, $executor, $data);
-    $this->parser = ($parser !== null) ? $parser :  new AIS2TableParser;
+    $this->parser = $parser;
   }
 
   // TODO(ppershing): Maybe cache data between getHodnotenia && getPriemery
