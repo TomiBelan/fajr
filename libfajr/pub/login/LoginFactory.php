@@ -30,5 +30,15 @@ interface LoginFactory {
   /**
    * @returns Login
    */
-  public function newLogin();
+  public function newLoginUsingCookie($cookie);
+
+  /**
+   * @return Login
+   */
+  public function newLoginUsingCosign($username, $password);
+
+  /**
+   * @return Login
+   */
+  public function newNoLogin();
 }

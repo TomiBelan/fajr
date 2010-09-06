@@ -29,6 +29,7 @@ namespace fajr\libfajr\login;
 use fajr\libfajr\pub\connection\HttpConnection;
 use fajr\libfajr\pub\base\NullTrace;
 use fajr\libfajr\pub\exceptions\LoginException;
+use fajr\libfajr\pub\exceptions\NotImplementedException;
 use fajr\libfajr\util;
 /**
  * Trieda reprezentujúca prihlasovanie pomocou cosign
@@ -46,11 +47,11 @@ class CosignPasswordLogin extends CosignAbstractLogin {
     $this->krbpwd = $krbpwd;
   }
 
-  const COSIGN_ERROR_PATTERN1 = 
+  const COSIGN_ERROR_PATTERN1 =
     '@Pri pokuse o prihlásenie sa vyskytol problém:[^<]*\<div[^>]*\>([^<]*)\<\/div\>@';
-  const COSIGN_ERROR_PATTERN2 = 
+  const COSIGN_ERROR_PATTERN2 =
     '@Pri pokuse o prihlásenie sa vyskytol problém:[^<]*\<b\>([^<]*)\<\/b\>@';
-  const COSIGN_ERROR_PATTERN3 = 
+  const COSIGN_ERROR_PATTERN3 =
     '@Pri pokuse o prihlásenie sa vyskytol problém:[^<]*\<div[^>]*\>\<b\>([^<]*)\<\/b\>@';
 
   const IIKS_ERROR = '@\<title\>IIKS \- ([^,]*)\<\/title\>@';
@@ -58,6 +59,11 @@ class CosignPasswordLogin extends CosignAbstractLogin {
   public function login(HttpConnection $connection) {
     $login = $this->username;
     $krbpwd = $this->krbpwd;
+
+    if ($login === null && $krbpwd === null) {
+      throw new Exception("S týmto objektom nie je možné sa prihlásiť 2x. " .
+          "Meno a heslo boli vymazané pri prvom prihlásení.");
+    }
 
     // Username a password si nebudeme pamatat dlhsie ako treba
     $this->username = null;
@@ -74,5 +80,13 @@ class CosignPasswordLogin extends CosignAbstractLogin {
       }
       throw new LoginException('Nepodarilo sa prihlásiť, dôvod neznámy.');
     }
+    return true;
+  }
+
+  public function isLoggedIn(HttpConnection $connection) {
+    $data = $connection->get(new NullTrace(), self::COSIGN_LOGIN);
+    if (preg_match(self::LOGGED_ALREADY_PATTERN, $data)) return true;
+    if (preg_match(self::IIKS_LOGIN_PATTERN, $data)) return false;
+    return new LoginException("Unexpected response.");
   }
 }

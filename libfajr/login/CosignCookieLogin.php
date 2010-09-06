@@ -27,6 +27,7 @@ Copyright (c) 2010 Martin Králik
 namespace fajr\libfajr\login;
 use fajr\libfajr\pub\connection\HttpConnection;
 use fajr\libfajr\pub\base\NullTrace;
+use fajr\libfajr\pub\exceptions\NotImplementedException;
 use fajr\libfajr\pub\exceptions\LoginException;
 /**
  * Trieda reprezentujúca prihlasovanie pomocou cookie
@@ -44,9 +45,10 @@ class CosignCookieLogin extends CosignAbstractLogin {
   public function login(HttpConnection $connection) {
     $connection->addCookie('cosign-filter-ais2.uniba.sk', $this->cookie,
                   0, '/', 'ais2.uniba.sk');
-    $data = $connection->get(new NullTrace(), parent::COSIGN_LOGIN);
-    if (!preg_match(parent::LOGGED_ALREADY_PATTERN, $data)) {
-      throw new LoginException("Cosign login with cookie failed. Probably wrong cookie.");
-    }
+    return true;
+  }
+
+  public function isLoggedIn(HttpConnection $connection) {
+    throw new NotImplementedException("We are not able to verify cosign service cookie.");
   }
 }

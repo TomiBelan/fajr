@@ -31,30 +31,13 @@ class CosignCookieLoginTest extends PHPUnit_Framework_TestCase
     $this->connection = $this->getMock('\fajr\libfajr\pub\connection\HttpConnection');
   }
 
-  public function testLoginOk() {
+  public function testLogin() {
     $this->connection->expects($this->once())
                      ->method('addCookie')
                      ->will($this->returnValue(null));
-    $this->connection->expects($this->once())
-                     ->method('get')
-                     ->will($this->returnValue($this->responseAlreadyLogged));
     $login = new CosignCookieLogin('cookie');
     $login->login($this->connection);
   }
-
-  public function testLoginFailed() {
-    $this->connection->expects($this->once())
-                     ->method('addCookie')
-                     ->will($this->returnValue(null));
-    $this->connection->expects($this->once())
-                     ->method('get')
-                     ->will($this->returnValue($this->responseNotLogged));
-    $login = new CosignCookieLogin('cookie');
-    $this->setExpectedException("fajr\libfajr\pub\exceptions\LoginException");
-    $login->login($this->connection);
-  }
-
-
 }
 
 ?>

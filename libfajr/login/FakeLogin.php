@@ -29,4 +29,8 @@ class FakeLogin implements Login {
   public function isLoggedIn(HttpConnection $unused) {
     return $this->loggedIn;
   }
+
+  public function ais2Relogin(HttpConnection $unused) {
+    return true;
+  }
 }

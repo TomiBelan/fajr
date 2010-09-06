@@ -44,6 +44,7 @@ class AIS2LoginImpl implements Login {
   const NOT_LOGGED_PATTERN = '@Prihl.senie@';
   const LOGGED_IN_PATTERN = '@\<div class="user-name"\>[^<]@';
 
+  // Cosign response is utf-8.
   const LOGOUT_OK_PATTERN = '@IIKS - Odhlásenie@';
 
   public function login(HttpConnection $connection) {
@@ -51,13 +52,15 @@ class AIS2LoginImpl implements Login {
     if (!preg_match(self::LOGGED_IN_PATTERN, $data)) {
       throw new LoginException("Login failed.");
     }
+    return true;
   }
 
   public function logout(HttpConnection $connection) {
     $data = $connection->get(new NullTrace(), self::LOGOUT_PAGE);
-    if (!preg_match(self::LOGOUT_OK, $data)) {
+    if (!preg_match(self::LOGOUT_OK_PATTERN, $data)) {
       throw new LoginException("Unexpected response.");
     }
+    return true;
   }
 
   public function isLoggedIn(HttpConnection $connection) {
@@ -67,4 +70,11 @@ class AIS2LoginImpl implements Login {
     throw new LoginException("Unexpected response.");
   }
 
+  public function ais2Relogin(HttpConnection $connection) {
+    $data = $connection->get(new NullTrace(), self::LOGIN_PAGE);
+    if (!preg_match(self::LOGGED_IN_PATTERN, $data)) {
+      throw new LoginException("Oops, can't relogin. Probably expired cookie.");
+    }
+    return true;
+  }
 }

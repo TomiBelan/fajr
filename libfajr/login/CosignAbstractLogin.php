@@ -29,6 +29,7 @@ use fajr\libfajr\pub\login\Login;
 use fajr\libfajr\base\DisableEvilCallsObject;
 use fajr\libfajr\pub\base\NullTrace;
 use fajr\libfajr\pub\exceptions\LoginException;
+use fajr\libfajr\pub\exceptions\NotImplementedException;
 
 abstract class CosignAbstractLogin extends DisableEvilCallsObject implements Login {
   const COSIGN_LOGIN = 'https://login.uniba.sk/cosign.cgi';
@@ -36,20 +37,18 @@ abstract class CosignAbstractLogin extends DisableEvilCallsObject implements Log
 
   const LOGGED_ALREADY_PATTERN = '@Moja Univerzita Komenského@';
   const IIKS_LOGIN_PATTERN = '@\<title\>IIKS \- Prihlásenie\</title\>@';
-
-  public function isLoggedIn(HttpConnection $connection) {
-    $data = $connection->get(new NullTrace(), self::COSIGN_LOGIN);
-    if (preg_match(self::LOGGED_ALREADY_PATTERN, $data)) return true;
-    if (preg_match(self::IIKS_LOGIN_PATTERN, $data)) return false;
-    return new LoginException("Unexpected response.");
-  }
+  const LOGOUT_PATTERN = '@Portál moja.uniba.sk@';
 
   public function logout(HttpConnection $connection) {
-    $data = $connection->post(new NullTrace(), self::COSIGN_LOGOUT,
+    $response = $connection->post(new NullTrace(), self::COSIGN_LOGOUT,
         array("verify" => "Odhlásiť",
               "url" => "https://login.uniba.sk/"));
-    if (!preg_match(self::IIKS_LOGIN_PATTERN, $data)) {
+    if (!preg_match(self::LOGOUT_PATTERN, $response)) {
       throw new LoginException("Unexpected response.");
     }
+  }
+
+  public function ais2Relogin(HttpConnection $connection) {
+    throw new NotImplementedException();
   }
 }

@@ -28,7 +28,7 @@ namespace fajr\libfajr\pub\login;
 use fajr\libfajr\login\FakeLogin;
 use fajr\libfajr\login\NoLogin;
 
-class FakeCosignLoginFactoryImpl implements CosignLoginFactory {
+class FakeLoginFactoryImpl implements LoginFactory {
   /**
    * @returns AIS2Login
    */

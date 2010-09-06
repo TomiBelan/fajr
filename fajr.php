@@ -29,9 +29,9 @@ use fajr\libfajr\pub\base\NullTrace;
 use fajr\libfajr\base\SystemTimer;
 use fajr\libfajr\connection;
 use fajr\libfajr\pub\login\AIS2Login;
-use fajr\libfajr\pub\login\CosignLoginFactoryImpl;
+use fajr\libfajr\pub\login\LoginFactoryImpl;
 
-use fajr\libfajr\window\VSES017_administracia_studia as VSES017; // *
+use fajr\libfajr\pub\window\VSES017_administracia_studia as VSES017; // *
 
 if (!defined('_FAJR')) {
   die('<html><head>'.
@@ -100,7 +100,7 @@ class Fajr {
    * @returns AIS2Login
    */
   private function provideLogin() {
-      $factory = new CosignLoginFactoryImpl();
+      $factory = new LoginFactoryImpl();
 
       $login = Input::get('login'); Input::set('login', null);
       $krbpwd = Input::get('krbpwd'); Input::set('krbpwd', null);
@@ -150,8 +150,6 @@ class Fajr {
       $connection = $this->provideConnection();
       $simpleConnection = new connection\HttpToSimpleConnectionAdapter($connection);
 
-      AIS2Utils::connection($simpleConnection); // toto tu je docasne
-
       if (Input::get('logout') !== null) {
         FajrUtils::logout($connection);
         FajrUtils::redirect();
@@ -170,7 +168,8 @@ class Fajr {
         '<div class=\'logout\'><a class="button negative" href="'.FajrUtils::linkUrl(array('logout'=>true)).'">
         <img src="images/door_in.png" alt=""/>Odhlásiť</a></div>'
         );
-        $adminStudia = new VSES017\AdministraciaStudiaScreen($trace, $simpleConnection);
+        $screenFactory = new VSES017\VSES017_factory($simpleConnection);
+        $adminStudia = $screenFactory->newAdministraciaStudiaScreen($trace);
         
         if (Input::get('studium') === null) Input::set('studium',0);
         
@@ -207,22 +206,19 @@ class Fajr {
         DisplayManager::addContent($zapisneListyCollapsible->getHtml());
         
         
-        $terminyHodnotenia = new
-          VSES017\TerminyHodnoteniaScreen(
+        $terminyHodnotenia = $screenFactory->newTerminyHodnoteniaScreen(
               $trace,
-              $simpleConnection,
-              $adminStudia->getIdZapisnyList($trace, Input::get('list')),
-              $adminStudia->getIdStudium($trace, Input::get('list')));
+              $adminStudia->getZapisnyListIdFromZapisnyListIndex($trace, Input::get('list')),
+              $adminStudia->getStudiumIdFromZapisnyListIndex($trace, Input::get('list')));
         
         if (Input::get('tab') === null) Input::set('tab', 'TerminyHodnotenia');
         $tabs = new TabManager('tab', array('studium'=>Input::get('studium'),
               'list'=>Input::get('list')));
         // FIXME: chceme to nejak refaktorovat, aby sme nevytvarali zbytocne
         // objekty, ktore v konstruktore robia requesty
-        $hodnoteniaScreen = new VSES017\HodnoteniaPriemeryScreen(
-              $trace, $simpleConnection,
-              $adminStudia->getIdZapisnyList($trace,
-                Input::get('list')));
+        $hodnoteniaScreen = $screenFactory->newHodnoteniaPriemeryScreen(
+              $trace,
+              $adminStudia->getZapisnyListIdFromZapisnyListIndex($trace, Input::get('list')));
         $tabs->addTab('TerminyHodnotenia', 'Moje skúšky',
               new MojeTerminyHodnoteniaCallback($trace, $terminyHodnotenia, $hodnoteniaScreen));
         $tabs->addTab('ZapisSkusok', 'Prihlásenie na skúšky',

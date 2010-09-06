@@ -34,28 +34,15 @@ use \fajr\libfajr\pub\login\Login;
 
 class AIS2Session
 {
-  private $aisLogin = null;
-  private $cosignLogin = null;
+  private $login = null;
 
-  public function  __construct(Login $aisLogin, Login $cosignLogin) {
-    $this->aisLogin = $aisLogin;
-    $this->cosignLogin = $cosignLogin;
+  public function  __construct(Login $login) {
+    $this->login = $login;
   }
 
-  public function login(HttpConnection $connection) {
-    $this->cosignLogin->login($connection);
-    $this->aisLogin->login($connection);
-    return true;
+  public function getLogin() {
+    return $this->login;
   }
 
-  public function logout(HttpConnection $connection) {
-    return $this->aisLogin->logout($connection);
-    return $this->cosignLogin->logout($connection);
-  }
-
-  public function isLoggedIn(HttpConnection $connection) {
-    return $this->aisLogin->isLoggedIn($connection) && $this->cosignLogin->isLoggedIn($connection);
-  }
-    
 
 }

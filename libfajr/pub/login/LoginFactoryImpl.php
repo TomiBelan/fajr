@@ -25,20 +25,33 @@ Copyright (c) 2010 Martin Sucha
  }}} */
 
 namespace fajr\libfajr\pub\login;
+use fajr\libfajr\login\CosignPasswordLogin;
+use fajr\libfajr\login\CosignCookieLogin;
+use fajr\libfajr\login\NoLogin;
+use fajr\libfajr\login\TwoPhaseLogin;
+use fajr\libfajr\login\AIS2LoginImpl;
 
-interface CosignLoginFactory {
+class LoginFactoryImpl implements LoginFactory {
   /**
-   * @returns Login
+   * @returns AIS2Login
    */
-  public function newLoginUsingCookie($cookie);
+  public function newLoginUsingCookie($cookie) {
+    return new TwoPhaseLogin(new CosignCookieLogin($cookie),
+                             new AIS2LoginImpl());
+  }
 
   /**
-   * @return Login
+   * @return AIS2Login
    */
-  public function newLoginUsingCosign($username, $password);
+  public function newLoginUsingCosign($username, $password) {
+    return new TwoPhaseLogin(new CosignPasswordLogin($username, $password),
+                             new AIS2LoginImpl());
+  }
 
   /**
-   * @return Login
+   * @return AIS2Login
    */
-  public function newNoLogin();
+  public function newNoLogin() {
+    return new NoLogin();
+  }
 }

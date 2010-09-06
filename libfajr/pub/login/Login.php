@@ -48,4 +48,10 @@ interface Login {
    * @return bool true if user is currently logged in.
    */
   public function isLoggedIn(HttpConnection $connection);
+
+  /**
+   * Try to relogin to ais if neccessary
+   * @throws AIS2LoginException
+   */
+  public function ais2Relogin(HttpConnection $connection);
 }

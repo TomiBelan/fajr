@@ -35,10 +35,10 @@ class FajrUtils
   public static function login(Trace $trace, Login $login, HttpConnection $connection)
   {
     $trace->tlog("Creating AIS2Session");
-    $session = new AIS2Session(new AIS2LoginImpl(), $login);
+    $session = new AIS2Session($login);
 
     $trace->tlog("logging in");
-    if (!$session->login($connection)) return false;
+    if (!$login->login($connection)) return false;
     $trace->tlog("logged in correctly.");
 
     $_SESSION['AISSession'] = $session;
@@ -52,7 +52,7 @@ class FajrUtils
   public static function logout(HttpConnection $connection)
   {
     if (!isset($_SESSION['AISSession'])) return false;
-    if ($_SESSION['AISSession']->logout($connection)) {
+    if ($_SESSION['AISSession']->getLogin()->logout($connection)) {
       unset($_SESSION['AISSession']);
       self::dropSession();
     }
@@ -67,8 +67,12 @@ class FajrUtils
 
   public static function isLoggedIn(HttpConnection $connection)
   {
-    if (!isset($_SESSION['AISSession'])) return false;
-    return $_SESSION['AISSession']->isLoggedIn($connection);
+    if (!isset($_SESSION['AISSession'])) {
+      return false;
+    }
+    $login = $_SESSION['AISSession']->getLogin();
+    return $login->isLoggedIn($connection) ||
+           $login->ais2Relogin($connection);
   }
 
   public static function redirect($newParams = array())
