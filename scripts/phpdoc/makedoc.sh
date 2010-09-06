@@ -8,6 +8,9 @@ if [ $? -eq 0 ] ; then
    rm -rf ./report/documentation/*
    phpdoc -d . -t ./report/documentation -o HTML:frames:DOM/earthli -s -ti "$2" -pp
    chmod a+w -R ./report/documentation
+
+   phpdoc -d libfajr/pub -t ./report/doc_public -o HTML:frames:DOM/earthli -s -ti "$2"
+   chmod a+w -R ./report/doc_public
 #   (cd ./report/documentation;
   else
     echo "Problems entering directory $1, exitting";
