@@ -913,7 +913,7 @@ class SubversionVCS(VersionControlSystem):
     return None
 
   def GenerateDiff(self, args):
-    cmd = ["svn", "diff"]
+    cmd = ["svn", "diff", "--diff-cmd=diff"]
     if self.options.revision:
       cmd += ["-r", self.options.revision]
     cmd.extend(args)

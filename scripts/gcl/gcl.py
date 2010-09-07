@@ -335,7 +335,8 @@ class ChangeInfo(object):
 
   def CloseIssue(self):
     """Closes the Rietveld issue for this changelist."""
-    data = [("description", self.description),]
+    data = [("description", self.description),
+            ("xsrf_token", GetXsrfToken())]
     ctype, body = upload.EncodeMultipartFormData(data, [])
     SendToRietveld("/%d/close" % self.issue, body, ctype)
 
@@ -580,6 +581,24 @@ def GetFilesNotInCL():
     return []
   return modified_files[""]
 
+# Newer versions of Rietveld require us to pass an XSRF token to POST, so
+# we fetch it from the server.  (The version used by Chromium has been
+# modified so the token isn't required when closing an issue.)
+def GetXsrfToken(timeout=None):
+  server = GetCodeReviewSetting("CODE_REVIEW_SERVER")
+  def GetUserCredentials():
+    """Prompts the user for a username and password."""
+    email = upload.GetEmail("Email (login for uploading to %s)" % server)
+    password = getpass.getpass("Password for %s: " % email)
+    return email, password
+  rpc_server = upload.HttpRpcServer(server,
+                                    GetUserCredentials,
+                                    save_cookies=True)
+  try:
+    return rpc_server.Send('/xsrf_token',
+                           extra_headers={'X-Requesting-XSRF-Token': '1'})
+  except urllib2.URLError as e:
+    return None
 
 def SendToRietveld(request_path, payload=None,
                    content_type="application/octet-stream", timeout=None):
@@ -595,9 +614,13 @@ def SendToRietveld(request_path, payload=None,
   rpc_server = upload.HttpRpcServer(server,
                                     GetUserCredentials,
                                     save_cookies=True)
+
   try:
     return rpc_server.Send(request_path, payload, content_type, timeout)
-  except urllib2.URLError:
+  except urllib2.URLError as e:
+    print "'%s'" % server
+    print "'%s'" % request_path
+    print e
     if timeout is None:
       ErrorExit("Error accessing url %s" % request_path)
     else:
