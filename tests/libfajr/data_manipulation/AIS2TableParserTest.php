@@ -20,7 +20,7 @@ use fajr\libfajr\pub\base\NullTrace;
  * @ignore
  */
 require_once 'test_include.php';
-require_once 'src/libfajr/window/VSES017_administracia_studia/regression/zoznamStudii.table';
+require_once '../src/libfajr/window/VSES017_administracia_studia/regression/zoznamStudii.table';
 
 /**
  * @ignore

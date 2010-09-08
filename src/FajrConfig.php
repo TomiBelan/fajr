@@ -23,7 +23,7 @@ class FajrConfig
     'Debug.Path'=>false,
     'Debug.Rewrite'=>false,
     'Debug.Exception.ShowStacktrace'=>false,
-    'Path.Temporary'=>'./temp',
+    'Path.Temporary'=>'../temp',
     'Path.Temporary.Cookies'=>'./cookies',
     'Path.Temporary.Sessions'=>'./sessions',
   );
@@ -44,7 +44,7 @@ class FajrConfig
   {
     if (self::isConfigured()) return;
 
-    @$result = (include 'configuration.php');
+    @$result = (include '../config/configuration.php');
     if ($result !== false && is_array($result)) {
       self::$config = array_merge(self::$defaultOptions, $result);
     }
