@@ -6,8 +6,8 @@
 // TODO(??): missing author
 
 require_once 'PHPUnit/Framework.php';
-require_once 'libfajr/libfajr.php';
+require_once 'src/libfajr/libfajr.php';
 Loader::register();
-Loader::searchForClasses(__DIR__, true);
+Loader::searchForClasses(__DIR__.'/src', true);
 ini_set('error_reporting', E_ALL | E_STRICT);
 ?>

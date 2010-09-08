@@ -7,4 +7,4 @@
 
 define('_FAJR','INCLUDED');
 
-include('../fajr.php');
+include('../src/fajr.php');

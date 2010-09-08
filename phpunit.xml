@@ -16,13 +16,13 @@
 
   <filter>
     <whitelist>
-      <directory suffix=".php">.</directory>
+      <directory suffix=".php">src</directory>
       <exclude>
         <directory suffix="Test.php">.</directory>
         <directory suffix=".php">scripts</directory>
         <directory suffix=".php">web</directory>
-        <file>fajr.php</file>
-        <file>configuration.example.php</file>
+        <file>src/fajr.php</file>
+        <file>src/configuration.example.php</file>
       </exclude>
     </whitelist>
   </filter>
