@@ -1,4 +1,8 @@
 <?php
+// Copyright (c) 2010 The Fajr authors (see AUTHORS).
+// Use of this source code is governed by a MIT license that can be
+// found in the LICENSE file in the project root directory.
+
 /**
  * This file sets assert handler
  *
@@ -6,7 +10,7 @@
  *
  * @package    Fajr
  * @subpackage Libfajr
- * @author     Peter Peresini <ppershing+fajr@google.com>
+ * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
 namespace fajr\libfajr;
@@ -21,7 +25,7 @@ require_once 'util/CodeSnippet.php';
  *
  * @package    Fajr
  * @subpackage Libfajr
- * @author     Peter Peresini <ppershing+fajr@google.com>
+ * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 class Assert
 {

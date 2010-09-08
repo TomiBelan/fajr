@@ -1,4 +1,10 @@
 <?
+// Copyright (c) 2010 The Fajr authors (see AUTHORS).
+// Use of this source code is governed by a MIT license that can be
+// found in the LICENSE file in the project root directory.
+
+// TODO(??): missing author
+
 // Pouzitie: php generate_table_definitions < html_vystup
 // Program zoberie lubovolne html vygenerovane AISom ktore obsahuje nejaku tabulku
 // a pre kazdu tabulku ktoru dany vystup obsahuje vygeneruje

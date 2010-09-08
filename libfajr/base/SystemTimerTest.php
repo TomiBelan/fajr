@@ -1,10 +1,14 @@
 <?php
+// Copyright (c) 2010 The Fajr authors (see AUTHORS).
+// Use of this source code is governed by a MIT license that can be
+// found in the LICENSE file in the project root directory.
+
 /**
  * This file contains tests for SystemTimer class
  *
  * @package    Fajr
  * @subpackage TODO
- * @author     Peter Peresini <ppershing+fajr@gmail.com>
+ * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 
 /**
