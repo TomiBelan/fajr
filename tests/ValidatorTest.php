@@ -15,7 +15,6 @@
  * @ignore
  */
 require_once 'test_include.php';
-require_once 'Validator.php';
 
 /**
  * @ignore
