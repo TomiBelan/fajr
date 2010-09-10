@@ -6,7 +6,9 @@
 /**
  * @author Martin Králik <majak47@gmail.com>
  */
-
+namespace fajr\htmlgen;
+use fajr\DisplayManager;
+use fajr\FajrUtils;
 class TableRow implements Renderable
 {
   private $data = null;

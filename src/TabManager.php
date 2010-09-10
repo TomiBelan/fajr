@@ -6,7 +6,8 @@
 /**
  * @author Peter Perešíni <ppershing+fajr@gmail.com>
  */
-
+namespace fajr;
+use fajr\htmlgen\Renderable;
 class TabManager implements Renderable {
 
   private $tabs = array();

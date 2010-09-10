@@ -11,6 +11,8 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 
+namespace fajr;
+use PHPUnit_Framework_TestCase;
 /**
  * @ignore
  */

@@ -10,7 +10,8 @@
  * @subpackage TODO
  * @author     Martin Sucha <anty.sk@gmail.com>
  */
-
+namespace fajr;
+use PHPUnit_Framework_TestCase;
 /**
  * @ignore
  */

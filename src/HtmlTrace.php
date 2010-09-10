@@ -9,11 +9,11 @@
 
 namespace fajr;
 use fajr\libfajr\pub\base\Trace;
-use Renderable;
-use Label;
-use Collapsible;
 use fajr\libfajr\base\Timer;
 use fajr\libfajr\util\CodeSnippet;
+use fajr\htmlgen\Renderable;
+use fajr\htmlgen\Collapsible;
+use fajr\htmlgen\Label;
 // TODO(ppershing): Move to html templates when possible
 // TODO(ppershing): Do not store html in children, instead
 //                  render it on the fly.

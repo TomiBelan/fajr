@@ -2,7 +2,8 @@
 // Copyright (c) 2010 The Fajr authors (see AUTHORS).
 // Use of this source code is governed by a MIT licence that can be
 // found in the LICENCE file in the project root directory.
-
+namespace fajr;
+use fajr\htmlgen\Renderable;
 /**
  * @author Martin Sucha <anty.sk@gmail.com>
  */

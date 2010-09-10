@@ -10,7 +10,9 @@
  * @subpackage Libfajr
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
-
+namespace fajr\libfajr;
+use PHPUnit_Framework_TestCase;
+use Exception;
 /**
  * @ignore
  */

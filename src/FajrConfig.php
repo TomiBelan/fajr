@@ -6,7 +6,7 @@
 /**
  * @author Martin Sucha <anty.sk@gmail.com>
  */
-
+namespace fajr;
 class FajrConfig
 {
 

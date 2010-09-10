@@ -5,7 +5,15 @@
 
 // TODO(??): missing author
 
+namespace fajr\presentation;
+use fajr\htmlgen\Renderable;
 use fajr\libfajr\pub\base\Trace;
+use fajr\htmlgen\Table;
+use fajr\htmlgen\Collapsible;
+use fajr\htmlgen\HtmlHeader;
+use fajr\Input;
+use fajr\TableDefinitions;
+use fajr\FajrUtils;
 
 class ZoznamTerminovCallback implements Renderable {
   private $skusky;

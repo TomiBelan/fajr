@@ -13,6 +13,8 @@
  * @filesource
  */
 
+namespace fajr\htmlgen;
+use fajr\DisplayManager;
 /**
  * Trieda, ktora vygeneruje okolo daneho Renderable taky HTML kod, aby
  * ho bolo mozne javascriptom schovat

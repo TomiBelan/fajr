@@ -5,9 +5,17 @@
 
 // TODO(??):missing author
 
+namespace fajr\presentation;
+use fajr\htmlgen\Renderable;
 use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\pub\window\VSES017_administracia_studia as VSES017;
-
+use fajr\Input;
+use fajr\htmlgen\Table;
+use fajr\htmlgen\Collapsible;
+use fajr\htmlgen\HtmlHeader;
+use fajr\TableDefinitions;
+use fajr\FajrUtils;
+use fajr\libfajr\AIS2Utils;
 class MojeTerminyHodnoteniaCallback implements Renderable {
   public function __construct(Trace $trace,
                               VSES017\TerminyHodnoteniaScreen $terminyHodnotenia,

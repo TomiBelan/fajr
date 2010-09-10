@@ -6,7 +6,7 @@
 /**
  * @author Martin Králik <majak47@gmail.com>
  */
-
+namespace fajr;
 
 require_once 'FajrConfig.php';
 

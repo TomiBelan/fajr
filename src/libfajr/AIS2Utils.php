@@ -2,9 +2,10 @@
 // Copyright (c) 2010 The Fajr authors (see AUTHORS).
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file in the project root directory.
-
-use \fajr\libfajr\pub\base\Trace;
-use \fajr\libfajr\pub\connection\SimpleConnection;
+namespace fajr\libfajr;
+use fajr\libfajr\pub\base\Trace;
+use fajr\libfajr\pub\connection\SimpleConnection;
+use Exception;
 /**
  * Trieda združujúca rôzne základné veci pre prácu s AISom
  *

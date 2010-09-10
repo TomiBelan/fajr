@@ -10,7 +10,7 @@
  * @author Martin Sucha <anty.sk@gmail.com>
  */
 
-require_once 'Renderable.php';
+namespace fajr\htmlgen;
 
 class Label implements Renderable {
 

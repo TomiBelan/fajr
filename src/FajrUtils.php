@@ -2,7 +2,7 @@
 // Copyright (c) 2010 The Fajr authors (see AUTHORS).
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file in the project root directory.
-
+namespace fajr;
 /**
  * @author Martin Sucha <anty.sk@gmail.com>
  */
@@ -12,6 +12,7 @@ use fajr\libfajr\pub\connection\HttpConnection;
 use fajr\libfajr\pub\login\Login;
 use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\login\AIS2LoginImpl;
+use fajr\libfajr\AIS2Session;
 class FajrUtils
 {
 

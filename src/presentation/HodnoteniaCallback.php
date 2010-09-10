@@ -5,9 +5,18 @@
 
 // TODO(??):missing author
 
+namespace fajr\presentation;
+use fajr\htmlgen\Renderable;
 use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\pub\window\VSES017_administracia_studia as VSES017;
-
+use fajr\htmlgen\Table;
+use fajr\htmlgen\Collapsible;
+use fajr\htmlgen\HtmlHeader;
+use fajr\htmlgen\Container;
+use fajr\htmlgen\Label;
+use fajr\TableDefinitions;
+use fajr\PriemeryCalculator;
+use fajr\Sorter;
 class HodnoteniaCallback implements Renderable {
   private $app;
   

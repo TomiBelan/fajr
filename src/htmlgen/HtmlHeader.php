@@ -6,8 +6,7 @@
 /**
  * @author Peter Perešíni <ppershing+fajr@gmail.com>
  */
-
-require_once 'Renderable.php';
+namespace fajr\htmlgen;
 
 class HtmlHeader implements Renderable {
 

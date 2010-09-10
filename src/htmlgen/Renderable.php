@@ -11,7 +11,7 @@
  * @author Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */
-
+namespace fajr\htmlgen;
 /**
  * Indikuje, že tento objekt vie vygenerovať svoj obsah ako HTML
  *
