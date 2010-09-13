@@ -15,7 +15,7 @@ Inštalácia
    a prepisovanie URL (môžte odkomentovať+zapnúť v konfigurácii,
    ak chcete mať krajšie URL-ká)
 
-3. Skopírujte súbor ./configuration.example.php do ./configuration.php
+3. Skopírujte súbor ./config/configuration.example.php do ./config/configuration.php
    Prednastavené hodnoty konfiguračných volieb by mali byť vhodné pre väčšinu
    inštalácií, no napriek tomu ponúkame možnosť ich pohodlne zmeniť
    na jednom mieste - v tomto súbore.
