@@ -102,10 +102,9 @@ class AdministraciaStudiaScreenImpl extends AIS2AbstractScreen
                 'objProperties' => array(
                   'x' => -4,
                   'y' => -4,
-                  'focusedComponent' => 'runZapisneListyButton',
                 ),
                 'embObj' => array(
-                  'objName' => 'zoznamTemTable',
+                  'objName' => 'zapisneListyTable',
                   'dataView' => array(
                     'activeIndex' => $zapisnyListIndex,
                     'selectedIndexes' => $zapisnyListIndex,
@@ -117,7 +116,7 @@ class AdministraciaStudiaScreenImpl extends AIS2AbstractScreen
       if ($data == null) {
         throw new Exception("Neviem parsovať dáta z AISu");
       }
-    
+
       $this->idCache[$zapisnyListIndex] = $data;
     } else {
       $trace->tlogVariable("data from cache", $this->idCache[$zapisnyListIndex]);
