@@ -1,30 +1,57 @@
 #!/bin/bash
-TEMPLATE=`dirname $0`/template.xml
+OUT=$2/class_graph.dot;
 
-(
-echo '<?xml version="1.0" encoding="ISO-8859-1"?>'
-echo '<root>'
-cat $1/classtrees*.html | \
-  sed 'N;s/<h2>Root class Exception<\/h2>\n.*/<ul><li>Exception<ul>/;P;D' | \
-  sed 's/\(Exception.*<\/a><\/li><\/ul>\)/\1<\/li><\/ul>/' | \
-  sed 's/<a href="[^"]*">//g' | sed 's/<\/a>//g' | \
-  sed 's/<\/li>/<\/li>\n/g' | grep -E '<ul>|<li>|</li>|</ul>'
+echo "
+digraph g {
+  concentrate=false;
+  rankdir=\"LR\";
+  clusterrank=\"local\";
+  ranksep=\"3.0\";
+  nodesep=\"0.5\";
+  size=\"30,30\";
+  node[shape=box, fontsize=14, fillcolor=gray, style=filled];
+" > $OUT;
 
-echo '</root>' ) > $2/graph.xml
+function getcolor {
+  echo "$@" | sha1sum | sed 's/\(......\).*/\1/'
+}
 
-xsltproc $TEMPLATE $2/graph.xml > $2/graph2.xml
+ZOZNAM=$(find $1 | grep '\.php' | grep -v '\.svn' | \
+    grep -v '\.swp' | LC_ALL='C' grep '[A-Z]' )
 
-cat $2/graph2.xml | sed 's/<pair>//' | sed 's/<\/pair>//' | grep -v -E '^$' | \
-  sed 's/<zoznam>/digraph G {/' | sed 's/<\/zoznam>/}/' | \
-  sed 's/<?xml.*//' | \
-  sed 's/ (implements )/_impl/' | \
-  sed 's/ (implements \(.*\))/_impl_\1/' | \
-  sed 's/^,\(.*\)/\1 [shape=box# fillcolor=yellow# style="filled"];/' | \
-  sed 's/\(.*\),\(.*\)/\1 -> \2 [len = 2.5]; \1 [style="filled"# fillcolor=lawngreen]; \2 \
-  [style="filled"# fillcolor=lightskyblue];/' |
+CLUSTER_PY=`readlink -f $(dirname $0)`/dependency_clusters.py;
+echo $ZOZNAM | $CLUSTER_PY >> $OUT;
+CLASS_RE="[a-zA-Z0-9_]+"
+for file in $ZOZNAM; do
+  classdef=`cat $file | tr "\n" "#" | \
+    grep  '#\(abstract class\|class\|interface\) \([^{]*\)[{]' | \
+    sed 's/#\(abstract class\|class\|interface\) \([^{]*\)[{].*$/@@@\1:\2/' | \
+    sed 's/.*@@@//' | \
+    sed 's/implements//' | sed 's/extends//' | \
+    sed 's/abstract class/abstract_class/' | \
+    tr '#' ' ' | tr ',' ' '`;
 
-  tr '#' ',' > $2/class_graph.dot
+  if [ "$classdef" != "" ]; then
+    FIRST="none";
+    for token in $classdef; do
+      if [ "$FIRST" == "none" ]; then
+        FIRST=`echo $token | sed 's/.*://'`
+        TMP=`echo $token | sed 's/:.*//'`
+        if [ "$TMP" == "class" ]; then
+          echo "$FIRST [ fillcolor=greenyellow;]" >> $OUT;
+        elif [ "$TMP" == "abstract_class" ]; then
+          echo "$FIRST [ fillcolor=yellow;]" >> $OUT;
+        else
+          echo "$FIRST [ fillcolor=lightblue;]" >> $OUT;
+        fi
+      else
+        col=`getcolor $token`
+        echo "$FIRST -> $token [color=\"#$col\"];" >> $OUT;
+      fi
+    done
+  fi
 
-neato $2/class_graph.dot -Tpng > $2/class_graph.png
-rm $2/graph.xml
-rm $2/graph2.xml
+done
+echo "}" >> $OUT
+
+dot $2/class_graph.dot -Tpng > $2/class_graph.png
