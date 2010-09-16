@@ -68,11 +68,6 @@ class AdministraciaStudiaScreenImpl extends AIS2AbstractScreen
     $data = $this->executor->doRequest(
         $trace->addChild("Requesting data:"),
         array('compName' => 'nacitatDataAction',
-              'objProperties' => array(
-                'x' => -4,
-                'y' => -4,
-                'focusedComponent' => 'nacitatButton',
-              ),
               'embObj' => array(
                 'objName' => 'studiaTable',
                 'dataView' => array(
@@ -103,10 +98,6 @@ class AdministraciaStudiaScreenImpl extends AIS2AbstractScreen
       $response = $this->executor->doRequest(
           $trace->addChild("Requesting data:"),
           array('compName' => 'terminyHodnoteniaAction',
-                'objProperties' => array(
-                  'x' => -4,
-                  'y' => -4,
-                ),
                 'embObj' => array(
                   'objName' => 'zapisneListyTable',
                   'dataView' => array(
