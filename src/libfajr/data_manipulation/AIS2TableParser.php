@@ -3,19 +3,38 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file in the project root directory.
 
-// TODO(??): missing author
+/**
+ * Contains implementation of ais2 table parsing from
+ * html response.
+ *
+ * @package    Fajr
+ * @subpackage Libfajr__Data_manipulation
+ * @author     Peter Perešíni <ppershing+fajr@gmail.com>
+ * @filesource
+ */
 
 namespace fajr\libfajr\data_manipulation;
 
-use fajr\libfajr\pub\base\Trace;
-use Exception;
 use DOMDocument;
 use DOMElement;
 use DOMXPath;
 use fajr\libfajr\data_manipulation\DataTableImpl;
+use fajr\libfajr\pub\base\Trace;
+use fajr\libfajr\pub\exceptions\ParseException;
 
-class AIS2TableParser {
-  public function fixProblematicTags(Trace $trace, $html) {
+/**
+ * Parses AIS2 html response and retrieve data for specific table.
+ *
+ * @package    Fajr
+ * @subpackage Libfajr__Data_manipulation
+ * @author     Peter Perešíni <ppershing+fajr@gmail.com>
+ *
+ * TODO(ppershing): document methods
+ */
+class AIS2TableParser
+{
+  public function fixProblematicTags(Trace $trace, $html)
+  {
     $html = str_replace("<!--", "", $html);
     $html = str_replace("-->", "", $html);
     $html = str_replace("script", "div", $html);
@@ -23,7 +42,8 @@ class AIS2TableParser {
     return $html;
   }
 
-  public function fixIdAttributes(Trace $trace, DOMDocument $dom) {
+  public function fixIdAttributes(Trace $trace, DOMDocument $dom)
+  {
     $xpath = new DOMXPath($dom);
     $nodes = $xpath->query("//*[@id]");
     foreach ($nodes as $node) {
@@ -35,23 +55,25 @@ class AIS2TableParser {
     }
   }
 
-  public function createDomFromHtml(Trace $trace, $html) {
+  public function createDomFromHtml(Trace $trace, $html)
+  {
     $dom = new DOMDocument();
     $trace->tlog("Loading html to DOM");
     $loaded = @$dom->loadHTML($html);
     if (!$loaded) {
-      throw new Exception("Problem parsing ais2 response html");
+      throw new ParseException("Problem parsing html to DOM.");
     }
     $trace->tlog('Fixing id attributes in the DOM');
     $this->fixIdAttributes($trace, $dom);
     return $dom;
   }
 
-  public function findEnclosingElement(Trace $trace, DOMDocument $dom, $elementId) {
+  public function findEnclosingElement(Trace $trace, DOMDocument $dom, $elementId)
+  {
     $trace->tlog("Finding element with id '$elementId'");
     $element = $dom->getElementById($elementId);
     if ($element === null) {
-      throw new Exception("Problem parsing ais2 response: Element not found");
+      throw new ParseException("Problem parsing ais2 response: Element not found");
     }
     $trace->tlog("Element found");
     $child = $trace->addChild("Element xml content (pretty formatted)");
@@ -59,7 +81,8 @@ class AIS2TableParser {
     return $element;
   }
 
-  public function prettyFormatXml($dom, $element) {
+  public function prettyFormatXml($dom, $element)
+  {
     $outXML = '<?xml version="1.0" encoding="UTF-8"?>'.$dom->saveXML($element);
     $tmp = new DOMDocument();
     $tmp->encoding='UTF-8';
@@ -69,7 +92,8 @@ class AIS2TableParser {
     return $tmp->saveXML(); 
   }
 
-  public function createTableFromHtml(Trace $trace, $aisResponseHtml, $dataViewName) {
+  public function createTableFromHtml(Trace $trace, $aisResponseHtml, $dataViewName)
+  {
     $html = $this->fixProblematicTags($trace->addChild("Fixing html for better DOM parsing."),
         $aisResponseHtml);
     $domWholeHtml = $this->createDomFromHtml($trace, $html);
@@ -82,7 +106,8 @@ class AIS2TableParser {
     return new DataTableImpl($headers, $data);
   }
 
-  public function getCellContent(DOMElement $element) {
+  public function getCellContent(DOMElement $element)
+  {
     // special fix for checkboxes
     if ($element->hasAttribute('datatype')) {
       assert($element->getAttribute('datatype')=='boolean');
@@ -102,12 +127,13 @@ class AIS2TableParser {
     return $value;
   }
 
-  public function getTableData(Trace $trace, $dom) {
+  public function getTableData(Trace $trace, $dom)
+  {
     $data = array();
     $trace->tlog("finding tbody element");
     $element = $dom->getElementById('dataTabBody0');
     if ($element == null) {
-      throw new Exception("Can't find table data");
+      throw new ParseException("Can't find table data");
     }
 
     foreach ($element->childNodes as $ais_row) {
@@ -126,12 +152,13 @@ class AIS2TableParser {
     return $data;
   }
 
-  public function getTableDefinition(Trace $trace, DOMDocument $dom) {
+  public function getTableDefinition(Trace $trace, DOMDocument $dom)
+  {
     $trace->tlog("finding table definition element");
     $trace->tlogVariable("", $dom->saveXML());
     $element = $dom->getElementById('dataTabColGroup');
     if ($element == null) {
-      throw new Exception("Can't find table headers");
+      throw new ParseException("Can't find table headers");
     }
     $list = $element->getElementsByTagName('col');
     $columns = array();

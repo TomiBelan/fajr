@@ -23,6 +23,8 @@ use fajr\libfajr\window\RequestBuilderImpl;
 use fajr\libfajr\window\ScreenRequestExecutor;
 use fajr\libfajr\window\ScreenData;
 use fajr\libfajr\data_manipulation\AIS2TableParser;
+use fajr\libfajr\util;
+use fajr\libfajr\pub\exceptions\ParseException;
 /**
  * Trieda reprezentujúca jednu obrazovku so zoznamom štúdií a zápisných listov.
  *
@@ -33,7 +35,9 @@ use fajr\libfajr\data_manipulation\AIS2TableParser;
 class AdministraciaStudiaScreenImpl extends AIS2AbstractScreen
     implements AdministraciaStudiaScreen
 {
+  // TODO(ppershing): use named pattern here
   const APP_LOCATION_PATTERN = '@webui\(\)\.startApp\("([^"]+)","([^"]+)"\);@';
+  const ID_PATTERN = '@&idZapisnyList\=(?P<idZapisnyList>[0-9]*)&idStudium\=(?P<idStudium>[0-9]*)@';
 
   protected $idCache = array();
 
@@ -113,23 +117,22 @@ class AdministraciaStudiaScreenImpl extends AIS2AbstractScreen
               ));
 
       $data = $this->parseIdFromZapisnyListIndexFromResponse($response);
-      if ($data == null) {
-        throw new Exception("Neviem parsovať dáta z AISu");
-      }
-
       $this->idCache[$zapisnyListIndex] = $data;
     } else {
-      $trace->tlogVariable("data from cache", $this->idCache[$zapisnyListIndex]);
+      $trace->tlogVariable("data from cache", $this->idCache[$zapisnyListIndex][$idType]);
     }
     return $this->idCache[$zapisnyListIndex][$idType];
   }
 
   public function parseIdFromZapisnyListIndexFromResponse($response) {
-      // FIXME: toto tunak spravit nejak krajsie
-      $data = matchAll($response, self::APP_LOCATION_PATTERN, true);
-      if ($data === false) return null;
-      $data = matchAll($data[2], '@&idZapisnyList\=(?P<idZapisnyList>[0-9]*)&idStudium\=(?P<idStudium>[0-9]*)@', true);
-      if ($data === false) return null;
+      $data = util\matchAll(self::APP_LOCATION_PATTERN, $response, true);
+      if ($data === false) {
+        throw new ParseException("Location of APP_PATTERN failed.");
+      };
+      $data = util\matchAll(self::ID_PATTERN, $data[2], true);
+      if ($data === false) {
+        throw new ParseException("Parsing of ids from zapisnyListIndex failed.");
+      }
       return removeIntegerIndexesFromArray($data);
   }
 
