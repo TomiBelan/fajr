@@ -528,16 +528,18 @@ class Fajr_Sniffs_Comment_FileCommentSniff implements PHP_CodeSniffer_Sniff
       if ($content !== '') {
         if (PHP_CodeSniffer::isUnderscoreName($content) !== true) {
           $newContent = str_replace(' ', '_', $content);
-          $nameBits   = explode('_', $newContent);
+          $nameBits   = explode('__', $newContent);
           $firstBit   = array_shift($nameBits);
-          $newName    = strtoupper($firstBit{0}).substr($firstBit, 1).'_';
+          $newName    = strtoupper($firstBit{0}).substr($firstBit, 1).'__';
           foreach ($nameBits as $bit) {
-            $newName .= strtoupper($bit{0}).substr($bit, 1).'_';
+            $newName .= strtoupper($bit{0}).substr($bit, 1).'__';
           }
 
           $validName = trim($newName, '_');
           $error     = "Subpackage name \"$content\" is not valid; consider \"$validName\" instead";
-          $this->currentFile->addError($error, $errorPos);
+          if ($validName != $content) {
+            $this->currentFile->addError($error, $errorPos);
+          }
         }
       } else {
         $error = '@subpackage tag must contain a name';
