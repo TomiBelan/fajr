@@ -9,6 +9,7 @@
  * @package    Fajr
  * @subpackage Libfajr__Base
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
+ * @author     Martin Sucha <anty.sk@gmail.com>
  */
 
 namespace fajr\libfajr\base;
@@ -72,5 +73,26 @@ class PreconditionsTest extends PHPUnit_Framework_TestCase
     $this->setExpectedException("InvalidArgumentException");
     $x = 5;
     Preconditions::checkIsString($x, "not a string");
+  }
+
+  public function testMatchesPattern()
+  {
+    Preconditions::checkMatchesPattern("/^aa$/", "aa", "string");
+    $x = "bb";
+    Preconditions::checkMatchesPattern("/^bb$/", $x, "string");
+  }
+
+  public function testMatchesPatternFailOnNonString()
+  {
+    $this->setExpectedException("InvalidArgumentException");
+    $x = 5;
+    Preconditions::checkMatchesPattern("/^abc$/", $x, "not a string");
+  }
+
+  public function testIsStringAndMatchesFailOnNonMatch()
+  {
+    $this->setExpectedException("InvalidArgumentException");
+    $x = 'def';
+    Preconditions::checkMatchesPattern("/^abc$/", $x, "not matching");
   }
 }

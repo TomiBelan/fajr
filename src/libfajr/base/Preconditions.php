@@ -61,6 +61,25 @@ class Preconditions
   }
 
   /**
+   * Checks that $variable is a string and matches a given PCRE
+   *
+   * @param string $pattern PCRE pattern to check against
+   * @param mixed $variable variable to check
+   * @param string $name variable name to display in error
+   *
+   * @returns void
+   * @throws InvalidArgumentException
+   */
+  public static function checkMatchesPattern($pattern, $variable, $name = null)
+  {
+    if ($name === null) $name = "Argument";
+    self::checkIsString($variable, $name);
+    if (!preg_match($pattern, $variable)) {
+      throw new InvalidArgumentException("$name should match $pattern!");
+    }
+  }
+
+  /**
    * Checks that $variable is a string
    *
    * @param bool $expression boolean result of an expression
