@@ -8,7 +8,7 @@ namespace fajr\libfajr\login;
 use fajr\libfajr\base\Preconditions;
 use fajr\libfajr\data_manipulation\CosignProxyFileParser;
 use fajr\libfajr\pub\connection\HttpConnection;
-use fajr\libfajr\pub\data_manipulation\CosignServiceCookie;
+use fajr\libfajr\pub\login\CosignServiceCookie;
 use fajr\libfajr\pub\base\NullTrace;
 use fajr\libfajr\pub\exceptions\NotImplementedException;
 use fajr\libfajr\pub\exceptions\LoginException;

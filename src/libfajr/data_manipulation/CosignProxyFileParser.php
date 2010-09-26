@@ -17,7 +17,7 @@ namespace fajr\libfajr\data_manipulation;
 use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\pub\exceptions\ParseException;
 use fajr\libfajr\base\Preconditions;
-use fajr\libfajr\pub\data_manipulation\CosignServiceCookie;
+use fajr\libfajr\pub\login\CosignServiceCookie;
 use InvalidArgumentException;
 
 /**

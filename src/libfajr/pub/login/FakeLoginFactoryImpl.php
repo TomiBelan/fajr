@@ -10,7 +10,7 @@
 namespace fajr\libfajr\pub\login;
 use fajr\libfajr\login\FakeLogin;
 use fajr\libfajr\login\NoLogin;
-use fajr\libfajr\pub\data_manipulation\CosignServiceCookie;
+use fajr\libfajr\pub\login\CosignServiceCookie;
 
 class FakeLoginFactoryImpl implements LoginFactory {
   /**
