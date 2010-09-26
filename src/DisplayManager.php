@@ -27,10 +27,9 @@ class DisplayManager
     $this->base = $base;
   }
 
-  public function addContent($content, $predefinedContent = false)
+  public function addContent($content)
   {
-    if ($predefinedContent) $this->content[] = self::$predefinedContent[$content];
-    else $this->content[] = $content;
+    $this->content[] = $content;
   }
 
   public function addException($ex)
