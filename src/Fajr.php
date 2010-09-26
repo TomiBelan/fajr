@@ -196,10 +196,7 @@ class Fajr {
       }
 
       if ($loggedIn) {
-        $this->displayManager->addContent(
-        '<div class=\'logout\'><a class="button negative" href="'.FajrUtils::linkUrl(array('logout'=>true)).'">
-        <img src="images/door_in.png" alt=""/>Odhlásiť</a></div>'
-        );
+        $this->displayManager->set('logoutUrl', FajrUtils::linkUrl(array('logout'=>true)));
         $screenFactory = new VSES017\VSES017_factory($serverConnection);
         $adminStudia = $screenFactory->newAdministraciaStudiaScreen($trace);
         
@@ -263,16 +260,17 @@ class Fajr {
         $tabs->setActive(Input::get('tab'));
         $this->displayManager->addContent($tabs->getHtml());
         ;
-        $version = '<div>Fajr verzia '.hescape(Version::getVersionString()).'</div>';
-        $this->displayManager->addContent($version);
-        $statistics = "<div> Fajr made ".$this->statsConnection->getTotalCount().
-                " requests and downloaded ".$this->rawStatsConnection->getTotalSize().
-                " bytes (".$this->statsConnection->getTotalSize().
-                " bytes uncompressed) of data from AIS2 in ".
-                sprintf("%.3f", $this->statsConnection->getTotalTime()).
-                " seconds. It took ".sprintf("%.3f", $timer->getElapsedTime()).
-                " seconds to generate this page.</div>";
-        $this->displayManager->addContent($statistics);
+
+        $this->displayManager->set("stats_connections",
+            $this->statsConnection->getTotalCount());
+        $this->displayManager->set("stats_rawBytes",
+            $this->rawStatsConnection->getTotalSize());
+        $this->displayManager->set("stats_bytes",
+            $this->statsConnection->getTotalSize());
+        $this->displayManager->set("stats_connectionTime",
+            sprintf("%.3f", $this->statsConnection->getTotalTime()));
+        $this->displayManager->set("stats_totalTime",
+            sprintf("%.3f", $timer->getElapsedTime()));
       }
       else
       {

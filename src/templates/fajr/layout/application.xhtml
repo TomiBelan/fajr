@@ -1,0 +1,19 @@
+{% extends "layout/main.xhtml" %}
+
+{% block content %}
+  <div class="logout">
+    <a class="button negative" href="{{ logoutUrl }}">
+    <img src="images/door_in.png" alt=""/>Odhlásiť</a>
+  </div>
+  {% parent %}
+  {% block application_content %}{% endblock %}
+  <div>
+    Fajr verzia {{ fajr_version }}
+  </div>
+  <div>
+    Fajr made {{ stats_connections }} requests and downloaded
+    {{ stats_rawBytes }} bytes ({{ stats_bytes }} bytes uncompressed) of data
+    from AIS2 in {{ stats_connectionTime }} seconds. It took
+    {{ stats_totalTime }} seconds to generate this page.
+  </div>
+{% endblock %}
