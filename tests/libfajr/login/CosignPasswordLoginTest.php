@@ -16,6 +16,8 @@ use PHPUnit_Framework_TestCase;
 use fajr\libfajr\pub\exceptions\LoginException;
 use fajr\libfajr\login\CosignPasswordLogin;
 use fajr\libfajr\pub\connection\HttpConnection;
+use fajr\libfajr\pub\connection\AIS2ServerConnection;
+use fajr\libfajr\pub\connection\AIS2ServerUrlMap;
 /**
  * @ignore
  */
@@ -32,6 +34,8 @@ class CosignPasswordLoginTest extends PHPUnit_Framework_TestCase
   private $responseWrongPassword2;
   private $responseWrongPassword3;
   private $responseLoginOk;
+
+  private $serverConection;
   private $connection;
 
   public function setUp() {
@@ -41,7 +45,10 @@ class CosignPasswordLoginTest extends PHPUnit_Framework_TestCase
     $this->responseWrongPassword1 = file_get_contents(__DIR__.'/testdata/cosignWrongPassword.dat');
     $this->responseWrongPassword2 = file_get_contents(__DIR__.'/testdata/cosignWrongPassword2.dat');
     $this->responseWrongPassword3 = file_get_contents(__DIR__.'/testdata/cosignWrongPassword3.dat');
+
     $this->connection = $this->getMock('\fajr\libfajr\pub\connection\HttpConnection');
+    $this->serverConnection = new AIS2ServerConnection($this->connection,
+        new AIS2ServerUrlMap("ais2.test"));
   }
 
   public function testLoginOk() {
@@ -52,7 +59,7 @@ class CosignPasswordLoginTest extends PHPUnit_Framework_TestCase
                      ->method('post')
                      ->will($this->returnValue($this->responseLoginOk));
     $login = new CosignPasswordLogin('user', 'passwd');
-    $login->login($this->connection);
+    $login->login($this->serverConnection);
   }
 
   public function testLoginWrong1() {
@@ -64,7 +71,7 @@ class CosignPasswordLoginTest extends PHPUnit_Framework_TestCase
                      ->will($this->returnValue($this->responseWrongPassword1));
     $login = new CosignPasswordLogin('user', 'passwd');
     try {
-      $login->login($this->connection);
+      $login->login($this->serverConnection);
       $this->fail("login should have failed");
     } catch (LoginException $e) {
       $msg = $e->getMessage();
@@ -81,7 +88,7 @@ class CosignPasswordLoginTest extends PHPUnit_Framework_TestCase
                      ->will($this->returnValue($this->responseWrongPassword2));
     $login = new CosignPasswordLogin('user', 'passwd');
     try {
-      $login->login($this->connection);
+      $login->login($this->serverConnection);
       $this->fail("login should have failed");
     } catch (LoginException $e) {
       $msg = $e->getMessage();
@@ -98,7 +105,7 @@ class CosignPasswordLoginTest extends PHPUnit_Framework_TestCase
                      ->will($this->returnValue($this->responseWrongPassword3));
     $login = new CosignPasswordLogin('user', 'passwd');
     try {
-      $login->login($this->connection);
+      $login->login($this->serverConnection);
       $this->fail("login should have failed");
     } catch (LoginException $e) {
       $msg = $e->getMessage();
@@ -111,7 +118,7 @@ class CosignPasswordLoginTest extends PHPUnit_Framework_TestCase
                      ->method('get')
                      ->will($this->returnValue($this->responseAlreadyLogged));
     $login = new CosignPasswordLogin('user', 'passwd');
-    $this->assertTrue($login->isLoggedIn($this->connection));
+    $this->assertTrue($login->isLoggedIn($this->serverConnection));
   }
 
   public function testNotLogged() {
@@ -119,7 +126,7 @@ class CosignPasswordLoginTest extends PHPUnit_Framework_TestCase
                      ->method('get')
                      ->will($this->returnValue($this->responseNotLogged));
     $login = new CosignPasswordLogin('user', 'passwd');
-    $this->assertFalse($login->isLoggedIn($this->connection));
+    $this->assertFalse($login->isLoggedIn($this->serverConnection));
   }
 }
 

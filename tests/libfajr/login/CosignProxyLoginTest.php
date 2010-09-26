@@ -16,6 +16,8 @@ use fajr\libfajr\pub\exceptions\LoginException;
 use fajr\libfajr\login\CosignCookieLogin;
 use fajr\libfajr\pub\connection\HttpConnection;
 use fajr\libfajr\pub\login\CosignServiceCookie;
+use fajr\libfajr\pub\connection\AIS2ServerConnection;
+use fajr\libfajr\pub\connection\AIS2ServerUrlMap;
 /**
  * @ignore
  */
@@ -27,9 +29,12 @@ require_once 'test_include.php';
 class CosignProxyLoginTest extends PHPUnit_Framework_TestCase
 {
   private $connection;
+  private $serverConnection;
 
   public function setUp() {
     $this->connection = $this->getMock('\fajr\libfajr\pub\connection\HttpConnection');
+    $this->serverConnection = new AIS2ServerConnection($this->connection,
+        new AIS2ServerUrlMap("ais2.test"), null);
   }
 
   public function testLogin() {
@@ -46,7 +51,7 @@ class CosignProxyLoginTest extends PHPUnit_Framework_TestCase
                          $this->equalTo('groupware.cosign.test'))
                      ->will($this->returnValue(true));
     $login = new CosignProxyLogin(__DIR__.'/testdata/cosignProxyDir', 'cosign-groupware');
-    $login->login($this->connection);
+    $login->login($this->serverConnection);
   }
 }
 

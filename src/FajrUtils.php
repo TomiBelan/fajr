@@ -8,15 +8,15 @@ namespace fajr;
  */
 
 require_once 'FajrRouter.php';
-use fajr\libfajr\pub\connection\HttpConnection;
+use fajr\libfajr\pub\connection\AIS2ServerConnection;
 use fajr\libfajr\pub\login\Login;
 use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\login\AIS2LoginImpl;
 use fajr\libfajr\AIS2Session;
+
 class FajrUtils
 {
-
-  public static function login(Trace $trace, Login $login, HttpConnection $connection)
+  public static function login(Trace $trace, Login $login, AIS2ServerConnection $connection)
   {
     $trace->tlog("Creating AIS2Session");
     $session = new AIS2Session($login);
@@ -33,7 +33,7 @@ class FajrUtils
   /**
    * Odhlási z Cosignu a zmaže lokálne cookies.
    */
-  public static function logout(HttpConnection $connection)
+  public static function logout(AIS2ServerConnection $connection)
   {
     if (!isset($_SESSION['AISSession'])) return false;
     if ($_SESSION['AISSession']->getLogin()->logout($connection)) {
@@ -49,7 +49,7 @@ class FajrUtils
     session_regenerate_id(true);
   }
 
-  public static function isLoggedIn(HttpConnection $connection)
+  public static function isLoggedIn(AIS2ServerConnection $connection)
   {
     if (!isset($_SESSION['AISSession'])) {
       return false;

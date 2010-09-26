@@ -32,6 +32,8 @@ use fajr\presentation\MojeTerminyHodnoteniaCallback;
 use fajr\presentation\ZapisanePredmetyCallback;
 use fajr\presentation\ZoznamTerminovCallback;
 use fajr\TabManager;
+use fajr\libfajr\pub\connection\AIS2ServerConnection;
+use fajr\libfajr\pub\connection\AIS2ServerUrlMap;
 
 /**
  * This is "main()" of the fajr. It instantiates all neccessary
@@ -171,19 +173,20 @@ class Fajr {
 
   public function runLogic(Trace $trace, HttpConnection $connection)
   {
-      $simpleConnection = new connection\HttpToSimpleConnectionAdapter($connection);
+      $serverConnection = new AIS2ServerConnection($connection,
+          new AIS2ServerUrlMap(FajrConfig::get('AIS2.ServerName')));
       $timer = new SystemTimer();
 
       if (Input::get('logout') !== null) {
-        FajrUtils::logout($connection);
+        FajrUtils::logout($serverConnection);
         FajrUtils::redirect();
       }
 
-      $loggedIn = FajrUtils::isLoggedIn($connection);
+      $loggedIn = FajrUtils::isLoggedIn($serverConnection);
 
       $cosignLogin = $this->provideLogin();
       if (!$loggedIn && $cosignLogin != null) {
-          FajrUtils::login($trace->addChild("logging in"), $cosignLogin, $connection);
+          FajrUtils::login($trace->addChild("logging in"), $cosignLogin, $serverConnection);
           $loggedIn = true;
       }
 
@@ -192,7 +195,7 @@ class Fajr {
         '<div class=\'logout\'><a class="button negative" href="'.FajrUtils::linkUrl(array('logout'=>true)).'">
         <img src="images/door_in.png" alt=""/>Odhlásiť</a></div>'
         );
-        $screenFactory = new VSES017\VSES017_factory($simpleConnection);
+        $screenFactory = new VSES017\VSES017_factory($serverConnection);
         $adminStudia = $screenFactory->newAdministraciaStudiaScreen($trace);
         
         if (Input::get('studium') === null) Input::set('studium',0);

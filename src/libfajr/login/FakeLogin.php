@@ -8,7 +8,7 @@
 namespace fajr\libfajr\login;
 
 use fajr\libfajr\pub\login\Login;
-use fajr\libfajr\pub\connection\HttpConnection;
+use fajr\libfajr\pub\connection\AIS2ServerConnection;
 use fajr\libfajr\pub\exceptions\AIS2LoginException;
 
 class FakeLogin implements Login {
@@ -19,7 +19,7 @@ class FakeLogin implements Login {
     $this->shouldLogin = $shouldLogin;
   }
 
-  public function login(HttpConnection $unused) {
+  public function login(AIS2ServerConnection $unused) {
     if ($this->shouldLogin == true) {
       $this->loggedIn = true;
       return true;
@@ -28,15 +28,15 @@ class FakeLogin implements Login {
     }
   }
 
-  public function logout(HttpConnection $unused) {
+  public function logout(AIS2ServerConnection $unused) {
     $this->loggedIn = false;
   }
 
-  public function isLoggedIn(HttpConnection $unused) {
+  public function isLoggedIn(AIS2ServerConnection $unused) {
     return $this->loggedIn;
   }
 
-  public function ais2Relogin(HttpConnection $unused) {
+  public function ais2Relogin(AIS2ServerConnection $unused) {
     return true;
   }
 }

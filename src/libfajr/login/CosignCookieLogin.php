@@ -10,6 +10,9 @@ use fajr\libfajr\pub\login\CosignServiceCookie;
 use fajr\libfajr\pub\base\NullTrace;
 use fajr\libfajr\pub\exceptions\NotImplementedException;
 use fajr\libfajr\pub\exceptions\LoginException;
+use fajr\libfajr\AIS2ServerInstance;
+use fajr\libfajr\pub\connection\AIS2ServerConnection;
+use fajr\libfajr\pub\connection\AIS2ServerUrlMap;
 /**
  * Trieda reprezentujúca prihlasovanie pomocou cookie
  *
@@ -25,13 +28,16 @@ class CosignCookieLogin extends CosignAbstractLogin {
     $this->cookie = $cookie;
   }
 
-  public function login(HttpConnection $connection) {
+  public function login(AIS2ServerConnection $serverConnection)
+  {
+    $connection = $serverConnection->getHttpConnection();
     $connection->addCookie($this->cookie->getName(), $this->cookie->getValue(),
                   0, '/', $this->cookie->getDomain());
     return true;
   }
 
-  public function isLoggedIn(HttpConnection $connection) {
+  public function isLoggedIn(AIS2ServerConnection $unused)
+  {
     throw new NotImplementedException("We are not able to verify cosign service cookie.");
   }
 }

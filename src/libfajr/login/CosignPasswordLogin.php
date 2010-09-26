@@ -10,6 +10,8 @@ use fajr\libfajr\pub\base\NullTrace;
 use fajr\libfajr\pub\exceptions\LoginException;
 use fajr\libfajr\pub\exceptions\NotImplementedException;
 use fajr\libfajr\util;
+use fajr\libfajr\pub\connection\AIS2ServerConnection;
+use fajr\libfajr\pub\connection\AIS2ServerUrlMap;
 /**
  * Trieda reprezentujúca prihlasovanie pomocou cosign
  *
@@ -36,7 +38,9 @@ class CosignPasswordLogin extends CosignAbstractLogin {
 
   const IIKS_ERROR = '@\<title\>IIKS \- ([^,]*)\<\/title\>@';
 
-  public function login(HttpConnection $connection) {
+  public function login(AIS2ServerConnection $serverConnection)
+  {
+    $connection = $serverConnection->getHttpConnection();
     $login = $this->username;
     $krbpwd = $this->krbpwd;
 
@@ -48,7 +52,8 @@ class CosignPasswordLogin extends CosignAbstractLogin {
     // Username a password si nebudeme pamatat dlhsie ako treba
     $this->username = null;
     $this->krbpwd = null;
-    $this->isLoggedIn($connection);
+    // TODO(ppershing): why is there this line? Needed for some cookies?
+    $this->isLoggedIn($serverConnection);
     $data = $connection->post(new NullTrace(), self::COSIGN_LOGIN,
                               array('ref' => '', 'login'=> $login, 'krbpwd' => $krbpwd));
     if (!preg_match(parent::LOGGED_ALREADY_PATTERN, $data)) {
@@ -63,7 +68,9 @@ class CosignPasswordLogin extends CosignAbstractLogin {
     return true;
   }
 
-  public function isLoggedIn(HttpConnection $connection) {
+  public function isLoggedIn(AIS2ServerConnection $serverConnection)
+  {
+    $connection = $serverConnection->getHttpConnection();
     $data = $connection->get(new NullTrace(), self::COSIGN_LOGIN);
     if (preg_match(self::LOGGED_ALREADY_PATTERN, $data)) return true;
     if (preg_match(self::IIKS_LOGIN_PATTERN, $data)) return false;

@@ -15,6 +15,8 @@ use PHPUnit_Framework_TestCase;
 use fajr\libfajr\pub\exceptions\AIS2LoginException;
 use fajr\libfajr\login\CosignLogin;
 use fajr\libfajr\pub\connection\HttpCoonection;
+use fajr\libfajr\pub\connection\AIS2ServerConnection;
+use fajr\libfajr\pub\connection\AIS2ServerUrlMap;
 
 /**
  * @ignore
@@ -30,61 +32,59 @@ class AIS2LoginImplTest extends PHPUnit_Framework_TestCase
   private $responseNotLogged;
   private $responseLogout;
 
+  private $serverConection;
+  private $connection;
+
   public function setUp() {
     $this->responseLoggedIn = file_get_contents(__DIR__.'/testdata/aisLoggedIn.dat');
     $this->responseNotLogged = file_get_contents(__DIR__.'/testdata/aisNotLogged.dat');
     $this->responseLogout = file_get_contents(__DIR__.'/testdata/aisLogout.dat');
-  }
 
-  private function newConnection() {
-    return $this->getMock('\fajr\libfajr\pub\connection\HttpConnection');
+    $this->connection = $this->getMock('\fajr\libfajr\pub\connection\HttpConnection');
+    $this->serverConnection = new AIS2ServerConnection($this->connection,
+        new AIS2ServerUrlMap("ais2.test"), null);
   }
 
   public function testIsLoggedAlreadyLogged() {
-    $connection = $this->newConnection();
-    $connection->expects($this->once())
-               ->method('get')
-               ->will($this->returnValue($this->responseLoggedIn));
+    $this->connection->expects($this->once())
+                     ->method('get')
+                     ->will($this->returnValue($this->responseLoggedIn));
     $login = new AIS2LoginImpl();
-    $this->assertTrue($login->isLoggedIn($connection));
+    $this->assertTrue($login->isLoggedIn($this->serverConnection));
   }
 
   public function testIsLoggedNotLogged() {
-    $connection = $this->newConnection();
-    $connection->expects($this->once())
-               ->method('get')
-               ->will($this->returnValue($this->responseNotLogged));
+    $this->connection->expects($this->once())
+                     ->method('get')
+                     ->will($this->returnValue($this->responseNotLogged));
     $login = new AIS2LoginImpl();
-    $this->assertFalse($login->isLoggedIn($connection));
+    $this->assertFalse($login->isLoggedIn($this->serverConnection));
   }
 
   public function testIsLoggedFailure() {
-    $connection = $this->newConnection();
-    $connection->expects($this->once())
-               ->method('get')
-               ->will($this->returnValue("problem"));
+    $this->connection->expects($this->once())
+                     ->method('get')
+                     ->will($this->returnValue("problem"));
     $login = new AIS2LoginImpl();
     $this->setExpectedException('\Exception');
-    $login->isLoggedIn($connection);
+    $login->isLoggedIn($this->serverConnection);
   }
 
   public function testLoginOk() {
-    $connection = $this->newConnection();
-    $connection->expects($this->once())
-               ->method('get')
-               ->will($this->returnValue($this->responseLoggedIn));
+    $this->connection->expects($this->once())
+                     ->method('get')
+                     ->will($this->returnValue($this->responseLoggedIn));
     $login = new AIS2LoginImpl();
-    $login->login($connection);
+    $login->login($this->serverConnection);
   }
 
   public function testLoginFailure() {
-    $connection = $this->newConnection();
-    $connection->expects($this->once())
-               ->method('get')
-               ->will($this->returnValue($this->responseNotLogged));
+    $this->connection->expects($this->once())
+                     ->method('get')
+                     ->will($this->returnValue($this->responseNotLogged));
     $login = new AIS2LoginImpl();
     $this->setExpectedException('\Exception');
-    $login->login($connection);
+    $login->login($this->serverConnection);
   }
 
 }

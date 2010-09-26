@@ -8,6 +8,7 @@ namespace fajr\libfajr\login;
 use fajr\libfajr\base\Preconditions;
 use fajr\libfajr\data_manipulation\CosignProxyFileParser;
 use fajr\libfajr\pub\connection\HttpConnection;
+use fajr\libfajr\pub\connection\AIS2ServerConnection;
 use fajr\libfajr\pub\login\CosignServiceCookie;
 use fajr\libfajr\pub\base\NullTrace;
 use fajr\libfajr\pub\exceptions\NotImplementedException;
@@ -36,7 +37,8 @@ class CosignProxyLogin extends CosignAbstractLogin {
     $this->proxyCookieName = $proxyCookieName;
   }
 
-  public function login(HttpConnection $connection) {
+  public function login(AIS2ServerConnection $serverConnection) {
+    $connection = $serverConnection->getHttpConnection();
     if (empty($_SERVER['REMOTE_USER'])) {
       throw new LoginException('Nie je nastaveny cosign username');
     }
@@ -60,12 +62,13 @@ class CosignProxyLogin extends CosignAbstractLogin {
     return true;
   }
 
-  public function isLoggedIn(HttpConnection $connection) {
+  public function isLoggedIn(AIS2ServerConnection $unused) {
     return !empty($_SERVER['REMOTE_USER']);
   }
 
-  public function logout(HttpConnection $connection)
+  public function logout(AIS2ServerConnection $serverConnection)
   {
+    $connection = $serverConnection->getHttpConnection();
     $connection->clearCookies();
     // UNIX timestamp 1 should be far enough in past to trigger cookie
     // removal
