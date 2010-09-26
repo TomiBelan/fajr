@@ -15,7 +15,7 @@ use fajr\libfajr\login\CosignCookieLogin;
 use fajr\libfajr\login\NoLogin;
 use fajr\libfajr\login\TwoPhaseLogin;
 use fajr\libfajr\login\AIS2LoginImpl;
-use fajr\libfajr\pub\data_manipulation\CosignServiceCookie;
+use fajr\libfajr\pub\login\CosignServiceCookie;
 
 class LoginFactoryImpl implements LoginFactory {
   /**

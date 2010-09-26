@@ -10,13 +10,14 @@
 namespace fajr\libfajr\pub\login;
 use fajr\libfajr\login\FakeLogin;
 use fajr\libfajr\login\NoLogin;
+use fajr\libfajr\pub\login\CosignServiceCookie;
 
 class FakeLoginFactoryImpl implements LoginFactory {
   /**
    * @returns AIS2Login
    */
-  public function newLoginUsingCookie($cookie) {
-    $ok = ($cookie != "wrong_cookie");
+  public function newLoginUsingCookie(CosignServiceCookie $cookie) {
+    $ok = ($cookie->getValue() != "wrong_cookie");
     return new FakeLogin($ok);
   }
 
@@ -25,6 +26,17 @@ class FakeLoginFactoryImpl implements LoginFactory {
    */
   public function newLoginUsingCosign($username, $password) {
     $ok = ($password != "wrong");
+    return new FakeLogin($ok);
+  }
+
+  /**
+   * @param string $proxyDb Cosign ProxyDB directory
+   * @param string $cookieName Name of cosign's proxied cookie
+   * @returns Login
+   */
+  public function newLoginUsingCosignProxy($proxyDb, $cookieName)
+  {
+    $ok = ($proxyDb != "wrong");
     return new FakeLogin($ok);
   }
 

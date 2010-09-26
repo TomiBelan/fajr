@@ -5,7 +5,7 @@
 
 namespace fajr\libfajr\pub\login;
 
-use fajr\libfajr\pub\data_manipulation\CosignServiceCookie;
+use fajr\libfajr\pub\login\CosignServiceCookie;
 
 interface LoginFactory {
   /**

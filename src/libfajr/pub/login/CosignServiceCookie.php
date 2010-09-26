@@ -7,12 +7,12 @@
  * Tento súbor obsahuje triedu reprezentujúcu cosignovú service cookie
  *
  * @package    Fajr
- * @subpackage Libfajr__Data_manipulation
+ * @subpackage Libfajr__Login
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */
 
-namespace fajr\libfajr\pub\data_manipulation;
+namespace fajr\libfajr\pub\login;
 
 use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\pub\exceptions\ParseException;
@@ -22,7 +22,7 @@ use fajr\libfajr\base\Preconditions;
  * Trieda reprezentujúcu cosign service cookie
  *
  * @package    Fajr
- * @subpackage Libfajr__Data_manipulation
+ * @subpackage Libfajr__Login
  * @author     Martin Sucha <anty.sk@gmail.com>
  */
 final class CosignServiceCookie
