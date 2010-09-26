@@ -22,19 +22,33 @@ use sfServiceContainerAutoloader;
 use Twig_Autoloader;
 
 /**
+ * Function for exitting bootstrap code in case of error
+ *
+ * This function stops php execution.
+ *
+ * @param string $description HTML description of the error to display
+ */
+function fajr_bootstrap_error($description)
+{
+  die('<html><head><title>Chyba - Fajr</title>'.
+      '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />'.
+      '</head><body>'.
+      '<h1>Chyba</h1>'.
+      $description.
+      '</body></html>');
+}
+
+/**
  * Wrong www root detection.
  */
 if (!defined('_FAJR')) {
-  die('<html><head>'.
-      '<title>Varovanie</title>'.
-      '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />'.
-      '</head><body>'.
-      '<h1>Varovanie</h1>'.
-      '<p>Máte zle nastavený server, tento súbor by nemal byť '.
-      'priamo prístupný. Prosím nastavte server tak, aby sa dalo '.
-      'dostať len k podadresáru <code>web</code> a použite '.
-      '<code>index.php</code> v ňom</p>'.
-      '</body></html>');
+  fajr_bootstrap_error('
+    <p>
+      Máte zle nastavený server, tento súbor by nemal byť priamo prístupný.
+      Prosím nastavte server tak, aby sa dalo dostať len k podadresáru
+      <code>web</code> a použite <code>index.php</code> v ňom
+    </p>
+  ');
 }
 
 // TODO(ppershing): create helper objects and configuration modules for these constants
@@ -59,10 +73,25 @@ require_once 'libfajr/Assert.php';
 
 // is there configuration.php file present?
 if (!FajrConfig::isConfigured()) {
-  DisplayManager::addContent('notConfigured', true);
-  echo DisplayManager::display();
-  session_write_close();
-  die();
+  fajr_bootstrap_error('
+    <p>
+      Fajr nie je nakonfigurovaný, prosím skopírujte súbor
+      <code>config/configuration.example.php</code> do
+      <code>config/configuration.php</code>. Prednastavené hodnoty
+      konfiguračných volieb by mali byť vhodné pre väčšinu inštalácií, no
+      napriek tomu ponúkame možnosť ich pohodlne zmeniť na jednom mieste - v
+      tomto súbore.
+    </p>
+
+    <p>
+      <strong>Dôležité:</strong> Pred používaním aplikácie je ešte nutné správne
+      nastaviť skupinu na <code>www-data</code> (alebo pod čím beží webserver) a
+      práva na adresáre <code>./temp</code>, <code>./temp/cookies</code> a
+      <code>./temp/sessions</code> (alebo na tie, čo ste nastavili v 
+      konfigurácii), tak, aby boli nastavené práva len na zapisovanie a použitie
+      , t.j. <code>d----wx---</code>.
+    </p>
+  ');
 }
 
 // bootstrapping whole application
