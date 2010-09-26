@@ -25,14 +25,14 @@ class Version {
   private static $changelogLimit = 6;
 
   public static function getChangelog() {
-    $data = "<div class='changelog prepend-1 span-21 last increase-line-height'>\n<strong>Changelog:</strong><ul>\n";
+
+    $output = array();
     $tmp_array = array_slice(array_reverse(Version::$changelog), 0, Version::$changelogLimit);
     foreach ($tmp_array as $change) {
-      $data .= '<li>'.$change[0].' (verzia ' . $change[1] . ') - ';
-      $data .= $change[2]."</li>\n";
+      $item = array('date'=>$change[0], 'version'=>$change[1], 'description'=>$change[2]);
+      $output[] = $item;
     }
-    $data .= "</ul></div>\n";
-    return $data;
+    return $output;
   }
 
   public static function getBuildTimeInfo() {
