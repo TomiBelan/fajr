@@ -142,6 +142,9 @@ class Fajr {
       $trace = new HtmlTrace($timer, "--Trace--");
     }
 
+    // TODO(anty): do we want DisplayManager? If so, use injector here
+    $this->displayManager = new DisplayManager();
+
     try {
       Input::prepare();
 
@@ -152,23 +155,23 @@ class Fajr {
       if ($connection) {
         FajrUtils::logout($connection);
       }
-      DisplayManager::addException($e);
+      $this->displayManager->addException($e);
     } catch (Exception $e) {
-      DisplayManager::addException($e);
+      $this->displayManager->addException($e);
     }
 
-    DisplayManager::setBase(hescape(FajrUtils::basePath()));
+    $this->displayManager->setBase(hescape(FajrUtils::basePath()));
 
     $trace->tlog("everything done, generating html");
 
     if (FajrConfig::get('Debug.Trace')===true) {
       $traceHtml = $trace->getHtml();
-      DisplayManager::addContent('<div class="span-24">' . $traceHtml . 
+      $this->displayManager->addContent('<div class="span-24">' . $traceHtml .
           '<div> Trace size:' .
           sprintf("%.2f", strlen($traceHtml) / 1024.0 / 1024.0) .
           ' MB</div></div>');
     }
-    echo DisplayManager::display();
+    echo $this->displayManager->display();
   }
 
   public function runLogic(Trace $trace, HttpConnection $connection)
@@ -191,7 +194,7 @@ class Fajr {
       }
 
       if ($loggedIn) {
-        DisplayManager::addContent(
+        $this->displayManager->addContent(
         '<div class=\'logout\'><a class="button negative" href="'.FajrUtils::linkUrl(array('logout'=>true)).'">
         <img src="images/door_in.png" alt=""/>Odhlásiť</a></div>'
         );
@@ -209,7 +212,7 @@ class Fajr {
 
         $zoznamStudiiCollapsible = new Collapsible(new HtmlHeader('Zoznam štúdií'), $zoznamStudiiTable, true);
 
-        DisplayManager::addContent($zoznamStudiiCollapsible->getHtml());    
+        $this->displayManager->addContent($zoznamStudiiCollapsible->getHtml());
         
         $zapisneListy = $adminStudia->getZapisneListy($trace->addChild('getZapisneListy'), Input::get('studium'));
         
@@ -230,7 +233,7 @@ class Fajr {
 
         $zapisneListyCollapsible = new Collapsible(new HtmlHeader('Zoznam zápisných listov'), $zapisneListyTable, true);
 
-        DisplayManager::addContent($zapisneListyCollapsible->getHtml());
+        $this->displayManager->addContent($zapisneListyCollapsible->getHtml());
         
         
         $terminyHodnotenia = $screenFactory->newTerminyHodnoteniaScreen(
@@ -240,7 +243,7 @@ class Fajr {
         
         if (Input::get('tab') === null) Input::set('tab', 'TerminyHodnotenia');
         $tabs = new TabManager('tab', array('studium'=>Input::get('studium'),
-              'list'=>Input::get('list')));
+              'list'=>Input::get('list')), $this->displayManager);
         // FIXME: chceme to nejak refaktorovat, aby sme nevytvarali zbytocne
         // objekty, ktore v konstruktore robia requesty
         $hodnoteniaScreen = $screenFactory->newHodnoteniaPriemeryScreen(
@@ -256,10 +259,10 @@ class Fajr {
             new HodnoteniaCallback($trace, $hodnoteniaScreen));
 
         $tabs->setActive(Input::get('tab'));
-        DisplayManager::addContent($tabs->getHtml());
+        $this->displayManager->addContent($tabs->getHtml());
         ;
         $version = '<div>Fajr verzia '.hescape(Version::getVersionString()).'</div>';
-        DisplayManager::addContent($version);
+        $this->displayManager->addContent($version);
         $statistics = "<div> Fajr made ".$this->statsConnection->getTotalCount().
                 " requests and downloaded ".$this->rawStatsConnection->getTotalSize().
                 " bytes (".$this->statsConnection->getTotalSize().
@@ -267,19 +270,19 @@ class Fajr {
                 sprintf("%.3f", $this->statsConnection->getTotalTime()).
                 " seconds. It took ".sprintf("%.3f", $timer->getElapsedTime()).
                 " seconds to generate this page.</div>";
-        DisplayManager::addContent($statistics);
+        $this->displayManager->addContent($statistics);
       }
       else
       {
-        DisplayManager::addContent('loginBox', true); 
-        DisplayManager::addContent('warnings', true);
-        DisplayManager::addContent('terms', true);
-        DisplayManager::addContent('credits', true);
+        $this->displayManager->addContent('loginBox', true);
+        $this->displayManager->addContent('warnings', true);
+        $this->displayManager->addContent('terms', true);
+        $this->displayManager->addContent('credits', true);
         $version = "<div class='version prepend-1 span-21 last increase-line-height'>\n<strong>Verzia fajru:</strong> \n";
         $version .= hescape(Version::getVersionString());
         $version .= '</div>';
-        DisplayManager::addContent($version);
-        DisplayManager::addContent(Version::getChangelog(), false);
+        $this->displayManager->addContent($version);
+        $this->displayManager->addContent(Version::getChangelog(), false);
       }
   }
 }

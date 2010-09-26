@@ -12,9 +12,9 @@ require_once 'FajrConfig.php';
 
 class DisplayManager
 {
-  protected static $content = array();
+  protected $content = array();
   
-  protected static $base = null;
+  protected $base = null;
 
   private static $nextHtmlId = 1;
   
@@ -160,18 +160,18 @@ Prihlásením do systému Fajr súhlasíte s
 '
   );
 
-  public static function setBase($base)
+  public function setBase($base)
   {
-    self::$base = $base;
+    $this->base = $base;
   }
 
-  public static function addContent($content, $predefinedContent = false)
+  public function addContent($content, $predefinedContent = false)
   {
-    if ($predefinedContent) self::$content[] = self::$predefinedContent[$content];
-    else self::$content[] = $content;
+    if ($predefinedContent) $this->content[] = self::$predefinedContent[$content];
+    else $this->content[] = $content;
   }
 
-  public static function addException($ex)
+  public function addException($ex)
   {
     $stackTrace = '';
     if (FajrConfig::get('Debug.Exception.ShowStacktrace')) {
@@ -180,25 +180,26 @@ Prihlásením do systému Fajr súhlasíte s
     }
     $info = '<h2>Pri spracúvaní požiadavky nastala chyba:</h2>';
     $info .= nl2br(hescape($ex->getMessage()));
-    self::addContent('<div class="error">' . $info . $stackTrace . '</div>');
+    $this->addContent('<div class="error">' . $info . $stackTrace . '</div>');
   }
 
-  public static function display()
+  public function display()
   {
     $html = '';
-    foreach (self::$content as $item) $html .= $item;
+    foreach ($this->content as $item) $html .= $item;
     $header = self::$predefinedContent['header'];
-    if (self::$base !== null) $header .= '<base href="'.self::$base.'" />';
+    if ($this->base !== null) $header .= '<base href="'.$this->base.'" />';
     $header .= self::$predefinedContent['header2'];
     if (FajrConfig::get('Debug.Banner')) {
       $header .= self::$predefinedContent['debugBanner'];
     }
     $html = $header . $html;
-    $html .= self::$predefinedContent['footer'] . self::googleAnalytics() . self::$predefinedContent['footer2'];
+    $html .= self::$predefinedContent['footer'] . $this->googleAnalytics() . self::$predefinedContent['footer2'];
     return $html;
   }
 
-  protected static function googleAnalytics() {
+  protected function googleAnalytics()
+  {
     $account = FajrConfig::get('GoogleAnalytics.Account');
     if ($account === null) return '';
     return '<script type="text/javascript">
@@ -216,7 +217,8 @@ Prihlásením do systému Fajr súhlasíte s
 </script>';
   }
 
-  public static function getUniqueHTMLId($idType = 'id') {
+  public static function getUniqueHTMLId($idType = 'id')
+  {
     $uniquePart = self::$nextHtmlId;
     self::$nextHtmlId += 1;
 

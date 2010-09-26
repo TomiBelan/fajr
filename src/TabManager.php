@@ -14,11 +14,12 @@ class TabManager implements Renderable {
   private $active = null;
   private $name = '';
   private $urlParams = null;
+  private $displayManager = null;
 
-  public function __construct($name, array $urlParams) {
+  public function __construct($name, array $urlParams, DisplayManager $displayManager) {
     $this->name = $name;
     $this->urlParams = $urlParams;
-
+    $this->displayManager = $displayManager;
   }
 
   public function addTab($name, $title, Renderable $content) {
@@ -62,7 +63,7 @@ class TabManager implements Renderable {
     try {
       $code .= $activeTab['content']->getHtml();
     } catch (Exception $e) {
-      DisplayManager::addException($e);
+      $this->displayManager->addException($e);
     }
     return $code;
   }
