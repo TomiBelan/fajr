@@ -145,12 +145,14 @@ class Fajr {
     // TODO(anty): do we want DisplayManager? If so, use injector here
     $this->displayManager = new DisplayManager();
 
+    $pageName = null;
+
     try {
       Input::prepare();
 
       $this->regenerateSessionOnLogin();
       $connection = $this->provideConnection();
-      $this->runLogic($trace, $connection);
+      $pageName = $this->runLogic($trace, $connection);
     } catch (LoginException $e) {
       if ($connection) {
         FajrUtils::logout($connection);
@@ -171,7 +173,7 @@ class Fajr {
           sprintf("%.2f", strlen($traceHtml) / 1024.0 / 1024.0) .
           ' MB</div></div>');
     }
-    echo $this->displayManager->display();
+    echo $this->displayManager->display($pageName);
   }
 
   public function runLogic(Trace $trace, HttpConnection $connection)
@@ -274,15 +276,7 @@ class Fajr {
       }
       else
       {
-        $this->displayManager->addContent('loginBox', true);
-        $this->displayManager->addContent('warnings', true);
-        $this->displayManager->addContent('terms', true);
-        $this->displayManager->addContent('credits', true);
-        $version = "<div class='version prepend-1 span-21 last increase-line-height'>\n<strong>Verzia fajru:</strong> \n";
-        $version .= hescape(Version::getVersionString());
-        $version .= '</div>';
-        $this->displayManager->addContent($version);
-        $this->displayManager->addContent(Version::getChangelog(), false);
+        return 'welcome';
       }
   }
 }

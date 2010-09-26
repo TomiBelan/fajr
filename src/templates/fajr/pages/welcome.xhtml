@@ -1,0 +1,112 @@
+{% extends "layout/main.xhtml" %}
+{% block title %}Vitajte{% endblock %}
+{% block content %}
+{# loginBox #}
+<div class="span-5 prepend-1">
+  <form method="post" action="">
+    <fieldset class="login-box">
+    <legend>Prihlásenie cez Cosign</legend>
+    <div>
+    <label for="login">Prihlasovacie meno</label>
+    <br/>
+    <input type="text" name="login" id="login"/>
+    <br/>
+    <label for="krbpwd">Heslo</label>
+    <br/>
+    <input type="password" name="krbpwd" id="krbpwd"/>
+    <br/>
+    <button type="submit" name="submit">
+      <img alt="" src="images/key_go.png"/>
+      Prihlásiť
+    </button>
+    </div>
+    </fieldset>
+  </form>
+</div>
+<div class="span-5 last">
+  <form method="post" action="">
+    <fieldset class="login-box">
+      <legend>Prihlásenie cez cookie</legend>
+    <div>
+    bezpečne sa <a
+    href=\'https://login.uniba.sk/?cosign-filter-ais2.uniba.sk&amp;https://ais2.uniba.sk/ais/login.do?\'>
+      prihlás</a> do AISu a skopíruj si cookie.
+    <hr/>
+    <label for="cosignCookie">cosign-filter-ais2.uniba.sk</label>
+    <br/>
+    <input type="password" name="cosignCookie" id="cosignCookie"/>
+    <br/>
+    <button type="submit" name="submit">
+      <img alt="" src="images/key_add.png"/>
+      Prihlásiť
+    </button>
+    </div>
+    </fieldset>
+  </form>
+</div>
+<hr class="space" />
+
+{# warnings #}
+<div class="span-18 prepend-1 last increase-line-height">
+<p>
+Vitajte pred bránou do aplikácie FAJR.
+Snahou tejto miniaplikácie je poskytovať najčastejšie používané funkcie
+<a href="https://ais2.uniba.sk/">AISu</a> a to jednoducho, rýchlo,
+bez zbytočných klikaní a na všetkých browseroch.
+Sú dve možnosti ako sa môžeš prihlásiť.
+</p>
+<ol>
+<li>
+Pomocou cookie.<br/>
+Tento postup je náročnejší, ale bezpečnejší a preto <strong>odporúčaný</strong>.
+Funguje to tak, že sa normálne prihlásite do <a href="https://ais2.uniba.sk/">AISu</a>.
+Po prihlásení si pozriete nastavené cookies.
+Hodnotu tej s názvom "cosign-filter-ais2.uniba.sk" skopírujete do pravého formulára "<em>Prihlásenie cez cookie</em>".
+</li>
+<li>
+Pomocou mena a hesla.<br/>
+Do ľavého formulára "<em>Prihlásenie cez Cosign</em>" vyplníte svoje meno a heslo, rovnaké ako keď sa prihlasujete do <a href="https://ais2.uniba.sk/">AISu</a>.
+Tento postup <strong>nie je odporúčaný</strong>.
+</li>
+</ol>
+<p>
+Prečo je prvý postup bezpečnejší?<br/>
+Pretože pri ňom neposielate svoje meno a heslo a nevystavujete sa riziku, že ho niekto po ceste ukradne.
+S odcudzenou cookie sa dajú meniť len údaje v <a href="https://ais2.uniba.sk/">AISe</a>
+(aj to maximálne najbližších 12 hodín),
+s menom a heslom sa dá dostať všade, na čo a kde sa používa.<br/>
+</p>
+<p>
+Táto aplikácia nerobí nič zlé (aspoň jej autori o tom nevedia).
+Ale ak jej aj tak nedôverujete, môžete si ju rozbehnúť u seba.
+Stačí vám k tomu webserver, PHP a jej
+<a href="http://code.google.com/p/fajr/source/checkout">zdrojové kódy</a>
+(pre viac informácií viď <a href="http://code.google.com/p/fajr/source/browse/trunk/README">README</a>).
+Ak jej ani tak nedôverujete, používajte AIS ;-).
+</p>
+</div>
+
+{# terms #}
+<div class="span-21 prepend-1 last increase-line-height"><p>
+Prihlásením do systému Fajr súhlasíte s
+<a href="terms_of_use.php">Podmienkami používania</a>
+</p></div>
+
+{# credits #}
+<div class="span-21 prepend-1 last increase-line-height"><p>
+Stránka mohla vzniknúť vďaka
+<a href="http://www.prototypejs.org/">Prototype</a>,
+<a href="http://www.blueprintcss.org/">Blueprint</a>,
+<a href="http://www.frequency-decoder.com/2006/09/16/unobtrusive-table-sort-script-revisited">Unobtrusive Table Sort Script</a>
+a <a href="http://www.famfamfam.com/lab/icons/silk/">Silk icons</a>.
+</p></div>
+
+{# version #}
+<div class='version prepend-1 span-21 last increase-line-height'>
+  <strong>Verzia fajru:</strong> {{ fajr_version }}
+</div>
+
+{# changelog #}
+{{ fajr_changelog |safe }}
+
+{% endblock %}
