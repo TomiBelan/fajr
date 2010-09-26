@@ -8,7 +8,9 @@
  */
 namespace fajr;
 
-require_once 'FajrConfig.php';
+use Twig_Loader_Filesystem;
+use Twig_Environment;
+use Twig_Extension_Escaper;
 
 class DisplayManager
 {
@@ -64,45 +66,6 @@ class DisplayManager
 </div>
 <hr class="space" />',
 
-      'header' => '
-<!DOCTYPE html
-     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="sk" lang="sk">
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  ',
-      'header2' => '
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/prototype/1.6.1.0/prototype.js"></script>
-  <script type="text/javascript" src="javascripts/fajr.js"></script>
-  <script type="text/javascript" src="javascripts/toggleVisibility.js"></script>
-  <script type="text/javascript" src="javascripts/tablesort.min.js"></script>
-  <link rel="stylesheet" href="css/screen.css" type="text/css" media="screen, projection" />
-  <link rel="stylesheet" href="css/plugins/buttons/screen.css" type="text/css" media="screen, projection" />
-  <link rel="stylesheet" href="css/custom.css" type="text/css" media="screen, projection" />
-  <link rel="stylesheet" href="css/print.css" type="text/css" media="print" />
-  <link rel="stylesheet" href="css/customprint.css" type="text/css" media="print" />
-  <!--[if lt IE 8]><link rel="stylesheet" href="css/ie.css" type="text/css" media="screen, projection" /><![endif]-->
-  <link href="images/favicon.ico" rel="icon" type="image/x-icon" />
-  
-  <title>FAJR</title>
-  
-</head>
-<body>
-<div class="container"><h1><img src=\'images/fajr_small.gif\' alt="[logo]" class=\'logo\' /> FAJR beta</h1>
-',
-      'debugBanner' => '
-  <h2 style="color:red"> Development verzia. Ostrú verziu nájdeš na
-  <a href="http://fajr.dcs.fmph.uniba.sk"> fajr.dcs.fmph.uniba.sk </a> </h2>
-',
-
-      'footer' => '
-</div>
-',
-      'footer2'=>'
-</body>
-</html>
-',
       'warnings' => '
 <div class="span-18 prepend-1 last increase-line-height">
 <p>
@@ -185,17 +148,23 @@ Prihlásením do systému Fajr súhlasíte s
 
   public function display()
   {
+    $templateDir = FajrUtils::joinPath(__DIR__, 'templates/fajr');
+    $loader = new Twig_Loader_Filesystem($templateDir);
+    $twig = new Twig_Environment($loader);
+    $twig->addExtension(new Twig_Extension_Escaper());
+
+    $template = $twig->loadTemplate('pages/legacy.xhtml');
+
     $html = '';
     foreach ($this->content as $item) $html .= $item;
-    $header = self::$predefinedContent['header'];
-    if ($this->base !== null) $header .= '<base href="'.$this->base.'" />';
-    $header .= self::$predefinedContent['header2'];
-    if (FajrConfig::get('Debug.Banner')) {
-      $header .= self::$predefinedContent['debugBanner'];
-    }
-    $html = $header . $html;
-    $html .= self::$predefinedContent['footer'] . $this->googleAnalytics() . self::$predefinedContent['footer2'];
-    return $html;
+
+    $output = $template->render(array(
+      'legacy_content'=>$html,
+      'base'=>$this->base,
+      'debug_banner'=>FajrConfig::get('Debug.Banner'),
+      ));
+    
+    return $output;
   }
 
   protected function googleAnalytics()
