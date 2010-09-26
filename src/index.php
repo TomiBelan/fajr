@@ -19,6 +19,7 @@ use fajr\modules\SessionInitializerModule;
 use fajr\modules\TraceModule;
 use Loader;
 use sfServiceContainerAutoloader;
+use Twig_Autoloader;
 
 /**
  * Wrong www root detection.
@@ -44,6 +45,11 @@ mb_internal_encoding("UTF-8");
 // register Symfony autoloader first, because ours will eat the loading instead.
 require_once '../third_party/symfony_di/lib/sfServiceContainerAutoloader.php';
 sfServiceContainerAutoloader::register();
+
+// register Twig autoloader
+require_once '../third_party/twig/lib/Twig/Autoloader.php';
+Twig_Autoloader::register();
+
 // register our autoloader
 require_once 'libfajr/libfajr.php';
 Loader::register();
