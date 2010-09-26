@@ -22,6 +22,7 @@ use fajr\libfajr\AIS2Session;
 use fajr\libfajr\base\SystemTimer;
 use fajr\libfajr\connection;
 use fajr\libfajr\pub\connection\HttpConnection;
+use fajr\libfajr\pub\data_manipulation\CosignServiceCookie;
 use fajr\libfajr\pub\base\NullTrace;
 use fajr\libfajr\pub\login\AIS2Login;
 use fajr\libfajr\pub\login\LoginFactoryImpl;
@@ -95,7 +96,9 @@ class Fajr {
     if ($login !== null && $krbpwd !== null) {
       return $factory->newLoginUsingCosign($login, $krbpwd);
     } else if ($cosignCookie !== null) {
-      return $factory->newLoginUsingCookie($cosignCookie);
+      $cosignCookie = CosignServiceCookie::fixCookieValue($cosignCookie);
+      // TODO(anty): change to use correct domain and cookie name
+      return $factory->newLoginUsingCookie(new CosignServiceCookie('cosign-filter-ais2.uniba.sk', $cosignCookie, 'ais2.uniba.sk'));
     } else {
       return null;
     }

@@ -4,7 +4,9 @@
 // found in the LICENSE file in the project root directory.
 
 namespace fajr\libfajr\login;
+use fajr\libfajr\base\Preconditions;
 use fajr\libfajr\pub\connection\HttpConnection;
+use fajr\libfajr\pub\data_manipulation\CosignServiceCookie;
 use fajr\libfajr\pub\base\NullTrace;
 use fajr\libfajr\pub\exceptions\NotImplementedException;
 use fajr\libfajr\pub\exceptions\LoginException;
@@ -15,16 +17,17 @@ use fajr\libfajr\pub\exceptions\LoginException;
  * @author Martin Sucha <anty.sk@gmail.com>
  */
 class CosignCookieLogin extends CosignAbstractLogin {
-  private $cookie = null;
+  /** @var CosignServiceCookie $cookie */
+  protected $cookie = null;
 
-  public function  __construct($cookie) {
-    assert($cookie !== null);
+  public function  __construct(CosignServiceCookie $cookie) {
+    Preconditions::checkNotNull($cookie, 'cookie');
     $this->cookie = $cookie;
   }
 
   public function login(HttpConnection $connection) {
-    $connection->addCookie('cosign-filter-ais2.uniba.sk', $this->cookie,
-                  0, '/', 'ais2.uniba.sk');
+    $connection->addCookie($this->cookie->getName(), $this->cookie->getValue(),
+                  0, '/', $this->cookie->getDomain());
     return true;
   }
 

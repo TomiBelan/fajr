@@ -15,6 +15,7 @@ use PHPUnit_Framework_TestCase;
 use fajr\libfajr\pub\exceptions\LoginException;
 use fajr\libfajr\login\CosignCookieLogin;
 use fajr\libfajr\pub\connection\HttpConnection;
+use fajr\libfajr\pub\data_manipulation\CosignServiceCookie;
 /**
  * @ignore
  */
@@ -39,7 +40,7 @@ class CosignCookieLoginTest extends PHPUnit_Framework_TestCase
     $this->connection->expects($this->once())
                      ->method('addCookie')
                      ->will($this->returnValue(null));
-    $login = new CosignCookieLogin('cookie');
+    $login = new CosignCookieLogin(new CosignServiceCookie('cosign-test', 'empty', 'test'));
     $login->login($this->connection);
   }
 }

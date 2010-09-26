@@ -4,37 +4,61 @@
 // found in the LICENSE file in the project root directory.
 
 /**
+ * @author Peter Perešíni <ppershing+fajr@gmail.com>
  * @author Martin Sucha <anty.sk@gmail.com>
  */
 
 namespace fajr\libfajr\pub\login;
+use fajr\libfajr\base\Preconditions;
 use fajr\libfajr\login\CosignPasswordLogin;
 use fajr\libfajr\login\CosignCookieLogin;
 use fajr\libfajr\login\NoLogin;
 use fajr\libfajr\login\TwoPhaseLogin;
 use fajr\libfajr\login\AIS2LoginImpl;
+use fajr\libfajr\pub\data_manipulation\CosignServiceCookie;
 
 class LoginFactoryImpl implements LoginFactory {
   /**
+   * @param CosignServiceCookie $cookie
    * @returns AIS2Login
    */
-  public function newLoginUsingCookie($cookie) {
+  public function newLoginUsingCookie(CosignServiceCookie $cookie) {
+    Preconditions::checkNotNull($cookie, 'cookie');
     return new TwoPhaseLogin(new CosignCookieLogin($cookie),
                              new AIS2LoginImpl());
   }
 
   /**
-   * @return AIS2Login
+   * @param string $username
+   * @param string $password
+   * @returns AIS2Login
    */
-  public function newLoginUsingCosign($username, $password) {
+  public function newLoginUsingCosign($username, $password)
+  {
+    Preconditions::checkIsString($username, 'username');
+    Preconditions::checkIsString($password, 'password');
     return new TwoPhaseLogin(new CosignPasswordLogin($username, $password),
+                             new AIS2LoginImpl());
+  }
+
+  /**
+   * @param string $proxyDb Cosign ProxyDB directory
+   * @param string $cookieName Name of cosign's proxied cookie
+   * @returns Login
+   */
+  public function newLoginUsingCosignProxy($proxyDb, $cookieName)
+  {
+    Preconditions::checkIsString($proxyDb, 'proxyDb');
+    Preconditions::checkIsString($cookieName, 'cookieName');
+    return new TwoPhaseLogin(new CosignProxyLogin($proxyDb, $cookieName),
                              new AIS2LoginImpl());
   }
 
   /**
    * @return AIS2Login
    */
-  public function newNoLogin() {
+  public function newNoLogin()
+  {
     return new NoLogin();
   }
 }
