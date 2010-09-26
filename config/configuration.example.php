@@ -69,4 +69,9 @@ return array(
    * alebo relatívna k adresáru Path.Temporary)
    */
   //'Path.Temporary.Sessions'=>'./sessions',
+
+  /*
+   * Hostname AIS2 servera
+   * /
+  //'AIS2.ServerName' => 'ais2.uniba.sk'
 );

@@ -3,14 +3,22 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file in the project root directory.
 
-// TODO(??): missing author
+/**
+ * @author Peter Perešíni <ppershing+fajr@gmail.com>
+ */
 
 namespace fajr\libfajr\window;
 
-class RequestBuilderImpl implements RequestBuilder {
+use fajr\libfajr\pub\connection\AIS2ServerUrlMap;
+
+class RequestBuilderImpl implements RequestBuilder
+{
   private $serial = 0;
-  private $webRoot = 'https://ais2.uniba.sk';
-  const SERVLET_ROOT_PATH = '/ais/servlets/WebUIServlet';
+  private $server;
+
+  public function __construct(AIS2ServerUrlMap $server) {
+    $this->server = $server;
+  }
 
   /**
    * Vygeneruje nové sériové číslo používané v XML protokole na komunikáciu s AISom.
@@ -28,25 +36,25 @@ class RequestBuilderImpl implements RequestBuilder {
    */
   public function getRequestUrl($appId, $formName = null)
   {
-    $url = $this->webRoot . self::SERVLET_ROOT_PATH;
+    $url = $this->server->getWebUiServletUrl();
+    // TODO(ppershing): use url builder here!
     $url .= '?appId=' . $appId;
     if ($formName !== null) {
       $url .= '&form='.$formName;
     }
-    // $url .= '&viewer=web&antiCache=' . random();
     return $url;
   }
 
 
   public function getAppInitializationUrl(ScreenData $data) {
-    $url = $this->webRoot . self::SERVLET_ROOT_PATH;
+    $url = $this->server->getWebUiServletUrl();
+    // TODO(ppershing): use url builder here!
     $url .= '?appClassName=' . $data->appClassName;
     if ($data->additionalParams !== null) {
       foreach ($data->additionalParams as $key => $value) {
         $url .= '&' . $key . '=' . $value;
       }
     }
-    // $url .= '&viewer=web&antiCache=' . random();
     return $url;
   }
 
@@ -72,7 +80,6 @@ class RequestBuilderImpl implements RequestBuilder {
     extract($options, EXTR_IF_EXISTS);
 
     if (!isset($appProperties['activeDlgName'])) $appProperties['activeDlgName'] = $dlgName;
-
 
     $xml_spec = '<request><serial>'.$this->newSerial().'</serial>';
     if ($events === true)

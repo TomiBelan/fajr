@@ -8,8 +8,8 @@
 namespace fajr\libfajr\login;
 
 use fajr\libfajr\pub\login\Login;
-use fajr\libfajr\pub\connection\HttpConnection;
 use fajr\libfajr\pub\exceptions\AIS2LoginException;
+use fajr\libfajr\pub\connection\AIS2ServerConnection;
 
 class TwoPhaseLogin implements Login
 {
@@ -21,16 +21,19 @@ class TwoPhaseLogin implements Login
     $this->aisLogin = $aisLogin;
   }
 
-  public function login(HttpConnection $connection) {
+  public function login(AIS2ServerConnection $connection)
+  {
     return $this->cosignLogin->login($connection) &&
            $this->aisLogin->login($connection);
   }
 
-  public function isLoggedIn(HttpConnection $connection) {
+  public function isLoggedIn(AIS2ServerConnection $connection)
+  {
     return $this->aisLogin->isLoggedIn($connection);
   }
 
-  public function logout(HttpConnection $connection) {
+  public function logout(AIS2ServerConnection $connection)
+  {
     $exceptions = array();
     try {
       $this->aisLogin->logout($connection);
@@ -55,7 +58,7 @@ class TwoPhaseLogin implements Login
     return true;
   }
 
-  public function ais2Relogin(HttpConnection $connection)
+  public function ais2Relogin(AIS2ServerConnection $connection)
   {
     return $this->aisLogin->ais2Relogin($connection);
   }

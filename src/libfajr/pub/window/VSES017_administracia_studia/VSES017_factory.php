@@ -13,30 +13,35 @@ use fajr\libfajr\pub\connection\SimpleConnection;
 use fajr\libfajr\window\RequestBuilderImpl;
 use fajr\libfajr\window\ScreenRequestExecutorImpl;
 use fajr\libfajr\data_manipulation\AIS2TableParser;
-
+use fajr\libfajr\pub\connection\AIS2ServerConnection;
 
 class VSES017_factory {
-  public function __construct(SimpleConnection $connection) {
-    $this->connection = $connection;
+  private $connection;
+
+  public function __construct(AIS2ServerConnection $serverConnection) {
+    $this->connection = $serverConnection;
   }
 
   public function newAdministraciaStudiaScreen(Trace $trace) {
-    $requestBuilder = new RequestBuilderImpl();
-    $executor = new ScreenRequestExecutorImpl($requestBuilder, $this->connection);
+    $requestBuilder = new RequestBuilderImpl($this->connection->getUrlMap());
+    $executor = new ScreenRequestExecutorImpl($requestBuilder,
+        $this->connection->getSimpleConnection());
     $parser = new AIS2TableParser();
     return new VSES017\AdministraciaStudiaScreenImpl($trace, $executor, $parser);
   }
 
   public function newTerminyHodnoteniaScreen(Trace $trace, $idZapisnyList, $idStudium) {
-    $requestBuilder = new RequestBuilderImpl();
-    $executor = new ScreenRequestExecutorImpl($requestBuilder, $this->connection);
+    $requestBuilder = new RequestBuilderImpl($this->connection->getUrlMap());
+    $executor = new ScreenRequestExecutorImpl($requestBuilder,
+        $this->connection->getSimpleConnection());
     $parser = new AIS2TableParser();
     return new VSES017\TerminyHodnoteniaScreenImpl($trace, $executor, $parser, $idZapisnyList, $idStudium);
   }
 
   public function newHodnoteniaPriemeryScreen(Trace $trace, $idZapisnyList) {
-    $requestBuilder = new RequestBuilderImpl();
-    $executor = new ScreenRequestExecutorImpl($requestBuilder, $this->connection);
+    $requestBuilder = new RequestBuilderImpl($this->connection->getUrlMap());
+    $executor = new ScreenRequestExecutorImpl($requestBuilder,
+        $this->connection->getSimpleConnection());
     $parser = new AIS2TableParser();
     return new VSES017\HodnoteniaPriemeryScreenImpl($trace, $executor, $parser, $idZapisnyList);
   }
