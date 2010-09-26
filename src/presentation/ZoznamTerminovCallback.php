@@ -14,6 +14,7 @@ use fajr\htmlgen\HtmlHeader;
 use fajr\Input;
 use fajr\TableDefinitions;
 use fajr\FajrUtils;
+use fajr\libfajr\AIS2Utils;
 
 class ZoznamTerminovCallback implements Renderable {
   private $skusky;
