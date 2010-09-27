@@ -180,7 +180,6 @@ class Fajr {
 
     if (FajrConfig::get('Debug.Trace')===true) {
       $this->displayManager->set('trace', $trace);
-      //$this->displayManager->addContent('<pre>'.hescape(var_dump($trace, true)).'</pre>');
     }
     echo $this->displayManager->display($pageName);
   }
