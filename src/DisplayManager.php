@@ -61,7 +61,7 @@ class DisplayManager
    */
   public function display($pageName=null)
   {
-    $templateDir = FajrUtils::joinPath(__DIR__, 'templates/fajr');
+    $templateDir = FajrUtils::joinPath(__DIR__, '../templates/fajr');
     $loader = new Twig_Loader_Filesystem($templateDir);
     $twig = new Twig_Environment($loader);
     $twig->addExtension(new Twig_Extension_Escaper());
