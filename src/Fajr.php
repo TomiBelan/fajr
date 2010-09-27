@@ -15,7 +15,7 @@ use Exception;
 use fajr\htmlgen\Collapsible;
 use fajr\htmlgen\HtmlHeader;
 use fajr\htmlgen\Table;
-use fajr\HtmlTrace;
+use fajr\ArrayTrace;
 use fajr\libfajr\pub\base\Trace;
 use fajr\injection\Injector;
 use fajr\libfajr\AIS2Session;
@@ -148,7 +148,7 @@ class Fajr {
     $trace = new NullTrace();
 
     if (FajrConfig::get('Debug.Trace') === true) {
-      $trace = new HtmlTrace($timer, "--Trace--");
+      $trace = new ArrayTrace($timer, "--Trace--");
     }
 
     // TODO(anty): do we want DisplayManager? If so, use injector here
@@ -179,11 +179,8 @@ class Fajr {
     $trace->tlog("everything done, generating html");
 
     if (FajrConfig::get('Debug.Trace')===true) {
-      $traceHtml = $trace->getHtml();
-      $this->displayManager->addContent('<div class="span-24">' . $traceHtml .
-          '<div> Trace size:' .
-          sprintf("%.2f", strlen($traceHtml) / 1024.0 / 1024.0) .
-          ' MB</div></div>');
+      $this->displayManager->set('trace', $trace);
+      //$this->displayManager->addContent('<pre>'.hescape(var_dump($trace, true)).'</pre>');
     }
     echo $this->displayManager->display($pageName);
   }
