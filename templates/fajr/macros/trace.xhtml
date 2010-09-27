@@ -27,7 +27,9 @@
 
 {% macro trace(trace) %}
   {# TODO use collapsible tag here when it's done #}
-  <div class="collapsible">
+  {# following is a test of unique tag, to be replaced when collapsible is done #}
+  {% unique div id %}
+  <div class="collapsible" id="{{ id }}">
     <div><strong>{{ trace.header }}</strong></div>
     {% for child in trace.children %}
       {% if child.type == "log" %}

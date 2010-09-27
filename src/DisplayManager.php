@@ -12,6 +12,7 @@ use Twig_Loader_Filesystem;
 use Twig_Environment;
 use Twig_Extension_Escaper;
 use fajr\libfajr\base\Preconditions;
+use fajr\rendering\Extension;
 
 class DisplayManager
 {
@@ -53,8 +54,10 @@ class DisplayManager
   {
     $templateDir = FajrUtils::joinPath(__DIR__, '../templates/fajr');
     $loader = new Twig_Loader_Filesystem($templateDir);
-    $twig = new Twig_Environment($loader);
+    $twig = new Twig_Environment($loader, array('base_template_class' => '\fajr\rendering\Template'));
     $twig->addExtension(new Twig_Extension_Escaper());
+    // Register fajr's rendering extension
+    $twig->addExtension(new Extension());
 
     if ($pageName === null) {
       $templateName = 'pages/legacy.xhtml';
