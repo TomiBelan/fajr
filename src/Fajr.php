@@ -162,7 +162,7 @@ class Fajr {
       $this->displayManager->addException($e);
     }
 
-    $this->displayManager->setBase(hescape(FajrUtils::basePath()));
+    $this->displayManager->setBase(FajrUtils::basePath());
 
     $trace->tlog("everything done, generating html");
 
