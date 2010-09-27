@@ -11,6 +11,7 @@ namespace fajr;
 use Twig_Loader_Filesystem;
 use Twig_Environment;
 use Twig_Extension_Escaper;
+use fajr\libfajr\base\Preconditions;
 
 class DisplayManager
 {
@@ -39,6 +40,7 @@ class DisplayManager
    */
   public function set($name, $value)
   {
+    Preconditions::checkIsString($name, 'name');
     $this->data[$name] = $value;
   }
 
