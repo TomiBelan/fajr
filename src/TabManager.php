@@ -60,11 +60,8 @@ class TabManager implements Renderable {
     }
     $code .= '</div>';
 
-    try {
-      $code .= $activeTab['content']->getHtml();
-    } catch (Exception $e) {
-      $this->displayManager->addException($e);
-    }
+    $code .= $activeTab['content']->getHtml();
+    
     return $code;
   }
 

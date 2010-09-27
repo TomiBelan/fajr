@@ -32,18 +32,6 @@ class DisplayManager
     $this->content[] = $content;
   }
 
-  public function addException($ex)
-  {
-    $stackTrace = '';
-    if (FajrConfig::get('Debug.Exception.ShowStacktrace')) {
-      $stackTrace = "\n<b>Stacktrace:</b>\n" . hescape($ex->getTraceAsString());
-      $stackTrace = nl2br($stackTrace);
-    }
-    $info = '<h2>Pri spracúvaní požiadavky nastala chyba:</h2>';
-    $info .= nl2br(hescape($ex->getMessage()));
-    $this->addContent('<div class="error">' . $info . $stackTrace . '</div>');
-  }
-
   /**
    * Set a variable to be available to the display subsystem
    * @param string $name Name of the variable to be available as

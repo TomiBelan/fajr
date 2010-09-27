@@ -125,6 +125,15 @@ class Fajr {
   }
 
   /**
+   * Set an exception to be displayed in DisplayManager
+   * @param Exception $ex
+   */
+  private function setException(Exception $ex) {
+    $this->displayManager->set('exception', $ex);
+    $this->displayManager->set('showStackTrace', FajrConfig::get('Debug.Exception.ShowStacktrace'));
+  }
+
+  /**
    * Runs the whole logic. It is fajr's main()
    *
    * @returns void
@@ -157,9 +166,12 @@ class Fajr {
       if ($connection) {
         FajrUtils::logout($connection);
       }
-      $this->displayManager->addException($e);
+
+      $this->setException($e);
+      $pageName = 'exception';
     } catch (Exception $e) {
-      $this->displayManager->addException($e);
+      $this->setException($e);
+      $pageName = 'exception';
     }
 
     $this->displayManager->setBase(FajrUtils::basePath());
