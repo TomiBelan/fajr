@@ -1,0 +1,18 @@
+{# all macros in decorators take SAFE values and they are NOT escaped #}
+
+{% macro collapsible(title, content, collapsed) %}
+  {% unique collapsible id %}
+  <div class="collapsible" id="{{ id }}">
+    <div class="collapsibleheader togglevisibility" onclick="toggleVisibility('{{ id }}')">
+      {{ title|safe }}
+    </div>
+    <div class="collapsiblecontent">
+      {{ content|safe }}
+    </div>
+    {% if collapsed %}
+      <script type="text/javascript">
+        toggleVisibility("{{ id }}");
+      </script>
+    {% endif %}
+  </div>
+{% endmacro %}

@@ -26,21 +26,21 @@
 {% endmacro %}
 
 {% macro trace(trace) %}
-  {# TODO use collapsible tag here when it's done #}
-  {# following is a test of unique tag, to be replaced when collapsible is done #}
-  {% unique div id %}
-  <div class="collapsible" id="{{ id }}">
-    <div><strong>{{ trace.header }}</strong></div>
-    {% for child in trace.children %}
-      {% if child.type == "log" %}
-        {{ _self.traceItem(child, child.data) }}
-      {% elseif child.type == "data" %}
-        {{ _self.traceItem(child, _self.traceDataContent(child.data)) }}
-      {% elseif child.type == "variable" %}
-        {{ _self.traceItem(child, _self.traceVariableContent(child.name, child.data)) }}
-      {% elseif child.type == "trace" %}
-        {{ _self.traceItem(child, _self.trace(child.trace)) }}
-      {% endif %}
-    {% endfor %}
-  </div>
+  {% set content %}
+    <div>
+      {% for child in trace.children %}
+        {% if child.type == "log" %}
+          {{ _self.traceItem(child, child.data) }}
+        {% elseif child.type == "data" %}
+          {{ _self.traceItem(child, _self.traceDataContent(child.data)) }}
+        {% elseif child.type == "variable" %}
+          {{ _self.traceItem(child, _self.traceVariableContent(child.name, child.data)) }}
+        {% elseif child.type == "trace" %}
+          {{ _self.traceItem(child, _self.trace(child.trace)) }}
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% endset %}
+  {% import "macros/decorators.xhtml" as decorators %}
+  {{ decorators.collapsible(trace.header, content, true) }}
 {% endmacro %}
