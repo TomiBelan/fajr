@@ -37,7 +37,8 @@ abstract class BaseController
    * @param Request $request request from browser
    * @param Response $response response information
    */
-  public function invokeAction($action, Request $request, Response $response) {
+  public function invokeAction($action, Request $request, Response $response)
+  {
     Preconditions::checkMatchesPattern('@^[A-Z][a-zA-Z]*$@', $action, 'action');
 
     $methodName = 'run'.$action;
