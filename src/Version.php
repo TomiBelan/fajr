@@ -36,7 +36,7 @@ class Version {
   }
 
   public static function getBuildTimeInfo() {
-    @$result = (include 'version_info.php');
+    @$result = (include '../version_info.php');
     return $result;
   }
 
