@@ -33,6 +33,16 @@ class DispatchController implements Controller
   private $classNameTable;
 
   /**
+   * Construct a new DispatchController
+   *
+   * @param array(string=>string) $classNameTable mapping from names to classes
+   */
+  public function __construct(array $classNameTable)
+  {
+    $this->classNameTable = $classNameTable;
+  }
+
+  /**
    * Invoke an action given its name
    *
    * This function lookups the controller to be used in a lookup table,
