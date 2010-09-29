@@ -14,7 +14,10 @@
 namespace fajr\controller;
 
 use fajr\libfajr\base\Preconditions;
-use ReflectionMethod;
+use fajr\libfajr\pub\base\Trace;
+use fajr\controller\Controller;
+use fajr\Request;
+use fajr\Response;
 
 /**
  * Controller dispatching its request to the appropriate controller
@@ -23,7 +26,7 @@ use ReflectionMethod;
  * @subpackage Controller
  * @author     Martin Sucha <anty.sk@gmail.com>
  */
-class DispatchController
+class DispatchController implements Controller
 {
 
   /** @var array(string=>string) lookup table for class names */
@@ -35,11 +38,12 @@ class DispatchController
    * This function lookups the controller to be used in a lookup table,
    * tries to instantiate it and dispatch the request
    *
+   * @param Trace $trace trace object
    * @param string $action action name
    * @param Request $request request from browser
    * @param Response $response response information
    */
-  public function invokeAction($action, Request $request, Response $response)
+  public function invokeAction(Trace $trace, $action, Request $request, Response $response)
   {
     Preconditions::checkIsString($action);
 

@@ -14,6 +14,9 @@
 namespace fajr\controller;
 
 use fajr\libfajr\base\Preconditions;
+use fajr\libfajr\pub\base\Trace;
+use fajr\Request;
+use fajr\Response;
 use ReflectionMethod;
 
 /**
@@ -33,11 +36,12 @@ abstract class BaseController
    * exists in this object and calls it in such a case with request and response
    * parameters
    *
+   * @param Trace $trace trace object
    * @param string $action action name
    * @param Request $request request from browser
    * @param Response $response response information
    */
-  public function invokeAction($action, Request $request, Response $response)
+  public function invokeAction(Trace $trace, $action, Request $request, Response $response)
   {
     Preconditions::checkMatchesPattern('@^[A-Z][a-zA-Z]*$@', $action, 'action');
 
