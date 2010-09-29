@@ -16,41 +16,22 @@ use fajr\rendering\Extension;
 
 class DisplayManager
 {
-  protected $content = array();
-
-  protected $data = array();
   
   protected $base = null;
 
-  private static $nextHtmlId = 1;
+  private static $nextHtmlId = 10000;
   
   public function setBase($base)
   {
     $this->base = $base;
   }
 
-  public function addContent($content)
-  {
-    $this->content[] = $content;
-  }
-
-  /**
-   * Set a variable to be available to the display subsystem
-   * @param string $name Name of the variable to be available as
-   * @param mixed $value Value
-   */
-  public function set($name, $value)
-  {
-    Preconditions::checkIsString($name, 'name');
-    $this->data[$name] = $value;
-  }
-
   /**
    * Generate a page content
-   * @param string $pageName Name of the page (template) to display
+   * @param Response $response response data to use to generate output
    * @return string Generated output to be sent to the browser
    */
-  public function display($pageName=null)
+  public function display(Response $response)
   {
     $templateDir = FajrUtils::joinPath(__DIR__, '../templates/fajr');
     $loader = new Twig_Loader_Filesystem($templateDir);
@@ -59,17 +40,17 @@ class DisplayManager
     // Register fajr's rendering extension
     $twig->addExtension(new Extension());
 
-    if ($pageName === null) {
+    if ($response->getTemplate() === null) {
       $templateName = 'pages/legacy.xhtml';
     }
     else {
-      $templateName = 'pages/'.$pageName.'.xhtml';
+      $templateName = 'pages/'.$response->getTemplate().'.xhtml';
     }
 
     $template = $twig->loadTemplate($templateName);
 
     $html = '';
-    foreach ($this->content as $item) $html .= $item;
+    foreach ($response->getContent() as $item) $html .= $item;
 
     $output = $template->render(array_merge(array(
       'legacy_content'=>$html,
@@ -78,7 +59,7 @@ class DisplayManager
       'google_analytics'=>FajrConfig::get('GoogleAnalytics.Account'),
       'fajr_version'=>Version::getVersionString(),
       'fajr_changelog'=>Version::getChangelog(),
-      ), $this->data));
+      ), $response->getData()));
     
     return $output;
   }

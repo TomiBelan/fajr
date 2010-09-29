@@ -13,6 +13,7 @@
 namespace fajr;
 
 use fajr\libfajr\base\Preconditions;
+use fajr\libfajr\pub\connection\AIS2ServerConnection;
 
 /**
  * Class representing incoming request from browser
@@ -22,6 +23,29 @@ use fajr\libfajr\base\Preconditions;
  */
 class Request
 {
+
+  /** var AIS2ServerConnection */
+  private $aisConnection;
+
+  /**
+   * Return a ServerConnection associated with this request
+   *
+   * @return ServerConnection connection to AIS server
+   */
+  public function getAisConnection()
+  {
+    return $this->aisConnection;
+  }
+
+  /**
+   * Set a ServerConnection for this request
+   *
+   * @param ServerConnection $aisConnection
+   */
+  public function setAisConnection(AIS2ServerConnection $aisConnection)
+  {
+    $this->aisConnection = $aisConnection;
+  }
 
   /**
    * Return a named parameter

@@ -14,12 +14,10 @@ class TabManager implements Renderable {
   private $active = null;
   private $name = '';
   private $urlParams = null;
-  private $displayManager = null;
 
-  public function __construct($name, array $urlParams, DisplayManager $displayManager) {
+  public function __construct($name, array $urlParams) {
     $this->name = $name;
     $this->urlParams = $urlParams;
-    $this->displayManager = $displayManager;
   }
 
   public function addTab($name, $title, Renderable $content) {

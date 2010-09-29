@@ -18,6 +18,7 @@ use fajr\libfajr\pub\base\Trace;
 use fajr\Request;
 use fajr\Response;
 use ReflectionMethod;
+use Exception;
 
 /**
  * Base class for controllers
@@ -73,7 +74,7 @@ abstract class BaseController
       throw new Exception('Action method '.$methodName.' is destructor');
     }
 
-    $method->invoke($this, $request, $response);
+    $method->invoke($this, $trace, $request, $response);
   }
 
 }

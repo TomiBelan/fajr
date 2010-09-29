@@ -12,9 +12,6 @@
  */
 namespace fajr;
 use Exception;
-use fajr\htmlgen\Collapsible;
-use fajr\htmlgen\HtmlHeader;
-use fajr\htmlgen\Table;
 use fajr\ArrayTrace;
 use fajr\libfajr\pub\base\Trace;
 use fajr\injection\Injector;
@@ -26,14 +23,10 @@ use fajr\libfajr\pub\login\CosignServiceCookie;
 use fajr\libfajr\pub\base\NullTrace;
 use fajr\libfajr\pub\login\AIS2Login;
 use fajr\libfajr\pub\login\LoginFactoryImpl;
-use fajr\libfajr\pub\window\VSES017_administracia_studia as VSES017; // *
-use fajr\presentation\HodnoteniaCallback;
-use fajr\presentation\MojeTerminyHodnoteniaCallback;
-use fajr\presentation\ZapisanePredmetyCallback;
-use fajr\presentation\ZoznamTerminovCallback;
-use fajr\TabManager;
 use fajr\libfajr\pub\connection\AIS2ServerConnection;
 use fajr\libfajr\pub\connection\AIS2ServerUrlMap;
+use fajr\Request;
+use fajr\Response;
 
 /**
  * This is "main()" of the fajr. It instantiates all neccessary
@@ -129,8 +122,8 @@ class Fajr {
    * @param Exception $ex
    */
   private function setException(Exception $ex) {
-    $this->displayManager->set('exception', $ex);
-    $this->displayManager->set('showStackTrace', FajrConfig::get('Debug.Exception.ShowStacktrace'));
+    $this->response->set('exception', $ex);
+    $this->response->set('showStackTrace', FajrConfig::get('Debug.Exception.ShowStacktrace'));
   }
 
   /**
@@ -154,24 +147,25 @@ class Fajr {
     // TODO(anty): do we want DisplayManager? If so, use injector here
     $this->displayManager = new DisplayManager();
 
-    $pageName = null;
+    $this->request = new Request();
+    $this->response = new Response();
 
     try {
       Input::prepare();
 
       $this->regenerateSessionOnLogin();
       $connection = $this->provideConnection();
-      $pageName = $this->runLogic($trace, $connection);
+      $this->runLogic($trace, $connection);
     } catch (LoginException $e) {
       if ($connection) {
         FajrUtils::logout($connection);
       }
 
       $this->setException($e);
-      $pageName = 'exception';
+      $this->response->setTemplate('exception');
     } catch (Exception $e) {
       $this->setException($e);
-      $pageName = 'exception';
+      $this->response->setTemplate('exception');
     }
 
     $this->displayManager->setBase(FajrUtils::basePath());
@@ -179,9 +173,9 @@ class Fajr {
     $trace->tlog("everything done, generating html");
 
     if (FajrConfig::get('Debug.Trace')===true) {
-      $this->displayManager->set('trace', $trace);
+      $this->response->set('trace', $trace);
     }
-    echo $this->displayManager->display($pageName);
+    echo $this->displayManager->display($this->response);
   }
 
   public function runLogic(Trace $trace, HttpConnection $connection)
@@ -190,12 +184,22 @@ class Fajr {
           new AIS2ServerUrlMap(FajrConfig::get('AIS2.ServerName')));
       $timer = new SystemTimer();
 
+      $this->request->setAisConnection($serverConnection);
+
       if (Input::get('logout') !== null) {
         FajrUtils::logout($serverConnection);
         FajrUtils::redirect();
       }
 
       $loggedIn = FajrUtils::isLoggedIn($serverConnection);
+
+      // TODO(anty): use injector or some other configuration method
+      $actionMap = array(
+        'moje.hodnotenie' => '\\fajr\\controller\\studium\\MojeHodnotenieController',
+        'moje.terminyHodnotenia' => '\\fajr\\controller\\studium\\MojeTerminyHodnoteniaController',
+        'moje.predmety' => '\\fajr\\controller\\studium\\MojePredmetyController',
+        'studium.zoznamTerminovHodnotenia' => '\\fajr\\controller\\studium\\ZoznamTerminovHodnoteniaController',
+      );
 
       $cosignLogin = $this->provideLogin();
       if (!$loggedIn && $cosignLogin != null) {
@@ -204,85 +208,26 @@ class Fajr {
       }
 
       if ($loggedIn) {
-        $this->displayManager->set('logoutUrl', FajrUtils::linkUrl(array('logout'=>true)));
-        $screenFactory = new VSES017\VSES017_factory($serverConnection);
-        $adminStudia = $screenFactory->newAdministraciaStudiaScreen($trace);
-        
-        if (Input::get('studium') === null) Input::set('studium',0);
-        
-        $zoznamStudii = $adminStudia->getZoznamStudii($trace->addChild("Get Zoznam Studii:"));
-        $zoznamStudiiTable = new Table(TableDefinitions::zoznamStudii(), 'studium',
-          array('tab' => Input::get('tab')));
-        $zoznamStudiiTable->addRows($zoznamStudii->getData());
-        $zoznamStudiiTable->setOption('selected_key', Input::get('studium'));
-        $zoznamStudiiTable->setOption('collapsed', true);
+        $this->response->set('logoutUrl', FajrUtils::linkUrl(array('logout'=>true)));
 
-        $zoznamStudiiCollapsible = new Collapsible(new HtmlHeader('Zoznam štúdií'), $zoznamStudiiTable, true);
+        $controller = new \fajr\controller\studium\LegacyStudiumController();
 
-        $this->displayManager->addContent($zoznamStudiiCollapsible->getHtml());
-        
-        $zapisneListy = $adminStudia->getZapisneListy($trace->addChild('getZapisneListy'), Input::get('studium'));
-        
-        $zapisneListyTable = new
-          Table(TableDefinitions::zoznamZapisnychListov(),
-            'list', array('studium' => Input::get('studium'),
-              'tab'=>Input::get('tab')));
-        
-        if (Input::get('list') === null) {
-          $tmp = $zapisneListy->getData();
-          $lastList = end($tmp);
-          Input::set('list', $lastList['index']);
-        }
-        
-        $zapisneListyTable->addRows($zapisneListy->getData());
-        $zapisneListyTable->setOption('selected_key', Input::get('list'));
-        $zapisneListyTable->setOption('collapsed', true);
+        $controller->invokeAction($trace, 'Legacy', $this->request, $this->response);
 
-        $zapisneListyCollapsible = new Collapsible(new HtmlHeader('Zoznam zápisných listov'), $zapisneListyTable, true);
-
-        $this->displayManager->addContent($zapisneListyCollapsible->getHtml());
-        
-        
-        $terminyHodnotenia = $screenFactory->newTerminyHodnoteniaScreen(
-              $trace,
-              $adminStudia->getZapisnyListIdFromZapisnyListIndex($trace, Input::get('list')),
-              $adminStudia->getStudiumIdFromZapisnyListIndex($trace, Input::get('list')));
-        
-        if (Input::get('tab') === null) Input::set('tab', 'TerminyHodnotenia');
-        $tabs = new TabManager('tab', array('studium'=>Input::get('studium'),
-              'list'=>Input::get('list')), $this->displayManager);
-        // FIXME: chceme to nejak refaktorovat, aby sme nevytvarali zbytocne
-        // objekty, ktore v konstruktore robia requesty
-        $hodnoteniaScreen = $screenFactory->newHodnoteniaPriemeryScreen(
-              $trace,
-              $adminStudia->getZapisnyListIdFromZapisnyListIndex($trace, Input::get('list')));
-        $tabs->addTab('TerminyHodnotenia', 'Moje skúšky',
-              new MojeTerminyHodnoteniaCallback($trace, $terminyHodnotenia, $hodnoteniaScreen));
-        $tabs->addTab('ZapisSkusok', 'Prihlásenie na skúšky',
-              new ZoznamTerminovCallback($trace, $terminyHodnotenia, $hodnoteniaScreen));
-        $tabs->addTab('ZapisnyList', 'Zápisný list',
-              new ZapisanePredmetyCallback($trace, $terminyHodnotenia));
-        $tabs->addTab('Hodnotenia', 'Hodnotenia/Priemery',
-            new HodnoteniaCallback($trace, $hodnoteniaScreen));
-
-        $tabs->setActive(Input::get('tab'));
-        $this->displayManager->addContent($tabs->getHtml());
-        ;
-
-        $this->displayManager->set("stats_connections",
+        $this->response->set("stats_connections",
             $this->statsConnection->getTotalCount());
-        $this->displayManager->set("stats_rawBytes",
+        $this->response->set("stats_rawBytes",
             $this->rawStatsConnection->getTotalSize());
-        $this->displayManager->set("stats_bytes",
+        $this->response->set("stats_bytes",
             $this->statsConnection->getTotalSize());
-        $this->displayManager->set("stats_connectionTime",
+        $this->response->set("stats_connectionTime",
             sprintf("%.3f", $this->statsConnection->getTotalTime()));
-        $this->displayManager->set("stats_totalTime",
+        $this->response->set("stats_totalTime",
             sprintf("%.3f", $timer->getElapsedTime()));
       }
       else
       {
-        return 'welcome';
+        $this->response->setTemplate('welcome');
       }
   }
 }

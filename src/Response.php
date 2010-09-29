@@ -27,6 +27,47 @@ class Response
   private $template = null;
 
   /**
+   * Holder for legacy content
+   *
+   * @deprecated
+   * @var array legacy content
+   */
+  private $legacyContent = array();
+
+  public function addContent($content)
+  {
+    Preconditions::checkIsString($content);
+    $this->legacyContent[] = $content;
+  }
+
+  public function getContent() {
+    return $this->legacyContent;
+  }
+
+  protected $data = array();
+
+  /**
+   * Set a variable to be available to the display subsystem
+   * @param string $name Name of the variable to be available as
+   * @param mixed $value Value
+   */
+  public function set($name, $value)
+  {
+    Preconditions::checkIsString($name, 'name');
+    $this->data[$name] = $value;
+  }
+
+  /**
+   * Return all data associated with this response as array
+   *
+   * @return array(key=>value) response data
+   */
+  public function getData()
+  {
+    return $this->data;
+  }
+
+  /**
    * Return a template name to be used
    *
    * @return string template name
