@@ -3,15 +3,19 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file in the project root directory.
 
-namespace fajr;
 /**
- * @author Peter Perešíni <ppershing+fajr@gmail.com>
+ *
+ * @package    Fajr
+ * @author     Peter Perešíni <ppershing+fajr@gmail.com>
+ * @filesource
  */
+namespace fajr;
 
 class TableDefinitions
 {
   // done
-  public static function zoznamStudii() {
+  public static function zoznamStudii()
+  {
     return array(
       // {{{
       'rokDoporuceny' => array(
@@ -102,7 +106,8 @@ class TableDefinitions
   }
   
   // done
-  public static function zoznamZapisnychListov() {
+  public static function zoznamZapisnychListov()
+  {
     return array(
       // {{{
       'popisAkadRok' => array(
@@ -183,7 +188,8 @@ class TableDefinitions
 
 
   // done
-  public static function hodnotenia() {
+  public static function hodnotenia()
+  {
     return array(
       // {{{
       'semester' => array(
@@ -277,7 +283,8 @@ class TableDefinitions
     );
   }
   
-  public static function priemery() {
+  public static function priemery()
+  {
     return array(
       // {{{
       'priemerInfoPopisAkadRok' => array(
@@ -394,7 +401,8 @@ class TableDefinitions
   }
  
   // done
-  public static function predmetyZapisnehoListu() {
+  public static function predmetyZapisnehoListu()
+  {
     return array(
       // {{{
       'kodCastStPlanu' => array(
@@ -446,7 +454,8 @@ class TableDefinitions
     );
   }
   
-  public static function mojeTerminyHodnotenia() {
+  public static function mojeTerminyHodnotenia()
+  {
     return array(
       // {{{
       // specialne
@@ -550,7 +559,8 @@ class TableDefinitions
     );
   }
   
-  public static function vyberTerminuHodnoteniaJoined() {
+  public static function vyberTerminuHodnoteniaJoined()
+  {
     return array(
       // {{{
       // udaje vzniknute pocas joinovania
@@ -631,7 +641,8 @@ class TableDefinitions
   
 
   // done
-  public static function zoznamPrihlasenych() {
+  public static function zoznamPrihlasenych()
+  {
     return array(
       // {{{
       'meno' => array(

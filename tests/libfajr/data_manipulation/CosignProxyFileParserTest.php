@@ -9,6 +9,7 @@
  * @package    Fajr
  * @subpackage Libfajr__Data_manipulation
  * @author     Martin Sucha <anty.sk@gmail.com>
+ * @filesource
  */
 namespace fajr\libfajr\data_manipulation;
 
@@ -28,9 +29,9 @@ class CosignProxyFileParserTest extends PHPUnit_Framework_TestCase
 {
   private $parser;
 
-  public function setUp() {
+  public function setUp()
+  {
     $this->parser = new CosignProxyFileParser();
-
   }
 
   public function testProxyFileParsing()
@@ -44,5 +45,3 @@ class CosignProxyFileParserTest extends PHPUnit_Framework_TestCase
   }
 
 }
-
-

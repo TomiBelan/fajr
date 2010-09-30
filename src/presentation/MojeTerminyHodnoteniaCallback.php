@@ -3,8 +3,13 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file in the project root directory.
 
-// TODO(??):missing author
-
+/**
+ *
+ * @package    Fajr
+ * @author     Peter Perešíni <ppershing+fajr@gmail.com>
+ * @author     Martin Králik <majak47@gmail.com>
+ * @filesource
+ */
 namespace fajr\presentation;
 use fajr\htmlgen\Renderable;
 use fajr\libfajr\pub\base\Trace;
@@ -16,10 +21,13 @@ use fajr\htmlgen\HtmlHeader;
 use fajr\TableDefinitions;
 use fajr\FajrUtils;
 use fajr\libfajr\AIS2Utils;
-class MojeTerminyHodnoteniaCallback implements Renderable {
+
+class MojeTerminyHodnoteniaCallback implements Renderable
+{
   public function __construct(Trace $trace,
                               VSES017\TerminyHodnoteniaScreen $terminyHodnotenia,
-                              VSES017\HodnoteniaPriemeryScreen $hodnotenia) {
+                              VSES017\HodnoteniaPriemeryScreen $hodnotenia)
+  {
     $this->trace = $trace;
     $this->terminyHodnoteniaApp = $terminyHodnotenia;
     $this->hodnoteniaApp = $hodnotenia;
@@ -31,32 +39,35 @@ class MojeTerminyHodnoteniaCallback implements Renderable {
    * okontrolovat, ze sa nic nezmenilo a ze sme dostali rovnake data
    * ako predtym!
    */
-  private function hashNaOdhlasenie($row) {
+  private function hashNaOdhlasenie($row)
+  {
     return
-      md5($row['index'].'|'.$row['datum'].'|'.$row['cas'].'|'.$row['predmet']);
+        md5($row['index'].'|'.$row['datum'].'|'.$row['cas'].'|'.$row['predmet']);
   }
   
-  private function odhlasZoSkusky($terminIndex) {
-    
+  private function odhlasZoSkusky($terminIndex)
+  {  
     $terminy = $this->terminyHodnoteniaApp->getTerminyHodnotenia($this->trace->addChild('get terminy
           hodnotenia '))->getData();
     $terminKey = -1;
     foreach ($terminy as $key=>$row) {
-      if ($row['index']==$terminIndex) $terminKey = $key;
+      if ($row['index']==$terminIndex) {
+        $terminKey = $key;
+      }
     }
     if ($terminKey == -1) {
       throw new Exception("Ooops, predmet/termín nenájdený. Pravdepodobne
-          zmena dát v AISe.");
+                           zmena dát v AISe.");
     }
     if (Input::get("hash") != $this->hashNaOdhlasenie($terminy[$terminKey])) {
       throw new Exception("Ooops, nesedia údaje o termíne. Pravdepodobne zmena
-          dát v AISe spôsobila posunutie tabuliek.");
+                           dát v AISe spôsobila posunutie tabuliek.");
     }
     return $this->terminyHodnoteniaApp->odhlasZTerminu($terminIndex);
   }
   
-  
-  public function getHtml() {
+  public function getHtml()
+  {
     $trace = $this->trace->addChild("MojeTerminyHodnoteniaCallback");
     $trace->tlog("Executing callback");
     $terminyHodnotenia = $this->terminyHodnoteniaApp->getTerminyHodnotenia(
@@ -66,26 +77,27 @@ class MojeTerminyHodnoteniaCallback implements Renderable {
     if (Input::get('action') !== null) {
       $trace->tlog("odhlasujem zo skusky");
       assert(Input::get("action")=="odhlasZoSkusky");
-      if ($this->odhlasZoSkusky(Input::get("odhlasIndex")))
-      {
+      if ($this->odhlasZoSkusky(Input::get("odhlasIndex"))) {
         FajrUtils::redirect();
       }
-      else throw new Exception('Z termínu sa nepodarilo odhlásiť.');
+      else {
+        throw new Exception('Z termínu sa nepodarilo odhlásiť.');
+      }
     }
     
     $baseUrlParams = array("studium"=>Input::get("studium"),
-          "list"=>Input::get("list"),
-          "tab"=>Input::get("tab"));
+                           "list"=>Input::get("list"),
+                           "tab"=>Input::get("tab"));
     
-    $terminyHodnoteniaTableActive =  new
-      Table(TableDefinitions::mojeTerminyHodnotenia(), 'termin', $baseUrlParams);
+    $terminyHodnoteniaTableActive = new
+        Table(TableDefinitions::mojeTerminyHodnotenia(), 'termin', $baseUrlParams);
 
     $terminyHodnoteniaCollapsibleActive = new Collapsible(
         new HtmlHeader('Aktuálne termíny hodnotenia'),
         $terminyHodnoteniaTableActive);
     
     $terminyHodnoteniaTableOld =  new
-      Table(TableDefinitions::mojeTerminyHodnotenia(), 'termin', $baseUrlParams);
+        Table(TableDefinitions::mojeTerminyHodnotenia(), 'termin', $baseUrlParams);
 
     $terminyHodnoteniaCollapsibleOld = new Collapsible(
         new HtmlHeader('Staré termíny hodnotenia'),
@@ -93,9 +105,9 @@ class MojeTerminyHodnoteniaCallback implements Renderable {
     
     if (Input::get('termin')!=null) {
       $terminyHodnoteniaTableActive->setOption('selected_key',
-          Input::get('termin'));
+                                               Input::get('termin'));
       $terminyHodnoteniaTableOld->setOption('selected_key',
-          Input::get('termin'));
+                                            Input::get('termin'));
     }
     
     $actionUrl=FajrUtils::linkUrl($baseUrlParams);
@@ -110,10 +122,10 @@ class MojeTerminyHodnoteniaCallback implements Renderable {
       
       if ($row['znamka']=="") { // skusme najst znamku v hodnoteniach
         if (isset($hodnoteniePredmetu[$row['predmet']]) &&
-              $hodnoteniePredmetu[$row['predmet']]!="") {
-            $row['znamka'] =
-                $hodnoteniePredmetu[$row['predmet']]." (z&nbsp;predmetu)";
-            }
+            $hodnoteniePredmetu[$row['predmet']]!="") {
+          $row['znamka'] =
+              $hodnoteniePredmetu[$row['predmet']]." (z&nbsp;predmetu)";
+        }
       }
           
       if ($datum < time()) {
@@ -126,14 +138,14 @@ class MojeTerminyHodnoteniaCallback implements Renderable {
           $class='terminmozeodhlasit';
           $hash=$this->hashNaOdhlasenie($row);
           $row['odhlas']="<form method='post' action='$actionUrl'>
-            <div>
-            <input type='hidden' name='action' value='odhlasZoSkusky'/>
-            <input type='hidden' name='odhlasIndex'
-            value='".$row['index']."'/>
-            <input type='hidden' name='hash' value='$hash'/>
-            <button name='submit' type='submit' class='tableButton negative'>
-              <img src='images/cross.png' alt=''>Odhlás
-            </button></div></form>";
+              <div>
+              <input type='hidden' name='action' value='odhlasZoSkusky'/>
+              <input type='hidden' name='odhlasIndex'
+              value='".$row['index']."'/>
+              <input type='hidden' name='hash' value='$hash'/>
+              <button name='submit' type='submit' class='tableButton negative'>
+                <img src='images/cross.png' alt=''>Odhlás
+              </button></div></form>";
         } else {
           $row['odhlas']="nedá sa";
           $class='terminnemozeodhlasit';
@@ -153,7 +165,7 @@ class MojeTerminyHodnoteniaCallback implements Renderable {
       $prihlaseni = $this->terminyHodnoteniaApp->getZoznamPrihlasenychDialog($trace,
           Input::get('termin'))->getZoznamPrihlasenych($trace);
       $zoznamPrihlasenychTable = new
-      Table(TableDefinitions::zoznamPrihlasenych(), null, array('studium', 'list'));
+          Table(TableDefinitions::zoznamPrihlasenych(), null, array('studium', 'list'));
       $zoznamPrihlasenychTable->addRows($prihlaseni->getData());
       $zoznamPrihlasenychCollapsible = new Collapsible(new HtmlHeader('Zoznam prihlásených
           na vybratý termín'), $zoznamPrihlasenychTable);

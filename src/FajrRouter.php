@@ -6,21 +6,23 @@
 namespace fajr;
 
 /**
- * @author Martin Sucha <anty.sk@gmail.com>
+ *
+ * @package    Fajr
+ * @author     Martin Sucha <anty.sk@gmail.com>
+ * @filesource
  */
 
 class FajrRouter
 {
-
   /**
    * Vyrobi cestu z parametrov dotazu. Z params odstrani vsetky kluce, ktore
    * sa nemaju objavit v query stringu
+   *
    * @param array $params asociativne pole parametrov
-   * @return string vysledna cesta
+   * @returns string vysledna cesta
    */
   public static function paramsToPath(array &$params)
   {
-
     $path = array();
 
     if (isset($params['logout'])) {
@@ -48,19 +50,22 @@ class FajrRouter
   /**
    * Inverzna funkcia k paramsToPath, vrati vsetky parametre, ktore su
    * zakodovane v ceste
+   *
    * @param string $path
-   * @return array asociativne pole parametrov
+   * @returns array asociativne pole parametrov
    */
   public static function pathToParams($pathString)
   {
     $params = array();
 
-    if (strlen($pathString)==0) return $params;
+    if (strlen($pathString)==0) {
+      return $params;
+    }
 
     $path = explode('/',$pathString);
     $n = count($path);
 
-    if ($n>0) {
+    if ($n > 0) {
       if ($path[0] == 'logout') {
         $params['logout']=true;
         return $params;
@@ -68,10 +73,10 @@ class FajrRouter
 
       $params['studium'] = $path[0];
     }
-    if ($n>1) {
+    if ($n > 1) {
       $params['list'] = $path[1];
     }
-    if ($n>2) {
+    if ($n > 2) {
       $params['tab'] = $path[2];
     }
 

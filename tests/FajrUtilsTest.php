@@ -9,8 +9,10 @@
  * @package    Fajr
  * @subpackage TODO
  * @author     Martin Sucha <anty.sk@gmail.com>
+ * @filesource
  */
 namespace fajr;
+
 use PHPUnit_Framework_TestCase;
 /**
  * @ignore
@@ -22,7 +24,6 @@ require_once 'test_include.php';
  */
 class FajrUtilsTest extends PHPUnit_Framework_TestCase
 {
-
   public function testJoinPath()
   {
     $DS = DIRECTORY_SEPARATOR;

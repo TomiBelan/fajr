@@ -4,12 +4,16 @@
 // found in the LICENSE file in the project root directory.
 
 /**
- * @author Martin Králik <majak47@gmail.com>
+ *
+ * @package    Fajr
+ * @subpackage Libfajr
+ * @author     Martin Králik <majak47@gmail.com>
+ * @filesource
  */
-
 namespace fajr\libfajr\util;
+
   /**
-   * Function that searchs haystack for perl-like pattern and
+   * Function that searches haystack for perl-like pattern and
    * returns first sub-match from pattern.
    * I.e. If the pattern is "example:(.*)",
    * the full match is example:something and this
@@ -18,7 +22,9 @@ namespace fajr\libfajr\util;
   function match($pattern, $haystack)
   {
     $matches = array();
-    if (!preg_match($pattern, $haystack, $matches)) return false;
+    if (!preg_match($pattern, $haystack, $matches)) {
+      return false;
+    }
     assert(isset($matches[1]));
     return $matches[1];
   }
@@ -26,11 +32,17 @@ namespace fajr\libfajr\util;
   function matchAll($pattern, $haystack, $singleMatch = false)
   {
     $matches = array();
-    if (!preg_match_all($pattern, $haystack, $matches, PREG_SET_ORDER)) return false;
+    if (!preg_match_all($pattern, $haystack, $matches, PREG_SET_ORDER)) {
+      return false;
+    }
     else
     {
-      if ($singleMatch == false) return $matches;
-      else return $matches[0];
+      if ($singleMatch == false) {
+        return $matches;
+      }
+      else {
+        return $matches[0];
+      }
     }
   }
 ?>

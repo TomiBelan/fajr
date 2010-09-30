@@ -3,8 +3,13 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file in the project root directory.
 
-// TODO(??): missing author
-
+/**
+ * 
+ * @package    Fajr
+ * @subpackage Libfajr
+ * @author     Martin Sucha <anty.sk@gmail.com>
+ * @filesource
+ */
   require_once 'supporting_functions.php';
   require_once 'util.php';
   require_once 'Loader.php';

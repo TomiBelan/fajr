@@ -2,13 +2,18 @@
 // Copyright (c) 2010 The Fajr authors (see AUTHORS).
 // Use of this source code is governed by a MIT licence that can be
 // found in the LICENCE file in the project root directory.
+
+/**
+ *
+ * @package    Fajr
+ * @author     Martin Sucha <anty.sk@gmail.com>
+ * @filesource
+ */
 namespace fajr;
 use fajr\htmlgen\Renderable;
-/**
- * @author Martin Sucha <anty.sk@gmail.com>
- */
 
-class PriemeryInternal {
+class PriemeryInternal
+{
   protected $sucet = 0;
   protected $sucetVah = 0;
   protected $pocet = 0; // TODO(ppershing): rename to pocetPredmetov
@@ -39,7 +44,8 @@ class PriemeryInternal {
     $this->pocetKreditovNeohodnotenych += $kredity;
   }
 
-  public function add($znamka, $kredity) {
+  public function add($znamka, $kredity)
+  {
     if (isset(PriemeryInternal::$numerickaHodnotaZnamky[$znamka])) {
       $hodnota = PriemeryInternal::$numerickaHodnotaZnamky[$znamka];
       $this->addOhodnotene($hodnota, $kredity);
@@ -60,63 +66,74 @@ class PriemeryInternal {
       $pocet += $this->pocetNeohodnotenych;
     }
 
-    if ($pocet == 0) return null;
+    if ($pocet == 0) {
+      return null;
+    }
     return $suma / $pocet;
   }
 
-  public function vazenyPriemer($neohodnotene=true) {
+  public function vazenyPriemer($neohodnotene=true)
+  {
     $suma = $this->sucetVah;
     $pocet = $this->pocetKreditov;
     if ($neohodnotene) {
       $suma += $this->pocetKreditovNeohodnotenych*self::$numerickaHodnotaZnamky['Fx'];
       $pocet += $this->pocetKreditovNeohodnotenych;
     }
-    if ($pocet == 0) return null;
+    if ($pocet == 0) {
+      return null;
+    }
     return $suma/$pocet;
   }
 
-  public function hasPriemer() {
+  public function hasPriemer()
+  {
     return $this->pocet > 0;
   }
 
 }
 
-class PriemeryCalculator implements Renderable {
-
+class PriemeryCalculator implements Renderable
+{
   const SEMESTER_LETNY = 'leto';
   const SEMESTER_ZIMNY = 'zima';
   const AKADEMICKY_ROK = 'rok';
 
   protected $obdobia = null;
 
-  public function __construct() {
+  public function __construct()
+  {
     $this->obdobia = array(
         self::SEMESTER_LETNY => new PriemeryInternal(),
         self::SEMESTER_ZIMNY => new PriemeryInternal(),
         self::AKADEMICKY_ROK => new PriemeryInternal()
-        );
+      );
   }
 
-  public function add($castRoka, $znamka, $kredity) {
+  public function add($castRoka, $znamka, $kredity)
+  {
     $this->obdobia[$castRoka]->add($znamka, $kredity);
     $this->obdobia[self::AKADEMICKY_ROK]->add($znamka, $kredity);
   }
 
-  public function hasPriemer() {
+  public function hasPriemer()
+  {
     return $this->obdobia[self::AKADEMICKY_ROK]->hasPriemer();
   }
 
-  private function vypisVazenyPriemer($castRoka) {
+  private function vypisVazenyPriemer($castRoka)
+  {
     $sNeohodnotenymi = $this->obdobia[$castRoka]->vazenyPriemer(true);
     $ibaOhodnotene = $this->obdobia[$castRoka]->vazenyPriemer(false);
     $text = sprintf('%.2f', $sNeohodnotenymi);
-    if ($sNeohodnotenymi!==$ibaOhodnotene) {
+    if ($sNeohodnotenymi !== $ibaOhodnotene) {
       $text .= ' ('.sprintf('%.2f', $ibaOhodnotene).' iba doteraz ohodnotené predmety)';
     }
     return $text;
   }
 
-  public function getHtml() {
+  public function getHtml()
+  {
     $html = '';
     if ($this->obdobia[self::SEMESTER_ZIMNY]->hasPriemer()) {
       $html .= 'Zimný semester: '.$this->vypisVazenyPriemer(self::SEMESTER_ZIMNY).'<br />';

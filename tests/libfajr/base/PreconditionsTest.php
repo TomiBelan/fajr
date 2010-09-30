@@ -11,7 +11,6 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @author     Martin Sucha <anty.sk@gmail.com>
  */
-
 namespace fajr\libfajr\base;
 
 use fajr\libfajr\base\Preconditions;
@@ -28,7 +27,6 @@ require_once 'test_include.php';
  */
 class PreconditionsTest extends PHPUnit_Framework_TestCase
 {
-
   public function testNull()
   {
     Preconditions::checkNotNull("simple");

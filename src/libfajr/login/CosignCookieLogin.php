@@ -3,6 +3,14 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file in the project root directory.
 
+/**
+ *
+ * @package    Fajr
+ * @subpackage Libfajr__Login
+ * @author     Martin Králik <majak47@gmail.com>
+ * @author     Martin Sucha <anty.sk@gmail.com>
+ * @filesource
+ */
 namespace fajr\libfajr\login;
 use fajr\libfajr\base\Preconditions;
 use fajr\libfajr\pub\connection\HttpConnection;
@@ -13,17 +21,22 @@ use fajr\libfajr\pub\exceptions\LoginException;
 use fajr\libfajr\AIS2ServerInstance;
 use fajr\libfajr\pub\connection\AIS2ServerConnection;
 use fajr\libfajr\pub\connection\AIS2ServerUrlMap;
+
 /**
  * Trieda reprezentujúca prihlasovanie pomocou cookie
  *
- * @author Martin Králik <majak47@gmail.com>
- * @author Martin Sucha <anty.sk@gmail.com>
+ * @package    Fajr
+ * @subpackage Libfajr__Login
+ * @author     Martin Králik <majak47@gmail.com>
+ * @author     Martin Sucha <anty.sk@gmail.com>
  */
-class CosignCookieLogin extends CosignAbstractLogin {
+class CosignCookieLogin extends CosignAbstractLogin
+{
   /** @var CosignServiceCookie $cookie */
   protected $cookie = null;
 
-  public function  __construct(CosignServiceCookie $cookie) {
+  public function  __construct(CosignServiceCookie $cookie)
+  {
     Preconditions::checkNotNull($cookie, 'cookie');
     $this->cookie = $cookie;
   }
@@ -32,7 +45,7 @@ class CosignCookieLogin extends CosignAbstractLogin {
   {
     $connection = $serverConnection->getHttpConnection();
     $connection->addCookie($this->cookie->getName(), $this->cookie->getValue(),
-                  0, '/', $this->cookie->getDomain());
+                           0, '/', $this->cookie->getDomain());
     return true;
   }
 

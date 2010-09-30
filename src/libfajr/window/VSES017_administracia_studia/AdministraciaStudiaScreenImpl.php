@@ -25,6 +25,7 @@ use fajr\libfajr\window\ScreenData;
 use fajr\libfajr\data_manipulation\AIS2TableParser;
 use fajr\libfajr\util;
 use fajr\libfajr\pub\exceptions\ParseException;
+
 /**
  * Trieda reprezentujúca jednu obrazovku so zoznamom štúdií a zápisných listov.
  *
@@ -115,7 +116,8 @@ class AdministraciaStudiaScreenImpl extends AIS2AbstractScreen
     return $this->idCache[$zapisnyListIndex][$idType];
   }
 
-  public function parseIdFromZapisnyListIndexFromResponse($response) {
+  public function parseIdFromZapisnyListIndexFromResponse($response)
+  {
       $data = util\matchAll(self::APP_LOCATION_PATTERN, $response, true);
       if ($data === false) {
         throw new ParseException("Location of APP_PATTERN failed.");

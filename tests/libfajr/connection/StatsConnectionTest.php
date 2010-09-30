@@ -24,7 +24,8 @@ use Exception;
  */
 class StatsConnectionTest extends PHPUnit_Framework_TestCase
 {
-  private function newConnection() {
+  private function newConnection()
+  {
     return $this->getMock('\fajr\libfajr\pub\connection\HttpConnection');
   }
 
@@ -80,5 +81,3 @@ class StatsConnectionTest extends PHPUnit_Framework_TestCase
   }
 
 }
-
-

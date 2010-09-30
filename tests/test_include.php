@@ -3,7 +3,12 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file in the project root directory.
 
-// TODO(??): missing author
+/**
+ *
+ * @package    Fajr
+ * @author     Peter Perešíni <ppershing+fajr@gmail.com>
+ * @filesource
+ */
 
 require_once 'PHPUnit/Framework.php';
 require_once '../src/libfajr/libfajr.php';

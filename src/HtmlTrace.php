@@ -4,9 +4,11 @@
 // found in the LICENSE file in the project root directory.
 
 /**
- * @author Peter Perešíni <ppershing+fajr@gmail.com>
+ *
+ * @package    Fajr
+ * @author     Peter Perešíni <ppershing+fajr@gmail.com>
+ * @filesource
  */
-
 namespace fajr;
 use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\base\Timer;
@@ -71,7 +73,8 @@ class HtmlTrace implements Trace, Renderable
    *
    * @returns array @see debug_backtrace for details
    */
-  public static function getCallerData($depth) {
+  public static function getCallerData($depth)
+  {
     $data = debug_backtrace();
     for ($i = 0; $i < $depth + 1; $i++) {
       array_shift($data);
@@ -86,7 +89,8 @@ class HtmlTrace implements Trace, Renderable
    *
    * @returns string html string with time, caller data and code snippet
    */
-  private function getInfoString() {
+  private function getInfoString()
+  {
     $caller = $this->getCallerData(2);
     $class = isset($caller['class']) ? $caller['class'] : "";
     $class = preg_replace("@.*\\\\@", "", $class);
@@ -112,7 +116,8 @@ class HtmlTrace implements Trace, Renderable
    *
    * @returns string html
    */
-  public function getHtml() {
+  public function getHtml()
+  {
     $html = "";
     foreach ($this->children as $child) {
       assert($child instanceof Renderable);

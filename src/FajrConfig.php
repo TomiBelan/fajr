@@ -4,16 +4,19 @@
 // found in the LICENSE file in the project root directory.
 
 /**
- * @author Martin Sucha <anty.sk@gmail.com>
+ *
+ * @package    Fajr
+ * @author     Martin Sucha <anty.sk@gmail.com>
+ * @filesource
  */
 namespace fajr;
 class FajrConfig
 {
-
   protected static $config = null;
 
   /**
    * Default values for configuration options
+   *
    * @var array key=>value
    * @see configuration.example.php for more information
    */
@@ -43,7 +46,9 @@ class FajrConfig
 
   public static function load()
   {
-    if (self::isConfigured()) return;
+    if (self::isConfigured()) {
+      return;
+    }
 
     @$result = (include '../config/configuration.php');
     if ($result !== false && is_array($result)) {
@@ -58,7 +63,9 @@ class FajrConfig
 
   public static function get($key)
   {
-    if (!isset(self::$config[$key])) return null;
+    if (!isset(self::$config[$key])) {
+      return null;
+    }
     return self::$config[$key];
   }
 
@@ -70,9 +77,9 @@ class FajrConfig
    * if no directory was specified
    *
    * @param string $key
-   * @return string absolute path for the directory specified in configuration
-   *                or null if this option was not specified and does not have
-   *                a default value
+   * @returns string absolute path for the directory specified in configuration
+   *                 or null if this option was not specified and does not have
+   *                 a default value
    * @see FajrConfig::$defaultOptions
    * @see FajrConfig::$directoriesRelativeTo
    * @see configuration.example.php
@@ -80,7 +87,9 @@ class FajrConfig
   public static function getDirectory($key)
   {
     $dir = self::get($key);
-    if ($dir === null) return null;
+    if ($dir === null) {
+      return null;
+    }
     if (FajrUtils::isAbsolutePath($dir)) {
       return $dir;
     }

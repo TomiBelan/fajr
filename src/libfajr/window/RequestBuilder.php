@@ -4,17 +4,22 @@
 // found in the LICENSE file in the project root directory.
 
 /**
+ *
+ * @package    Fajr
+ * @subpackage Libfajr__Window
  * @author Peter Perešíni <ppershing+fajr@gmail.com>
+ * @filesource
  */
-
 namespace fajr\libfajr\window;
 
-interface RequestBuilder {
+interface RequestBuilder
+{
   /**
    * Vygeneruje dáta na POST request
-   * @param string $dlgName názov aktuálneho dialógu
+   *
+   * @param string  $dlgName názov aktuálneho dialógu
    * @param array() $options
-   * @return array() POST data array
+   * @returns array() POST data array
    */
   public function buildRequestData($dlgName, array $options);
 
@@ -22,7 +27,7 @@ interface RequestBuilder {
    * Vygeneruje url na ktorú treba robiť request
    *
    * @param string $appId id AIS aplikácie
-   * @return string url
+   * @returns string url
    */
   public function getRequestUrl($appId, $formName = null);
 
@@ -32,14 +37,14 @@ interface RequestBuilder {
    *
    * @param string $appClassName
    * @param string $kodAplikacie
-   * @return string url
+   * @returns string url
    */
   public function getAppInitializationUrl(ScreenData $data);
 
   /**
    * S každým requestom je treba posielať nový serial.
-   * @return int aktuálny serial pre AIS.
+   *
+   * @returns int aktuálny serial pre AIS.
    */
   public function newSerial();
 }
-

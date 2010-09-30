@@ -4,7 +4,7 @@
 // found in the LICENSE file in the project root directory.
 
 /**
- * Implementation of timer dependend on system clock.
+ * Implementation of timer dependent on system clock.
  *
  * PHP version 5.3.0
  *
@@ -19,21 +19,25 @@ use \fajr\libfajr\base\Timer;
 /**
  * Timer measuring passed time by system clock information.
  */
-class SystemTimer implements Timer {
+class SystemTimer implements Timer
+{
   /**
    * @var double time of the last reset() event
    */
   private $startTime;
 
-  public function __construct() {
+  public function __construct()
+  {
     $this->reset();
   }
 
-  public function reset() {
+  public function reset()
+  {
     $this->startTime = microtime(true);
   }
 
-  public function getElapsedTime() {
+  public function getElapsedTime()
+  {
     return microtime(true) - $this->startTime;
   }
 }

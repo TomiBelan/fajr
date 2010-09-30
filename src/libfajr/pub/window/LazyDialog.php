@@ -4,15 +4,19 @@
 // found in the LICENSE file in the project root directory.
 
 /**
+ *
+ * @package    Fajr
+ * @subpackage Libfajr__Pub__Window
  * @author Peter Perešíni <ppershing+fajr@gmail.com>
  * @TODO documentation
+ * @filesource
  */
-
 namespace fajr\libfajr\pub\window;
 
 use fajr\libfajr\pub\base\Trace;
 
-interface LazyDialog {
+interface LazyDialog
+{
   /**
    * Opens the ais screen/dialog. Note that this will be called
    * automatically on first object request.

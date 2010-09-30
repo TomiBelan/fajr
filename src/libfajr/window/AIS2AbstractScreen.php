@@ -3,6 +3,13 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file in the project root directory.
 
+/**
+ *
+ * @package    Fajr
+ * @subpackage Libfajr__Window
+ * @author     Martin Králik <majak47@gmail.com>
+ * @filesource
+ */
 namespace fajr\libfajr\window;
 
 use fajr\libfajr\pub\base\Trace;
@@ -11,10 +18,13 @@ use fajr\libfajr\login\AIS2LoginException;
 use AIS2Utils;
 use fajr\libfajr\base\DisableEvilCallsObject;
 use fajr\libfajr\pub\window\LazyDialog;
+
 /**
  * Abstraktná trieda reprezentujúca jednu obrazovku v AISe.
  *
- * @author Martin Králik <majak47@gmail.com>
+ * @package    Fajr
+ * @subpackage Libfajr__Window
+ * @author     Martin Králik <majak47@gmail.com>
  */
 abstract class AIS2AbstractScreen extends DisableEvilCallsObject
     implements DialogParent, LazyDialog
@@ -37,8 +47,11 @@ abstract class AIS2AbstractScreen extends DisableEvilCallsObject
     $this->data = $data;
   }
 
-  public function openIfNotAlready(Trace $trace) {
-    if ($this->inUse) return;
+  public function openIfNotAlready(Trace $trace)
+  {
+    if ($this->inUse) {
+      return;
+    }
     $this->executor->requestOpen($trace, $this->data);
     $this->inUse = true;
   }
@@ -46,8 +59,11 @@ abstract class AIS2AbstractScreen extends DisableEvilCallsObject
   /**
    * Zatvorí danú "aplikáciu" v AISe,
    */
-  public function closeIfNeeded(Trace $trace) {
-    if (!$this->inUse) return;
+  public function closeIfNeeded(Trace $trace)
+  {
+    if (!$this->inUse) {
+      return;
+    }
     assert($this->openedDialog == null);
     $this->executor->requestClose($trace);
     $this->inUse = false;
@@ -64,7 +80,8 @@ abstract class AIS2AbstractScreen extends DisableEvilCallsObject
   }
 
 
-  public function openDialogAndGetExecutor(Trace $trace, $dialogUid, DialogData $data) {
+  public function openDialogAndGetExecutor(Trace $trace, $dialogUid, DialogData $data)
+  {
     $this->openIfNotAlready($trace->addChild("opening dialog parent"));
     if ($this->openedDialog != null) {
       throw new IllegalStateException('V AIS2 screene "'.$this->data->appClassName.
@@ -74,7 +91,8 @@ abstract class AIS2AbstractScreen extends DisableEvilCallsObject
     return $this->executor->spawnDialogExecutor($data);
   }
 
-  public function closeDialog($dialogUid) {
+  public function closeDialog($dialogUid)
+  {
     if ($this->openedDialog != $dialogUid) {
       throw new IllegalStateException("Zatváram zlý dialóg!");
     }

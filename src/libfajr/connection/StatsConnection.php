@@ -3,6 +3,14 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file in the project root directory.
 
+/**
+ * Zbiera základné štatistické informácie o vykonaných spojeniach
+ *
+ * @package    Fajr
+ * @subpackage Libfajr__Connection
+ * @author Martin Sucha <anty.sk@gmail.com>
+ * @filesource
+ */
 namespace fajr\libfajr\connection;
 
 use fajr\libfajr\pub\connection\HttpConnection;
@@ -13,11 +21,12 @@ use \Exception;
 /**
  * Zbiera základné štatistické informácie o vykonaných spojeniach
  *
+ * @package    Fajr
+ * @subpackage Libfajr__Connection
  * @author Martin Sucha <anty.sk@gmail.com>
  */
-
-class StatsConnection implements HttpConnection {
-
+class StatsConnection implements HttpConnection
+{
   private $counts = null;
   private $sizes = null;
   private $times = null;
@@ -29,20 +38,23 @@ class StatsConnection implements HttpConnection {
    * @var Timer $timer Timer to time requests.
    * Note that timer WILL BE RESETTED.
    */
-  function __construct(HttpConnection $delegate, Timer $timer) {
+  function __construct(HttpConnection $delegate, Timer $timer)
+  {
     $this->delegate = $delegate;
     $this->timer = $timer;
     $this->clear();
   }
 
-  public function clear() {
+  public function clear()
+  {
     $this->counts = array('POST'=>0, 'GET'=>0);
     $this->sizes = array('POST'=>0, 'GET'=>0);
     $this->times = array('POST'=>0, 'GET'=>0);
     $this->errorCount = 0;
   }
 
-  public function get(Trace $trace, $url) {
+  public function get(Trace $trace, $url)
+  {
     try {
       $this->timer->reset();;
       $result = $this->delegate->get($trace, $url);
@@ -59,7 +71,8 @@ class StatsConnection implements HttpConnection {
     }
   }
 
-  public function post(Trace $trace, $url, $data) {
+  public function post(Trace $trace, $url, $data)
+  {
     try {
       $this->timer->reset();
       $result = $this->delegate->post($trace, $url, $data);
@@ -76,27 +89,35 @@ class StatsConnection implements HttpConnection {
     }
   }
 
-  public function addCookie($name, $value, $expire, $path, $domain, $secure = true, $tailmatch = false) {
-    return $this->delegate->addCookie($name, $value, $expire, $path, $domain, $secure, $tailmatch);
+  public function addCookie($name, $value, $expire, $path,
+                            $domain, $secure = true, $tailmatch = false)
+  {
+    return $this->delegate->addCookie($name, $value, $expire,
+                                      $path, $domain, $secure, $tailmatch);
   }
 
-  public function clearCookies() {
+  public function clearCookies()
+  {
     return $this->delegate->clearCookies();
   }
 
-  public function getCount($type) {
+  public function getCount($type)
+  {
     return $this->counts[$type];
   }
 
-  public function getSize($type) {
+  public function getSize($type)
+  {
     return $this->sizes[$type];
   }
 
-  public function getTime($type) {
+  public function getTime($type)
+  {
     return $this->times[$type];
   }
 
-  public function getTotalCount() {
+  public function getTotalCount()
+  {
     $sum = 0;
     foreach ($this->counts as $k => $v) {
       $sum += $v;
@@ -104,7 +125,8 @@ class StatsConnection implements HttpConnection {
     return $sum;
   }
 
-  public function getTotalSize() {
+  public function getTotalSize()
+  {
     $sum = 0;
     foreach ($this->sizes as $k => $v) {
       $sum += $v;
@@ -112,7 +134,8 @@ class StatsConnection implements HttpConnection {
     return $sum;
   }
 
-  public function getTotalTime() {
+  public function getTotalTime()
+  {
     $sum = 0;
     foreach ($this->times as $k => $v) {
       $sum += $v;
@@ -120,7 +143,8 @@ class StatsConnection implements HttpConnection {
     return $sum;
   }
 
-  public function getTotalErrors() {
+  public function getTotalErrors()
+  {
     return $this->errorCount;
   }
 

@@ -2,14 +2,17 @@
 // Copyright (c) 2010 The Fajr authors (see AUTHORS).
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file in the project root directory.
-namespace fajr;
-require_once 'Validator.php';
- 
+
 /**
  * Description of Input
  *
- * @author Martin Králik <majak47@gmail.com>
+ * @package    Fajr
+ * @author     Martin Králik <majak47@gmail.com>
+ * @filesource
  */
+namespace fajr;
+require_once 'Validator.php';
+ 
 class Input
 {
   protected static $inputParameters = array();
@@ -48,7 +51,6 @@ class Input
       'message' => 'Vstupný parameter "%%NAME%%" nesmie byť prázdny.',
     ),
   );
-  
 
   public static function prepare()
   {
@@ -61,21 +63,21 @@ class Input
     $_post = $_POST;
   
     // podla pola definujeceho vstupne parametre overim ich platnost
-    foreach (self::$allowedParamters as $input => $params)
-    {
-      foreach ($params as $name => $type) if (isset(${$input}[$name]))
-      {
-        $checker = self::$conditions[$type]['cond'];
-        if (!Validator::$checker(${$input}[$name], self::$conditions[$type]['options']))
-          throw new Exception(str_replace('%%NAME%%', $name, self::$conditions[$type]['message']));
-        self::$inputParameters[$name] = ${$input}[$name];
-        self::${$input}[$name] = ${$input}[$name];
+    foreach (self::$allowedParamters as $input => $params) {
+      foreach ($params as $name => $type) {
+        if (isset(${$input}[$name])) {
+          $checker = self::$conditions[$type]['cond'];
+          if (!Validator::$checker(${$input}[$name], self::$conditions[$type]['options'])) {
+            throw new Exception(str_replace('%%NAME%%', $name, self::$conditions[$type]['message']));
+          }
+          self::$inputParameters[$name] = ${$input}[$name];
+          self::${$input}[$name] = ${$input}[$name];
+        }
       }
     }
     
     // specialne vynimky
-    if (isset($_get['logout']))
-    {
+    if (isset($_get['logout'])) {
       self::$inputParameters['logout'] = true;
       //self::$_GET['logout'] = true; FIXME: Majak, co tu robilo toto?
       //Pravdepodobne to chceme umazat.
@@ -88,13 +90,13 @@ class Input
 
   public static function get($key = null)
   {
-    if ($key === null) return self::$inputParameters;
-    if (!isset(self::$inputParameters[$key]))
-    {
+    if ($key === null) {
+      return self::$inputParameters;
+    }
+    if (!isset(self::$inputParameters[$key])) {
       return null;
     }
-    else
-    {
+    else {
       return self::$inputParameters[$key];
     }
   }

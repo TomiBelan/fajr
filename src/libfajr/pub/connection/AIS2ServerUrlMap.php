@@ -11,7 +11,6 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-
 namespace fajr\libfajr\pub\connection;
 
 use fajr\libfajr\base\DisableEvilCallsObject;
@@ -41,7 +40,7 @@ class AIS2ServerUrlMap extends DisableEvilCallsObject
       'login' => 'ais/login.do',
       'logout' => 'ais/logout.do',
       'start' => 'ais/start.do',
-      );
+    );
 
   /**
    * @var string name of the AIS2 server.
@@ -94,4 +93,3 @@ class AIS2ServerUrlMap extends DisableEvilCallsObject
     return $this->_getUrl($this->paths['start']);
   }
 }
-

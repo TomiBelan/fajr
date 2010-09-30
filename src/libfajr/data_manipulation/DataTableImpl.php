@@ -11,10 +11,10 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-
 namespace fajr\libfajr\data_manipulation;
 
 use fajr\libfajr\pub\data_manipulation\SimpleDataTable;
+
 /**
  * Trieda zastrešujúca tabuľku dát.
  *
@@ -67,7 +67,7 @@ class DataTableImpl implements SimpleDataTable
   /**
    * Vráti riadky tabuľky.
    *
-   * @return array(array(string=>string)) riadky tabuľky
+   * @returns array(array(string=>string)) riadky tabuľky
    */
   public function getData()
   {
@@ -77,7 +77,7 @@ class DataTableImpl implements SimpleDataTable
   /**
    * Vráti definíciu stĺpcov použitú v konštruktore a pri parsovaní.
    *
-   * @return array(string) názvy stĺpcov.
+   * @returns array(string) názvy stĺpcov.
    */
   public function getTableDefinition()
   {

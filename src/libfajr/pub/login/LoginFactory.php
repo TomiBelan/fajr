@@ -3,11 +3,19 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file in the project root directory.
 
+/**
+ *
+ * @package    Fajr
+ * @subpackage Libfajr__Pub__Login
+ * @author     Peter Perešíni <ppershing+fajr@gmail.com>
+ * @filesource
+ */
 namespace fajr\libfajr\pub\login;
 
 use fajr\libfajr\pub\login\CosignServiceCookie;
 
-interface LoginFactory {
+interface LoginFactory
+{
   /**
    * @param CosignServiceCookie $cookie
    * @returns Login
@@ -22,7 +30,7 @@ interface LoginFactory {
   public function newLoginUsingCosign($username, $password);
 
   /**
-   * @param string $proxyDb Cosign ProxyDB directory
+   * @param string $proxyDb    Cosign ProxyDB directory
    * @param string $cookieName Name of cosign's proxied cookie
    * @returns Login
    */

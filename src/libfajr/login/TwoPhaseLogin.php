@@ -3,8 +3,13 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file in the project root directory.
 
-// TODO(??): missing author
-
+/**
+ *
+ * @package    Fajr
+ * @subpackage Libfajr__Login
+ * @author     Peter Perešíni <ppershing+fajr@gmail.com>
+ * @filesource
+ */
 namespace fajr\libfajr\login;
 
 use fajr\libfajr\pub\login\Login;
@@ -16,7 +21,8 @@ class TwoPhaseLogin implements Login
   private $cosignLogin = null;
   private $aisLogin = null;
 
-  public function __construct($cosignLogin, $aisLogin) {
+  public function __construct($cosignLogin, $aisLogin)
+  {
     $this->cosignLogin = $cosignLogin;
     $this->aisLogin = $aisLogin;
   }

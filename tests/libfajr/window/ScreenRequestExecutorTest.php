@@ -8,6 +8,7 @@
  * @package    Fajr
  * @subpackage Libfajr__Window
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
+ * @filesource
  */
 namespace fajr\libfajr\window;
 
@@ -51,5 +52,3 @@ class AIS2AbstractScreenTest extends PHPUnit_Framework_TestCase
   }
 
 }
-
-

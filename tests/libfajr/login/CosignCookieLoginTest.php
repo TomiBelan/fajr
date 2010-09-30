@@ -34,15 +34,17 @@ class CosignCookieLoginTest extends PHPUnit_Framework_TestCase
   private $serverConection;
   private $connection;
 
-  public function setUp() {
+  public function setUp()
+  {
     $this->responseAlreadyLogged = file_get_contents(__DIR__.'/testdata/cosignAlreadyLogged.dat');
     $this->responseNotLogged = file_get_contents(__DIR__.'/testdata/cosignNotLogged.dat');
     $this->connection = $this->getMock('\fajr\libfajr\pub\connection\HttpConnection');
     $this->serverConnection = new AIS2ServerConnection($this->connection,
-        new AIS2ServerUrlMap("ais2.test"));
+                                                       new AIS2ServerUrlMap("ais2.test"));
   }
 
-  public function testLogin() {
+  public function testLogin()
+  {
     $this->connection->expects($this->once())
                      ->method('addCookie')
                      ->with($this->equalTo('cosign-test'))

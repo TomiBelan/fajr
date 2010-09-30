@@ -4,33 +4,39 @@
 // found in the LICENSE file in the project root directory.
 
 /**
- * @author Martin Sucha <anty.sk@gmail.com>
+ *
+ * @package    Fajr
+ * @subpackage Libfajr__Pub__Login
+ * @author     Martin Sucha <anty.sk@gmail.com>
+ * @filesource
  */
-
 namespace fajr\libfajr\pub\login;
 use fajr\libfajr\login\FakeLogin;
 use fajr\libfajr\login\NoLogin;
 use fajr\libfajr\pub\login\CosignServiceCookie;
 
-class FakeLoginFactoryImpl implements LoginFactory {
+class FakeLoginFactoryImpl implements LoginFactory
+{
   /**
    * @returns AIS2Login
    */
-  public function newLoginUsingCookie(CosignServiceCookie $cookie) {
+  public function newLoginUsingCookie(CosignServiceCookie $cookie)
+  {
     $ok = ($cookie->getValue() != "wrong_cookie");
     return new FakeLogin($ok);
   }
 
   /**
-   * @return AIS2Login
+   * @returns AIS2Login
    */
-  public function newLoginUsingCosign($username, $password) {
+  public function newLoginUsingCosign($username, $password)
+  {
     $ok = ($password != "wrong");
     return new FakeLogin($ok);
   }
 
   /**
-   * @param string $proxyDb Cosign ProxyDB directory
+   * @param string $proxyDb    Cosign ProxyDB directory
    * @param string $cookieName Name of cosign's proxied cookie
    * @returns Login
    */
@@ -41,9 +47,10 @@ class FakeLoginFactoryImpl implements LoginFactory {
   }
 
   /**
-   * @return AIS2Login
+   * @returns AIS2Login
    */
-  public function newNoLogin() {
+  public function newNoLogin()
+  {
     return new NoLogin();
   }
 }

@@ -3,8 +3,13 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file in the project root directory.
 
-// TODO(??): missing author
-
+/**
+ *
+ * @package    Fajr
+ * @author     Martin Králik <majak47@gmail.com>
+ * @author     Peter Perešíni <ppershing+fajr@gmail.com>
+ * @filesource
+ */
 namespace fajr\presentation;
 use fajr\htmlgen\Renderable;
 use fajr\libfajr\pub\base\Trace;
@@ -16,22 +21,24 @@ use fajr\TableDefinitions;
 use fajr\FajrUtils;
 use fajr\libfajr\AIS2Utils;
 
-class ZoznamTerminovCallback implements Renderable {
+class ZoznamTerminovCallback implements Renderable
+{
   private $skusky;
   private $hodnotenia;
   private $trace;
   private $connection;
   
-  public function __construct(Trace $trace, $skusky, $hodnotenia) {
+  public function __construct(Trace $trace, $skusky, $hodnotenia)
+  {
     $this->trace = $trace;
     $this->skusky = $skusky;
     $this->hodnotenia = $hodnotenia;
   }
   
-  public function hashNaPrihlasenie($predmet, $row) {
+  public function hashNaPrihlasenie($predmet, $row)
+  {
     return
-      md5($row['index'].'|'.$row['dat'].'|'.$row['cas'].'|'.$predmet);
-    
+        md5($row['index'] . '|' . $row['dat'] . '|' . $row['cas'] . '|' . $predmet);
   }
   
   public function prihlasNaSkusku($predmetIndex, $terminIndex)
@@ -39,14 +46,18 @@ class ZoznamTerminovCallback implements Renderable {
     $predmety = $this->skusky->getPredmetyZapisnehoListu()->getData();
     $predmetKey = -1;
     foreach ($predmety as $key=>$row) {
-      if ($row['index']==$predmetIndex) $predmetKey = $key;
+      if ($row['index'] == $predmetIndex) {
+        $predmetKey = $key;
+      }
     }
     
     $terminy =
-      $this->skusky->getZoznamTerminovDialog($predmetIndex)->getZoznamTerminov()->getData();
+        $this->skusky->getZoznamTerminovDialog($predmetIndex)->getZoznamTerminov()->getData();
     $terminKey = -1;
     foreach($terminy as $key=>$row) {
-      if ($row['index']==$terminIndex) $terminKey = $key;
+      if ($row['index'] == $terminIndex) {
+        $terminKey = $key;
+      }
     }
     if ($predmetKey == -1 || $terminKey == -1) {
       throw new Exception("Ooops, predmet/termín nenájdený. Pravdepodobne
@@ -69,7 +80,8 @@ class ZoznamTerminovCallback implements Renderable {
   const PRIHLASIT_NEMOZE_ZNAMKA = 3;
   const PRIHLASIT_NEMOZE_INE = 4;
   
-  public function mozeSaPrihlasit($row) {
+  public function mozeSaPrihlasit($row)
+  {
     $prihlasRange = AIS2Utils::parseAISDateTimeRange($row['prihlasovanie']);
     $predmet = $row['predmet'];
     if (isset($this->hodnoteniaData[$predmet]['znamka'])) {
@@ -108,7 +120,8 @@ class ZoznamTerminovCallback implements Renderable {
     return self::PRIHLASIT_MOZE;
   }
   
-  public function getHtml() {
+  public function getHtml()
+  {
     $predmetyZapisnehoListu = $this->skusky->getPredmetyZapisnehoListu($this->trace);
     $hodnoteniaData = array();
     
@@ -119,33 +132,36 @@ class ZoznamTerminovCallback implements Renderable {
     
     if (Input::get('action') !== null) {
       assert(Input::get("action")=="prihlasNaSkusku");
-      if ($this->prihlasNaSkusku(Input::get("prihlasPredmetIndex"), Input::get("prihlasTerminIndex")))
-      {
+      if ($this->prihlasNaSkusku(Input::get("prihlasPredmetIndex"),
+                                 Input::get("prihlasTerminIndex"))) {
         FajrUtils::redirect(array('tab' => 'TerminyHodnotenia'));
       }
-      else throw new Exception('Na skúšku sa nepodarilo prihlásiť.');
+      else {
+        throw new Exception('Na skúšku sa nepodarilo prihlásiť.');
+      }
     }
     
     $baseUrlParams = array("studium"=>Input::get("studium"),
-          "list"=>Input::get("list"),
-          "tab"=>Input::get("tab"));
+                           "list"=>Input::get("list"),
+                           "tab"=>Input::get("tab"));
     
     $terminyTable = new
-      Table(TableDefinitions::vyberTerminuHodnoteniaJoined(), array('termin'=>'index',
-            'predmet'=>'predmetIndex'), $baseUrlParams);
+        Table(TableDefinitions::vyberTerminuHodnoteniaJoined(),
+              array('termin'=>'index',
+                    'predmet'=>'predmetIndex'),
+              $baseUrlParams);
 
     $terminyCollapsible = new Collapsible(new HtmlHeader('Termíny, na ktoré sa môžem prihlásiť'),
-      $terminyTable);
+                                          $terminyTable);
     
     $actionUrl=FajrUtils::linkUrl($baseUrlParams);
     
     foreach ($predmetyZapisnehoListu->getData() as $predmetRow) {
-      
       $dialog = $this->skusky->getZoznamTerminovDialog(
           $this->trace->addChild('Get zoznam terminov'), $predmetRow['index']);
       $terminy = $dialog->getZoznamTerminov($this->trace->addChild('Get zoznam terminov'));
       unset($dialog);
-      foreach($terminy->getData() as $row) {
+      foreach ($terminy->getData() as $row) {
         $row['predmet']=$predmetRow['nazov'];
         $row['predmetIndex']=$predmetRow['index'];
         
@@ -154,18 +170,18 @@ class ZoznamTerminovCallback implements Renderable {
         if ($mozeSaPrihlasit == self::PRIHLASIT_MOZE ||
             $mozeSaPrihlasit == self::PRIHLASIT_MOZE_ZNAMKA) {
           $row['prihlas']="<form method='post' action='$actionUrl'><div>
-              <input type='hidden' name='action' value='prihlasNaSkusku'/>
-              <input type='hidden' name='prihlasPredmetIndex'
-              value='".$row['predmetIndex']."'/>
-              <input type='hidden' name='prihlasTerminIndex'
-              value='".$row['index']."'/>
-              <input type='hidden' name='hash' value='$hash'/>
-              <button name='submit' type='submit' class='tableButton positive'>
-                <img src='images/add.png' alt=''>Prihlás ma!
-              </button></div></form>";
+                           <input type='hidden' name='action' value='prihlasNaSkusku'/>
+                           <input type='hidden' name='prihlasPredmetIndex'
+                           value='".$row['predmetIndex']."'/>
+                           <input type='hidden' name='prihlasTerminIndex'
+                           value='".$row['index']."'/>
+                           <input type='hidden' name='hash' value='$hash'/>
+                           <button name='submit' type='submit' class='tableButton positive'>
+                             <img src='images/add.png' alt=''>Prihlás ma!
+                           </button></div></form>";
           if ($mozeSaPrihlasit == self::PRIHLASIT_MOZE_ZNAMKA) {
             $row['prihlas'] = 'Už máš zápísané"'.
-              $hodnoteniaData[$row['predmet']]['znamka'].'"'.$row['prihlas'];
+                              $hodnoteniaData[$row['predmet']]['znamka'].'"'.$row['prihlas'];
           }
         } else if ($mozeSaPrihlasit == self::PRIHLASIT_NEMOZE_CAS) {
           $row['prihlas'] = 'Nedá sa (neskoro)';
@@ -173,35 +189,34 @@ class ZoznamTerminovCallback implements Renderable {
           $row['prihlas'] = 'Termín je plný!';
         } else if ($mozeSaPrihlasit == self::PRIHLASIT_NEMOZE_ZNAMKA) {
           $row['prihlas'] = 'Už máš zápísané"'.
-            $hodnoteniaData[$row['predmet']]['znamka'].'"';
+                            $hodnoteniaData[$row['predmet']]['znamka'].'"';
         } else if ($mozeSaPrihlasit == self::PRIHLASIT_NEMOZE_INE) {
           $row['prihlas'] = 'Nedá sa, dôvod neznámy';
         }
         $terminyTable->addRow($row, null);
-        
       }
     }
-    if (Input::get('termin')!=null && Input::get('predmet')!=null) {
+    if ((Input::get('termin') != null) && (Input::get('predmet') != null)) {
       $terminyTable->setOption('selected_key',
-          array('index'=>Input::get('termin'),
-            'predmetIndex'=>Input::get('predmet')));
+                               array('index'=>Input::get('termin'),
+                                     'predmetIndex'=>Input::get('predmet')));
     }
     
     $html = $terminyCollapsible->getHtml();
-    if (Input::get('termin') != null && Input::get('predmet')!=null) {
+    if ((Input::get('termin') != null) && (Input::get('predmet') != null)) {
       $prihlaseni = $this->skusky->getZoznamTerminovDialog($this->trace, Input::get('predmet'))
-        ->getZoznamPrihlasenychDialog($this->trace, Input::get('termin'))
-        ->getZoznamPrihlasenych($this->trace);
+                                 ->getZoznamPrihlasenychDialog($this->trace, Input::get('termin'))
+                                 ->getZoznamPrihlasenych($this->trace);
       
-      $zoznamPrihlasenychTable =  new
-      Table(TableDefinitions::zoznamPrihlasenych(), null, array('studium', 'list'));
+      $zoznamPrihlasenychTable = new
+          Table(TableDefinitions::zoznamPrihlasenych(), null, array('studium', 'list'));
 
       $zoznamPrihlasenychCollapsible = new Collapsible(
           new HtmlHeader('Zoznam prihlásených na vybratý termín'),
           $zoznamPrihlasenychTable);
       
       $zoznamPrihlasenychTable->addRows($prihlaseni->getData());
-      $html .= $zoznamPrihlasenychCollapsible->getHtml();
+      $html.= $zoznamPrihlasenychCollapsible->getHtml();
     }
     return $html;
   }

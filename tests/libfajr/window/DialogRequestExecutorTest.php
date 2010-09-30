@@ -8,6 +8,7 @@
  * @package    Fajr
  * @subpackage Libfajr__Window
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
+ * @filesource
  */
 
 /**
@@ -36,5 +37,3 @@ class DialogRequestExecutorTest extends PHPUnit_Framework_TestCase
     $this->assertEquals($name, "VSES206_VyberTerminuHodnoteniaDlg1");
   }
 }
-
-

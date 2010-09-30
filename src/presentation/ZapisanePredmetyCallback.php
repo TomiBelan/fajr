@@ -3,8 +3,13 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file in the project root directory.
 
-// TODO(??): missing author
-
+/**
+ *
+ * @package    Fajr
+ * @author     Peter Perešíni <ppershing+fajr@gmail.com>
+ * @author     Martin Králik <majak47@gmail.com>
+ * @filesource
+ */
 namespace fajr\presentation;
 use fajr\htmlgen\Renderable;
 use fajr\libfajr\pub\base\Trace;
@@ -16,21 +21,25 @@ use fajr\Sorter;
 use fajr\FajrUtils;
 use fajr\Input;
 
-class ZapisanePredmetyCallback implements Renderable {
+class ZapisanePredmetyCallback implements Renderable
+{
   private $skusky;
   
-  public function __construct(Trace $trace, $skusky) {
+  public function __construct(Trace $trace, $skusky)
+  {
     $this->trace = $trace;
     $this->skusky = $skusky;
   }
   
-  public function getHtml() {
+  public function getHtml()
+  {
     $trace = $this->trace->addChild("ZapisanePredmetyCallback");;
     $predmetyZapisnehoListu = $this->skusky->getPredmetyZapisnehoListu($trace);
     $predmetyZapisnehoListuTable = new
-      Table(TableDefinitions::predmetyZapisnehoListu());
-    $predmetyZapisnehoListuCollapsible = new Collapsible(new HtmlHeader('Predmety zápisného listu'),
-      $predmetyZapisnehoListuTable);
+        Table(TableDefinitions::predmetyZapisnehoListu());
+    $predmetyZapisnehoListuCollapsible = new Collapsible(
+        new HtmlHeader('Predmety zápisného listu'),
+        $predmetyZapisnehoListuTable);
     $kreditovCelkomLeto = 0;
     $kreditovCelkomZima = 0;
     $pocetPredmetovLeto = 0;
@@ -48,24 +57,28 @@ class ZapisanePredmetyCallback implements Renderable {
         $class='zima';
       }
       $predmetyZapisnehoListuTable->addRow($row, array('class'=>$class));
-      
     }
 
     $pocetPredmetovText = 'Celkom ';
-    $pocetPredmetovText .= FajrUtils::formatPlural($pocetPredmetovLeto+$pocetPredmetovZima,
+    $pocetPredmetovText .= FajrUtils::formatPlural(
+        $pocetPredmetovLeto+$pocetPredmetovZima,
         '0 predmetov', '1 predmet', '%d predmety', '%d predmetov');
     if ($pocetPredmetovLeto > 0 && $pocetPredmetovZima > 0) {
-      $pocetPredmetovText .= sprintf(' (%d v zime, %d v lete)', $pocetPredmetovZima, $pocetPredmetovLeto);
+      $pocetPredmetovText .= sprintf(' (%d v zime, %d v lete)',
+                                     $pocetPredmetovZima, $pocetPredmetovLeto);
     }
 
     $kreditovCelkomText = ''. ($kreditovCelkomLeto+$kreditovCelkomZima);
     if ($kreditovCelkomLeto > 0 && $kreditovCelkomZima > 0) {
-      $kreditovCelkomText .= sprintf(' (%d+%d)', $kreditovCelkomZima, $kreditovCelkomLeto);
+      $kreditovCelkomText .= sprintf(' (%d+%d)',
+                                     $kreditovCelkomZima, $kreditovCelkomLeto);
     }
 
-    $predmetyZapisnehoListuTable->addFooter(array('nazov'=>$pocetPredmetovText,'kredit'=>$kreditovCelkomText), array());
-    $predmetyZapisnehoListuTable->setUrlParams(array('studium' =>
-          Input::get('studium'), 'list' => Input::get('list')));
+    $predmetyZapisnehoListuTable->addFooter(array('nazov'=>$pocetPredmetovText,
+                                                  'kredit'=>$kreditovCelkomText),
+                                            array());
+    $predmetyZapisnehoListuTable->setUrlParams(array('studium' => Input::get('studium'),
+                                                     'list' => Input::get('list')));
     
     return $predmetyZapisnehoListuTable->getHtml();
   }

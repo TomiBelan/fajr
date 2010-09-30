@@ -3,8 +3,14 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file in the project root directory.
 
-// TODO(??): missing author
-
+/**
+ *
+ * @package    Fajr
+ * @subpackage Libfajr__Window
+ * @author     Peter Perešíni <ppershing+fajr@gmail.com>
+ * @author     Martin Králik <majak47@gmail.com>
+ * @filesource
+ */
 namespace fajr\libfajr\window;
 use fajr\libfajr\pub\base\Trace;
 use Exception;
@@ -33,7 +39,8 @@ class ScreenRequestExecutorImpl extends DisableEvilCallsObject
 
   const FORM_NAME_PATTERN = '@dm\(\)\.openMainDialog\("(?P<formName>[^"]*)","(?P<name>[^"]*)","(?P<formId>[^"]*)",[0-9]*,[^,]*,[^,]*,[^,]*,[^,]*,[^,]*,[^,]*,[^,]*,[^,]*\);@';
 
-  public function parseFormNameFromResponse($response) {
+  public function parseFormNameFromResponse($response)
+  {
     $matches = array();
     if (preg_match(self::FORM_NAME_PATTERN, $response, $matches)) {
       return $matches['formName'];
@@ -45,7 +52,8 @@ class ScreenRequestExecutorImpl extends DisableEvilCallsObject
 
   const APPID_PATTERN = '@\<body onload\=\'window\.setTimeout\("WebUI_init\(\\\"([0-9]+)\\\", \\\"ais\\\", \\\"ais/webui2\\\"\)", 1\)\'@';
 
-  public function parseAppIdFromResponse($response) {
+  public function parseAppIdFromResponse($response)
+  {
     $matches = array();
     if (preg_match(self::APPID_PATTERN, $response, $matches)) {
       return $matches[1];
@@ -64,7 +72,8 @@ class ScreenRequestExecutorImpl extends DisableEvilCallsObject
    * Nadviaže spojenie, spustí danú "aplikáciu" v AISe
    * a natiahne prvotné dáta do atribútu $data.
    */
-  public function requestOpen(Trace $trace, ScreenData $data) {
+  public function requestOpen(Trace $trace, ScreenData $data)
+  {
     $trace->tlog("open screen");
 
     $url = $this->requestBuilder->getAppInitializationUrl($data);
@@ -115,7 +124,8 @@ class ScreenRequestExecutorImpl extends DisableEvilCallsObject
 
   public function spawnDialogExecutor(DialogData $data)
   {
-    return new DialogRequestExecutor($this->requestBuilder, $this->connection, $data, $this->appId, $this->formName);
+    return new DialogRequestExecutor($this->requestBuilder, $this->connection,
+                                     $data, $this->appId, $this->formName);
   }
 
 }

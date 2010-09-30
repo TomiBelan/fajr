@@ -12,7 +12,6 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-
 namespace fajr\libfajr\data_manipulation;
 
 use DOMDocument;
@@ -95,7 +94,7 @@ class AIS2TableParser
   public function createTableFromHtml(Trace $trace, $aisResponseHtml, $dataViewName)
   {
     $html = $this->fixProblematicTags($trace->addChild("Fixing html for better DOM parsing."),
-        $aisResponseHtml);
+                                                       $aisResponseHtml);
     $domWholeHtml = $this->createDomFromHtml($trace, $html);
     $element = $this->findEnclosingElement($trace, $domWholeHtml, $dataViewName);
     $dom = new DOMDocument();
@@ -122,8 +121,10 @@ class AIS2TableParser
     $value = $element->textContent;
 
     // special fix for &nbsp;
-    if ($value == ' ') return '';
-    assert($value != ''); // probably the is some inner element which we don't know about
+    if ($value == ' ') {
+      return '';
+    }
+    assert($value != ''); // probably there is some inner element which we don't know about
     return $value;
   }
 

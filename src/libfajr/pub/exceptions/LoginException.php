@@ -4,7 +4,11 @@
 // found in the LICENSE file in the project root directory.
 
 /**
+ *
+ * @package Fajr
+ * @subpackage Libfajr__Pub__Exceptions
  * @author Martin Sucha <anty.sk@gmail.com>
+ * @filesource
  */
 
 namespace fajr\libfajr\pub\exceptions;

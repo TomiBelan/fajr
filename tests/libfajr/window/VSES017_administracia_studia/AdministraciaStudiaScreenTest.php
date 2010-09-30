@@ -8,6 +8,7 @@
  * @package    Fajr
  * @subpackage Libfajr__Window__VSES017_administracia_studia
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
+ * @filesource
  */
 namespace fajr\libfajr\window\VSES017_administracia_studia;
 
@@ -38,5 +39,3 @@ class AdministraciaStudiaScreenTest extends PHPUnit_Framework_TestCase
   }
 
 }
-
-

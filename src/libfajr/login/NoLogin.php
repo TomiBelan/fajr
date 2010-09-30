@@ -4,16 +4,20 @@
 // found in the LICENSE file in the project root directory.
 
 /**
- * @author Peter Perešíni <ppershing+fajr@gmail.com>
+ *
+ * @package    Fajr
+ * @subpackage Libfajr__Login
+ * @author     Peter Perešíni <ppershing+fajr@gmail.com>
+ * @filesource
  */
-
 namespace fajr\libfajr\login;
 
 use fajr\libfajr\pub\login\Login;
 use fajr\libfajr\pub\connection\HttpConnection;
 use fajr\libfajr\pub\connection\AIS2ServerConnection;
 
-class NoLogin implements Login {
+class NoLogin implements Login
+{
   public function login(AIS2ServerConnection $unused)
   {
     return true;

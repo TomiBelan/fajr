@@ -38,7 +38,8 @@ class CosignPasswordLoginTest extends PHPUnit_Framework_TestCase
   private $serverConection;
   private $connection;
 
-  public function setUp() {
+  public function setUp()
+  {
     $this->responseAlreadyLogged = file_get_contents(__DIR__.'/testdata/cosignAlreadyLogged.dat');
     $this->responseNotLogged = file_get_contents(__DIR__.'/testdata/cosignNotLogged.dat');
     $this->responseLoginOk = $this->responseAlreadyLogged;
@@ -51,7 +52,8 @@ class CosignPasswordLoginTest extends PHPUnit_Framework_TestCase
         new AIS2ServerUrlMap("ais2.test"));
   }
 
-  public function testLoginOk() {
+  public function testLoginOk()
+  {
     $this->connection->expects($this->once())
                      ->method('get')
                      ->will($this->returnValue($this->responseNotLogged));
@@ -62,7 +64,8 @@ class CosignPasswordLoginTest extends PHPUnit_Framework_TestCase
     $login->login($this->serverConnection);
   }
 
-  public function testLoginWrong1() {
+  public function testLoginWrong1()
+  {
     $this->connection->expects($this->once())
                      ->method('get')
                      ->will($this->returnValue($this->responseNotLogged));
@@ -79,7 +82,8 @@ class CosignPasswordLoginTest extends PHPUnit_Framework_TestCase
     }
   }
 
-  public function testLoginWrong2() {
+  public function testLoginWrong2()
+  {
     $this->connection->expects($this->once())
                      ->method('get')
                      ->will($this->returnValue($this->responseNotLogged));
@@ -96,7 +100,8 @@ class CosignPasswordLoginTest extends PHPUnit_Framework_TestCase
     }
   }
 
-  public function testLoginWrong3() {
+  public function testLoginWrong3()
+  {
     $this->connection->expects($this->once())
                      ->method('get')
                      ->will($this->returnValue($this->responseNotLogged));
@@ -113,7 +118,8 @@ class CosignPasswordLoginTest extends PHPUnit_Framework_TestCase
     }
   }
 
-  public function testLoggedIn() {
+  public function testLoggedIn()
+  {
     $this->connection->expects($this->once())
                      ->method('get')
                      ->will($this->returnValue($this->responseAlreadyLogged));
@@ -121,7 +127,8 @@ class CosignPasswordLoginTest extends PHPUnit_Framework_TestCase
     $this->assertTrue($login->isLoggedIn($this->serverConnection));
   }
 
-  public function testNotLogged() {
+  public function testNotLogged()
+  {
     $this->connection->expects($this->once())
                      ->method('get')
                      ->will($this->returnValue($this->responseNotLogged));

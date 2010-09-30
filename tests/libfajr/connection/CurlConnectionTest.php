@@ -53,14 +53,15 @@ class CurlConnectionTest extends PHPUnit_Framework_TestCase
     $this->assertPostCosignLogin($connection, true);
   }
 
-  private function assertPostCosignLogin($connection, $shouldSucceed) {
+  private function assertPostCosignLogin($connection, $shouldSucceed)
+  {
     $response = $connection->post(new NullTrace, 'https://login.uniba.sk/cosign.cgi',
                                   array('login' => 'fajr_curl_connection_test_username',
                                         'krbpwd' => 'password',
                                         'submit' => 'Prihlásiť'));
 
     $this->assertEquals($shouldSucceed,
-        preg_match("@fajr_curl_connection_test_username@", $response) > 0);
+                        preg_match("@fajr_curl_connection_test_username@", $response) > 0);
   }
 
   public function testAddCookies()
@@ -93,5 +94,3 @@ class CurlConnectionTest extends PHPUnit_Framework_TestCase
     $this->assertPostCosignLogin($connection, true);
   }
 }
-
-

@@ -2,10 +2,14 @@
 // Copyright (c) 2010 The Fajr authors (see AUTHORS).
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file in the project root directory.
-namespace fajr;
+
 /**
+ *
+ * @package    Fajr
  * @author Martin Sucha <anty.sk@gmail.com>
+ * @filesource
  */
+namespace fajr;
 
 require_once 'FajrRouter.php';
 use fajr\libfajr\pub\connection\AIS2ServerConnection;
@@ -22,7 +26,9 @@ class FajrUtils
     $session = new AIS2Session($login);
 
     $trace->tlog("logging in");
-    if (!$login->login($connection)) return false;
+    if (!$login->login($connection)) {
+      return false;
+    }
     $trace->tlog("logged in correctly.");
 
     $_SESSION['AISSession'] = $session;
@@ -35,7 +41,9 @@ class FajrUtils
    */
   public static function logout(AIS2ServerConnection $connection)
   {
-    if (!isset($_SESSION['AISSession'])) return false;
+    if (!isset($_SESSION['AISSession'])) {
+      return false;
+    }
     if ($_SESSION['AISSession']->getLogin()->logout($connection)) {
       unset($_SESSION['AISSession']);
       self::dropSession();
@@ -45,7 +53,8 @@ class FajrUtils
   /**
    * Ensure current session is disposed of and new clean session is created
    */
-  public static function dropSession() {
+  public static function dropSession()
+  {
     session_regenerate_id(true);
   }
 
@@ -72,7 +81,7 @@ class FajrUtils
    * configures the same path for cookie and session directories,
    * the filenames do not clash.
    *
-   * @return string file path to use to store cookies into.
+   * @returns string file path to use to store cookies into.
    */
   public static function getCookieFile()
   {
@@ -86,13 +95,17 @@ class FajrUtils
       $path = FajrRouter::paramsToPath($params);
     }
     $query = http_build_query($params);
-    if (strlen($query) > 0) $query = '?' . $query;
+    if (strlen($query) > 0) {
+      $query = '?' . $query;
+    }
 
     $base = '';
 
     if (!FajrConfig::get('URL.Rewrite')) {
       $base = 'index.php';
-      if (strlen($path) > 0) $base .= '/';
+      if (strlen($path) > 0) {
+        $base .= '/';
+      }
     }
 
     return self::basePath() . $base . $path . $query;
@@ -108,9 +121,13 @@ class FajrUtils
 
   public static function pathInfo()
   {
-    if (!isset($_SERVER['PATH_INFO'])) return '';
+    if (!isset($_SERVER['PATH_INFO'])) {
+      return '';
+    }
     $path = $_SERVER['PATH_INFO'];
-    if (substr_compare($path, '/', 0, 1) == 0) $path = substr($path, 1);
+    if (substr_compare($path, '/', 0, 1) == 0) {
+      $path = substr($path, 1);
+    }
     return $path;
   }
 
@@ -120,9 +137,9 @@ class FajrUtils
   public static function isHTTPS()
   {
     return ((isset($_SERVER['HTTPS'])) &&
-    ($_SERVER['HTTPS'] !== 'off') &&
-    ($_SERVER['HTTPS'])) ||
-    ((isset($_SERVER['SERVER_PORT'])) && $_SERVER['SERVER_PORT'] == '443');
+           ($_SERVER['HTTPS'] !== 'off') &&
+           ($_SERVER['HTTPS'])) ||
+           ((isset($_SERVER['SERVER_PORT'])) && $_SERVER['SERVER_PORT'] == '443');
   }
 
   public static function basePath()
@@ -154,13 +171,16 @@ class FajrUtils
 
   /**
    * Checks whether $haystack starts with a substring $needle
+   *
    * @param string $haystack
    * @param string $needle
-   * @return bool true if $haystack starts with $needle, false otherwise
+   * @returns bool true if $haystack starts with $needle, false otherwise
    */
   public static function startsWith($haystack, $needle)
   {
-    if ($needle == '') return true;
+    if ($needle == '') {
+      return true;
+    }
 
     $needle_length = strlen($needle);
     if ($needle_length > strlen($haystack)) {
@@ -171,13 +191,16 @@ class FajrUtils
 
   /**
    * Checks whether $haystack ends with a substring $needle
+   *
    * @param string $haystack
    * @param string $needle
-   * @return bool true if $haystack ends with $needle, false otherwise
+   * @returns bool true if $haystack ends with $needle, false otherwise
    */
   public static function endsWith($haystack, $needle)
   {
-    if ($needle == '') return true;
+    if ($needle == '') {
+      return true;
+    }
     
     $needle_length = strlen($needle);
     if ($needle_length > strlen($haystack)) {
@@ -187,9 +210,10 @@ class FajrUtils
   }
 
   /**
-   * Determines, whether given $path is an absolute path or not.
+   * Determines whether given $path is an absolute path or not.
    * A path is absolute if it starts with filesystem root definition
    * (i.e. / on unix like systems and C:\ or \\ on Windows)
+   *
    * @param string $path true if the path is relative
    */
   public static function isAbsolutePath($path)
@@ -225,7 +249,7 @@ class FajrUtils
    * @param string $a first path component
    * @param string $b second path component
    * @param string ... any other path components to join
-   * @return string all the paths joined using a directory separator
+   * @returns string all the paths joined using a directory separator
    */
   public static function joinPath($a, $b)
   {
@@ -249,7 +273,9 @@ class FajrUtils
     for ($i = 1; $i < $num_args; $i++) {
       $part = $args[$i];
       // DIRECTORY_SEPARATOR or empty string is a special case
-      if ($part == DIRECTORY_SEPARATOR) continue;
+      if ($part == DIRECTORY_SEPARATOR) {
+        continue;
+      }
 
       // first extract range of part without leading or trailing DS
       if (self::startsWith($part, DIRECTORY_SEPARATOR)) {
@@ -264,7 +290,9 @@ class FajrUtils
       }
 
       // append a path component
-      if ($shouldAddDS) $path .= DIRECTORY_SEPARATOR;
+      if ($shouldAddDS) {
+        $path .= DIRECTORY_SEPARATOR;
+      }
       $shouldAddDS = true;
       $path .= substr($part, $start, $end);
     }
@@ -274,11 +302,11 @@ class FajrUtils
 
   /**
    * Format plural according to Slovak language rules
-   * @param int $number number to decide on and pass as argument to sprintf
-   * @param string $zero sprintf format string if $number is 0 (zero)
-   * @param string $one sprintf format string if $number is 1 (one)
-   * @param string $few sprintf format string if $number is between 2 and 4 (inclusive)
-   * @param string $many sprintf format string for other $number values
+   * @param int    $number number to decide on and pass as argument to sprintf
+   * @param string $zero   sprintf format string if $number is 0 (zero)
+   * @param string $one    sprintf format string if $number is 1 (one)
+   * @param string $few    sprintf format string if $number is between 2 and 4 (inclusive)
+   * @param string $many   sprintf format string for other $number values
    */
   public static function formatPlural($number, $zero, $one, $few, $many)
   {

@@ -42,31 +42,31 @@ class Assert
      * @param int    $line line number
      * @param string $code code that failed
      *
-     * @return void
+     * @returns void
      * @throws Exception each time called new Exception is thrown
      */
     public static function myAssertHandler($file, $line, $code)
     {
-        $fileDump = CodeSnippet::getCodeSnippet($file, $line, self::NEAR_CODE);
-        $message  = "Assertion failed on line $file: $line,code:\n\n$fileDump";
-        $message .= "\nFailed expression: ";
-        $message .= var_export($code, true);
-        $message .= "\n";
+      $fileDump = CodeSnippet::getCodeSnippet($file, $line, self::NEAR_CODE);
+      $message  = "Assertion failed on line $file: $line,code:\n\n$fileDump";
+      $message .= "\nFailed expression: ";
+      $message .= var_export($code, true);
+      $message .= "\n";
 
-        throw new Exception($message);
+      throw new Exception($message);
     }
 
     /**
      * Register assertion handler in php
      *
-     * @return void
+     * @returns void
      */
     public static function register()
     {
-        assert_options(ASSERT_ACTIVE, 1);
-        assert_options(ASSERT_WARNING, 0);
-        assert_options(ASSERT_QUIET_EVAL, 1);
-        assert_options(ASSERT_CALLBACK, array('fajr\libfajr\Assert', 'myAssertHandler'));
+      assert_options(ASSERT_ACTIVE, 1);
+      assert_options(ASSERT_WARNING, 0);
+      assert_options(ASSERT_QUIET_EVAL, 1);
+      assert_options(ASSERT_CALLBACK, array('fajr\libfajr\Assert', 'myAssertHandler'));
     }
 }
 

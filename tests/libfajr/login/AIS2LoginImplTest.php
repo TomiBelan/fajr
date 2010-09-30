@@ -35,7 +35,8 @@ class AIS2LoginImplTest extends PHPUnit_Framework_TestCase
   private $serverConection;
   private $connection;
 
-  public function setUp() {
+  public function setUp()
+  {
     $this->responseLoggedIn = file_get_contents(__DIR__.'/testdata/aisLoggedIn.dat');
     $this->responseNotLogged = file_get_contents(__DIR__.'/testdata/aisNotLogged.dat');
     $this->responseLogout = file_get_contents(__DIR__.'/testdata/aisLogout.dat');
@@ -45,7 +46,8 @@ class AIS2LoginImplTest extends PHPUnit_Framework_TestCase
         new AIS2ServerUrlMap("ais2.test"), null);
   }
 
-  public function testIsLoggedAlreadyLogged() {
+  public function testIsLoggedAlreadyLogged()
+  {
     $this->connection->expects($this->once())
                      ->method('get')
                      ->will($this->returnValue($this->responseLoggedIn));
@@ -53,7 +55,8 @@ class AIS2LoginImplTest extends PHPUnit_Framework_TestCase
     $this->assertTrue($login->isLoggedIn($this->serverConnection));
   }
 
-  public function testIsLoggedNotLogged() {
+  public function testIsLoggedNotLogged()
+  {
     $this->connection->expects($this->once())
                      ->method('get')
                      ->will($this->returnValue($this->responseNotLogged));
@@ -61,7 +64,8 @@ class AIS2LoginImplTest extends PHPUnit_Framework_TestCase
     $this->assertFalse($login->isLoggedIn($this->serverConnection));
   }
 
-  public function testIsLoggedFailure() {
+  public function testIsLoggedFailure()
+  {
     $this->connection->expects($this->once())
                      ->method('get')
                      ->will($this->returnValue("problem"));
@@ -70,7 +74,8 @@ class AIS2LoginImplTest extends PHPUnit_Framework_TestCase
     $login->isLoggedIn($this->serverConnection);
   }
 
-  public function testLoginOk() {
+  public function testLoginOk()
+  {
     $this->connection->expects($this->once())
                      ->method('get')
                      ->will($this->returnValue($this->responseLoggedIn));
@@ -78,7 +83,8 @@ class AIS2LoginImplTest extends PHPUnit_Framework_TestCase
     $login->login($this->serverConnection);
   }
 
-  public function testLoginFailure() {
+  public function testLoginFailure()
+  {
     $this->connection->expects($this->once())
                      ->method('get')
                      ->will($this->returnValue($this->responseNotLogged));
