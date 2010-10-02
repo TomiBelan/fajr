@@ -146,6 +146,7 @@ class Loader
     // ignore this in autoloader
     if (preg_match("@^Mock_@", $className)) return;
 
+    $path = self::getClassPath($className);
     if ($path === false) {
       echo "Autoload of class '$className' failed.";
       return;
