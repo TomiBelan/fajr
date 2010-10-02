@@ -137,13 +137,18 @@ class AIS2TableParser
       throw new ParseException("Can't find table data");
     }
 
-    foreach ($element->childNodes as $ais_row) {
-      assert($ais_row->tagName == "tr");
-      assert($ais_row->hasAttribute("rid"));
-      assert($ais_row->hasChildNodes());
+    foreach ($element->childNodes as $aisRow) {
+      assert($aisRow->tagName == "tr");
+      assert($aisRow->hasAttribute("id"));
+      assert($aisRow->hasChildNodes());
+      // TODO: asserty prerobit na exceptiony
       $row = array();
-      $index = $ais_row->getAttribute("rid");
-      foreach ($ais_row->childNodes as $ais_td) {
+      $rowId = $aisRow->getAttribute("id");
+      $index = match($rowId, '@^row_([0-9]+)$@');
+      if ($index === false) {
+        throw new ParseException("Unexpected row id format");
+      }
+      foreach ($aisRow->childNodes as $ais_td) {
         assert($ais_td->tagName == "td");
         $row[] = $this->getCellContent($ais_td);
       }
