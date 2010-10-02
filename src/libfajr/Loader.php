@@ -142,9 +142,12 @@ class Loader
   public static function autoload($className)
   {
     assert(is_string($className));
-    $path = self::getClassPath($className);
+    // PHPunit sometimes try to unserialize() mock objects,
+    // ignore this in autoloader
+    if (preg_match("@^Mock_@", $className)) return;
+
     if ($path === false) {
-      echo "Autoload of class $className failed";
+      echo "Autoload of class '$className' failed.";
       return;
     }
     include_once $path;
