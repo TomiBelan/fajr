@@ -44,6 +44,10 @@ use fajr\libfajr\pub\connection\AIS2ServerUrlMap;
  * @author     Martin Králik <majak47@gmail.com>
  */
 class Fajr {
+
+  const LOGGED_IN = 0;
+  const LOGGED_OUT = 1;
+
   /**
    * @var Injector $injector dependency injector.
    */
@@ -89,6 +93,15 @@ class Fajr {
   {
     // TODO(ppershing): use injector here
     $factory = new LoginFactoryImpl();
+
+    if (FajrConfig::get('Login.Type') == 'cosign') {
+      if (Input::get('loginType') == 'cosign') {
+        return $factory->newLoginUsingCosignProxy(
+            FajrConfig::get('Login.Cosign.ProxyDB'),
+            FajrConfig::get('Login.Cosign.CookieName'));
+      }
+      return null;
+    }
 
     $login = Input::get('login'); Input::set('login', null);
     $krbpwd = Input::get('krbpwd'); Input::set('krbpwd', null);
@@ -179,15 +192,23 @@ class Fajr {
 
       if (Input::get('logout') !== null) {
         FajrUtils::logout($serverConnection);
-        FajrUtils::redirect();
+        FajrUtils::redirect(array(), 'index.php');
       }
-
+      
       $loggedIn = FajrUtils::isLoggedIn($serverConnection);
 
       $cosignLogin = $this->provideLogin();
       if (!$loggedIn && $cosignLogin != null) {
           FajrUtils::login($trace->addChild("logging in"), $cosignLogin, $serverConnection);
           $loggedIn = true;
+      }
+
+      if (_FAJR_REQUIRE_LOGIN == 'LOGGED_IN' && !$loggedIn) {
+        throw new Exception("Interna chyba: uzivatel by mal byt prihlaseny, ale nie je.");
+      }
+
+      if (_FAJR_REQUIRE_LOGIN == 'LOGGED_OUT' && $loggedIn) {
+        throw new Exception("Interna chyba: uzivatel by nemal byt prihlaseny, ale je.");
       }
 
       if ($loggedIn) {
@@ -271,7 +292,15 @@ class Fajr {
       }
       else
       {
-        DisplayManager::addContent('loginBox', true); 
+        if (FajrConfig::get('Login.Type') == 'password') {
+          DisplayManager::addContent('loginBox', true);
+        }
+        else if (FajrConfig::get('Login.Type') == 'cosign') {
+          DisplayManager::addContent('cosignLoginBox', true);
+        }
+        else {
+          throw new Exception('Nespravna hodnota konfiguracnej volby Login.Type');
+        }
         DisplayManager::addContent('warnings', true);
         DisplayManager::addContent('terms', true);
         DisplayManager::addContent('credits', true);

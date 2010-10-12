@@ -20,8 +20,16 @@ class DisplayManager
   
   protected static $predefinedContent = array(
       'loginBox' => '
+<div class="velkyDisclaimer span-10 prepend-1 last">
+    <em>Fajr je aplikácia vytvorená študentami a oficiálne NIE JE podporovaná
+<a href="http://cit.uniba.sk/">centrom informačných technológií</a>, používate ju </em><strong>na vlastnú
+zodpovednosť</strong>. V prípade problémov (či otázok) sa pozrite na
+<a href="http://code.google.com/p/fajr">stránku projektu</a>. Používaním tejto aplikácie
+súhlasíte s <a href="terms_of_use.php">podmienkami používania</a>.
+    </div>
+    <hr class="space" />
 <div class="span-5 prepend-1">
-  <form method="post" action="">
+  <form method="post" action="fajr.php">
     <fieldset class="login-box">
     <legend>Prihlásenie cez Cosign</legend>
     <div>
@@ -42,7 +50,7 @@ class DisplayManager
   </form>
 </div>
 <div class="span-5 last">
-  <form method="post" action="">
+  <form method="post" action="fajr.php">
     <fieldset class="login-box">
       <legend>Prihlásenie cez cookie</legend>
     <div>
@@ -57,6 +65,30 @@ class DisplayManager
     <button type="submit" name="submit">
       <img alt="" src="images/key_add.png"/>
       Prihlásiť
+    </button>
+    </div>
+    </fieldset>
+  </form>
+</div>
+<hr class="space" />',
+
+      'cosignLoginBox' => '
+<div class="span-10 prepend-1 last">
+  <form method="post" action="fajr.php">
+    <input type="hidden" name="loginType" value="cosign" />
+    <fieldset class="login-box">
+      <legend>Prihlásenie cez proxy</legend>
+    <div>
+    <div class="velkyDisclaimer">
+    <em>Fajr je aplikácia vytvorená študentami a oficiálne NIE JE podporovaná
+<a href="http://cit.uniba.sk/">centrom informačných technológií</a>, používate ju </em><strong>na vlastnú
+zodpovednosť</strong>. V prípade problémov (či otázok) sa pozrite na
+<a href="http://code.google.com/p/fajr">stránku projektu</a>. Používaním tejto aplikácie
+súhlasíte s <a href="terms_of_use.php">podmienkami používania</a>.
+    </div>
+    <br/>
+    <button type="submit" name="submit">
+      Súhlasím a prihlásiť
     </button>
     </div>
     </fieldset>

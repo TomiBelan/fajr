@@ -7,10 +7,14 @@ DirectoryIndex index.php
 	RewriteCond %{HTTPS} off
 	RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [QSA,R,L]
 
+  # preskoc cosignovsky location handler
+  #RewriteCond %{REQUEST_URI} !=/cosign/valid
 	# existujuce adresare nechaj tak
 	#RewriteCond %{REQUEST_FILENAME} !-d
 	# takisto subory
 	#RewriteCond %{REQUEST_FILENAME} !-f
-	# prepis /nieco na index.php/nieco
-	#RewriteRule (.*) index.php/$1
+  # / neprepisuj
+  RewriteCond %{REQUEST_URI} !=/
+	# prepis /nieco na fajr.php/nieco
+	#RewriteRule (.*) fajr.php/$1
 </IfModule>

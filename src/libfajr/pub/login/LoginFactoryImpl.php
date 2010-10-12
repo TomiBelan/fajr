@@ -14,6 +14,7 @@
 namespace fajr\libfajr\pub\login;
 use fajr\libfajr\base\Preconditions;
 use fajr\libfajr\login\CosignPasswordLogin;
+use fajr\libfajr\login\CosignProxyLogin;
 use fajr\libfajr\login\CosignCookieLogin;
 use fajr\libfajr\login\NoLogin;
 use fajr\libfajr\login\TwoPhaseLogin;

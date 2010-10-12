@@ -73,5 +73,10 @@ return array(
   /*
    * Hostname AIS2 servera
    */
-  //'AIS2.ServerName' => 'ais2.uniba.sk'
+  //'AIS2.ServerName' => 'ais2.uniba.sk',
+
+  /*
+   * Typ prihlásenia (password alebo cosign)
+   */
+  //'Login.Type'=>'password',
 );

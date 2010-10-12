@@ -36,6 +36,7 @@ class Input
       'login' => 'string',
       'krbpwd' => 'string',
       'cosignCookie' => 'string',
+      'loginType' => 'string',
     ),
   );
   

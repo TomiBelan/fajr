@@ -68,9 +68,9 @@ class FajrUtils
            $login->ais2Relogin($connection);
   }
 
-  public static function redirect($newParams = array())
+  public static function redirect($newParams = array(), $file='fajr.php')
   {
-    header('Location: ' . self::buildUrl(array_merge(Input::getUrlParams(), $newParams)));
+    header('Location: ' . self::buildUrl(array_merge(Input::getUrlParams(), $newParams), $file));
     exit();
   }
 
@@ -88,7 +88,7 @@ class FajrUtils
     return self::joinPath(FajrConfig::getDirectory('Path.Temporary.Cookies'), 'cookie_'.session_id());
   }
 
-  public static function buildUrl($params)
+  public static function buildUrl($params, $file='fajr.php')
   {
     $path = '';
     if (FajrConfig::get('URL.Path')) {
@@ -101,8 +101,8 @@ class FajrUtils
 
     $base = '';
 
-    if (!FajrConfig::get('URL.Rewrite')) {
-      $base = 'index.php';
+    if (!FajrConfig::get('URL.Rewrite') || $file != 'fajr.php' || $path == '' || $path == '/') {
+      $base = $file;
       if (strlen($path) > 0) {
         $base .= '/';
       }
