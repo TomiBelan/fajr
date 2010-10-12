@@ -26,6 +26,7 @@ class Input
       'predmet' => 'int',
       'termin' => 'int',
       'tab' => 'string',
+      'loginType' => 'string',
     ),
     '_post' => array(
       'prihlasPredmetIndex' => 'int',

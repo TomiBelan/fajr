@@ -74,7 +74,7 @@ súhlasíte s <a href="terms_of_use.php">podmienkami používania</a>.
 
       'cosignLoginBox' => '
 <div class="span-10 prepend-1 last">
-  <form method="post" action="fajr.php">
+  <form method="get" action="fajr.php">
     <input type="hidden" name="loginType" value="cosign" />
     <fieldset class="login-box">
       <legend>Prihlásenie cez proxy</legend>
