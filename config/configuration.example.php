@@ -79,4 +79,15 @@ return array(
    * Typ prihlásenia (password alebo cosign)
    */
   //'Login.Type'=>'password',
+
+  /*
+   * Adresár pre proxy súbory cosignu
+   */
+  //'Login.Cosign.ProxyDB'=>'',
+
+  /*
+   * Názov AIS-ovej cosign cookie
+   */
+  //'Login.Cosign.CookieName'=>'',
+
 );
