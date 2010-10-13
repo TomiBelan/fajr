@@ -192,6 +192,13 @@ class Fajr {
 
       if (Input::get('logout') !== null) {
         FajrUtils::logout($serverConnection);
+        // TODO(anty): fix this in a better way
+        if (FajrConfig::get('Login.Type') == 'cosign') {
+          // location header set in CosignProxyLogin
+          // but we can't exit there because
+          // the session wouldn't get dropped
+          exit;
+        }
         FajrUtils::redirect(array(), 'index.php');
       }
       

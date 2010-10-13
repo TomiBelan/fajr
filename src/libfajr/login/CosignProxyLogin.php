@@ -86,9 +86,9 @@ class CosignProxyLogin extends CosignAbstractLogin
     // removal
     setCookie( $_SERVER[ 'COSIGN_SERVICE' ], "null", 1, '/', "", 1 );
     // Redirect na hlavnu odhlasovaciu stranku cosignu
-    // TODO(anty): treba zistit, ci ten exit nema nejake vedlajsie ucinky
     header('Location: '.self::COSIGN_LOGOUT);
-    exit;
+    
+    return true;
   }
 
 }
