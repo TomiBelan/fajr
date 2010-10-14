@@ -6,6 +6,5 @@
 // TODO(??):missing author
 
 define('_FAJR','INCLUDED');
-define('_FAJR_REQUIRE_LOGIN', 'LOGGED_OUT');
 
 include('../src/index.php');

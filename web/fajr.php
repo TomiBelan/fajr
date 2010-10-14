@@ -9,6 +9,5 @@
  */
 
 define('_FAJR','INCLUDED');
-define('_FAJR_REQUIRE_LOGIN', 'LOGGED_IN');
 
 include('../src/index.php');

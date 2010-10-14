@@ -210,14 +210,6 @@ class Fajr {
           $loggedIn = true;
       }
 
-      if (_FAJR_REQUIRE_LOGIN == 'LOGGED_IN' && !$loggedIn) {
-        throw new Exception("Interna chyba: uzivatel by mal byt prihlaseny, ale nie je.");
-      }
-
-      if (_FAJR_REQUIRE_LOGIN == 'LOGGED_OUT' && $loggedIn) {
-        throw new Exception("Interna chyba: uzivatel by nemal byt prihlaseny, ale je.");
-      }
-
       if ($loggedIn) {
         DisplayManager::addContent(
         '<div class=\'logout\'><a class="button negative" href="'.FajrUtils::linkUrl(array('logout'=>true)).'">
