@@ -13,7 +13,7 @@ namespace fajr;
 
 class Version
 {
-  private static $version = '0.3.0';
+  private static $version = '0.3.1';
 
   private static $changelog = array (
       array('2010-01-xx', '0.1', 'Maják zverejnil prvú verziu Fajr-u'),
