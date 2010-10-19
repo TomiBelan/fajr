@@ -31,7 +31,7 @@ súhlasíte s <a href="terms_of_use.php">podmienkami používania</a>.
 <div class="span-5 prepend-1">
   <form method="post" action="fajr.php">
     <fieldset class="login-box">
-    <legend>Prihlásenie cez Cosign</legend>
+    <legend>Prihlásenie heslom</legend>
     <div>
     <label for="login">Prihlasovacie meno</label>
     <br/>
@@ -77,7 +77,7 @@ súhlasíte s <a href="terms_of_use.php">podmienkami používania</a>.
   <form method="get" action="fajr.php">
     <input type="hidden" name="loginType" value="cosign" />
     <fieldset class="login-box">
-      <legend>Prihlásenie cez proxy</legend>
+      <legend>Prihlásenie</legend>
     <div>
     <div class="velkyDisclaimer">
     <em>Fajr je aplikácia vytvorená študentami a oficiálne NIE JE podporovaná
@@ -142,6 +142,20 @@ Vitajte pred bránou do aplikácie FAJR.
 Snahou tejto miniaplikácie je poskytovať najčastejšie používané funkcie
 <a href="https://ais2.uniba.sk/">AISu</a> a to jednoducho, rýchlo,
 bez zbytočných klikaní a na všetkých browseroch.
+</p>
+<p>
+Táto aplikácia nerobí nič zlé (aspoň jej autori o tom nevedia).
+Ale ak jej aj tak nedôverujete, môžete si ju rozbehnúť u seba.
+Stačí vám k tomu webserver, PHP a jej
+<a href="http://code.google.com/p/fajr/source/checkout">zdrojové kódy</a>
+(pre viac informácií viď <a href="http://code.google.com/p/fajr/source/browse/trunk/README">README</a>).
+Ak jej ani tak nedôverujete, používajte AIS ;-).
+</p>
+</div>
+',
+    'classicLoginInfo' => '
+<div class="span-18 prepend-1 last increase-line-height">
+<p>
 Sú dve možnosti ako sa môžeš prihlásiť.
 </p>
 <ol>
@@ -165,16 +179,8 @@ S odcudzenou cookie sa dajú meniť len údaje v <a href="https://ais2.uniba.sk/
 (aj to maximálne najbližších 12 hodín),
 s menom a heslom sa dá dostať všade, na čo a kde sa používa.<br/>
 </p>
-<p>
-Táto aplikácia nerobí nič zlé (aspoň jej autori o tom nevedia).
-Ale ak jej aj tak nedôverujete, môžete si ju rozbehnúť u seba.
-Stačí vám k tomu webserver, PHP a jej
-<a href="http://code.google.com/p/fajr/source/checkout">zdrojové kódy</a>
-(pre viac informácií viď <a href="http://code.google.com/p/fajr/source/browse/trunk/README">README</a>).
-Ak jej ani tak nedôverujete, používajte AIS ;-).
-</p>
-</div>
-',
+</div>',
+
     'credits' => '
 <div class="span-21 prepend-1 last increase-line-height"><p>
 Stránka mohla vzniknúť vďaka

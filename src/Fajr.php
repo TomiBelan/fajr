@@ -307,6 +307,9 @@ class Fajr {
           throw new Exception('Nespravna hodnota konfiguracnej volby Login.Type');
         }
         DisplayManager::addContent('warnings', true);
+        if (FajrConfig::get('Login.Type') == 'password') {
+          DisplayManager::addContent('classicLoginInfo', true);
+        }
         DisplayManager::addContent('terms', true);
         DisplayManager::addContent('credits', true);
         $version = "<div class='version prepend-1 span-21 last increase-line-height'>\n<strong>Verzia fajru:</strong> \n";
