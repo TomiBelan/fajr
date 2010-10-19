@@ -55,10 +55,10 @@ súhlasíte s <a href="terms_of_use.php">podmienkami používania</a>.
       <legend>Prihlásenie cez cookie</legend>
     <div>
     bezpečne sa <a
-    href=\'https://login.uniba.sk/?cosign-filter-ais2.uniba.sk&amp;https://ais2.uniba.sk/ais/login.do?\'>
+    href=\'https://login.uniba.sk/?%1$s&amp;https://%2$s/ais/login.do?\'>
       prihlás</a> do AISu a skopíruj si cookie.
     <hr/>
-    <label for="cosignCookie">cosign-filter-ais2.uniba.sk</label>
+    <label for="cosignCookie">%1$s</label>
     <br/>
     <input type="password" name="cosignCookie" id="cosignCookie"/>
     <br/>
@@ -215,6 +215,11 @@ len na zapisovanie a použitie, t.j. <code>d----wx---</code>.
   {
     if ($predefinedContent) self::$content[] = self::$predefinedContent[$content];
     else self::$content[] = $content;
+  }
+
+  public static function getPredefinedContent($name)
+  {
+    return self::$predefinedContent[$name];
   }
 
   public static function addException($ex)

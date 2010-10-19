@@ -88,6 +88,6 @@ return array(
   /*
    * Názov AIS-ovej cosign cookie
    */
-  //'Login.Cosign.CookieName'=>'',
+  //'Login.Cosign.CookieName'=>'cosign-filter-ais2.uniba.sk',
 
 );

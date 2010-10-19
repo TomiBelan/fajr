@@ -112,8 +112,10 @@ class Fajr {
       return $factory->newLoginUsingCosign($login, $krbpwd);
     } else if ($cosignCookie !== null) {
       $cosignCookie = CosignServiceCookie::fixCookieValue($cosignCookie);
-      // TODO(anty): change to use correct domain and cookie name
-      return $factory->newLoginUsingCookie(new CosignServiceCookie('cosign-filter-ais2.uniba.sk', $cosignCookie, 'ais2.uniba.sk'));
+      return $factory->newLoginUsingCookie(
+          new CosignServiceCookie(FajrConfig::get('Login.Cosign.CookieName'),
+                                  $cosignCookie,
+                                  FajrConfig::get('AIS2.ServerName')));
     } else {
       return null;
     }
@@ -292,7 +294,11 @@ class Fajr {
       else
       {
         if (FajrConfig::get('Login.Type') == 'password') {
-          DisplayManager::addContent('loginBox', true);
+          $text = DisplayManager::getPredefinedContent('loginBox');
+
+          $html = sprintf($text, FajrConfig::get('Login.Cosign.CookieName'),
+                          FajrConfig::get('AIS2.ServerName'));
+          DisplayManager::addContent($html);
         }
         else if (FajrConfig::get('Login.Type') == 'cosign') {
           DisplayManager::addContent('cosignLoginBox', true);
