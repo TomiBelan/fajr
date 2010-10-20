@@ -173,6 +173,8 @@ abstract class StudiumController extends BaseController
    */
   public function runMojeTerminyHodnotenia(Trace $trace, Request $request, Response $response) {
 
+    $termin = $request->getParameter('termin');
+
     $this->terminyHodnotenia = $this->terminyHodnoteniaScreen->getTerminyHodnotenia(
         $trace->addChild("get terminy hodnotenia"));
     $hodnotenia = $this->hodnoteniaScreen->getHodnotenia(
@@ -211,10 +213,19 @@ abstract class StudiumController extends BaseController
     }
 
     $this->prihlaseni = null;
+    $response->set('prihlaseni', null);
     if ($request->getParameter('termin')!=null) {
-      $this->prihlaseni = $this->terminyHodnoteniaApp->getZoznamPrihlasenychDialog($trace,
-          $request->getParameter('termin'))->getZoznamPrihlasenych($trace);
+      $this->prihlaseni = $this->terminyHodnoteniaScreen->
+            getZoznamPrihlasenychDialog($trace, $termin)->
+              getZoznamPrihlasenych($trace);
+      $response->set('prihlaseni', $this->prihlaseni->getData());
     }
+
+    $response->set('terminyActive', $this->terminyHodnoteniaActive);
+    $response->set('terminyOld', $this->terminyHodnoteniaOld);
+    $response->set('termin', $termin);
+
+    
 
     $response->setTemplate('studium/mojeTerminyHodnotenia');
   }
@@ -242,6 +253,11 @@ abstract class StudiumController extends BaseController
       }
     }
 
+    $response->set('predmetyZapisnehoListu', $this->predmetyZapisnehoListuData);
+    $response->set('kreditovCelkomLeto', $this->kreditovCelkomLeto);
+    $response->set('kreditovCelkomZima', $this->kreditovCelkomZima);
+    $response->set('pocetPredmetovLeto', $this->pocetPredmetovLeto);
+    $response->set('pocetPredmetovZima', $this->pocetPredmetovZima);
     $response->setTemplate('studium/zapisanePredmety');
   }
 

@@ -53,9 +53,9 @@ class LegacyStudiumController extends StudiumController
   public function runLegacy(Trace $trace, Request $request, Response $response)
   {
     $response->setTemplate('legacy');
-    $response->set('tab', $request->getParameter('tab')); // TODO remove this
 
     $tab = $request->getParameter('tab', 'TerminyHodnotenia');
+    $response->set('tab', $tab); // TODO remove this
 
     $tabs = new TabManager('tab', array('studium'=>$this->studium,
           'list'=>$this->zapisnyList));
@@ -93,128 +93,6 @@ class LegacyStudiumController extends StudiumController
 
     
     
-  }
-
-  /**
-   * Akcia pre zobrazenie mojich terminov hodnotenia, stary kod na generovanie
-   * HTML
-   *
-   * @param Trace $trace trace object
-   * @param Request $request request from browser
-   * @param Response $response response information
-   */
-  public function runMojeTerminyHodnotenia(Trace $trace, Request $request, Response $response) {
-    parent::runMojeTerminyHodnotenia($trace, $request, $response);
-
-    $baseUrlParams = array("studium"=>Input::get("studium"),
-          "list"=>Input::get("list"),
-          "tab"=>Input::get("tab"));
-
-    $terminyHodnoteniaTableActive =  new
-      Table(TableDefinitions::mojeTerminyHodnotenia(), 'termin', $baseUrlParams);
-
-    $terminyHodnoteniaCollapsibleActive = new Collapsible(
-        new HtmlHeader('Aktuálne termíny hodnotenia'),
-        $terminyHodnoteniaTableActive);
-
-    $terminyHodnoteniaTableOld =  new
-      Table(TableDefinitions::mojeTerminyHodnotenia(), 'termin', $baseUrlParams);
-
-    $terminyHodnoteniaCollapsibleOld = new Collapsible(
-        new HtmlHeader('Staré termíny hodnotenia'),
-        $terminyHodnoteniaTableOld);
-
-    if (Input::get('termin')!=null) {
-      $terminyHodnoteniaTableActive->setOption('selected_key',
-          Input::get('termin'));
-      $terminyHodnoteniaTableOld->setOption('selected_key',
-          Input::get('termin'));
-    }
-
-    $baseUrlParams = array("studium"=>Input::get("studium"),
-          "list"=>Input::get("list"),
-          "tab"=>'PrihlasNaSkusku');
-
-    $actionUrl=FajrUtils::linkUrl($baseUrlParams);
-
-    foreach ($this->terminyHodnoteniaOld as $row) {
-      $row['odhlas'] = "Skúška už bola.";
-      $terminyHodnoteniaTableOld->addRow($row, null);
-    }    
-
-    foreach ($this->terminyHodnoteniaActive as $row) {
-      if ($row['mozeOdhlasit'] == 1) {
-        $class='terminmozeodhlasit';
-        $row['odhlas']="<form method='post' action='$actionUrl'>
-          <div>
-          <input type='hidden' name='tab' value='OdhlasZoSkusky'/>
-          <input type='hidden' name='odhlasIndex'
-          value='".$row['index']."'/>
-          <input type='hidden' name='hash' value='".$row['hashNaOdhlasenie']."'/>
-          <button name='submit' type='submit' class='tableButton negative'>
-            <img src='images/cross.png' alt=''>Odhlás
-          </button></div></form>";
-      } else {
-        $row['odhlas']="nedá sa";
-        $class='terminnemozeodhlasit';
-      }
-
-      if ($row['prihlaseny']!='A') {
-        $row['odhlas']='Si odhlásený. Ak chceš, opäť sa prihlás.';
-        $class='terminodhlaseny';
-      }
-      $terminyHodnoteniaTableActive->addRow($row, array('class'=>$class));
-    }
-
-    $response->addContent($terminyHodnoteniaCollapsibleActive->getHtml());
-    $response->addContent($terminyHodnoteniaCollapsibleOld->getHtml());
-
-    if ($this->prihlaseni != null) {
-      $zoznamPrihlasenychTable = new
-      Table(TableDefinitions::zoznamPrihlasenych(), null, array('studium', 'list'));
-      $zoznamPrihlasenychTable->addRows($this->prihlaseni->getData());
-      $zoznamPrihlasenychCollapsible = new Collapsible(new HtmlHeader('Zoznam prihlásených
-          na vybratý termín'), $zoznamPrihlasenychTable);
-      $response->addContent($zoznamPrihlasenychCollapsible->getHtml());
-    }
-  }
-
-  public function runZapisanePredmety(Trace $trace, Request $request, Response $response) {
-    parent::runZapisanePredmety($trace, $request, $response);
-
-    $predmetyZapisnehoListuTable = new
-      Table(TableDefinitions::predmetyZapisnehoListu());
-    $predmetyZapisnehoListuCollapsible = new Collapsible(new HtmlHeader('Predmety zápisného listu'),
-      $predmetyZapisnehoListuTable);
-
-    foreach ($this->predmetyZapisnehoListuData as $row) {
-      if ($row['kodSemester']=='L') {
-        $class='leto';
-      }
-      else {
-        $class='zima';
-      }
-      $predmetyZapisnehoListuTable->addRow($row, array('class'=>$class));
-    }
-
-    $pocetPredmetovText = 'Celkom ';
-    $pocetPredmetovText .= FajrUtils::formatPlural($this->pocetPredmetovLeto+$this->pocetPredmetovZima,
-        '0 predmetov', '1 predmet', '%d predmety', '%d predmetov');
-    if ($this->pocetPredmetovLeto > 0 && $this->pocetPredmetovZima > 0) {
-      $pocetPredmetovText .= sprintf(' (%d v zime, %d v lete)', $this->pocetPredmetovZima, $this->pocetPredmetovLeto);
-    }
-
-    $kreditovCelkomText = ''. ($this->kreditovCelkomLeto+$this->kreditovCelkomZima);
-    if ($this->kreditovCelkomLeto > 0 && $this->kreditovCelkomZima > 0) {
-      $kreditovCelkomText .= sprintf(' (%d+%d)', $this->kreditovCelkomZima, $this->kreditovCelkomLeto);
-    }
-
-    $predmetyZapisnehoListuTable->addFooter(array('nazov'=>$pocetPredmetovText,'kredit'=>$kreditovCelkomText), array());
-    $predmetyZapisnehoListuTable->setUrlParams(array('studium' =>
-          Input::get('studium'), 'list' => Input::get('list')));
-
-    $response->addContent($predmetyZapisnehoListuTable->getHtml());
-
   }
 
   public function runZoznamTerminov(Trace $trace, Request $request, Response $response) {
