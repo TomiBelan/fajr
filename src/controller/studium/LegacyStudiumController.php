@@ -96,50 +96,6 @@ class LegacyStudiumController extends StudiumController
   }
 
   /**
-   * Akcia pre hodnotenia a priemery, stary kod na generovanie HTML
-   *
-   * @param Trace $trace trace object
-   * @param Request $request request from browser
-   * @param Response $response response information
-   */
-  public function runHodnotenia(Trace $trace, Request $request, Response $response) {
-    parent::runHodnotenia($trace, $request, $response);
-
-    $hodnoteniaTable = new Table(TableDefinitions::hodnotenia());
-
-    foreach($this->hodnoteniaData as $row) {
-      if ($row['semester']=='L') {
-        $class='leto';
-      }
-      else {
-        $class='zima';
-      }
-      $hodnoteniaTable->addRow($row, array('class'=>$class));
-    }
-
-    $hodnoteniaCollapsible = new Collapsible(new HtmlHeader('Hodnotenia'), $hodnoteniaTable);
-
-    $priemeryTable = new Table(TableDefinitions::priemery());
-    $priemeryTable->addRows($this->priemery->getData());
-
-    $priemeryContainer = new Container();
-    $priemeryContainer->addChild(new Label('Nasledovné priemery sú prebraté z AISu, čiže to (ne)funguje presne rovnako:'));
-    $priemeryContainer->addChild($priemeryTable);
-
-    if ($this->priemeryCalculator->hasPriemer()) {
-      $priemeryFajrText = '<p><br />Nasledovné vážené študijné priemery sú počítané Fajrom priebežne z tabuľky Hodnotenia, <strong>preto nemôžu byť považované ako oficiálne</strong>:<br /><br />';
-      $priemeryFajrText .= $this->priemeryCalculator->getHtml();
-      $priemeryFajrText .= '</p>';
-
-      $priemeryContainer->addChild(new Label($priemeryFajrText));
-    }
-
-    $priemeryCollapsible = new Collapsible(new HtmlHeader('Priemery'), $priemeryContainer);
-
-    $response->addContent($hodnoteniaCollapsible->getHtml().$priemeryCollapsible->getHtml());
-  }
-
-  /**
    * Akcia pre zobrazenie mojich terminov hodnotenia, stary kod na generovanie
    * HTML
    *

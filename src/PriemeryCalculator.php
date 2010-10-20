@@ -116,6 +116,10 @@ class PriemeryCalculator implements Renderable {
     return $text;
   }
 
+  public function getObdobia() {
+    return $this->obdobia;
+  }
+
   public function getHtml() {
     $html = '';
     if ($this->obdobia[self::SEMESTER_ZIMNY]->hasPriemer()) {

@@ -118,6 +118,9 @@ abstract class StudiumController extends BaseController
 
     $this->priemery = $this->hodnoteniaScreen->getPriemery($trace);
 
+    $response->set('hodnotenia', $this->hodnoteniaData);
+    $response->set('priemery', $this->priemery->getData());
+    $response->set('priemeryCalculator', $this->priemeryCalculator);
     $response->setTemplate('studium/hodnotenia');
   }
 

@@ -58,7 +58,6 @@ class URLTokenParser extends Twig_TokenParser
 
     $this->parser->getStream()->expect(Twig_Token::BLOCK_END_TYPE);
 
-    //return new \Twig_Node_Print(new \Twig_Node_Expression_Constant("unique ".$type." ".$name, $lineno), $lineno);
     return new URLNode($name, $parameters, $lineno, $this->getTag());
   }
 }
