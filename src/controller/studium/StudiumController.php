@@ -83,6 +83,11 @@ abstract class StudiumController extends BaseController
           $trace,
           $this->adminStudia->getZapisnyListIdFromZapisnyListIndex($trace, $this->zapisnyList));
 
+    $response->set('zoznamStudii', $this->zoznamStudii);
+    $response->set('studium', $this->studium);
+    $response->set('zapisneListy', $this->zapisneListy);
+    $response->set('zapisnyList', $this->zapisnyList);    
+
     parent::invokeAction($trace, $action, $request, $response);
   }
 
@@ -112,7 +117,8 @@ abstract class StudiumController extends BaseController
     }
 
     $this->priemery = $this->hodnoteniaScreen->getPriemery($trace);
-    
+
+    $response->setTemplate('studium/hodnotenia');
   }
 
   /**
@@ -206,6 +212,8 @@ abstract class StudiumController extends BaseController
       $this->prihlaseni = $this->terminyHodnoteniaApp->getZoznamPrihlasenychDialog($trace,
           $request->getParameter('termin'))->getZoznamPrihlasenych($trace);
     }
+
+    $response->setTemplate('studium/mojeTerminyHodnotenia');
   }
 
   public function runZapisanePredmety(Trace $trace, Request $request, Response $response) {
@@ -231,6 +239,7 @@ abstract class StudiumController extends BaseController
       }
     }
 
+    $response->setTemplate('studium/zapisanePredmety');
   }
 
   private function hashNaPrihlasenie($predmet, $row) {
@@ -363,6 +372,12 @@ abstract class StudiumController extends BaseController
         ->getZoznamPrihlasenychDialog($trace, $request->getParameter('termin'))
         ->getZoznamPrihlasenych($trace); 
     }
+
+    $response->set('predmetyZapisnehoListu', $this->predmetyZapisnehoListu);
+    $response->set('terminy', $this->terminyData);
+    $response->set('prihlaseni', $this->prihlaseni);
+
+    $response->setTemplate('studium/zoznamTerminov');
   }
 
 }

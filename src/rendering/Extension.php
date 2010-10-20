@@ -41,7 +41,9 @@ class Extension extends Twig_Extension
    */
   public function getTokenParsers()
   {
-    return array(new UniqueTokenParser());
+    return array(new UniqueTokenParser(),
+                 new tags\URLTokenParser(),
+                );
   }
 
 

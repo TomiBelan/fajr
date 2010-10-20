@@ -16,3 +16,30 @@
     {% endif %}
   </div>
 {% endmacro %}
+
+{% macro table(class, head, body, foot) %}
+  {% unique table id %}
+  {% if class != "" %}
+    {% set class=" "+class %}
+  {% endif %}
+  <table id="{{ id }}" class="colstyle-sorting{{ class }}">
+    <thead>
+      <tr>
+        {{ head|safe }}
+      </tr>
+    </thead>
+    {# tu by mal byt po spravnosti tfoot, aby bol vystup validny
+       lenze to je treba najprv upravit ten triediaci skript
+       (pri tlaci chceme totiz tfoot iba na spodu bez opakovania)
+       jedna moznost je nepouzit tfoot, ale tbody s nejakym classom
+    #}
+    <tbody>
+      {{ body|safe }}
+    </tbody>
+    {% if foot %}
+      <tfoot>
+        {{ foot|safe }}
+      </tfoot>
+    {% endif %}    
+  </table>
+{% endmacro %}

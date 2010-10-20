@@ -52,28 +52,8 @@ class LegacyStudiumController extends StudiumController
    */
   public function runLegacy(Trace $trace, Request $request, Response $response)
   {
-    $zoznamStudiiTable = new Table(TableDefinitions::zoznamStudii(), 'studium',
-          array('tab' => Input::get('tab')));
-    $zoznamStudiiTable->addRows($this->zoznamStudii->getData());
-    $zoznamStudiiTable->setOption('selected_key', $this->studium);
-    $zoznamStudiiTable->setOption('collapsed', true);
-
-    $zoznamStudiiCollapsible = new Collapsible(new HtmlHeader('Zoznam štúdií'), $zoznamStudiiTable, true);
-
-    $response->addContent($zoznamStudiiCollapsible->getHtml());
-
-    $zapisneListyTable = new Table(TableDefinitions::zoznamZapisnychListov(),
-                                  'list',
-                                  array('studium' => $this->studium,
-                                        'tab'=>Input::get('tab'))
-                                  );
-
-    $zapisneListyTable->addRows($this->zapisneListy->getData());
-    $zapisneListyTable->setOption('selected_key', $this->zapisnyList);
-    $zapisneListyTable->setOption('collapsed', true);
-
-    $zapisneListyCollapsible = new Collapsible(new HtmlHeader('Zoznam zápisných listov'), $zapisneListyTable, true);
-    $response->addContent($zapisneListyCollapsible->getHtml());
+    $response->setTemplate('legacy');
+    $response->set('tab', $request->getParameter('tab')); // TODO remove this
 
     $tab = $request->getParameter('tab', 'TerminyHodnotenia');
 
@@ -93,7 +73,7 @@ class LegacyStudiumController extends StudiumController
     // temporary fix so I can test the app
 
     if ($tab == 'TerminyHodnotenia') {
-      $this->runHodnotenia($trace->addChild('sub action'), $request, $response);
+      $this->runMojeTerminyHodnotenia($trace->addChild('sub action'), $request, $response);
     }
     else if ($tab == 'ZapisSkusok') {
       $this->runZoznamTerminov($trace, $request, $response);
@@ -112,7 +92,7 @@ class LegacyStudiumController extends StudiumController
     }
 
     
-    $response->setTemplate('legacy');
+    
   }
 
   /**
@@ -169,6 +149,10 @@ class LegacyStudiumController extends StudiumController
    */
   public function runMojeTerminyHodnotenia(Trace $trace, Request $request, Response $response) {
     parent::runMojeTerminyHodnotenia($trace, $request, $response);
+
+    $baseUrlParams = array("studium"=>Input::get("studium"),
+          "list"=>Input::get("list"),
+          "tab"=>Input::get("tab"));
 
     $terminyHodnoteniaTableActive =  new
       Table(TableDefinitions::mojeTerminyHodnotenia(), 'termin', $baseUrlParams);

@@ -1,0 +1,7 @@
+{% extends "layout/studium.xhtml" %}
+{% block title %}Zápisný list{% endblock %}
+{% block application_content %}
+{% parent %}
+<hr />
+{{ legacy_content |safe}}
+{% endblock %}
