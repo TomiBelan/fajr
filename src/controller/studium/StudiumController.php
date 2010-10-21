@@ -377,7 +377,7 @@ abstract class StudiumController extends BaseController
         $row['predmetIndex'] = $predmetRow['index'];
         $row['znamka'] = $hodnoteniaData[$row['predmet']]['znamka'];
 
-        $hash = $this->hashNaPrihlasenie($predmetRow['nazov'], $row);
+        $row['hashNaPrihlasenie'] = $this->hashNaPrihlasenie($predmetRow['nazov'], $row);
 
         $row['mozeSaPrihlasit'] = $this->mozeSaPrihlasit($row);
         
@@ -386,15 +386,18 @@ abstract class StudiumController extends BaseController
     }
 
     $this->prihlaseni = null;
+    $response->set('prihlaseni', null);
     if ($request->getParameter('termin') != null && $request->getParameter('predmet')!=null) {
       $this->prihlaseni = $this->terminyHodnoteniaScreen->getZoznamTerminovDialog($trace, $request->getParameter('predmet'))
         ->getZoznamPrihlasenychDialog($trace, $request->getParameter('termin'))
-        ->getZoznamPrihlasenych($trace); 
+        ->getZoznamPrihlasenych($trace);
+      $response->set('prihlaseni', $this->prihlaseni->getData());
     }
 
     $response->set('predmetyZapisnehoListu', $this->predmetyZapisnehoListu);
     $response->set('terminy', $this->terminyData);
-    $response->set('prihlaseni', $this->prihlaseni);
+    $response->set('termin', $request->getParameter('termin'));
+    $response->set('predmet', $request->getParameter('predmet'));
 
     $response->setTemplate('studium/zoznamTerminov');
   }
