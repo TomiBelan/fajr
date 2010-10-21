@@ -3,7 +3,7 @@
 // Use of this source code is governed by a MIT licence that can be
 // found in the LICENCE file in the project root directory.
 namespace fajr;
-use fajr\htmlgen\Renderable;
+
 /**
  * @author Martin Sucha <anty.sk@gmail.com>
  */
@@ -81,7 +81,7 @@ class PriemeryInternal {
 
 }
 
-class PriemeryCalculator implements Renderable {
+class PriemeryCalculator {
 
   const SEMESTER_LETNY = 'leto';
   const SEMESTER_ZIMNY = 'zima';
@@ -106,34 +106,8 @@ class PriemeryCalculator implements Renderable {
     return $this->obdobia[self::AKADEMICKY_ROK]->hasPriemer();
   }
 
-  private function vypisVazenyPriemer($castRoka) {
-    $sNeohodnotenymi = $this->obdobia[$castRoka]->vazenyPriemer(true);
-    $ibaOhodnotene = $this->obdobia[$castRoka]->vazenyPriemer(false);
-    $text = sprintf('%.2f', $sNeohodnotenymi);
-    if ($sNeohodnotenymi!==$ibaOhodnotene) {
-      $text .= ' ('.sprintf('%.2f', $ibaOhodnotene).' iba doteraz ohodnotené predmety)';
-    }
-    return $text;
-  }
-
   public function getObdobia() {
     return $this->obdobia;
-  }
-
-  public function getHtml() {
-    $html = '';
-    if ($this->obdobia[self::SEMESTER_ZIMNY]->hasPriemer()) {
-      $html .= 'Zimný semester: '.$this->vypisVazenyPriemer(self::SEMESTER_ZIMNY).'<br />';
-    }
-
-    if ($this->obdobia[self::SEMESTER_LETNY]->hasPriemer()) {
-      $html .= 'Letný semester: '.$this->vypisVazenyPriemer(self::SEMESTER_LETNY).'<br />';
-    }
-
-    if ($this->obdobia[self::AKADEMICKY_ROK]->hasPriemer()) {
-      $html .= 'Celý akad. rok: '.$this->vypisVazenyPriemer(self::AKADEMICKY_ROK).'<br />';
-    }
-    return $html;
   }
 
 }

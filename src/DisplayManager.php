@@ -18,8 +18,6 @@ class DisplayManager
 {
   
   protected $base = null;
-
-  private static $nextHtmlId = 10000;
   
   public function setBase($base)
   {
@@ -33,6 +31,10 @@ class DisplayManager
    */
   public function display(Response $response)
   {
+    if ($response->getTemplate() === null) {
+      return;
+    }
+
     $templateDir = FajrUtils::joinPath(__DIR__, '../templates/fajr');
     $loader = new Twig_Loader_Filesystem($templateDir);
     $twig = new Twig_Environment($loader, array('base_template_class' => '\fajr\rendering\Template'));
@@ -40,20 +42,11 @@ class DisplayManager
     // Register fajr's rendering extension
     $twig->addExtension(new Extension());
 
-    if ($response->getTemplate() === null) {
-      $templateName = 'pages/legacy.xhtml';
-    }
-    else {
-      $templateName = 'pages/'.$response->getTemplate().'.xhtml';
-    }
-
+    $templateName = 'pages/'.$response->getTemplate().'.xhtml';
     $template = $twig->loadTemplate($templateName);
 
-    $html = '';
-    foreach ($response->getContent() as $item) $html .= $item;
-
+    // TODO: move those params to controller
     $output = $template->render(array_merge(array(
-      'legacy_content'=>$html,
       'base'=>$this->base,
       'debug_banner'=>FajrConfig::get('Debug.Banner'),
       'google_analytics'=>FajrConfig::get('GoogleAnalytics.Account'),
@@ -62,14 +55,6 @@ class DisplayManager
       ), $response->getData()));
     
     return $output;
-  }
-
-  public static function getUniqueHTMLId($idType = 'id')
-  {
-    $uniquePart = self::$nextHtmlId;
-    self::$nextHtmlId += 1;
-
-    return $idType.$uniquePart;
   }
 }
 

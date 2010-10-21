@@ -47,3 +47,37 @@
    {% endif %}
   </table>
 {% endmacro %}
+
+{% macro tabs(content, definitions, selectedTab) %}
+<div class="tab_header">
+  {% for tabKey in definitions|keys %}{% set tab = definitions[tabKey] %}{#
+    #}<span class="tab{% if tabKey == selectedTab %}_selected{% endif %}"
+          ><a href="{{ tab.url }}">{{ tab.title }}</a></span>{#
+  #}{% endfor %}
+</div>
+{{ content|safe }}
+{% endmacro %}
+
+{% macro studiumtabs(content, selectedTab, studium, zapisnyList) %}
+{% url terminyLink for     ['tab': 'TerminyHodnotenia',
+                            'studium': studium,
+                            'list': zapisnyList] %}
+{% url zapisLink   for     ['tab': 'ZapisSkusok',
+                            'studium': studium,
+                            'list': zapisnyList] %}
+{% url zapisnyListLink for ['tab': 'ZapisnyList',
+                            'studium': studium,
+                            'list': zapisnyList] %}
+{% url hodnoteniaLink for  ['tab': 'Hodnotenia',
+                            'studium': studium,
+                            'list': zapisnyList] %}
+{{ _self.tabs(content, ['TerminyHodnotenia': ['title': 'Moje skúšky',
+                                              'url': terminyLink],
+                        'ZapisSkusok':       ['title': 'Prihlásenie na skúšky',
+                                              'url': zapisLink],
+                        'ZapisnyList':       ['title': 'Zápisný list',
+                                              'url': zapisnyListLink],
+                        'Hodnotenia':        ['title': 'Hodnotenia/Priemery',
+                                              'url': hodnoteniaLink]
+                       ], selectedTab) }}
+{% endmacro %}

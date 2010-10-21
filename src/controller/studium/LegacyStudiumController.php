@@ -52,23 +52,7 @@ class LegacyStudiumController extends StudiumController
    */
   public function runLegacy(Trace $trace, Request $request, Response $response)
   {
-    $response->setTemplate('legacy');
-
     $tab = $request->getParameter('tab', 'TerminyHodnotenia');
-    $response->set('tab', $tab); // TODO remove this
-
-    $tabs = new TabManager('tab', array('studium'=>$this->studium,
-          'list'=>$this->zapisnyList));
-
-
-    $tabs->addTab('TerminyHodnotenia', 'Moje skúšky', new Label(''));
-    $tabs->addTab('ZapisSkusok', 'Prihlásenie na skúšky', new Label(''));
-    $tabs->addTab('ZapisnyList', 'Zápisný list', new Label(''));
-    $tabs->addTab('Hodnotenia', 'Hodnotenia/Priemery', new Label(''));
-
-    $tabs->setActive($tab);
-
-    $response->addContent($tabs->getHtml());
 
     // temporary fix so I can test the app
 

@@ -26,24 +26,6 @@ class Response
   /** @var string template name to be used */
   private $template = null;
 
-  /**
-   * Holder for legacy content
-   *
-   * @deprecated
-   * @var array legacy content
-   */
-  private $legacyContent = array();
-
-  public function addContent($content)
-  {
-    Preconditions::checkIsString($content);
-    $this->legacyContent[] = $content;
-  }
-
-  public function getContent() {
-    return $this->legacyContent;
-  }
-
   protected $data = array();
 
   /**
