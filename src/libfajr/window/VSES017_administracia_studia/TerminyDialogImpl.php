@@ -79,7 +79,7 @@ class TerminyDialogImpl extends AIS2AbstractDialog
     $data->compName = 'zobrazitZoznamPrihlasenychAction';
     $data->embObjName = 'zoznamTerminovTable';
     $data->index = $terminIndex;
-    return new ZoznamPrihlasenychDialog($trace, $this, $data);
+    return new ZoznamPrihlasenychDialogImpl($trace, $this, $data);
   }
   
 }
