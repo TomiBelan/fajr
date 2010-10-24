@@ -17,7 +17,7 @@ use fajr\libfajr\pub\connection\HttpConnection;
 use fajr\libfajr\pub\base\NullTrace;
 use fajr\libfajr\pub\exceptions\LoginException;
 use fajr\libfajr\pub\exceptions\NotImplementedException;
-use fajr\libfajr\util;
+use fajr\libfajr\util\StrUtil;
 use fajr\libfajr\pub\connection\AIS2ServerConnection;
 use fajr\libfajr\pub\connection\AIS2ServerUrlMap;
 
@@ -68,10 +68,10 @@ class CosignPasswordLogin extends CosignAbstractLogin
     $data = $connection->post(new NullTrace(), self::COSIGN_LOGIN,
                               array('ref' => '', 'login'=> $login, 'krbpwd' => $krbpwd));
     if (!preg_match(parent::LOGGED_ALREADY_PATTERN, $data)) {
-      if (($reason = util\match(self::COSIGN_ERROR_PATTERN1, $data)) ||
-          ($reason = util\match(self::COSIGN_ERROR_PATTERN2, $data)) ||
-          ($reason = util\match(self::COSIGN_ERROR_PATTERN3, $data)) ||
-          ($reason = util\match(self::IIKS_ERROR, $data))) {
+      if (($reason = StrUtil::match(self::COSIGN_ERROR_PATTERN1, $data)) ||
+          ($reason = StrUtil::match(self::COSIGN_ERROR_PATTERN2, $data)) ||
+          ($reason = StrUtil::match(self::COSIGN_ERROR_PATTERN3, $data)) ||
+          ($reason = StrUtil::match(self::IIKS_ERROR, $data))) {
         throw new LoginException('Nepodarilo sa prihlásiť, dôvod: <b>'.$reason.'</b>');
       }
       throw new LoginException('Nepodarilo sa prihlásiť, dôvod neznámy.');

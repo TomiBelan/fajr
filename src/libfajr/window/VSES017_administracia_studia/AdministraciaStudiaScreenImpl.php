@@ -23,7 +23,7 @@ use fajr\libfajr\window\RequestBuilderImpl;
 use fajr\libfajr\window\ScreenRequestExecutor;
 use fajr\libfajr\window\ScreenData;
 use fajr\libfajr\data_manipulation\AIS2TableParser;
-use fajr\libfajr\util;
+use fajr\libfajr\util\StrUtil;
 use fajr\libfajr\pub\exceptions\ParseException;
 
 /**
@@ -118,11 +118,11 @@ class AdministraciaStudiaScreenImpl extends AIS2AbstractScreen
 
   public function parseIdFromZapisnyListIndexFromResponse($response)
   {
-      $data = util\matchAll(self::APP_LOCATION_PATTERN, $response, true);
+      $data = StrUtil::matchAll(self::APP_LOCATION_PATTERN, $response);
       if ($data === false) {
         throw new ParseException("Location of APP_PATTERN failed.");
       };
-      $data = util\matchAll(self::ID_PATTERN, $data[2], true);
+      $data = StrUtil::matchAll(self::ID_PATTERN, $data[2]);
       if ($data === false) {
         throw new ParseException("Parsing of ids from zapisnyListIndex failed.");
       }

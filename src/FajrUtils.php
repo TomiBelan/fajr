@@ -17,6 +17,7 @@ use fajr\libfajr\pub\login\Login;
 use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\login\AIS2LoginImpl;
 use fajr\libfajr\AIS2Session;
+use fajr\libfajr\util\StrUtil;
 
 class FajrUtils
 {
@@ -170,46 +171,6 @@ class FajrUtils
   }
 
   /**
-   * Checks whether $haystack starts with a substring $needle
-   *
-   * @param string $haystack
-   * @param string $needle
-   * @returns bool true if $haystack starts with $needle, false otherwise
-   */
-  public static function startsWith($haystack, $needle)
-  {
-    if ($needle == '') {
-      return true;
-    }
-
-    $needle_length = strlen($needle);
-    if ($needle_length > strlen($haystack)) {
-      return false;
-    }
-    return substr_compare($haystack, $needle, 0, $needle_length) === 0;
-  }
-
-  /**
-   * Checks whether $haystack ends with a substring $needle
-   *
-   * @param string $haystack
-   * @param string $needle
-   * @returns bool true if $haystack ends with $needle, false otherwise
-   */
-  public static function endsWith($haystack, $needle)
-  {
-    if ($needle == '') {
-      return true;
-    }
-    
-    $needle_length = strlen($needle);
-    if ($needle_length > strlen($haystack)) {
-      return false;
-    }
-    return substr_compare($haystack, $needle, -$needle_length, $needle_length) === 0;
-  }
-
-  /**
    * Determines whether given $path is an absolute path or not.
    * A path is absolute if it starts with filesystem root definition
    * (i.e. / on unix like systems and C:\ or \\ on Windows)
@@ -219,12 +180,12 @@ class FajrUtils
   public static function isAbsolutePath($path)
   {
     // check for unix-like /
-    if (self::startsWith($path, '/')) {
+    if (StrUtil::startsWith($path, '/')) {
       return true;
     }
 
     // check for Windows UNC path
-    if (self::startsWith($path, '\\\\')) {
+    if (StrUtil::startsWith($path, '\\\\')) {
       return true;
     }
 
@@ -262,7 +223,7 @@ class FajrUtils
       $shouldAddDS = false;
       $path = $a;
     }
-    else if (self::endsWith($a, DIRECTORY_SEPARATOR)) {
+    else if (StrUtil::endsWith($a, DIRECTORY_SEPARATOR)) {
       $path = substr($a, 0, strlen($a) - 1);
     }
     else {
@@ -278,12 +239,12 @@ class FajrUtils
       }
 
       // first extract range of part without leading or trailing DS
-      if (self::startsWith($part, DIRECTORY_SEPARATOR)) {
+      if (StrUtil::startsWith($part, DIRECTORY_SEPARATOR)) {
         $start = 1;
       } else {
         $start = 0;
       }
-      if (self::endsWith($part, DIRECTORY_SEPARATOR)) {
+      if (StrUtil::endsWith($part, DIRECTORY_SEPARATOR)) {
         $end = strlen($part) - 1;
       } else {
         $end = strlen($part);
@@ -308,6 +269,8 @@ class FajrUtils
    * @param string $few    sprintf format string if $number is between 2 and 4 (inclusive)
    * @param string $many   sprintf format string for other $number values
    */
+  // TODO(ppershing): @deprecate, use name sprintfPlural() or something that informs about using
+  // printf formatting characters.
   public static function formatPlural($number, $zero, $one, $few, $many)
   {
     if ($number == 0) {

@@ -49,26 +49,6 @@ class FajrUtilsTest extends PHPUnit_Framework_TestCase
     $this->assertFalse(FajrUtils::isAbsolutePath('./'), './ is relative');
   }
 
-  public function testStartsWith()
-  {
-    $this->assertTrue(FajrUtils::startsWith('foobar', 'foo'), 'foobar starts with foo');
-    $this->assertTrue(FajrUtils::startsWith('foobar', ''), 'foobar starts with empty string');
-    $this->assertTrue(FajrUtils::startsWith('', ''), 'empty string starts with empty string');
-    $this->assertFalse(FajrUtils::startsWith('foobar', 'baz'), 'foobar does not start with baz');
-    $this->assertFalse(FajrUtils::startsWith('foobar', 'bar'), 'foobar does not start with bar');
-    $this->assertFalse(FajrUtils::startsWith('foobar', 'foobars'), 'foobar does not start with foobars');
-  }
-
-  public function testEndsWith()
-  {
-    $this->assertTrue(FajrUtils::endsWith('foobar', 'bar'), 'foobar ends with bar');
-    $this->assertTrue(FajrUtils::endsWith('foobar', ''), 'foobar ends with empty string');
-    $this->assertTrue(FajrUtils::endsWith('', ''), 'empty string ends with empty string');
-    $this->assertFalse(FajrUtils::endsWith('foobar', 'baz'), 'foobar does not end with baz');
-    $this->assertFalse(FajrUtils::endsWith('foobar', 'foo'), 'foobar does not end with foo');
-    $this->assertFalse(FajrUtils::endsWith('foobar', 'xfoobar'), 'foobar does not end with xfoobar');
-  }
-
   public function testFormatPlural()
   {
     $this->assertEquals(FajrUtils::formatPlural(0, 'ok %d', 'failed one %d', 'failed 2-4 %d', 'failed other %d'), 'ok 0');
