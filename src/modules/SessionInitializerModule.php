@@ -38,13 +38,16 @@ class SessionInitializerModule implements Module
               ->addArgument('%session.save_path%')
               ->addArgument('%session.path%')
               ->addArgument('%session.domain%');
-    $container->setParameters(
+    $parameters = 
         array('session.life_time_sec' => 36000,
               'session.save_path' =>
                   FajrConfig::getDirectory('Path.Temporary.Sessions'),
               'session.path' => '/',
               'session.domain' => '.' . $_SERVER['HTTP_HOST'],
-              )
-        );
+              );
+    // Note, we can't use setParameters as it will destroy previous values!
+    foreach ($parameters as $key=>$value) {
+      $container->setParameter($key, $value);
+    }
   }
 }

@@ -16,10 +16,11 @@
  */
 namespace fajr\libfajr\connection;
 
-use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\base\ClosureRunner;
+use fajr\libfajr\base\Preconditions;
+use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\pub\connection\HttpConnection;
-use \Exception;
+use Exception;
 
 /**
  * Provides HttpConnection wrapper for Curl library.
@@ -33,16 +34,15 @@ use \Exception;
  */
 class CurlConnection implements HttpConnection
 {
-  const USER_AGENT = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; sk; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7';
 
   private $curl = null;
   private $cookieFile = null;
-  private $userAgent = null;
+  private $options = null;
 
-  public function  __construct($cookieFile, $userAgent = null)
+  public function  __construct(array $options, $cookieFile)
   {
-    $this->userAgent = $userAgent ? $userAgent: self::USER_AGENT;
-
+    Preconditions::checkIsString($cookieFile);
+    $this->options = $options;
     $this->cookieFile = $cookieFile;
     $this->_curlInit();
   }
@@ -55,14 +55,13 @@ class CurlConnection implements HttpConnection
   public function _curlInit()
   {
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_FORBID_REUSE, false); // Keepalive konekcie
+    foreach ($this->options as $option=>$value) {
+      curl_setopt($ch, $option, $value);
+    }
+    // do not put http response header in result
     curl_setopt($ch, CURLOPT_HEADER, false);
-    curl_setopt($ch, CURLOPT_USERAGENT, $this->userAgent);
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    // return response instead of echoing it to output
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_VERBOSE, false);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, true);
     curl_setopt($ch, CURLOPT_COOKIEFILE, $this->cookieFile);
     curl_setopt($ch, CURLOPT_COOKIEJAR, $this->cookieFile);
 

@@ -128,7 +128,8 @@ class Fajr {
 
   private function provideConnection()
   {
-    $connection = new connection\CurlConnection(FajrUtils::getCookieFile());
+    $curlOptions = $this->injector->getParameter('CurlConnection.options');
+    $connection = new connection\CurlConnection($curlOptions, FajrUtils::getCookieFile());
 
     $this->rawStatsConnection = new connection\StatsConnection($connection, new SystemTimer());
 

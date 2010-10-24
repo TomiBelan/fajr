@@ -14,6 +14,7 @@
 namespace fajr\injection;
 
 use sfServiceContainerBuilder;
+use fajr\libfajr\base\Preconditions;
 
 /**
  * Dependency injector.
@@ -61,6 +62,23 @@ class Injector
    */
   public function getInstance($name)
   {
+    Preconditions::checkIsString($name);
     return $this->container->getService($name);
+  }
+
+  /**
+   * Return configured parameter value.
+   * @deprecated If possible, use injector to inject
+   * instances of initialized objects.
+   *
+   * @param string $name name of the parameter to return
+   *
+   * @returns mixed configured value
+   */
+  public function getParameter($name)
+  {
+    Preconditions::checkIsString($name);
+    assert($this->container->hasParameter($name));
+    return $this->container->getParameter($name);
   }
 }
