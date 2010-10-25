@@ -90,4 +90,14 @@ return array(
    */
   //'Login.Cosign.CookieName'=>'cosign-filter-ais2.uniba.sk',
 
+  /*
+   * Adresár s certifikátmi pre SSL spojenie (null je curl default).
+   * Pri zmene certifikátov netreba zabudnúť spustiť "c_rehash".
+   */
+  //'SSL.CertificatesDir'=>null,
+
+  /*
+   * User agent pod akým sa má libfajr identifikovať.
+   */
+  //'Connection.UserAgent'=>'Mozilla/5.0 (Windows; U; Windows NT 5.1; sk; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7'
 );
