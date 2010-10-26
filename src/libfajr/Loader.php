@@ -4,7 +4,7 @@
 // found in the LICENSE file in the project root directory.
 
 /**
- * start of each script. Loads used classes
+ * Start of each script. Loads used classes
  * and sets default options (assert,error reporting)
  *
  * PHP version 5.2.6
@@ -42,7 +42,7 @@ class Loader
    * @param string $className Name of the class
    * @param string $classPath Path of the class
    *
-   * @return void
+   * @returns void
    * @throws Exception if trying to add duplicate class
    * (this means that it found two files with the same name
    * and it is impossible to determine which is right)
@@ -63,7 +63,7 @@ class Loader
    *
    * @param string $className name of class which we lookup
    *
-   * @return string|false In case class is 'cached' and we know it's
+   * @returns string|false In case class is 'cached' and we know its
    * path, function returns path, false otherwise
    */
   public static function getClassPath($className)
@@ -88,7 +88,7 @@ class Loader
    * @param string $path      path to directory where files are located
    * @param bool   $recursive true if we want recursive traversal
    * 
-   * @return void
+   * @returns void
    */
   public static function searchForClasses($path,$recursive)
   {
@@ -96,8 +96,8 @@ class Loader
     assert(is_bool($recursive));
 
     if (!is_dir($path)) {
-      throw new Exception("Loader::searchForClasses "
-          ."path $path is not a directory!");
+      throw new Exception("Loader::searchForClasses " .
+                          "path $path is not a directory!");
     }
 
     @$d = dir($path);
@@ -119,7 +119,6 @@ class Loader
       }
 
       if (is_file($name)) {
-
         $info = pathinfo($name);
         if (isset($info['extension']) && 
             $info['extension']=='php') {
@@ -138,14 +137,18 @@ class Loader
    *
    * @param string $className name of class that needs to be loaded
    *
-   * @return void
+   * @returns void
    */
   public static function autoload($className)
   {
     assert(is_string($className));
+    // PHPunit sometimes try to unserialize() mock objects,
+    // ignore this in autoloader
+    if (preg_match("@^Mock_@", $className)) return;
+
     $path = self::getClassPath($className);
     if ($path === false) {
-      echo "Autoload of class $className failed";
+      echo "Autoload of class '$className' failed.";
       return;
     }
     include_once $path;
@@ -154,7 +157,7 @@ class Loader
   /**
    * register as autoloader function
    *
-   * @return void
+   * @returns void
    */
   public static function register()
   {

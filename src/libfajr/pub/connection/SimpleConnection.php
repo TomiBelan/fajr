@@ -3,6 +3,13 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file in the project root directory.
 
+/**
+ *
+ * @package    Fajr
+ * @subpackage Libfajr__Pub__Connection
+ * @author     Martin Sucha <anty.sk@gmail.com>
+ * @filesource
+ */
 namespace fajr\libfajr\pub\connection;
 use fajr\libfajr\pub\base\Trace;
 
@@ -13,13 +20,13 @@ use fajr\libfajr\pub\base\Trace;
  *
  * @author Martin Sucha <anty.sk@gmail.com>
  */
-
-interface SimpleConnection {
+interface SimpleConnection
+{
   /**
    * Sprav request na $url. Request je typu GET pokiaľ $post_data sú null.
    *
-   * @param string $url Url requestu.
-   * @param array $post_data @see HttpConnection:post()
+   * @param string $url       Url requestu.
+   * @param array  $post_data @see HttpConnection:post()
    *
    * @returns string
    */

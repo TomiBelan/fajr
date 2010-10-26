@@ -9,8 +9,10 @@
  * @package    Fajr
  * @subpackage TODO
  * @author     Martin Sucha <anty.sk@gmail.com>
+ * @filesource
  */
 namespace fajr;
+
 use PHPUnit_Framework_TestCase;
 /**
  * @ignore
@@ -22,7 +24,6 @@ require_once 'test_include.php';
  */
 class FajrUtilsTest extends PHPUnit_Framework_TestCase
 {
-
   public function testJoinPath()
   {
     $DS = DIRECTORY_SEPARATOR;
@@ -46,26 +47,6 @@ class FajrUtilsTest extends PHPUnit_Framework_TestCase
     $this->assertTrue(FajrUtils::isAbsolutePath('\\\\servername\\folder'), '\\\\servername\\folder UNC path is absolute');
     $this->assertFalse(FajrUtils::isAbsolutePath('foo'), 'foo is relative');
     $this->assertFalse(FajrUtils::isAbsolutePath('./'), './ is relative');
-  }
-
-  public function testStartsWith()
-  {
-    $this->assertTrue(FajrUtils::startsWith('foobar', 'foo'), 'foobar starts with foo');
-    $this->assertTrue(FajrUtils::startsWith('foobar', ''), 'foobar starts with empty string');
-    $this->assertTrue(FajrUtils::startsWith('', ''), 'empty string starts with empty string');
-    $this->assertFalse(FajrUtils::startsWith('foobar', 'baz'), 'foobar does not start with baz');
-    $this->assertFalse(FajrUtils::startsWith('foobar', 'bar'), 'foobar does not start with bar');
-    $this->assertFalse(FajrUtils::startsWith('foobar', 'foobars'), 'foobar does not start with foobars');
-  }
-
-  public function testEndsWith()
-  {
-    $this->assertTrue(FajrUtils::endsWith('foobar', 'bar'), 'foobar ends with bar');
-    $this->assertTrue(FajrUtils::endsWith('foobar', ''), 'foobar ends with empty string');
-    $this->assertTrue(FajrUtils::endsWith('', ''), 'empty string ends with empty string');
-    $this->assertFalse(FajrUtils::endsWith('foobar', 'baz'), 'foobar does not end with baz');
-    $this->assertFalse(FajrUtils::endsWith('foobar', 'foo'), 'foobar does not end with foo');
-    $this->assertFalse(FajrUtils::endsWith('foobar', 'xfoobar'), 'foobar does not end with xfoobar');
   }
 
   public function testFormatPlural()

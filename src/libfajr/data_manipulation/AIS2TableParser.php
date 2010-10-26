@@ -12,7 +12,6 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-
 namespace fajr\libfajr\data_manipulation;
 
 use DOMDocument;
@@ -95,7 +94,7 @@ class AIS2TableParser
   public function createTableFromHtml(Trace $trace, $aisResponseHtml, $dataViewName)
   {
     $html = $this->fixProblematicTags($trace->addChild("Fixing html for better DOM parsing."),
-        $aisResponseHtml);
+                                                       $aisResponseHtml);
     $domWholeHtml = $this->createDomFromHtml($trace, $html);
     $element = $this->findEnclosingElement($trace, $domWholeHtml, $dataViewName);
     $dom = new DOMDocument();
@@ -122,8 +121,10 @@ class AIS2TableParser
     $value = $element->textContent;
 
     // special fix for &nbsp;
-    if ($value == ' ') return '';
-    assert($value != ''); // probably the is some inner element which we don't know about
+    if ($value == ' ') {
+      return '';
+    }
+    assert($value != ''); // probably there is some inner element which we don't know about
     return $value;
   }
 
@@ -136,13 +137,18 @@ class AIS2TableParser
       throw new ParseException("Can't find table data");
     }
 
-    foreach ($element->childNodes as $ais_row) {
-      assert($ais_row->tagName == "tr");
-      assert($ais_row->hasAttribute("rid"));
-      assert($ais_row->hasChildNodes());
+    foreach ($element->childNodes as $aisRow) {
+      assert($aisRow->tagName == "tr");
+      assert($aisRow->hasAttribute("id"));
+      assert($aisRow->hasChildNodes());
+      // TODO: asserty prerobit na exceptiony
       $row = array();
-      $index = $ais_row->getAttribute("rid");
-      foreach ($ais_row->childNodes as $ais_td) {
+      $rowId = $aisRow->getAttribute("id");
+      $index = match($rowId, '@^row_([0-9]+)$@');
+      if ($index === false) {
+        throw new ParseException("Unexpected row id format");
+      }
+      foreach ($aisRow->childNodes as $ais_td) {
         assert($ais_td->tagName == "td");
         $row[] = $this->getCellContent($ais_td);
       }

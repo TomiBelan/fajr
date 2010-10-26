@@ -31,13 +31,15 @@ class CosignProxyLoginTest extends PHPUnit_Framework_TestCase
   private $connection;
   private $serverConnection;
 
-  public function setUp() {
+  public function setUp()
+  {
     $this->connection = $this->getMock('\fajr\libfajr\pub\connection\HttpConnection');
     $this->serverConnection = new AIS2ServerConnection($this->connection,
         new AIS2ServerUrlMap("ais2.test"), null);
   }
 
-  public function testLogin() {
+  public function testLogin()
+  {
     $_SERVER['REMOTE_USER']='remote-user';
     $_SERVER['COSIGN_SERVICE']='cosign-groupware2';
     $_SERVER['SERVER_NAME']='groupware2.cosign.test';

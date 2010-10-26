@@ -11,7 +11,6 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-
 namespace fajr\libfajr\pub\connection;
 
 use BadFunctionCallException;

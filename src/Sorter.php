@@ -3,12 +3,16 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file in the project root directory.
 
-namespace fajr;
 /**
- * @author Peter Perešíni <ppershing+fajr@gmail.com>
+ *
+ * @package    Fajr
+ * @author     Peter Perešíni <ppershing+fajr@gmail.com>
+ * @filesource
  */
+namespace fajr;
 
-class SorterHelper {
+class SorterHelper
+{
   private $columns = null;
 
   public function __construct($columns)
@@ -24,13 +28,16 @@ class SorterHelper {
   {
     foreach ($this->columns as $field=>$dir) {
       $t = strcmp($a[$field], $b[$field]);
-      if ($t!=0) return $t*$dir;
+      if ($t!=0) {
+        return $t*$dir;
+      }
     }
     return 0;
   }
 }
 
-class Sorter {
+class Sorter
+{
   public static function sort($data, $columns)
   {
     $helper = new SorterHelper($columns);

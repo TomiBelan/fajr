@@ -22,6 +22,7 @@ use fajr\libfajr\window\AIS2AbstractDialog;
 use fajr\libfajr\data_manipulation\AIS2TableParser;
 use fajr\libfajr\window\DialogParent;
 use fajr\libfajr\window\DialogData;
+
 /**
  * Trieda pre dialóg so zoznamom prihlásených študentov na termín.
  *

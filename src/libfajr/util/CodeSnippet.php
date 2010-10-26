@@ -3,8 +3,13 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file in the project root directory.
 
-// TODO(??): missing author
-
+/**
+ *
+ * @package    Fajr
+ * @subpackage Libfajr__Util
+ * @author     Peter Perešíni <ppershing+fajr@gmail.com>; original source: fks.sk database
+ * @filesource
+ */
 namespace fajr\libfajr\util;
 
 class CodeSnippet
@@ -16,7 +21,7 @@ class CodeSnippet
    * @param string $line line which we are interested in
    * @param int    $distance
    *
-   * @return string lines in range <$line - $distance, $line+ $ distance>
+   * @returns string lines in range <$line - $distance, $line + $distance>
    * (starting with line number, ending with newline)
    *
    * @TODO Possible recursive asserts?

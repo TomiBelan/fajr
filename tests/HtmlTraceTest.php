@@ -9,6 +9,7 @@
  * @package    Fajr
  * @subpackage Tests
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
+ * @filesource
  */
 
 /**
@@ -22,7 +23,8 @@ use \fajr\HtmlTrace;
  */
 class HtmlTraceTest extends PHPUnit_Framework_TestCase
 {
-  private function newTimer() {
+  private function newTimer()
+  {
     return $this->getMock('\fajr\libfajr\base\Timer', array('getElapsedTime', 'reset'));
   }
 
@@ -57,13 +59,15 @@ class HtmlTraceTest extends PHPUnit_Framework_TestCase
     $this->assertRegExp("@C1_H@", $c1_html);
   }
 
-  public function testCallerData() {
+  public function testCallerData()
+  {
     $data = HtmlTrace::getCallerData(0);
     $this->assertEquals(__CLASS__, $data['class']);
     $this->assertEquals(__FUNCTION__, $data['function']);
   }
 
-  public function testVariableOutput() {
+  public function testVariableOutput()
+  {
     $timer = $this->newTimer();
     $trace = new HtmlTrace($timer, "root");
     $trace->tlogVariable("var1", false);
@@ -82,7 +86,8 @@ class HtmlTraceTest extends PHPUnit_Framework_TestCase
     $this->assertRegExp("@a&#039;b@", $html);
   }
 
-  public function testEscaping() {
+  public function testEscaping()
+  {
     $timer = $this->newTimer();
     $trace = new HtmlTrace($timer);
     $trace->tlog("<&x");

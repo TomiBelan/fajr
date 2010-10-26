@@ -11,7 +11,6 @@
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */
-
 namespace fajr\libfajr\data_manipulation;
 
 use fajr\libfajr\pub\base\Trace;
@@ -29,12 +28,12 @@ use InvalidArgumentException;
  */
 class CosignProxyFileParser
 {
-
   const PROXY_LINE_PATTERN='/^x([^=]+)=([^ ]+) ([^ ]+)$/';
 
   /**
    * Parse a line of proxy file in a string
-   * @param Trace $trace trace object
+   *
+   * @param Trace  $trace trace object
    * @param string $line not including line termination characters
    * @returns array service, value and domain from parsed line, indexed by
    *                those strings or false if this is not correct proxy line
@@ -58,7 +57,8 @@ class CosignProxyFileParser
 
   /**
    * Parse a file for cosign proxy cookies
-   * @param Trace $trace trace object
+   *
+   * @param Trace  $trace trace object
    * @param string $filename
    * @returns array Array of parsed service cookies indexed by name
    */

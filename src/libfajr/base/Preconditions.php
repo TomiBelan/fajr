@@ -29,16 +29,19 @@ class Preconditions
   /**
    * Checks that $variable is not null
    *
-   * @param mixed $variable variable to check
+   * @param mixed  $variable variable to check
    * @param string $name variable name to display in error
    *
    * @returns void
    * @throws InvalidArgumentException
    */
+  // TODO: change $name to $message and fix existing function calls
   public static function checkNotNull($variable, $name = null)
   {
     if ($variable === null) {
-      if ($name === null) $name = "Argument";
+      if ($name === null) { // TODO: change $name to $message and fix existing function calls
+        $name = "Argument";
+      }
       throw new InvalidArgumentException("$name should not be null!");
     }
   }
@@ -46,16 +49,19 @@ class Preconditions
   /**
    * Checks that $variable is a string
    *
-   * @param mixed $variable variable to check
+   * @param mixed  $variable variable to check
    * @param string $name variable name to display in error
    *
    * @returns void
    * @throws InvalidArgumentException
    */
+  // TODO: change $name to $message and fix existing function calls
   public static function checkIsString($variable, $name = null)
   {
     if (!is_string($variable)) {
-      if ($name === null) $name = "Argument";
+      if ($name === null) {
+        $name = "Argument";
+      }
       throw new InvalidArgumentException("$name should be a string!");
     }
   }
@@ -64,15 +70,18 @@ class Preconditions
    * Checks that $variable is a string and matches a given PCRE
    *
    * @param string $pattern PCRE pattern to check against
-   * @param mixed $variable variable to check
+   * @param mixed  $variable variable to check
    * @param string $name variable name to display in error
    *
    * @returns void
    * @throws InvalidArgumentException
    */
+  // TODO: change $name to $message and fix existing function calls
   public static function checkMatchesPattern($pattern, $variable, $name = null)
   {
-    if ($name === null) $name = "Argument";
+    if ($name === null) {
+      $name = "Argument";
+    }
     self::checkIsString($variable, $name);
     if (!preg_match($pattern, $variable)) {
       throw new InvalidArgumentException("$name should match $pattern!");
@@ -82,7 +91,7 @@ class Preconditions
   /**
    * Checks that $variable is a string
    *
-   * @param bool $expression boolean result of an expression
+   * @param bool   $expression boolean result of an expression
    * @param string $message error message
    *
    * @returns void

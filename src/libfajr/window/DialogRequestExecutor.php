@@ -3,8 +3,14 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file in the project root directory.
 
-// TODO(??): missing author
-
+/**
+ *
+ * @package    Fajr
+ * @subpackage Libfajr__Window
+ * @author     Peter Perešíni <ppershing+fajr@gmail.com>
+ * @author     Martin Králik <majak47@gmail.com>
+ * @filesource
+ */
 namespace fajr\libfajr\window;
 use fajr\libfajr\pub\base\Trace;
 use Exception;
@@ -26,7 +32,7 @@ class DialogRequestExecutor extends DisableEvilCallsObject
    * Konštruktor.
    *
    * @param string $appClassName Názov "triedy" obsluhujúcej danú obrazovku v AISe.
-   * @param string $identifiers Konkrétne parametre pre vyvolanie danej obrazovky.
+   * @param string $identifiers  Konkrétne parametre pre vyvolanie danej obrazovky.
    */
   public function __construct(
       RequestBuilder $requestBuilder,
@@ -44,7 +50,8 @@ class DialogRequestExecutor extends DisableEvilCallsObject
 
   public function spawnChild(DialogData $data, $parentFormName)
   {
-    return new DialogRequestExecutor($this->requestBuilder, $this->connection, $data, $this->parentAppId, $parentFormName);
+    return new DialogRequestExecutor($this->requestBuilder, $this->connection,
+                                     $data, $this->parentAppId, $parentFormName);
   }
 
   public function parseDialogNameFromResponse($response)

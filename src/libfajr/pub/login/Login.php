@@ -4,19 +4,23 @@
 // found in the LICENSE file in the project root directory.
 
 /**
- * @author Martin Sucha <anty.sk@gmail.com>
+ *
+ * @package    Fajr
+ * @subpackage Libfajr__Pub__Login
+ * @author     Martin Sucha <anty.sk@gmail.com>
+ * @filesource
  */
-
 namespace fajr\libfajr\pub\login;
 use fajr\libfajr\pub\connection\AIS2ServerConnection;
 
-interface Login {
+interface Login
+{
   /**
    * Login user.
    *
    * @param AIS2ServerConnection $connection connection to login with
    *
-   * @return void
+   * @returns void
    * @throws AIS2LoginException on failure.
    */
   public function login(AIS2ServerConnection $connection);
@@ -26,7 +30,7 @@ interface Login {
    *
    * @param AIS2ServerConnection $connection connection to logout with
    *
-   * @return void
+   * @returns void
    * @throws AIS2LoginException on failure.
    */
   public function logout(AIS2ServerConnection $connection);
@@ -34,17 +38,17 @@ interface Login {
   /**
    * Check login status
    *
-   * @param HttpConnection $connection
+   * @param HttpConnection     $connection
    * @param AIS2ServerInstance $server server to check login status.
    *
-   * @return bool true if user is currently logged in.
+   * @returns bool true if user is currently logged in.
    */
   public function isLoggedIn(AIS2ServerConnection $connection);
 
   /**
    * Try to relogin to ais if neccessary
    *
-   * @param HttpConnection $connection
+   * @param HttpConnection     $connection
    * @param AIS2ServerInstance $server server to check and relogin.
    *
    * @throws AIS2LoginException

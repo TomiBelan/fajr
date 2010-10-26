@@ -3,6 +3,13 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file in the project root directory.
 
+/**
+ * 
+ * @package    Fajr
+ * @subpackage Libfajr__Login
+ * @author     Martin Sucha <anty.sk@gmail.com>
+ * @filesource
+ */
 namespace fajr\libfajr\login;
 
 use fajr\libfajr\base\Preconditions;
@@ -17,10 +24,12 @@ use fajr\libfajr\pub\exceptions\LoginException;
 /**
  * Trieda reprezentujúca prihlasovanie pomocou cosign proxy
  *
- * @author Martin Sucha <anty.sk@gmail.com>
+ * @package    Fajr
+ * @subpackage Libfajr__Login
+ * @author     Martin Sucha <anty.sk@gmail.com>
  */
-class CosignProxyLogin extends CosignAbstractLogin {
-
+class CosignProxyLogin extends CosignAbstractLogin
+{
   /** @var string $proxyDir path to directory containing cosign proxy files */
   private $proxyDir;
 
@@ -30,14 +39,16 @@ class CosignProxyLogin extends CosignAbstractLogin {
   /**
    * @param string $proxyDir path to directory containing cosign proxy files
    */
-  public function  __construct($proxyDir, $proxyCookieName) {
+  public function  __construct($proxyDir, $proxyCookieName)
+  {
     Preconditions::checkIsString($proxyDir, 'proxyDir');
     Preconditions::checkIsString($proxyDir, 'proxyCookieName');
     $this->proxyDir = $proxyDir;
     $this->proxyCookieName = $proxyCookieName;
   }
 
-  public function login(AIS2ServerConnection $serverConnection) {
+  public function login(AIS2ServerConnection $serverConnection)
+  {
     $connection = $serverConnection->getHttpConnection();
     if (empty($_SERVER['REMOTE_USER'])) {
       throw new LoginException('Nie je nastaveny cosign username');
@@ -62,7 +73,8 @@ class CosignProxyLogin extends CosignAbstractLogin {
     return true;
   }
 
-  public function isLoggedIn(AIS2ServerConnection $unused) {
+  public function isLoggedIn(AIS2ServerConnection $unused)
+  {
     return !empty($_SERVER['REMOTE_USER']);
   }
 
@@ -74,9 +86,9 @@ class CosignProxyLogin extends CosignAbstractLogin {
     // removal
     setCookie( $_SERVER[ 'COSIGN_SERVICE' ], "null", 1, '/', "", 1 );
     // Redirect na hlavnu odhlasovaciu stranku cosignu
-    // TODO(anty): treba zistit, ci ten exit nema nejake vedlajsie ucinky
     header('Location: '.self::COSIGN_LOGOUT);
-    exit;
+    
+    return true;
   }
 
 }

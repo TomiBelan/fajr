@@ -4,15 +4,19 @@
 // found in the LICENSE file in the project root directory.
 
 /**
- * @author Martin Sucha <anty.sk@gmail.com>
- * @author Martin Martin Králik <majak47@gmail.com>
+ *
+ * @package    Fajr
+ * @subpackage Libfajr__Connection
+ * @author     Martin Martin Králik <majak47@gmail.com>
+ * @filesource
  */
 namespace fajr\libfajr\connection;
 
 use fajr\libfajr\pub\connection\HttpConnection;
 use fajr\libfajr\pub\base\Trace;
 
-class GzipDecompressingConnection implements HttpConnection {
+class GzipDecompressingConnection implements HttpConnection
+{
   /**
    * temporary directory for output files.
    * Deprecate when PHP 6 is available!
@@ -37,7 +41,8 @@ class GzipDecompressingConnection implements HttpConnection {
    *
    * @returns string (decompressed) content retrieved from $url
    */
-  public function get(Trace $trace, $url) {
+  public function get(Trace $trace, $url)
+  {
     return $this->decompressIfGzip($trace,
                                    $this->delegate->get($trace, $url));
   }
@@ -46,20 +51,25 @@ class GzipDecompressingConnection implements HttpConnection {
    * POST request. @see HttpConnection::post
    *
    * @param string $url URL to get
-   * @param array $data post data
+   * @param array  $data post data
    *
    * @returns string (decompressed) content retrieved from $url
    */
-  public function post(Trace $trace, $url, $data) {
+  public function post(Trace $trace, $url, $data)
+  {
     return $this->decompressIfGzip($trace,
-                                $this->delegate->post($trace, $url, $data));
+                                   $this->delegate->post($trace, $url, $data));
   }
 
-  public function addCookie($name, $value, $expire, $path, $domain, $secure = true, $tailmatch = false) {
+  //TODO(ppershing): refactor these values into Cookie class
+  public function addCookie($name, $value, $expire, $path,
+                            $domain, $secure = true, $tailmatch = false)
+  {
     return $this->delegate->addCookie($name, $value, $expire, $path, $domain, $secure, $tailmatch);
   }
 
-  public function clearCookies() {
+  public function clearCookies()
+  {
     return $this->delegate->clearCookies();
   }
 

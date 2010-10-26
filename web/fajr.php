@@ -4,16 +4,10 @@
 // found in the LICENSE file in the project root directory.
 
 /**
- *
- * @package Fajr
- * @subpackage Libfajr__Pub__Exceptions
+ * One of fajr's entry points
  * @author Martin Sucha <anty.sk@gmail.com>
- * @filesource
  */
 
-namespace fajr\libfajr\pub\exceptions;
-use Exception;
+define('_FAJR','INCLUDED');
 
-class LoginException extends Exception
-{
-}
+include('../src/index.php');

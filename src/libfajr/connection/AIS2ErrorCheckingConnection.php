@@ -21,6 +21,7 @@ use fajr\libfajr\pub\base\Trace;
 use Exception;
 use fajr\libfajr\pub\exceptions\LoginException;
 use fajr\libfajr\pub\connection\HttpConnection;
+
 /**
  * HttpConnection which checks for generic
  * AIS2 error-response strings and throws Exception if found.
@@ -32,8 +33,9 @@ use fajr\libfajr\pub\connection\HttpConnection;
  * @author     Martin Sucha <anty@gjh.sk>
  * @author     Martin Kralik <majak47@gmail.com>
  */
-class AIS2ErrorCheckingConnection implements HttpConnection {
 
+class AIS2ErrorCheckingConnection implements HttpConnection
+{
   private $delegate = null;
 
   /**
@@ -51,41 +53,49 @@ class AIS2ErrorCheckingConnection implements HttpConnection {
    */
   const UNAUTHORIZED = "@Neautorizovaný prístup!@";
 
-  function __construct(HttpConnection $delegate) {
+  function __construct(HttpConnection $delegate)
+  {
     $this->delegate = $delegate;
   }
 
   /**
    * @throws Exception if error is recognized in response.
    */
-  public function get(Trace $trace, $url) {
+  public function get(Trace $trace, $url)
+  {
     return $this->check($trace, $url, $this->delegate->get($trace, $url));
   }
 
   /**
    * @throws Exception if error is recognized in response.
    */
-  public function post(Trace $trace, $url, $data) {
+  public function post(Trace $trace, $url, $data)
+  {
     return $this->check($trace, $url, $this->delegate->post($trace, $url, $data));
   }
 
-  public function addCookie($name, $value, $expire, $path, $domain, $secure = true, $tailmatch = false) {
-    return $this->delegate->addCookie($name, $value, $expire, $path, $domain, $secure, $tailmatch);
+  public function addCookie($name, $value, $expire, $path, $domain,
+                            $secure = true, $tailmatch = false)
+  {
+    return $this->delegate->addCookie($name, $value, $expire, $path,
+                                      $domain, $secure, $tailmatch);
   }
 
-  public function clearCookies() {
+  public function clearCookies()
+  {
     return $this->delegate->clearCookies();
   }
 
-  private function newException($reason, $url) {
+  private function newException($reason, $url)
+  {
     return new Exception('<b>Nastala chyba pri requeste.</b><br/>Zdôvodnenie od AISu:' .
                          nl2br(hescape($reason)) .
                          '<br/>Požadovaná url: ' . hescape($url));
 
   }
 
-
-  private function check(Trace $trace, $url, $response) {
+  private function check(Trace $trace, $url, $response)
+  {
     $matches = array();
     if (preg_match(self::INTERNAL_ERROR_PATTERN, $response, $matches)) {
       $trace->tlog("Expection encountered");

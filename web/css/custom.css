@@ -259,3 +259,22 @@ pre.trace {
   color:#000;
   z-index: 1;
 }
+
+.velkyDisclaimer {
+  font-size: 150%;
+}
+
+.velkyDisclaimer em {
+  color: red;
+  font-style: normal;
+}
+
+.velkyDisclaimer em a {
+  color: red;
+}
+
+.velkyDisclaimer strong {
+  color: red;
+  font-style: normal;
+  font-weight: bold;
+}

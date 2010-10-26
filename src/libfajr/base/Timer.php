@@ -22,11 +22,12 @@ namespace fajr\libfajr\base;
  * @subpackage Libfajr__Base
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
-interface Timer {
+interface Timer
+{
   /**
    * Start counting time from this moment.
    *
-   * @return void
+   * @returns void
    */
   public function reset();
 
@@ -38,5 +39,3 @@ interface Timer {
    */
   public function getElapsedTime();
 }
-
-

@@ -25,7 +25,8 @@ require_once 'test_include.php';
  */
 class CosignAbstractLoginTest extends PHPUnit_Framework_TestCase
 {
-  public function testLogout() {
+  public function testLogout()
+  {
     $this->markTestIncomplete();
   }
 }

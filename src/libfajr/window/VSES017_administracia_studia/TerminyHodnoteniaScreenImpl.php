@@ -24,6 +24,7 @@ use fajr\libfajr\window\RequestBuilderImpl;
 use fajr\libfajr\window\ScreenRequestExecutor;
 use fajr\libfajr\window\AIS2AbstractScreen;
 use fajr\libfajr\data_manipulation\AIS2TableParser;
+
 /**
  * Trieda reprezentujúca jednu obrazovku so zoznamom predmetov zápisného listu
  * a termínov hodnotenia.
@@ -113,7 +114,10 @@ class TerminyHodnoteniaScreenImpl extends AIS2AbstractScreen
       ),
     ));
     
-    if (!preg_match('@dialogManager\.openDialog\("PleaseWaitDlg0"@', $data)) throw new Exception('Z termínu sa nepodarilo odhlásiť.<br/>Pravdepodobne termín s daným indexom neexistuje.');
+    if (!preg_match('@dialogManager\.openDialog\("PleaseWaitDlg0"@', $data)) {
+      throw new Exception('Z termínu sa nepodarilo odhlásiť.<br/>' .
+                          'Pravdepodobne termín s daným indexom neexistuje.');
+    }
     
     // Nacitame loading obrazovku.
     $data = AIS2Utils::request('https://ais2.uniba.sk/ais/servlets/WebUIServlet?appId='.$this->getAppId().'&form=PleaseWaitDlg0&antiCache='.random());
@@ -128,7 +132,10 @@ class TerminyHodnoteniaScreenImpl extends AIS2AbstractScreen
     ));
     
     $message = match($data, '@webui\.messageBox\("([^"]*)"@');
-    if (($message !== false) && ($message != 'Činnosť úspešne dokončená.')) throw new Exception("Z termínu sa (pravdepodobne) nepodarilo odhlásiť. Dôvod:<br/><b>".$message.'</b>');
+    if (($message !== false) && ($message != 'Činnosť úspešne dokončená.')) {
+      throw new Exception("Z termínu sa (pravdepodobne) nepodarilo odhlásiť." .
+                          "Dôvod:<br/><b>".$message.'</b>');
+    }
     
     return true;
   }

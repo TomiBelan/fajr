@@ -7,11 +7,10 @@
  * Tento súbor obsahuje triedu reprezentujúcu cosignovú service cookie
  *
  * @package    Fajr
- * @subpackage Libfajr__Login
+ * @subpackage Libfajr__Pub__Login
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */
-
 namespace fajr\libfajr\pub\login;
 
 use fajr\libfajr\pub\base\Trace;
@@ -27,7 +26,6 @@ use fajr\libfajr\base\Preconditions;
  */
 final class CosignServiceCookie
 {
-
   const VALUE_PATTERN = '#^[A-Za-z0-9+.@-]+$#';
   const NAME_PATTERN = '#^cosign-[a-zA-Z0-9._-]+$#';
   const DOMAIN_PATTERN = '#^[a-zA-Z0-9._-]+$#';
@@ -43,8 +41,9 @@ final class CosignServiceCookie
 
   /**
    * Construct a CosignServiceCookie if all arguments are valid
-   * @param string $name Cookie name
-   * @param string $value Cookie value
+   *
+   * @param string $name   Cookie name
+   * @param string $value  Cookie value
    * @param string $domain Cookie domain
    */
   public function __construct($name, $value, $domain)
@@ -59,6 +58,7 @@ final class CosignServiceCookie
 
   /**
    * Return cookie value
+   *
    * @returns string
    */
   public function getValue()
@@ -68,6 +68,7 @@ final class CosignServiceCookie
 
   /**
    * Return a service cookie name
+   *
    * @returns string
    */
   public function getName()
@@ -77,6 +78,7 @@ final class CosignServiceCookie
 
   /**
    * Return a cookie domain
+   *
    * @returns string
    */
   public function getDomain()
@@ -103,6 +105,7 @@ final class CosignServiceCookie
 
   /**
    * Replace spaces with plus signs
+   *
    * @param string $value
    * @returns string cookie value with spaces replaces with plus signs
    */
@@ -115,6 +118,7 @@ final class CosignServiceCookie
   /**
    * Fix cookie value received via cookie or user input
    * so it can be used in cosign
+   *
    * @param string $value
    * @returns string fixed value
    */
@@ -128,9 +132,11 @@ final class CosignServiceCookie
 
   /**
    * Return a cosign service cookie corresponding to this service
+   *
    * @returns CosignServiceCookie service cookie for this service
    */
-  public static function getMyCookie() {
+  public static function getMyCookie()
+  {
     if (empty($_SERVER['COSIGN_SERVICE'])) {
       throw new LoginException('Nazov tejto cosign sluzby nie je pritomny v ' .
                                'prostredi. Prosim skontrolujte nastavenie ' .
@@ -154,7 +160,5 @@ final class CosignServiceCookie
 
     return $cookie;
   }
-
-
 
 }

@@ -22,7 +22,6 @@ use sfServiceContainer;
  * @package    Fajr
  * @subpackage Modules
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
- * @filesource
  */
 class TraceModule implements Module
 {

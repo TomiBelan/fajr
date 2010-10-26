@@ -26,13 +26,14 @@ namespace fajr\libfajr\pub\base;
  * @subpackage Libfajr
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
-interface Trace {
+interface Trace
+{
   /**
    * Set the header of the current trace.
    *
    * @param string $header Header.
    *
-   * @return void
+   * @returns void
    */
   public function setHeader($header);
 
@@ -41,7 +42,7 @@ interface Trace {
    *
    * @param string $text Text to append.
    *
-   * @return void
+   * @returns void
    */
   public function tlog($text);
 
@@ -51,7 +52,7 @@ interface Trace {
    *
    * @param string $string_data Data to append.
    *
-   * @return void
+   * @returns void
    */
   public function tlogData($string_data);
 
@@ -63,7 +64,7 @@ interface Trace {
    * @param string $name     name of the variable to be dumped
    * @param mixed  $variable variable to be dumped
    *
-   * @return void
+   * @returns void
    */
   public function tlogVariable($name, $variable);
 
@@ -72,9 +73,7 @@ interface Trace {
    *
    * @param string $header Optional child header
    *
-   * @return Trace Newly created child node.
-   *
+   * @returns Trace Newly created child node.
    */
   public function addChild($header = "");
 }
-

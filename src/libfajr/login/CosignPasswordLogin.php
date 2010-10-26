@@ -3,26 +3,37 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file in the project root directory.
 
+/**
+ *
+ * @package    Fajr
+ * @subpackage Libfajr__Login
+ * @author     Martin Králik <majak47@gmail.com>
+ * @author     Martin Sucha <anty.sk@gmail.com>
+ * @filesource
+ */
 namespace fajr\libfajr\login;
 
 use fajr\libfajr\pub\connection\HttpConnection;
 use fajr\libfajr\pub\base\NullTrace;
 use fajr\libfajr\pub\exceptions\LoginException;
 use fajr\libfajr\pub\exceptions\NotImplementedException;
-use fajr\libfajr\util;
+use fajr\libfajr\util\StrUtil;
 use fajr\libfajr\pub\connection\AIS2ServerConnection;
 use fajr\libfajr\pub\connection\AIS2ServerUrlMap;
+
 /**
  * Trieda reprezentujúca prihlasovanie pomocou cosign
  *
  * @author Martin Králik <majak47@gmail.com>
  * @author Martin Sucha <anty.sk@gmail.com>
  */
-class CosignPasswordLogin extends CosignAbstractLogin {
+class CosignPasswordLogin extends CosignAbstractLogin
+{
   private $username = null;
   private $krbpwd = null;
 
-  public function __construct($username, $krbpwd) {
+  public function __construct($username, $krbpwd)
+  {
     assert($username != null);
     assert($krbpwd != null);
     $this->username = $username;
@@ -57,10 +68,10 @@ class CosignPasswordLogin extends CosignAbstractLogin {
     $data = $connection->post(new NullTrace(), self::COSIGN_LOGIN,
                               array('ref' => '', 'login'=> $login, 'krbpwd' => $krbpwd));
     if (!preg_match(parent::LOGGED_ALREADY_PATTERN, $data)) {
-      if (($reason = util\match(self::COSIGN_ERROR_PATTERN1, $data)) ||
-          ($reason = util\match(self::COSIGN_ERROR_PATTERN2, $data)) ||
-          ($reason = util\match(self::COSIGN_ERROR_PATTERN3, $data)) ||
-          ($reason = util\match(self::IIKS_ERROR, $data))) {
+      if (($reason = StrUtil::match(self::COSIGN_ERROR_PATTERN1, $data)) ||
+          ($reason = StrUtil::match(self::COSIGN_ERROR_PATTERN2, $data)) ||
+          ($reason = StrUtil::match(self::COSIGN_ERROR_PATTERN3, $data)) ||
+          ($reason = StrUtil::match(self::IIKS_ERROR, $data))) {
         throw new LoginException('Nepodarilo sa prihlásiť, dôvod: <b>'.$reason.'</b>');
       }
       throw new LoginException('Nepodarilo sa prihlásiť, dôvod neznámy.');
@@ -72,8 +83,12 @@ class CosignPasswordLogin extends CosignAbstractLogin {
   {
     $connection = $serverConnection->getHttpConnection();
     $data = $connection->get(new NullTrace(), self::COSIGN_LOGIN);
-    if (preg_match(self::LOGGED_ALREADY_PATTERN, $data)) return true;
-    if (preg_match(self::IIKS_LOGIN_PATTERN, $data)) return false;
+    if (preg_match(self::LOGGED_ALREADY_PATTERN, $data)) {
+      return true;
+    }
+    if (preg_match(self::IIKS_LOGIN_PATTERN, $data)) {
+      return false;
+    }
     return new LoginException("Unexpected response.");
   }
 }

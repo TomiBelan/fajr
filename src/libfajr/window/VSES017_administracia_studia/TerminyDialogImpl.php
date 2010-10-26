@@ -21,6 +21,7 @@ use fajr\libfajr\window\DialogData;
 use fajr\libfajr\window\DialogParent;
 use fajr\libfajr\window\AIS2AbstractDialog;
 use fajr\libfajr\data_manipulation\AIS2TableParser;
+
 /**
  * Trieda pre dialóg s termínmi skúšok k jednému predmetu.
  *
@@ -67,7 +68,9 @@ class TerminyDialogImpl extends AIS2AbstractDialog
     ));
     
     $error = match($data, '@webui\.messageBox\("([^"]*)",@');
-    if ($error) throw new Exception('Nepodarilo sa prihlásiť na zvolený termín.<br/>Dôvod: <b>'.$error.'</b>');
+    if ($error) {
+      throw new Exception('Nepodarilo sa prihlásiť na zvolený termín.<br/>Dôvod: <b>'.$error.'</b>');
+    }
     
     $this->terminated = true; // po uspesnom prihlaseni za dialog hned zavrie
     return true;

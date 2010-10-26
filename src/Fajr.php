@@ -37,6 +37,10 @@ use fajr\Response;
  * @author     Martin Králik <majak47@gmail.com>
  */
 class Fajr {
+
+  const LOGGED_IN = 0;
+  const LOGGED_OUT = 1;
+
   /**
    * @var Injector $injector dependency injector.
    */
@@ -83,6 +87,15 @@ class Fajr {
     // TODO(ppershing): use injector here
     $factory = new LoginFactoryImpl();
 
+    if (FajrConfig::get('Login.Type') == 'cosign') {
+      if (Input::get('loginType') == 'cosign') {
+        return $factory->newLoginUsingCosignProxy(
+            FajrConfig::get('Login.Cosign.ProxyDB'),
+            FajrConfig::get('Login.Cosign.CookieName'));
+      }
+      return null;
+    }
+
     $login = Input::get('login'); Input::set('login', null);
     $krbpwd = Input::get('krbpwd'); Input::set('krbpwd', null);
     $cosignCookie = Input::get('cosignCookie'); Input::set('cosignCookie', null);
@@ -92,8 +105,10 @@ class Fajr {
       return $factory->newLoginUsingCosign($login, $krbpwd);
     } else if ($cosignCookie !== null) {
       $cosignCookie = CosignServiceCookie::fixCookieValue($cosignCookie);
-      // TODO(anty): change to use correct domain and cookie name
-      return $factory->newLoginUsingCookie(new CosignServiceCookie('cosign-filter-ais2.uniba.sk', $cosignCookie, 'ais2.uniba.sk'));
+      return $factory->newLoginUsingCookie(
+          new CosignServiceCookie(FajrConfig::get('Login.Cosign.CookieName'),
+                                  $cosignCookie,
+                                  FajrConfig::get('AIS2.ServerName')));
     } else {
       return null;
     }
@@ -106,7 +121,8 @@ class Fajr {
 
   private function provideConnection()
   {
-    $connection = new connection\CurlConnection(FajrUtils::getCookieFile());
+    $curlOptions = $this->injector->getParameter('CurlConnection.options');
+    $connection = new connection\CurlConnection($curlOptions, FajrUtils::getCookieFile());
 
     $this->rawStatsConnection = new connection\StatsConnection($connection, new SystemTimer());
 
@@ -191,9 +207,16 @@ class Fajr {
 
       if ($action == 'logout') {
         FajrUtils::logout($serverConnection);
-        FajrUtils::redirect();
+        // TODO(anty): fix this in a better way
+        if (FajrConfig::get('Login.Type') == 'cosign') {
+          // location header set in CosignProxyLogin
+          // but we can't exit there because
+          // the session wouldn't get dropped
+          exit;
+        }
+        FajrUtils::redirect(array(), 'index.php');
       }
-
+      
       $loggedIn = FajrUtils::isLoggedIn($serverConnection);
 
       $cosignLogin = $this->provideLogin();

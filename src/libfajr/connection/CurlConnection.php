@@ -16,10 +16,12 @@
  */
 namespace fajr\libfajr\connection;
 
-use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\base\ClosureRunner;
+use fajr\libfajr\base\Preconditions;
+use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\pub\connection\HttpConnection;
-use \Exception;
+use Exception;
+
 /**
  * Provides HttpConnection wrapper for Curl library.
  *
@@ -30,43 +32,44 @@ use \Exception;
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @author     Martin Kralik <majak47@gmail.com>
  */
-class CurlConnection implements HttpConnection {
-
-  const USER_AGENT = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; sk; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7';
+class CurlConnection implements HttpConnection
+{
 
   private $curl = null;
   private $cookieFile = null;
-  private $userAgent = null;
+  private $options = null;
 
-
-  public function  __construct($cookieFile, $userAgent = null) {
-    $this->userAgent = $userAgent ? $userAgent: self::USER_AGENT;
-
+  public function  __construct(array $options, $cookieFile)
+  {
+    Preconditions::checkIsString($cookieFile);
+    $this->options = $options;
     $this->cookieFile = $cookieFile;
     $this->_curlInit();
   }
 
-  public function __destruct() {
+  public function __destruct()
+  {
     curl_close($this->curl);
   }
 
-  public function _curlInit() {
+  public function _curlInit()
+  {
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_FORBID_REUSE, false); // Keepalive konekcie
+    foreach ($this->options as $option=>$value) {
+      curl_setopt($ch, $option, $value);
+    }
+    // do not put http response header in result
     curl_setopt($ch, CURLOPT_HEADER, false);
-    curl_setopt($ch, CURLOPT_USERAGENT, $this->userAgent);
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    // return response instead of echoing it to output
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_VERBOSE, false);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, true);
     curl_setopt($ch, CURLOPT_COOKIEFILE, $this->cookieFile);
     curl_setopt($ch, CURLOPT_COOKIEJAR, $this->cookieFile);
 
     $this->curl = $ch;
   }
 
-  public function get(Trace $trace, $url) {
+  public function get(Trace $trace, $url)
+  {
     $trace->tlog("Http GET");
     $trace->tlogVariable("URL", $url);
     curl_setopt($this->curl, CURLOPT_URL, $url);
@@ -74,7 +77,8 @@ class CurlConnection implements HttpConnection {
     return $this->exec($trace);
   }
 
-  public function post(Trace $trace, $url, $data) {
+  public function post(Trace $trace, $url, $data)
+  {
     $trace->tlog("Http POST");
     $trace->tlogVariable("URL", $url);
     $child=$trace->addChild("POST data");
@@ -83,7 +87,9 @@ class CurlConnection implements HttpConnection {
     curl_setopt($this->curl, CURLOPT_POST, true);
 
     $newPost = '';
-    foreach ($data as $key => $value) $newPost .= urlencode($key).'='.urlencode($value).'&';
+    foreach ($data as $key => $value) {
+      $newPost .= urlencode($key).'='.urlencode($value).'&';
+    }
     $post = substr($newPost, 0, -1);
 
     curl_setopt($this->curl, CURLOPT_POSTFIELDS, $post);
@@ -92,9 +98,10 @@ class CurlConnection implements HttpConnection {
   }
 
   public function addCookie($name, $value, $expire, $path, $domain,
-                $secure = true, $tailmatch = false) {
+      $secure = true, $tailmatch = false)
+  {
     // Closing+reopening handle seems to be the only way how to force save/reload
-    // of cookies. We loose reusable connection though.
+    // of cookies. We lose reusable connection though.
     $closureRunner = new ClosureRunner(array($this, '_curlInit'));
     curl_close($this->curl);
 
@@ -116,15 +123,17 @@ class CurlConnection implements HttpConnection {
     };
   }
 
-  public function clearCookies() {
+  public function clearCookies()
+  {
     // Closing+reopening handle seems to be the only way how to force save/reload
-    // of cookies. We loose reusable connection though.
+    // of cookies. We lose reusable connection though.
     curl_close($this->curl);
     @unlink($this->cookieFile);
     $this->_curlInit();
   }
 
-  private function exec(Trace $trace) {
+  private function exec(Trace $trace)
+  {
     // read cookie file
     curl_setopt($this->curl, CURLOPT_COOKIEFILE, $this->cookieFile);
 

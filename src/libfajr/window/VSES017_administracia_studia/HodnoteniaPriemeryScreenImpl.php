@@ -23,6 +23,7 @@ use fajr\libfajr\window\RequestBuilderImpl;
 use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\pub\connection\SimpleConnection;
 use fajr\libfajr\data_manipulation\AIS2TableParser;
+
 /**
  * Trieda reprezentujúca jednu obrazovku s hodnoteniami a priemermi za jeden rok.
  *

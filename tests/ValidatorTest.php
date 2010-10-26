@@ -9,10 +9,13 @@
  * @package    Fajr
  * @subpackage Tests
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
+ * @filesource
  */
 
 namespace fajr;
+
 use PHPUnit_Framework_TestCase;
+
 /**
  * @ignore
  */
@@ -32,7 +35,8 @@ class ValidatorTest extends PHPUnit_Framework_TestCase
     $this->assertFalse(Validator::isInteger("47.47",null));
   }
 
-  public function testStrings() {
+  public function testStrings()
+  {
     $this->markTestIncomplete('treba dopisat');
   }
 }

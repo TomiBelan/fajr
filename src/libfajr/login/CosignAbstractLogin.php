@@ -4,9 +4,12 @@
 // found in the LICENSE file in the project root directory.
 
 /**
- * @author Martin Sucha <anty.sk@gmail.com>
+ *
+ * @package    Fajr
+ * @subpackage Libfajr__Login
+ * @author     Martin Sucha <anty.sk@gmail.com>
+ * @filesource
  */
-
 namespace fajr\libfajr\login;
 use fajr\libfajr\pub\connection\HttpConnection;
 use fajr\libfajr\pub\login\Login;

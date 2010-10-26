@@ -13,9 +13,9 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-
 namespace fajr\libfajr\pub\base;
 use fajr\libfajr\pub\base\Trace;
+
 /**
  * Represents tracer object which does nothing. It shoud be convenient to
  * pass around as default value of trace parameter.
@@ -24,7 +24,8 @@ use fajr\libfajr\pub\base\Trace;
  * @subpackage Libfajr
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
-class NullTrace implements Trace {
+class NullTrace implements Trace
+{
   public function setHeader($header)
   {
   }
