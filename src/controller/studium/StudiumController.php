@@ -160,8 +160,9 @@ class StudiumController extends BaseController
       throw new Exception('Z termínu sa nepodarilo odhlásiť.');
     }
 
-    // TODO(anty): robi tento redirect spravnu vec, nespravi to loop?
-    FajrUtils::redirect();
+    FajrUtils::redirect(array('action' => 'studium.MojeTerminyHodnotenia',
+                              'studium' => $this->studium,
+                              'list' => $this->zapisnyList));
   }
 
   /**
@@ -299,8 +300,9 @@ class StudiumController extends BaseController
       throw new Exception('Na skúšku sa nepodarilo prihlásiť.');
     }
 
-
-    FajrUtils::redirect(array('tab' => 'TerminyHodnotenia'));
+    FajrUtils::redirect(array('action' => 'studium.MojeTerminyHodnotenia',
+                              'studium' => $this->studium,
+                              'list' => $this->zapisnyList));
   }
 
   const PRIHLASIT_MOZE = 0;

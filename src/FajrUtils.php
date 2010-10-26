@@ -61,7 +61,7 @@ class FajrUtils
 
   public static function redirect($newParams = array())
   {
-    header('Location: ' . self::buildUrl(array_merge(Input::getUrlParams(), $newParams)));
+    header('Location: ' . self::buildUrl($newParams));
     exit();
   }
 

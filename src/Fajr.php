@@ -186,7 +186,10 @@ class Fajr {
 
       $this->request->setAisConnection($serverConnection);
 
-      if (Input::get('logout') !== null) {
+      $action = $this->request->getParameter('action',
+                                             'studium.MojeTerminyHodnotenia');
+
+      if ($action == 'logout') {
         FajrUtils::logout($serverConnection);
         FajrUtils::redirect();
       }
@@ -205,8 +208,6 @@ class Fajr {
             'studium' => '\fajr\controller\studium\StudiumController',
           ));
 
-        $action = $this->request->getParameter('action',
-                                               'studium.MojeTerminyHodnotenia');
         $this->response->set("action", $action);
         $controller->invokeAction($trace, $action, $this->request, $this->response);
 
