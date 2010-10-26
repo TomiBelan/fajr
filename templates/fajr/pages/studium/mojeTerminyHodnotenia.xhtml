@@ -22,7 +22,7 @@
   {% endset %}
 
   {% macro riadok(row, odhlas, studium, zapisnyList) %}
-    {% url link for ['tab': 'TerminyHodnotenia',
+    {% url link for ['action': action,
                      'studium': studium,
                      'list': zapisnyList,
                      'termin': row.index] %}
@@ -45,7 +45,7 @@
       {{ table.row(none, (termin != none) and (row.index == termin)) }}
         {% if row.mozeOdhlasit == 1 %}
           {% set class="terminmozeodhlasit" %}
-          {% url action for ['tab': 'OdhlasZoSkusky',
+          {% url action for ['action': 'studium.OdhlasZoSkusky',
                              'studium': studium,
                              'list': zapisnyList] %}
           {% set odhlas %}

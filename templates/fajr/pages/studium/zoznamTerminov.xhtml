@@ -21,7 +21,7 @@
   {% endset %}
 
   {% macro riadok(row, prihlas, studium, zapisnyList) %}
-    {% url link for ['tab': 'ZapisSkusok',
+    {% url link for ['action': action,
                      'studium': studium,
                      'list': zapisnyList,
                      'predmet': row.predmetIndex,
@@ -44,7 +44,7 @@
       {{ table.row(none, (termin != none) and (predmet != none) and
                          (row.index == termin) and (row.predmetIndex == predmet)) }}
         {% if row.mozeSaPrihlasit <= 0 %} {# moze sa prihlasit #}
-          {% url action for ['tab': 'PrihlasNaSkusku',
+          {% url action for ['action': 'studium.PrihlasNaSkusku',
                              'studium': studium,
                              'list': zapisnyList] %}
           {% set prihlas %}

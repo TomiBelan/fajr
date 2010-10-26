@@ -59,16 +59,16 @@
 {% endmacro %}
 
 {% macro studiumtabs(content, selectedTab, studium, zapisnyList) %}
-{% url terminyLink for     ['tab': 'TerminyHodnotenia',
+{% url terminyLink for     ['action': 'studium.MojeTerminyHodnotenia',
                             'studium': studium,
                             'list': zapisnyList] %}
-{% url zapisLink   for     ['tab': 'ZapisSkusok',
+{% url zapisLink   for     ['action': 'studium.ZoznamTerminov',
                             'studium': studium,
                             'list': zapisnyList] %}
-{% url zapisnyListLink for ['tab': 'ZapisnyList',
+{% url zapisnyListLink for ['action': 'studium.ZapisanePredmety',
                             'studium': studium,
                             'list': zapisnyList] %}
-{% url hodnoteniaLink for  ['tab': 'Hodnotenia',
+{% url hodnoteniaLink for  ['action': 'studium.Hodnotenia',
                             'studium': studium,
                             'list': zapisnyList] %}
 {{ _self.tabs(content, ['TerminyHodnotenia': ['title': 'Moje skúšky',

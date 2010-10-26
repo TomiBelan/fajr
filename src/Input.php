@@ -23,7 +23,7 @@ class Input
       'list' => 'int',
       'predmet' => 'int',
       'termin' => 'int',
-      'tab' => 'string',
+      'action' => 'string',
     ),
     '_post' => array(
       'prihlasPredmetIndex' => 'int',

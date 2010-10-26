@@ -18,6 +18,7 @@ use fajr\libfajr\pub\base\Trace;
 use fajr\controller\Controller;
 use fajr\Request;
 use fajr\Response;
+use Exception;
 
 /**
  * Controller dispatching its request to the appropriate controller
@@ -57,10 +58,10 @@ class DispatchController implements Controller
   {
     Preconditions::checkIsString($action);
 
-    $parts = explode('/', $action, 2);
+    $parts = explode('.', $action, 2);
 
     if (count($parts) != 2) {
-      throw new Exception('Action name does not contain /');
+      throw new Exception('Action name does not contain "."');
     }
 
     if (empty($this->classNameTable[$parts[0]])) {
@@ -72,10 +73,12 @@ class DispatchController implements Controller
     $instance = new $className();
 
     if (!($instance instanceof Controller)) {
-      throw new Exception('Class mapped to action '.$action.' is not a controller');
+      throw new Exception('Class "' . $className . '" mapped to action "' . 
+                          $action . '" is not a controller');
     }
 
-    $instance->invokeAction($parts[1], $request, $response);
+    $instance->invokeAction($trace->addChild('Target action ' . $parts[1]),
+                            $parts[1], $request, $response);
   }
 
 }

@@ -200,11 +200,15 @@ class Fajr {
       }
 
       if ($loggedIn) {
-        $this->response->set('logoutUrl', FajrUtils::buildUrl(array('logout'=>true)));
+        // TODO(anty): use injector here
+        $controller = new \fajr\controller\DispatchController(array(
+            'studium' => '\fajr\controller\studium\StudiumController',
+          ));
 
-        $controller = new \fajr\controller\studium\LegacyStudiumController();
-
-        $controller->invokeAction($trace, 'Legacy', $this->request, $this->response);
+        $action = $this->request->getParameter('action',
+                                               'studium.MojeTerminyHodnotenia');
+        $this->response->set("action", $action);
+        $controller->invokeAction($trace, $action, $this->request, $this->response);
 
         $this->response->set("stats_connections",
             $this->statsConnection->getTotalCount());

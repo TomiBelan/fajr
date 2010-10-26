@@ -22,7 +22,7 @@
 {% set body %}
   {% for row in zoznamStudii.data %}
     {{ table.row(none, row.index == studium) }}
-      {% url link for ['tab': tab, 'studium': row.index] %}
+      {% url link for ['action': action, 'studium': row.index] %}
       <td><a href="{{ link }}">{{ row.rokDoporuceny }}</a></td>
       <td>{{ row.rokStudia }}</td>
       <td>{{ row.skratka }}</td>
@@ -63,7 +63,7 @@
 {% set body %}
   {% for row in zapisneListy.data %}
     {{ table.row(none, row.index == zapisnyList) }}
-      {% url link for ['tab': tab, 'studium': studium, 'list': row.index] %}
+      {% url link for ['action': action, 'studium': studium, 'list': row.index] %}
       <td><a href="{{ link }}">{{ row.popisAkadRok }}</a></td>
       <td>{{ row.rokRocnik }}</td>
       <td>{{ row.studProgramSkratka }}</td>

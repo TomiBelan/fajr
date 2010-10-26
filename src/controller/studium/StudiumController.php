@@ -31,7 +31,7 @@ use fajr\libfajr\AIS2Utils;
  * @subpackage Controller__Studium
  * @author     Martin Sucha <anty.sk@gmail.com>
  */
-abstract class StudiumController extends BaseController
+class StudiumController extends BaseController
 {
 
   /** @var VSES017_factory Screen factory to use */

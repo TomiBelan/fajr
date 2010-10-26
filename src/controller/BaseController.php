@@ -17,6 +17,7 @@ use fajr\libfajr\base\Preconditions;
 use fajr\libfajr\pub\base\Trace;
 use fajr\Request;
 use fajr\Response;
+use fajr\controller\Controller;
 use ReflectionMethod;
 use Exception;
 
@@ -27,7 +28,7 @@ use Exception;
  * @subpackage Controller
  * @author     Martin Sucha <anty.sk@gmail.com>
  */
-abstract class BaseController
+abstract class BaseController implements Controller
 {
  
   /**
