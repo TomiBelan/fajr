@@ -98,14 +98,6 @@ class FajrUtils
     return self::basePath() . $base . $path . $query;
   }
 
-  /**
-   * creates htmlescaped url
-   */
-  public static function linkUrl($params)
-  {
-    return hescape(self::buildUrl($params));
-  }
-
   public static function pathInfo()
   {
     if (!isset($_SERVER['PATH_INFO'])) return '';

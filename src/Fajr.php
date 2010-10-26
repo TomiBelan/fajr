@@ -193,14 +193,6 @@ class Fajr {
 
       $loggedIn = FajrUtils::isLoggedIn($serverConnection);
 
-      // TODO(anty): use injector or some other configuration method
-      $actionMap = array(
-        'moje.hodnotenie' => '\\fajr\\controller\\studium\\MojeHodnotenieController',
-        'moje.terminyHodnotenia' => '\\fajr\\controller\\studium\\MojeTerminyHodnoteniaController',
-        'moje.predmety' => '\\fajr\\controller\\studium\\MojePredmetyController',
-        'studium.zoznamTerminovHodnotenia' => '\\fajr\\controller\\studium\\ZoznamTerminovHodnoteniaController',
-      );
-
       $cosignLogin = $this->provideLogin();
       if (!$loggedIn && $cosignLogin != null) {
           FajrUtils::login($trace->addChild("logging in"), $cosignLogin, $serverConnection);
@@ -208,7 +200,7 @@ class Fajr {
       }
 
       if ($loggedIn) {
-        $this->response->set('logoutUrl', FajrUtils::linkUrl(array('logout'=>true)));
+        $this->response->set('logoutUrl', FajrUtils::buildUrl(array('logout'=>true)));
 
         $controller = new \fajr\controller\studium\LegacyStudiumController();
 
