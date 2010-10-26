@@ -71,7 +71,7 @@ class FajrUtils
 
   public static function redirect($newParams = array(), $file='fajr.php')
   {
-    header('Location: ' . self::buildUrl($newParams));
+    header('Location: ' . self::buildUrl($newParams, $file));
     exit();
   }
 
