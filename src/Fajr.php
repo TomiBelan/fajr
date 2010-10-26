@@ -247,7 +247,12 @@ class Fajr {
       }
       else
       {
-        $this->response->setTemplate('welcome');
+        if (FajrConfig::get('Login.Type') == 'password') {
+          $this->response->setTemplate('welcome');
+        }
+        else {
+          $this->response->setTemplate('welcomeCosign');
+        }
       }
   }
 }
