@@ -27,6 +27,7 @@ use fajr\libfajr\pub\connection\AIS2ServerConnection;
 use fajr\libfajr\pub\connection\AIS2ServerUrlMap;
 use fajr\Request;
 use fajr\Response;
+use fajr\Context;
 
 /**
  * This is "main()" of the fajr. It instantiates all neccessary
@@ -162,6 +163,9 @@ class Fajr {
 
     $this->request = new Request();
     $this->response = new Response();
+    $this->context = new Context();
+    $this->context->setRequest($this->request);
+    $this->context->setResponse($this->response);
 
     try {
       Input::prepare();
@@ -197,7 +201,7 @@ class Fajr {
           new AIS2ServerUrlMap(FajrConfig::get('AIS2.ServerName')));
       $timer = new SystemTimer();
 
-      $this->request->setAisConnection($serverConnection);
+      $this->context->setAisConnection($serverConnection);
 
       $action = $this->request->getParameter('action',
                                              'studium.MojeTerminyHodnotenia');
@@ -229,7 +233,7 @@ class Fajr {
           ));
 
         $this->response->set("action", $action);
-        $controller->invokeAction($trace, $action, $this->request, $this->response);
+        $controller->invokeAction($trace, $action, $this->context);
 
         $this->response->set("stats_connections",
             $this->statsConnection->getTotalCount());

@@ -22,7 +22,7 @@ use fajr\libfajr\pub\window\VSES017_administracia_studia as VSES017; // *
 use fajr\PriemeryCalculator;
 use fajr\Sorter;
 use fajr\libfajr\AIS2Utils;
-
+use fajr\Context;
 
 /**
  * Controller, ktory nacita informacie o aktualnom studiu
@@ -45,14 +45,16 @@ class StudiumController extends BaseController
    *
    * @param Trace $trace trace object
    * @param string $action action name
-   * @param Request $request request from browser
-   * @param Response $response response information
+   * @param Context $context fajr context
    */
-  public function invokeAction(Trace $trace, $action, Request $request, Response $response)
+  public function invokeAction(Trace $trace, $action, Context $context)
   {
+    $request = $context->getRequest();
+    $response = $context->getResponse();
+
     Preconditions::checkIsString($action);
 
-    $this->screenFactory = new VSES017\VSES017_factory($request->getAisConnection());
+    $this->screenFactory = new VSES017\VSES017_factory($context->getAisConnection());
     $this->adminStudia = $this->screenFactory->newAdministraciaStudiaScreen($trace);
 
     $this->studium = $request->getParameter('studium', '0');
@@ -88,17 +90,19 @@ class StudiumController extends BaseController
     $response->set('zapisneListy', $this->zapisneListy);
     $response->set('zapisnyList', $this->zapisnyList);    
 
-    parent::invokeAction($trace, $action, $request, $response);
+    parent::invokeAction($trace, $action, $context);
   }
 
   /**
    * Akcia pre hodnotenia a priemery
    *
    * @param Trace $trace trace object
-   * @param Request $request request from browser
-   * @param Response $response response information
+   * @param Context $context
    */
-  public function runHodnotenia(Trace $trace, Request $request, Response $response) {
+  public function runHodnotenia(Trace $trace, Context $context) {
+    $request = $context->getRequest();
+    $response = $context->getResponse();
+
     $this->hodnotenia = $this->hodnoteniaScreen->getHodnotenia($trace);
     $this->priemeryCalculator = new PriemeryCalculator();
 
@@ -135,7 +139,10 @@ class StudiumController extends BaseController
       md5($row['index'].'|'.$row['datum'].'|'.$row['cas'].'|'.$row['predmet']);
   }
 
-  public function runOdhlasZoSkusky(Trace $trace, Request $request, Response $response) {
+  public function runOdhlasZoSkusky(Trace $trace, Context $context) {
+
+    $request = $context->getRequest();
+    $response = $context->getResponse();
 
     $terminIndex = $request->getParameter("odhlasIndex");
 
@@ -172,7 +179,10 @@ class StudiumController extends BaseController
    * @param Request $request request from browser
    * @param Response $response response information
    */
-  public function runMojeTerminyHodnotenia(Trace $trace, Request $request, Response $response) {
+  public function runMojeTerminyHodnotenia(Trace $trace, Context $context) {
+
+    $request = $context->getRequest();
+    $response = $context->getResponse();
 
     $termin = $request->getParameter('termin');
 
@@ -231,7 +241,10 @@ class StudiumController extends BaseController
     $response->setTemplate('studium/mojeTerminyHodnotenia');
   }
 
-  public function runZapisanePredmety(Trace $trace, Request $request, Response $response) {
+  public function runZapisanePredmety(Trace $trace, Context $context) {
+
+    $request = $context->getRequest();
+    $response = $context->getResponse();
     
     $predmetyZapisnehoListu = $this->terminyHodnoteniaScreen->getPredmetyZapisnehoListu($trace);
     
@@ -268,8 +281,11 @@ class StudiumController extends BaseController
 
   }
 
-  public function runPrihlasNaSkusku(Trace $trace, Request $request, Response $response)
+  public function runPrihlasNaSkusku(Trace $trace, Context $context)
   {
+    $request = $context->getRequest();
+    $response = $context->getResponse();
+
     $predmetIndex = $request->getParameter("prihlasPredmetIndex");
     $terminIndex = $request->getParameter("prihlasTerminIndex");
 
@@ -356,7 +372,10 @@ class StudiumController extends BaseController
     return self::PRIHLASIT_MOZE;
   }
 
-  public function runZoznamTerminov(Trace $trace, Request $request, Response $response) {
+  public function runZoznamTerminov(Trace $trace, Context $context) {
+    $request = $context->getRequest();
+    $response = $context->getResponse();
+
     $this->predmetyZapisnehoListu = $this->terminyHodnoteniaScreen->getPredmetyZapisnehoListu($trace);
     $hodnoteniaData = array();
 

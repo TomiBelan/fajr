@@ -20,6 +20,7 @@ use fajr\Response;
 use fajr\controller\Controller;
 use ReflectionMethod;
 use Exception;
+use fajr\Context;
 
 /**
  * Base class for controllers
@@ -40,10 +41,9 @@ abstract class BaseController implements Controller
    *
    * @param Trace $trace trace object
    * @param string $action action name
-   * @param Request $request request from browser
-   * @param Response $response response information
+   * @param Context $context fajr context
    */
-  public function invokeAction(Trace $trace, $action, Request $request, Response $response)
+  public function invokeAction(Trace $trace, $action, Context $context)
   {
     Preconditions::checkMatchesPattern('@^[A-Z][a-zA-Z]*$@', $action, 'action');
 
@@ -75,7 +75,7 @@ abstract class BaseController implements Controller
       throw new Exception('Action method '.$methodName.' is destructor');
     }
 
-    $method->invoke($this, $trace, $request, $response);
+    $method->invoke($this, $trace, $context);
   }
 
 }

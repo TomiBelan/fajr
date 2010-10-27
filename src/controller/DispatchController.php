@@ -16,9 +16,8 @@ namespace fajr\controller;
 use fajr\libfajr\base\Preconditions;
 use fajr\libfajr\pub\base\Trace;
 use fajr\controller\Controller;
-use fajr\Request;
-use fajr\Response;
 use Exception;
+use fajr\Context;
 
 /**
  * Controller dispatching its request to the appropriate controller
@@ -51,10 +50,9 @@ class DispatchController implements Controller
    *
    * @param Trace $trace trace object
    * @param string $action action name
-   * @param Request $request request from browser
-   * @param Response $response response information
+   * @param Context $context fajr context
    */
-  public function invokeAction(Trace $trace, $action, Request $request, Response $response)
+  public function invokeAction(Trace $trace, $action, Context $context)
   {
     Preconditions::checkIsString($action);
 
@@ -78,7 +76,7 @@ class DispatchController implements Controller
     }
 
     $instance->invokeAction($trace->addChild('Target action ' . $parts[1]),
-                            $parts[1], $request, $response);
+                            $parts[1], $context);
   }
 
 }
