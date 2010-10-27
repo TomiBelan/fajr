@@ -38,9 +38,6 @@ use fajr\Response;
  */
 class Fajr {
 
-  const LOGGED_IN = 0;
-  const LOGGED_OUT = 1;
-
   /**
    * @var Injector $injector dependency injector.
    */
