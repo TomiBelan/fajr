@@ -238,9 +238,9 @@ class Fajr {
         $this->response->set("stats_bytes",
             $this->statsConnection->getTotalSize());
         $this->response->set("stats_connectionTime",
-            sprintf("%.3f", $this->statsConnection->getTotalTime()));
+            $this->statsConnection->getTotalTime());
         $this->response->set("stats_totalTime",
-            sprintf("%.3f", $timer->getElapsedTime()));
+            $timer->getElapsedTime());
       }
       else
       {
