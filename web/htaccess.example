@@ -14,7 +14,7 @@ DirectoryIndex index.php
 	# takisto subory
 	#RewriteCond %{REQUEST_FILENAME} !-f
   # / neprepisuj
-  RewriteCond %{REQUEST_URI} !=/
+  #RewriteCond %{REQUEST_URI} !=/
 	# prepis /nieco na fajr.php/nieco
 	#RewriteRule (.*) fajr.php/$1
 </IfModule>
