@@ -136,8 +136,11 @@ class Fajr {
    * @param Exception $ex
    */
   private function setException(Exception $ex) {
-    $this->response->set('exception', $ex);
-    $this->response->set('showStackTrace', FajrConfig::get('Debug.Exception.ShowStacktrace'));
+    $response = $this->context->getResponse();
+    $response->set('exception', $ex);
+    $response->set('showStackTrace',
+                   FajrConfig::get('Debug.Exception.ShowStacktrace'));
+    $response->setTemplate('exception');
   }
 
   /**
@@ -161,11 +164,7 @@ class Fajr {
     // TODO(anty): do we want DisplayManager? If so, use injector here
     $this->displayManager = new DisplayManager();
 
-    $this->request = new Request();
-    $this->response = new Response();
-    $this->context = new Context();
-    $this->context->setRequest($this->request);
-    $this->context->setResponse($this->response);
+    $this->context = $this->injector->getInstance('Context.class');
 
     try {
       Input::prepare();
@@ -179,10 +178,8 @@ class Fajr {
       }
 
       $this->setException($e);
-      $this->response->setTemplate('exception');
     } catch (Exception $e) {
-      $this->setException($e);
-      $this->response->setTemplate('exception');
+      $this->setException($e);      
     }
 
     $this->displayManager->setBase(FajrUtils::basePath());
@@ -190,20 +187,22 @@ class Fajr {
     $trace->tlog("everything done, generating html");
 
     if (FajrConfig::get('Debug.Trace')===true) {
-      $this->response->set('trace', $trace);
+      $this->context->getResponse()->set('trace', $trace);
     }
-    echo $this->displayManager->display($this->response);
+    echo $this->displayManager->display($this->context->getResponse());
   }
 
   public function runLogic(Trace $trace, HttpConnection $connection)
   {
+      $response = $this->context->getResponse();
+
       $serverConnection = new AIS2ServerConnection($connection,
           new AIS2ServerUrlMap(FajrConfig::get('AIS2.ServerName')));
       $timer = new SystemTimer();
 
       $this->context->setAisConnection($serverConnection);
 
-      $action = $this->request->getParameter('action',
+      $action = $this->context->getRequest()->getParameter('action',
                                              'studium.MojeTerminyHodnotenia');
 
       if ($action == 'logout') {
@@ -229,27 +228,27 @@ class Fajr {
       if ($loggedIn) {
         $controller = $this->injector->getInstance('Controller.class');
 
-        $this->response->set("action", $action);
+        $response->set("action", $action);
         $controller->invokeAction($trace, $action, $this->context);
 
-        $this->response->set("stats_connections",
+        $response->set("stats_connections",
             $this->statsConnection->getTotalCount());
-        $this->response->set("stats_rawBytes",
+        $response->set("stats_rawBytes",
             $this->rawStatsConnection->getTotalSize());
-        $this->response->set("stats_bytes",
+        $response->set("stats_bytes",
             $this->statsConnection->getTotalSize());
-        $this->response->set("stats_connectionTime",
+        $response->set("stats_connectionTime",
             $this->statsConnection->getTotalTime());
-        $this->response->set("stats_totalTime",
+        $response->set("stats_totalTime",
             $timer->getElapsedTime());
       }
       else
       {
         if (FajrConfig::get('Login.Type') == 'password') {
-          $this->response->setTemplate('welcome');
+          $response->setTemplate('welcome');
         }
         else {
-          $this->response->setTemplate('welcomeCosign');
+          $response->setTemplate('welcomeCosign');
         }
       }
   }
