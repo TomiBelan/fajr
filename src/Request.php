@@ -28,19 +28,44 @@ class Request
    * Return a named parameter
    *
    * @param string $name
-   * @param string defaultValue
-   * @returns string parameter value
+   * @param string|null defaultValue
+   * @returns string|null parameter value
    */
   public function getParameter($name, $defaultValue = '')
   {
     Preconditions::checkIsString($name, "name");
-    Preconditions::checkIsString($defaultValue, 'defaultValue');
+    if ($defaultValue != null) {
+      Preconditions::checkIsString($defaultValue, 'defaultValue');
+    }
 
     $value = Input::get($name);
     if ($value === null) {
       return $defaultValue;
     }
     return $value;
+  }
+
+  /**
+   * Check if the request was called with a given parameter
+   *
+   * @param string $name parameter name
+   * @returns bool true iff the parameter is present
+   */
+  public function hasParameter($name)
+  {
+    Preconditions::checkIsString($name, 'name');
+    return Input::get($name) !== null;
+  }
+
+  /**
+   * Ensure a parameter is not set after this call
+   *
+   * @param string $name parameter name to clear
+   */
+  public function clearParameter($name)
+  {
+    Preconditions::checkIsString($name, 'name');
+    Input::set($name, null);
   }
 
 }

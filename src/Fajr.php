@@ -45,6 +45,11 @@ class Fajr {
   private $injector;
 
   /**
+   * @var Context $context application context
+   */
+  private $context;
+
+  /**
    * Constructor.
    *
    * @param Injector $injector dependency injector.
@@ -55,61 +60,86 @@ class Fajr {
   }
 
   /**
+   * @returns true iff the user initiated a login
+   */
+  private function shouldLogin()
+  {
+    return $this->context->getRequest()->hasParameter('loginType');
+  }
+
+  /**
    * WARNING: Must be called before provideConnection().
    */
   private function regenerateSessionOnLogin()
   {
-    $login = Input::get('login');
-    $krbpwd = Input::get('krbpwd');
-    $cosignCookie = Input::get('cosignCookie');
-
-    // FIXME this should be refactored
-    if (($login !== null && $krbpwd !== null) || ($cosignCookie !== null)) {
-      // we are going to log in, so we get a clean session
-      // this needs to be done before a connection
-      // is created, because we pass cookie file name
-      // that contains session_id into AIS2CurlConnection
-      // If we regenerated the session id afterwards,
-      // we could not find the cookie file after a redirect
-      FajrUtils::dropSession();
-    }
+    if (!$this->shouldLogin()) return;
+   
+    // we are going to log in, so we get a clean session
+    // this needs to be done before a connection
+    // is created, because we pass cookie file name
+    // that contains session_id into AIS2CurlConnection
+    // If we regenerated the session id afterwards,
+    // we could not find the cookie file after a redirect
+    FajrUtils::dropSession();
   }
 
   /**
-   * Provides login object created from POST-data.
+   * Provides login object created from POST-data
+   * or null if login info is not (fully) present in the request.
    *
-   * @returns AIS2Login
+   * This function should be called only once (it will
+   * return null on subsequent calls).
+   *
+   * @returns Login login instance recognized
    */
   private function provideLogin()
   {
     // TODO(ppershing): use injector here
     $factory = new LoginFactoryImpl();
 
-    if (FajrConfig::get('Login.Type') == 'cosign') {
-      if (Input::get('loginType') == 'cosign') {
+    $request = $this->context->getRequest();
+
+    $loginType = $request->getParameter("loginType");
+    $login = $request->getParameter('login');
+    $krbpwd = $request->getParameter('krbpwd');
+    $cosignCookie = $request->getParameter('cosignCookie');
+
+    // we don't need this info in the global scope anymore
+    $request->clearParameter('login');
+    $request->clearParameter('krbpwd');
+    $request->clearParameter('cosignCookie');
+
+    if (empty($loginType)) return null;
+
+    if ($loginType == 'cosign') {
+      if (FajrConfig::get('Login.Type') == 'cosign') {
         return $factory->newLoginUsingCosignProxy(
             FajrConfig::get('Login.Cosign.ProxyDB'),
             FajrConfig::get('Login.Cosign.CookieName'));
       }
       return null;
     }
+    else if ($loginType == 'password') {
+      if ($login == null || $krbpwd == null) {
+        // TODO(anty): maybe throw an exception? (and display login form...)
+        return null;
+      }
 
-    $login = Input::get('login'); Input::set('login', null);
-    $krbpwd = Input::get('krbpwd'); Input::set('krbpwd', null);
-    $cosignCookie = Input::get('cosignCookie'); Input::set('cosignCookie', null);
-
-    //TODO(ppershing): create hidden field "loginType" in the form
-    if ($login !== null && $krbpwd !== null) {
       return $factory->newLoginUsingCosign($login, $krbpwd);
-    } else if ($cosignCookie !== null) {
+    }
+    else if ($loginType == 'cookie') {
+      if ($cosignCookie == null) {
+        // TODO(anty): maybe throw an exception? (and display login form...)
+        return null;
+      }
       $cosignCookie = CosignServiceCookie::fixCookieValue($cosignCookie);
       return $factory->newLoginUsingCookie(
           new CosignServiceCookie(FajrConfig::get('Login.Cosign.CookieName'),
                                   $cosignCookie,
                                   FajrConfig::get('AIS2.ServerName')));
-    } else {
-      return null;
     }
+
+    return null;
   }
 
   // TODO(ppershing): We need to do something about these connections.
