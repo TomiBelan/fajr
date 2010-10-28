@@ -227,10 +227,7 @@ class Fajr {
       }
 
       if ($loggedIn) {
-        // TODO(anty): use injector here
-        $controller = new \fajr\controller\DispatchController(array(
-            'studium' => '\fajr\controller\studium\StudiumController',
-          ));
+        $controller = $this->injector->getInstance('Controller.class');
 
         $this->response->set("action", $action);
         $controller->invokeAction($trace, $action, $this->context);

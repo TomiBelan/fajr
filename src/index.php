@@ -15,6 +15,7 @@ namespace fajr;
 
 use fajr\injection\Injector;
 use fajr\injection\Module;
+use fajr\modules\ControllerModule;
 use fajr\modules\CurlConnectionOptionsModule;
 use fajr\modules\SessionInitializerModule;
 use fajr\modules\TraceModule;
@@ -97,6 +98,7 @@ if (!FajrConfig::isConfigured()) {
 
 // bootstrapping whole application
 $modules = array(
+    new ControllerModule(),
     new CurlConnectionOptionsModule(),
     new SessionInitializerModule(),
     new TraceModule());
