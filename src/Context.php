@@ -4,7 +4,7 @@
 // found in the LICENSE file in the project root directory.
 
 /**
- * Tento súbor obsahuje objekt reprezentujúci príchodziu požiadavku
+ * Tento súbor obsahuje objekt reprezentujúci kontext aplikácie
  *
  * @package    Fajr
  * @author     Martin Sucha <anty.sk@gmail.com>
