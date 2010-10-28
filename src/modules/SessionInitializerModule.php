@@ -46,8 +46,6 @@ class SessionInitializerModule implements Module
               'session.domain' => '.' . $_SERVER['HTTP_HOST'],
               );
     // Note, we can't use setParameters as it will destroy previous values!
-    foreach ($parameters as $key=>$value) {
-      $container->setParameter($key, $value);
-    }
+    $container->addParameters($parameters);
   }
 }
