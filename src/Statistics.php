@@ -82,7 +82,7 @@ class Statistics
   /**
    * @returns int total number of executed requests
    */
-  public function getConnections()
+  public function getRequestCount()
   {
     return $this->finalConnection->getTotalCount();
   }
@@ -90,7 +90,7 @@ class Statistics
   /**
    * @returns int total number of downloaded and processed bytes
    */
-  public function getBytes()
+  public function getDecodedByteCount()
   {
     return $this->finalConnection->getTotalSize();
   }
@@ -98,13 +98,13 @@ class Statistics
   /**
    * @returns int total number of downloaded unprocessed bytes
    */
-  public function getRawBytes()
+  public function getDownloadedByteCount()
   {
     return $this->rawConnection->getTotalSize();
   }
 
   /**
-   * @returns float (approximate) total execution time
+   * @returns float (approximate) total execution time in seconds
    */
   public function getTotalTime()
   {
@@ -112,9 +112,9 @@ class Statistics
   }
 
   /**
-   * @returns float total connection time
+   * @returns float total network IO time spent in seconds
    */
-  public function getConnectionTime()
+  public function getTotalRequestTime()
   {
     return $this->finalConnection->getTotalTime();
   }

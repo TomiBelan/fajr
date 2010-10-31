@@ -12,10 +12,11 @@
     Fajr verzia {{ fajr_version }}
   </div>
   <div>
-    Fajr made {{ statistics.connections }} requests and downloaded
-    {{ statistics.rawBytes }} bytes ({{ statistics.bytes }} bytes uncompressed)
-    of data from AIS2 in {{ "%.3f"|format(statistics.connectionTime) }} seconds.
-    It took {{ "%.3f"|format(statistics.totalTime) }} seconds to generate this
-    page.
+    Fajr made {{ statistics.requestCount }} requests and downloaded
+    {{ statistics.downloadedByteCount }} bytes
+    ({{ statistics.decodedByteCount }} bytes uncompressed)
+    of data from AIS2 in {{ "%.3f"|format(statistics.totalRequestTime) }}
+    seconds. It took {{ "%.3f"|format(statistics.totalTime) }} seconds to
+    generate this page.
   </div>
 {% endblock %}
