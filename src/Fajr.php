@@ -28,6 +28,7 @@ use fajr\libfajr\pub\connection\AIS2ServerUrlMap;
 use fajr\Request;
 use fajr\Response;
 use fajr\Context;
+use fajr\Statistics;
 
 /**
  * This is "main()" of the fajr. It instantiates all neccessary
@@ -48,6 +49,11 @@ class Fajr {
    * @var Context $context application context
    */
   private $context;
+
+  /**
+   * @var Statistics $statistics
+   */
+  private $statistics;
 
   /**
    * Constructor.
@@ -142,23 +148,17 @@ class Fajr {
     return null;
   }
 
-  // TODO(ppershing): We need to do something about these connections.
-  // Currently, this is really ugly solution and should be refactored.
-  private $rawStatsConnection;
-  private $statsConnection;
-
   private function provideConnection()
   {
     $curlOptions = $this->injector->getParameter('CurlConnection.options');
     $connection = new connection\CurlConnection($curlOptions, FajrUtils::getCookieFile());
 
-    $this->rawStatsConnection = new connection\StatsConnection($connection, new SystemTimer());
+    $connection = $this->statistics->hookRawConnection($connection);
 
-    $connection = new connection\GzipDecompressingConnection($this->rawStatsConnection, FajrConfig::getDirectory('Path.Temporary'));
+    $connection = new connection\GzipDecompressingConnection($connection, FajrConfig::getDirectory('Path.Temporary'));
     $connection = new connection\AIS2ErrorCheckingConnection($connection);
 
-    $this->statsConnection = new connection\StatsConnection($connection, new SystemTimer());
-    return $this->statsConnection;
+    return $this->statistics->hookFinalConnection($connection);
   }
 
   /**
@@ -183,6 +183,7 @@ class Fajr {
     $this->injector->getInstance('SessionInitializer.class')->startSession();
 
     $timer = new SystemTimer();
+    $this->statistics = new Statistics($timer);
 
     // TODO(ppershing): use injector here!
     $trace = new NullTrace();
@@ -228,7 +229,6 @@ class Fajr {
 
       $serverConnection = new AIS2ServerConnection($connection,
           new AIS2ServerUrlMap(FajrConfig::get('AIS2.ServerName')));
-      $timer = new SystemTimer();
 
       $this->context->setAisConnection($serverConnection);
 
@@ -260,17 +260,7 @@ class Fajr {
 
         $response->set("action", $action);
         $controller->invokeAction($trace, $action, $this->context);
-
-        $response->set("stats_connections",
-            $this->statsConnection->getTotalCount());
-        $response->set("stats_rawBytes",
-            $this->rawStatsConnection->getTotalSize());
-        $response->set("stats_bytes",
-            $this->statsConnection->getTotalSize());
-        $response->set("stats_connectionTime",
-            $this->statsConnection->getTotalTime());
-        $response->set("stats_totalTime",
-            $timer->getElapsedTime());
+        $response->set('statistics', $this->statistics);
       }
       else
       {
