@@ -15,7 +15,7 @@ namespace fajr\modules;
 
 use fajr\FajrConfig;
 use fajr\injection\Module;
-use sfServiceContainer;
+use sfServiceContainerBuilder;
 use sfServiceReference;
 
 /**
@@ -30,9 +30,9 @@ class ContextModule implements Module
   /**
    * Configure injection of Contexts.class
    *
-   * @param sfServiceContainer $container Symfony container to configure
+   * @param sfServiceContainerBuilder $container Symfony container to configure
    */
-  public function configure(sfServiceContainer $container)
+  public function configure(sfServiceContainerBuilder $container)
   {
     $container->register('Request.class', '\fajr\Request');
     $container->register('Response.class', '\fajr\Response');

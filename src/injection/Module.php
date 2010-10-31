@@ -13,7 +13,7 @@
  */
 namespace fajr\injection;
 
-use sfServiceContainer;
+use sfServiceContainerBuilder;
 use sfServiceContainerAutoloader;
 
 require_once '../third_party/symfony_di/lib/sfServiceContainerAutoloader.php';
@@ -33,9 +33,9 @@ interface Module
   /**
    * Configure service container
    *
-   * @param sfServiceContainer $container Container to be configured.
+   * @param sfServiceContainerBuilder $container Container to be configured.
    *
    * @returns void
    */
-  public function configure(sfServiceContainer $container);
+  public function configure(sfServiceContainerBuilder $container);
 }

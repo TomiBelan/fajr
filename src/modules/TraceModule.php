@@ -14,7 +14,7 @@
 namespace fajr\modules;
 
 use fajr\injection\Module;
-use sfServiceContainer;
+use sfServiceContainerBuilder;
 
 /**
  * Injector module for Trace.class, injects NullTrace
@@ -30,7 +30,7 @@ class TraceModule implements Module
    *
    * @param sfServiceContainer $container Container to configure
    */
-  public function configure(sfServiceContainer $container)
+  public function configure(sfServiceContainerBuilder $container)
   {
     $container->register('Trace.class', 'fajr\libfajr\pub\base\NullTrace');
   }
