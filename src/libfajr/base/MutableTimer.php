@@ -4,7 +4,7 @@
 // found in the LICENSE file in the project root directory.
 
 /**
- * Interface wrapping timers.
+ * Interface for mutable timers.
  *
  * PHP version 5.3.0
  *
@@ -16,21 +16,20 @@
 namespace fajr\libfajr\base;
 
 /**
- * Interface for timers
+ * Interface for mutable timers
  *
  * @package    Fajr
  * @subpackage Libfajr__Base
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
-interface Timer
+interface MutableTimer extends Timer
 {
-  
+
   /**
-   * Get time in seconds elapsed from last interesting event of this timer.
-   * Note that calling this function does not reset timer.
+   * Start counting time from this moment.
    *
-   * @returns float elapsed time
+   * @returns void
    */
-  public function getElapsedTime();
-  
+  public function reset();
+
 }

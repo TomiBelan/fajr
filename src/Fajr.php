@@ -21,8 +21,7 @@ use fajr\libfajr\connection;
 use fajr\libfajr\pub\connection\HttpConnection;
 use fajr\libfajr\pub\login\CosignServiceCookie;
 use fajr\libfajr\pub\base\NullTrace;
-use fajr\libfajr\pub\login\AIS2Login;
-use fajr\libfajr\pub\login\LoginFactoryImpl;
+use fajr\libfajr\pub\login\Login;
 use fajr\libfajr\pub\connection\AIS2ServerConnection;
 use fajr\libfajr\pub\connection\AIS2ServerUrlMap;
 use fajr\Request;
@@ -100,8 +99,7 @@ class Fajr {
    */
   private function provideLogin()
   {
-    // TODO(ppershing): use injector here
-    $factory = new LoginFactoryImpl();
+    $factory = $this->injector->getInstance('LoginFactory.class');
 
     $request = $this->context->getRequest();
 
@@ -182,19 +180,9 @@ class Fajr {
   {
     $this->injector->getInstance('SessionInitializer.class')->startSession();
 
-    $timer = new SystemTimer();
-    $this->statistics = new Statistics($timer);
-
-    // TODO(ppershing): use injector here!
-    $trace = new NullTrace();
-
-    if (FajrConfig::get('Debug.Trace') === true) {
-      $trace = new ArrayTrace($timer, "--Trace--");
-    }
-
-    // TODO(anty): do we want DisplayManager? If so, use injector here
-    $this->displayManager = new DisplayManager();
-
+    $trace = $this->injector->getInstance('Trace.class');
+    $this->statistics = $this->injector->getInstance('Statistics.class');
+    $this->displayManager = $this->injector->getInstance('DisplayManager.class');
     $this->context = $this->injector->getInstance('Context.class');
 
     try {
@@ -213,63 +201,64 @@ class Fajr {
       $this->setException($e);      
     }
 
-    $this->displayManager->setBase(FajrUtils::basePath());
-
     $trace->tlog("everything done, generating html");
 
     if (FajrConfig::get('Debug.Trace')===true) {
       $this->context->getResponse()->set('trace', $trace);
     }
+
+    $this->displayManager->setBase(FajrUtils::basePath());
     echo $this->displayManager->display($this->context->getResponse());
   }
 
   public function runLogic(Trace $trace, HttpConnection $connection)
   {
-      $response = $this->context->getResponse();
+    $response = $this->context->getResponse();
 
-      $serverConnection = new AIS2ServerConnection($connection,
-          new AIS2ServerUrlMap(FajrConfig::get('AIS2.ServerName')));
+    $serverConnection = new AIS2ServerConnection($connection,
+        new AIS2ServerUrlMap(FajrConfig::get('AIS2.ServerName')));
 
-      $this->context->setAisConnection($serverConnection);
+    $this->context->setAisConnection($serverConnection);
 
-      $action = $this->context->getRequest()->getParameter('action',
-                                             'studium.MojeTerminyHodnotenia');
+    $action = $this->context->getRequest()->getParameter('action',
+                                           'studium.MojeTerminyHodnotenia');
 
-      if ($action == 'logout') {
-        FajrUtils::logout($serverConnection);
-        // TODO(anty): fix this in a better way
-        if (FajrConfig::get('Login.Type') == 'cosign') {
-          // location header set in CosignProxyLogin
-          // but we can't exit there because
-          // the session wouldn't get dropped
-          exit;
-        }
-        FajrUtils::redirect(array(), 'index.php');
+    if ($action == 'logout') {
+      FajrUtils::logout($serverConnection);
+      // TODO(anty): fix this in a better way
+      if (FajrConfig::get('Login.Type') == 'cosign') {
+        // location header set in CosignProxyLogin
+        // but we can't exit there because
+        // the session wouldn't get dropped
+        exit;
       }
-      
-      $loggedIn = FajrUtils::isLoggedIn($serverConnection);
+      FajrUtils::redirect(array(), 'index.php');
+    }
 
-      $cosignLogin = $this->provideLogin();
-      if (!$loggedIn && $cosignLogin != null) {
-          FajrUtils::login($trace->addChild("logging in"), $cosignLogin, $serverConnection);
-          $loggedIn = true;
-      }
+    $loggedIn = FajrUtils::isLoggedIn($serverConnection);
 
-      if ($loggedIn) {
-        $controller = $this->injector->getInstance('Controller.class');
+    $cosignLogin = $this->provideLogin();
+    if (!$loggedIn && $cosignLogin != null) {
+        FajrUtils::login($trace->addChild("logging in"), $cosignLogin,
+                         $serverConnection);
+        $loggedIn = true;
+    }
 
-        $response->set("action", $action);
-        $controller->invokeAction($trace, $action, $this->context);
-        $response->set('statistics', $this->statistics);
+    if ($loggedIn) {
+      $controller = $this->injector->getInstance('Controller.class');
+
+      $response->set("action", $action);
+      $controller->invokeAction($trace, $action, $this->context);
+      $response->set('statistics', $this->statistics);
+    }
+    else
+    {
+      if (FajrConfig::get('Login.Type') == 'password') {
+        $response->setTemplate('welcome');
       }
-      else
-      {
-        if (FajrConfig::get('Login.Type') == 'password') {
-          $response->setTemplate('welcome');
-        }
-        else {
-          $response->setTemplate('welcomeCosign');
-        }
+      else {
+        $response->setTemplate('welcomeCosign');
       }
+    }
   }
 }

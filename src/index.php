@@ -20,9 +20,15 @@ use fajr\modules\ControllerModule;
 use fajr\modules\CurlConnectionOptionsModule;
 use fajr\modules\SessionInitializerModule;
 use fajr\modules\TraceModule;
+use fajr\modules\TimerModule;
+use fajr\modules\StatisticsModule;
+use fajr\modules\DisplayManagerModule;
+use fajr\modules\LoginFactoryModule;
 use Loader;
 use sfServiceContainerAutoloader;
 use Twig_Autoloader;
+
+$startTime = microtime(true);
 
 /**
  * Function for exitting bootstrap code in case of error
@@ -99,11 +105,16 @@ if (!FajrConfig::isConfigured()) {
 
 // bootstrapping whole application
 $modules = array(
+    new TimerModule($startTime),
+    new StatisticsModule(),
     new ContextModule(),
     new ControllerModule(),
+    new DisplayManagerModule(),
     new CurlConnectionOptionsModule(),
     new SessionInitializerModule(),
-    new TraceModule());
+    new TraceModule(),
+    new LoginFactoryModule(),
+  );
 $injector = new Injector($modules);
 $fajr = new Fajr($injector);
 $fajr->run();

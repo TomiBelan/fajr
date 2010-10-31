@@ -15,20 +15,30 @@
  */
 namespace fajr\libfajr\base;
 
-use \fajr\libfajr\base\Timer;
+use fajr\libfajr\base\MutableTimer;
+
 /**
  * Timer measuring passed time by system clock information.
  */
-class SystemTimer implements Timer
+class SystemTimer implements MutableTimer
 {
   /**
    * @var double time of the last reset() event
    */
   private $startTime;
 
-  public function __construct()
+  /**
+   * Construct a SystemTimer
+   * @param float $time optional time to start with (as returned by microtime)
+   */
+  public function __construct($time = null)
   {
-    $this->reset();
+    if ($time == null) {
+      $this->reset();
+    }
+    else {
+      $this->startTime = $time;
+    }
   }
 
   public function reset()

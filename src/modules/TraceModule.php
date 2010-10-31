@@ -15,6 +15,8 @@ namespace fajr\modules;
 
 use fajr\injection\Module;
 use sfServiceContainerBuilder;
+use sfServiceReference;
+use fajr\FajrConfig;
 
 /**
  * Injector module for Trace.class, injects NullTrace
@@ -32,6 +34,13 @@ class TraceModule implements Module
    */
   public function configure(sfServiceContainerBuilder $container)
   {
-    $container->register('Trace.class', 'fajr\libfajr\pub\base\NullTrace');
+    if (FajrConfig::get('Debug.Trace') === true) {
+      $container->register('Trace.class', 'fajr\ArrayTrace')
+                ->addArgument(new sfServiceReference('Timer.class'))
+                ->addArgument('--Trace--');
+    }
+    else {
+      $container->register('Trace.class', 'fajr\libfajr\pub\base\NullTrace');
+    }
   }
 }
