@@ -209,7 +209,14 @@ class Fajr {
     }
 
     $this->context->getResponse()->set('base', FajrUtils::basePath());
-    echo $this->displayManager->display($this->context->getResponse());
+    $this->context->getResponse()->set('language', 'sk');
+    try {
+      echo $this->displayManager->display($this->context->getResponse());
+    }
+    catch (Exception $e) {
+      throw new Exception('Chyba pri renderovaní template: '.$e->getMessage(),
+                          null, $e);
+    }
   }
 
   public function runLogic(Trace $trace, HttpConnection $connection)

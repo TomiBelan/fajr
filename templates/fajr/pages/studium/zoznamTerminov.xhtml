@@ -20,7 +20,7 @@
     {{ table.column("Prihlás") }}
   {% endset %}
 
-  {% macro riadok(row, prihlas, studium, zapisnyList) %}
+  {% macro riadok(row, prihlas, studium, zapisnyList, action) %}
     {% url link for ['action': action,
                      'studium': studium,
                      'list': zapisnyList,
@@ -74,10 +74,7 @@
         {% else %}
           {% set prihlas="Nedá sa, dôvod neznámy" %}
         {% endif %}
-        {% if row.prihlaseny != 'A' %}
-          {% set odhlas="Si odhlásený. Ak chceš, opäť sa prihlás." %}
-        {% endif %}
-        {{ _self.riadok(row, prihlas, studium, zapisnyList) }}
+        {{ _self.riadok(row, prihlas, studium, zapisnyList, action) }}
       {{ table.endrow() }}
     {% endfor %}
   {% endset %}
