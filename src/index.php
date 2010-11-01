@@ -27,8 +27,30 @@ use fajr\modules\LoginFactoryModule;
 use Loader;
 use sfServiceContainerAutoloader;
 use Twig_Autoloader;
+use Exception;
 
 $startTime = microtime(true);
+
+/**
+ * Exception handler. This handles any uncaught exception in Fajr application.
+ *
+ * Only fatal errors are not handled in Fajr class itself.
+ *
+ * @param Exception $e
+ */
+function fajr_uncaught_exception($e)
+{
+  // TODO(anty): replace function call arguments with types so
+  //             that sensitive information is not revealed
+  //             also respect debug configuration for stack traces
+  //             if possible
+  echo '<pre class="fatalError">'."\n";
+  echo $e;
+  echo "\n</pre>";
+}
+
+// register the exception handler
+set_exception_handler('\fajr\fajr_uncaught_exception');
 
 /**
  * Function for exitting bootstrap code in case of error
