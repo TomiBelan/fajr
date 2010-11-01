@@ -222,6 +222,10 @@ class Fajr {
   public function runLogic(Trace $trace, HttpConnection $connection)
   {
     $response = $this->context->getResponse();
+    $response->set('version', new Version());
+    $response->set('debug_banner', FajrConfig::get('Debug.Banner'));
+    $response->set('google_analytics',
+                   FajrConfig::get('GoogleAnalytics.Account'));
 
     $serverConnection = new AIS2ServerConnection($connection,
         new AIS2ServerUrlMap(FajrConfig::get('AIS2.ServerName')));
@@ -241,6 +245,11 @@ class Fajr {
         exit;
       }
       FajrUtils::redirect(array(), 'index.php');
+    }
+    // TODO(anty): refactor this
+    else if ($action == 'termsOfUse') {
+      $response->setTemplate('termsOfUse');
+      return;
     }
 
     $loggedIn = FajrUtils::isLoggedIn($serverConnection);
@@ -269,9 +278,6 @@ class Fajr {
       }
     }
 
-    $response->set('version', new Version());
-    $response->set('debug_banner', FajrConfig::get('Debug.Banner'));
-    $response->set('google_analytics',
-                   FajrConfig::get('GoogleAnalytics.Account'));
+    
   }
 }

@@ -29,10 +29,11 @@
 </div>
 
 {# terms #}
+{% url termsOfUse for ['action': 'termsOfUse', '_file': 'index.php'] %}
 <div class="span-21 prepend-1 last increase-line-height">
   <p>
     Prihlásením do systému Fajr súhlasíte s
-    <a href="terms_of_use.php">Podmienkami používania</a>
+    <a href="{{ termsOfUse }}">Podmienkami používania</a>
   </p>
 </div>
 

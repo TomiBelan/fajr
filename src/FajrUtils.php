@@ -89,8 +89,18 @@ class FajrUtils
     return self::joinPath(FajrConfig::getDirectory('Path.Temporary.Cookies'), 'cookie_'.session_id());
   }
 
-  public static function buildUrl($params, $file='fajr.php')
+  public static function buildUrl($params, $file=null)
   {
+    if ($file === null) {
+      if (!empty($params['_file'])) {
+        $file = $params['_file'];
+        unset($params['_file']);
+      }
+      else {
+        $file = 'fajr.php';
+      }
+    }
+
     $path = '';
     if (FajrConfig::get('URL.Path')) {
       $path = FajrRouter::paramsToPath($params);
