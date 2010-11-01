@@ -30,7 +30,9 @@ class DisplayManager
 
     $templateDir = FajrUtils::joinPath(__DIR__, '../templates/fajr');
     $loader = new Twig_Loader_Filesystem($templateDir);
-    $twig = new Twig_Environment($loader, array('base_template_class' => '\fajr\rendering\Template'));
+    $twig = new Twig_Environment($loader, array(
+                        'base_template_class' => '\fajr\rendering\Template',
+                        'strict_variables' => true));
     $twig->addExtension(new Twig_Extension_Escaper());
     // Register fajr's rendering extension
     $twig->addExtension(new Extension());
