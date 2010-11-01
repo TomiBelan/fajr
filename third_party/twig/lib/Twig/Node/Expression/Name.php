@@ -23,7 +23,7 @@ class Twig_Node_Expression_Name extends Twig_Node_Expression
         } elseif ('_context' === $this['name']) {
             $compiler->raw('$context');
         } elseif ($compiler->getEnvironment()->isStrictVariables()) {
-            $compiler->raw(sprintf('$this->getContext($context, \'%s\')', $this['name'], $this['name']));
+            $compiler->raw(sprintf('$this->getContext($context, \'%s\', \'%s\')', $this['name'], 'line '.$this->getLine()));
         } else {
             $compiler->raw(sprintf('(isset($context[\'%s\']) ? $context[\'%s\'] : null)', $this['name'], $this['name']));
         }

@@ -78,10 +78,10 @@ abstract class Twig_Template implements Twig_TemplateInterface
         return ob_get_clean();
     }
 
-    protected function getContext($context, $item)
+    protected function getContext($context, $item, $debugInfo)
     {
         if (!array_key_exists($item, $context)) {
-            throw new InvalidArgumentException(sprintf('Variable "%s" does not exist.', $item));
+            throw new InvalidArgumentException(sprintf('%s: Variable "%s" does not exist.', $debugInfo, $item));
         }
 
         return $context[$item];
