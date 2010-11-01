@@ -29,7 +29,7 @@ class Version
 
   private static $changelogLimit = 6;
 
-  public static function getChangelog() {
+  public function getChangelog() {
 
     $output = array();
     $tmp_array = array_slice(array_reverse(Version::$changelog), 0, Version::$changelogLimit);
@@ -40,18 +40,18 @@ class Version
     return $output;
   }
 
-  public static function getBuildTimeInfo()
+  public function getBuildTimeInfo()
   {
-    @$result = (include 'version_info.php');
+    @$result = (include '../version_info.php');
     return $result;
   }
 
-  public static function getVersion()
+  public function getVersion()
   {
     return self::$version;
   }
 
-  public static function getVersionString()
+  public function getVersionString()
   {
     $versionString = self::$version;
     $buildInfo = self::getBuildTimeInfo();

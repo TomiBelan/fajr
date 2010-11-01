@@ -16,13 +16,6 @@ use fajr\rendering\Extension;
 
 class DisplayManager
 {
-  
-  protected $base = null;
-  
-  public function setBase($base)
-  {
-    $this->base = $base;
-  }
 
   /**
    * Generate a page content
@@ -45,14 +38,7 @@ class DisplayManager
     $templateName = 'pages/'.$response->getTemplate().'.xhtml';
     $template = $twig->loadTemplate($templateName);
 
-    // TODO: move those params to controller
-    $output = $template->render(array_merge(array(
-      'base'=>$this->base,
-      'debug_banner'=>FajrConfig::get('Debug.Banner'),
-      'google_analytics'=>FajrConfig::get('GoogleAnalytics.Account'),
-      'fajr_version'=>Version::getVersionString(),
-      'fajr_changelog'=>Version::getChangelog(),
-      ), $response->getData()));
+    $output = $template->render($response->getData());
     
     return $output;
   }

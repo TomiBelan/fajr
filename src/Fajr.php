@@ -28,6 +28,7 @@ use fajr\Request;
 use fajr\Response;
 use fajr\Context;
 use fajr\Statistics;
+use fajr\Version;
 
 /**
  * This is "main()" of the fajr. It instantiates all neccessary
@@ -207,7 +208,7 @@ class Fajr {
       $this->context->getResponse()->set('trace', $trace);
     }
 
-    $this->displayManager->setBase(FajrUtils::basePath());
+    $this->context->getResponse()->set('base', FajrUtils::basePath());
     echo $this->displayManager->display($this->context->getResponse());
   }
 
@@ -260,5 +261,10 @@ class Fajr {
         $response->setTemplate('welcomeCosign');
       }
     }
+
+    $response->set('version', new Version());
+    $response->set('debug_banner', FajrConfig::get('Debug.Banner'));
+    $response->set('google_analytics',
+                   FajrConfig::get('GoogleAnalytics.Account'));
   }
 }
