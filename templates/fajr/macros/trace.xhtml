@@ -1,13 +1,13 @@
 {% macro tooltip(info) %}
-  <span class="trace_s">{{ "%+0.2f" |format(info.elapsedTime) }}s
-    <span class="trace_tooltip">Function {{ info.class }}::{{ info.function }}()<br />
+  <div class="trace_s">{{ "%+0.2f" |format(info.elapsedTime) }}s
+    <div class="trace_tooltip">Function {{ info.class }}::{{ info.function }}()<br />
       Line:&nbsp;{{ info.line }}<br />
       File:&nbsp;{{ info.file }}<br />
       <br />
       Code snippet:
       <pre>{{ info.snippet }}</pre>
-    </span>
-  </span>
+    </div>
+  </div>
 {% endmacro %}
 
 {% macro traceItem(item, content) %}

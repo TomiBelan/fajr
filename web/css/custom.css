@@ -243,15 +243,16 @@ pre.trace {
 .trace_s {
   color: gray;
   position: relative;
+  display: inline;
 }
 .trace_tooltip {
   display: none;
 }
 
-.trace_s:hover span.trace_tooltip {
+.trace_s:hover div.trace_tooltip {
   display:block;
   position: absolute;
-  top: 2em;
+  bottom: 2em;
   left: 2em;
   padding: 1em;
   border:1px solid #0cf;
