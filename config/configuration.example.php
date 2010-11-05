@@ -76,6 +76,12 @@ return array(
   //'AIS2.ServerName' => 'ais2.uniba.sk',
 
   /*
+   * Názov inštancie AIS2
+   * (Text, ktorý sa zobrazuje používateľom)
+   */
+  //'AIS2.InstanceName' => 'AIS2',
+
+  /*
    * Typ prihlásenia (password alebo cosign)
    */
   //'Login.Type'=>'password',

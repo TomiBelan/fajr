@@ -1,6 +1,7 @@
 {% extends "layout/main.xhtml" %}
 {% block title %}Vitajte{% endblock %}
 {% block content %}
+{% import "macros/utils.xhtml" as utils %}
 {% block loginBox %}
   {# loginBox #}
   {% include "parts/passwordLoginBox.xhtml" %}
@@ -12,7 +13,7 @@
   <p>
     Vitajte pred bránou do aplikácie FAJR.
     Snahou tejto miniaplikácie je poskytovať najčastejšie používané funkcie
-    <a href="https://ais2.uniba.sk/">AISu</a> a to jednoducho, rýchlo,
+    {{ utils.instanceLink(instanceName, serverName) }} a to jednoducho, rýchlo,
     bez zbytočných klikaní a na všetkých browseroch.
   </p>
   <p>
@@ -43,8 +44,10 @@
     Stránka mohla vzniknúť vďaka
     <a href="http://www.prototypejs.org/">Prototype</a>,
     <a href="http://www.blueprintcss.org/">Blueprint</a>,
-    <a href="http://www.frequency-decoder.com/2006/09/16/unobtrusive-table-sort-script-revisited">Unobtrusive Table Sort Script</a>
-    a <a href="http://www.famfamfam.com/lab/icons/silk/">Silk icons</a>.
+    <a href="http://www.frequency-decoder.com/2006/09/16/unobtrusive-table-sort-script-revisited">Unobtrusive Table Sort Script</a>,
+    <a href="http://www.famfamfam.com/lab/icons/silk/">Silk icons</a>,
+    <a href="http://www.twig-project.org/">Twig</a> a
+    <a href="http://components.symfony-project.org/dependency-injection/">Symfony Dependency Injection</a>.
   </p>
 </div>
 

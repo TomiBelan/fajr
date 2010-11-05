@@ -30,6 +30,7 @@ class FajrConfig
     'Path.Temporary.Cookies'=>'./cookies',
     'Path.Temporary.Sessions'=>'./sessions',
     'AIS2.ServerName'=>'ais2.uniba.sk',
+    'AIS2.InstanceName'=>'AIS2',
     'Login.Type'=>'password',
     'Login.Cosign.CookieName'=>'cosign-filter-ais2.uniba.sk',
     'SSL.CertificatesDir'=>null,

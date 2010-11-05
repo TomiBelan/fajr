@@ -231,6 +231,7 @@ class Fajr {
                    FajrConfig::get('GoogleAnalytics.Account'));
     $response->set('serverName', FajrConfig::get('AIS2.ServerName'));
     $response->set('cosignCookieName', FajrConfig::get('Login.Cosign.CookieName'));
+    $response->set('instanceName', FajrConfig::get('AIS2.InstanceName'));
 
     $serverConnection = new AIS2ServerConnection($connection,
         new AIS2ServerUrlMap(FajrConfig::get('AIS2.ServerName')));
