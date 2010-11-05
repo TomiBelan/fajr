@@ -26,7 +26,7 @@ class FajrConfig
     'Debug.Path'=>false,
     'Debug.Rewrite'=>false,
     'Debug.Exception.ShowStacktrace'=>false,
-    'Path.Temporary'=>'../temp',
+    'Path.Temporary'=>'./temp',
     'Path.Temporary.Cookies'=>'./cookies',
     'Path.Temporary.Sessions'=>'./sessions',
     'AIS2.ServerName'=>'ais2.uniba.sk',
@@ -99,7 +99,7 @@ class FajrConfig
       return $dir;
     }
     // default resolve relative
-    $relativeTo = dirname(__FILE__);
+    $relativeTo = FajrUtils::joinPath(dirname(__FILE__), '..');
     if (!empty(self::$directoriesRelativeTo[$key])) {
       $relativeTo = self::getDirectory(self::$directoriesRelativeTo[$key]);
     }
