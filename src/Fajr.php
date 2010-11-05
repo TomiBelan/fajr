@@ -223,7 +223,10 @@ class Fajr {
   {
     $response = $this->context->getResponse();
     $response->set('version', new Version());
-    $response->set('debug_banner', FajrConfig::get('Debug.Banner'));
+    $response->set('banner_debug', FajrConfig::get('Debug.Banner'));
+    // TODO(anty): toto by chcelo nastavovat nejako lepsie
+    $response->set('banner_beta',
+        FajrConfig::get('AIS2.ServerName') == 'ais2-beta.uniba.sk');
     $response->set('google_analytics',
                    FajrConfig::get('GoogleAnalytics.Account'));
     $response->set('serverName', FajrConfig::get('AIS2.ServerName'));

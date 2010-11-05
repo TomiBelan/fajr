@@ -24,12 +24,18 @@
   </head>
   <body>
     <div class="container">
-      <h1><img src="images/fajr_small.gif" alt="[logo]" class="logo" /> FAJR beta</h1>
-      {% if debug_banner %}
-        <h2 style="color:red">
-          Development verzia. Ostrú verziu nájdeš na
-          <a href="http://fajr.dcs.fmph.uniba.sk"> fajr.dcs.fmph.uniba.sk </a>
-        </h2>
+      <h1><img src="images/fajr_small.gif" alt="" class="logo" /> FAJR: {% display title %} </h1>
+      {% if banner_debug %}
+        <div class="warningBanner">
+          <strong>Development verzia. Ostrú verziu nájdeš na
+          <a href="https://fajr.dcs.fmph.uniba.sk"> fajr.dcs.fmph.uniba.sk </a></strong>
+        </div>
+      {% endif %}
+      {% if banner_beta %}
+        <div class="warningBanner">
+          <strong>Používa sa AIS2 BETA. Všetky informácie v tejto inštancii AISu sú
+          dočasné a neovplyvňujú ostrú verziu AISu!</strong>
+        </div>
       {% endif %}
       {% block content %}{% endblock %}
       {% if trace %}

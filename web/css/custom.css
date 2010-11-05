@@ -278,3 +278,18 @@ pre.trace {
   font-style: normal;
   font-weight: bold;
 }
+
+.warningBanner {
+  color: red;
+  font-size: 200%;
+  margin: 1ex;
+  padding: 0.5ex;
+  padding-left: 1.5em;
+  border: 1px solid red;
+  background: transparent url("../images/error.png") 10px 50% no-repeat;
+}
+
+.warningBanner strong {
+  font-weight: normal;
+  font-style: normal;
+}
