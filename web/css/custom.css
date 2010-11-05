@@ -155,13 +155,17 @@ tfoot tr {
   background-color:yellow;
 }
 
+/* Main title && logo */
 
-/* Logo and logout */
-
-.logo {
-  padding-left: 10px;
-  padding-top: 10px;
+h1 {
+  padding-left: 64px;
+  background: transparent url("../images/logo.png") 16px 50% no-repeat;
+  margin: 0.5ex;
+  font-size: 300%;
+  min-height: 32px;
 }
+
+/* Logout */
 
 .logout {
   position: absolute;
@@ -281,13 +285,13 @@ pre.trace {
 }
 
 .warningBanner {
-  color: red;
-  font-size: 200%;
+  font-size: 150%;
   margin: 1ex;
   padding: 0.5ex;
-  padding-left: 1.5em;
+  padding-left: 36px;
   border: 1px solid red;
   background: transparent url("../images/error.png") 10px 50% no-repeat;
+  min-height: 16px;
 }
 
 .warningBanner strong {
