@@ -33,7 +33,8 @@ class FajrConfig
     'Login.Type'=>'password',
     'Login.Cosign.CookieName'=>'cosign-filter-ais2.uniba.sk',
     'SSL.CertificatesDir'=>null,
-    'Connection.UserAgent'=>'Mozilla/5.0 (Windows; U; Windows NT 5.1; sk; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7'
+    'Connection.UserAgent'=>'Mozilla/5.0 (Windows; U; Windows NT 5.1; sk; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7',
+    'Template.Directory'=>'./templates/fajr',
   );
 
   /**

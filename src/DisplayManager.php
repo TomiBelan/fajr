@@ -28,7 +28,7 @@ class DisplayManager
       return;
     }
 
-    $templateDir = FajrUtils::joinPath(__DIR__, '../templates/fajr');
+    $templateDir = FajrConfig::getDirectory('Template.Directory');
     $loader = new Twig_Loader_Filesystem($templateDir);
     $twig = new Twig_Environment($loader, array(
                         'base_template_class' => '\fajr\rendering\Template',

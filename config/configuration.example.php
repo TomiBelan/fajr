@@ -99,5 +99,10 @@ return array(
   /*
    * User agent pod akým sa má libfajr identifikovať.
    */
-  //'Connection.UserAgent'=>'Mozilla/5.0 (Windows; U; Windows NT 5.1; sk; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7'
+  //'Connection.UserAgent'=>'Mozilla/5.0 (Windows; U; Windows NT 5.1; sk; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7',
+
+  /*
+   * Použitý template
+   */
+  //'Template.Directory'=>'./templates/fajr',
 );
