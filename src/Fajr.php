@@ -226,6 +226,8 @@ class Fajr {
     $response->set('debug_banner', FajrConfig::get('Debug.Banner'));
     $response->set('google_analytics',
                    FajrConfig::get('GoogleAnalytics.Account'));
+    $response->set('serverName', FajrConfig::get('AIS2.ServerName'));
+    $response->set('cosignCookieName', FajrConfig::get('Login.Cosign.CookieName'));
 
     $serverConnection = new AIS2ServerConnection($connection,
         new AIS2ServerUrlMap(FajrConfig::get('AIS2.ServerName')));
