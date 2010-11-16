@@ -32,7 +32,7 @@ class StatsConnectionTest extends PHPUnit_Framework_TestCase
   public function testStatistics()
   {
     $mockConnection = $this->newConnection();
-    $mockTimer = $this->getMock('fajr\libfajr\base\Timer', array('reset', 'getElapsedTime'));
+    $mockTimer = $this->getMock('fajr\libfajr\base\MutableTimer', array('reset', 'getElapsedTime'));
     $statsConnection = new StatsConnection($mockConnection, $mockTimer);
     $mockTimer->expects($this->any())
               ->method('getElapsedTime')
