@@ -76,6 +76,12 @@ return array(
   //'AIS2.ServerName' => 'ais2.uniba.sk',
 
   /*
+   * Názov inštancie AIS2
+   * (Text, ktorý sa zobrazuje používateľom)
+   */
+  //'AIS2.InstanceName' => 'AIS2',
+
+  /*
    * Typ prihlásenia (password alebo cosign)
    */
   //'Login.Type'=>'password',
@@ -99,5 +105,10 @@ return array(
   /*
    * User agent pod akým sa má libfajr identifikovať.
    */
-  //'Connection.UserAgent'=>'Mozilla/5.0 (Windows; U; Windows NT 5.1; sk; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7'
+  //'Connection.UserAgent'=>'Mozilla/5.0 (Windows; U; Windows NT 5.1; sk; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7',
+
+  /*
+   * Použitý template
+   */
+  //'Template.Directory'=>'./templates/fajr',
 );

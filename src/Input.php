@@ -13,6 +13,8 @@
 namespace fajr;
 require_once 'Validator.php';
  
+use Exception;
+
 class Input
 {
   protected static $inputParameters = array();
@@ -25,7 +27,7 @@ class Input
       'list' => 'int',
       'predmet' => 'int',
       'termin' => 'int',
-      'tab' => 'string',
+      'action' => 'string',
       'loginType' => 'string',
     ),
     '_post' => array(
@@ -76,13 +78,6 @@ class Input
           self::${$input}[$name] = ${$input}[$name];
         }
       }
-    }
-    
-    // specialne vynimky
-    if (isset($_get['logout'])) {
-      self::$inputParameters['logout'] = true;
-      //self::$_GET['logout'] = true; FIXME: Majak, co tu robilo toto?
-      //Pravdepodobne to chceme umazat.
     }
     
     // budeme pouzivat uz len Input

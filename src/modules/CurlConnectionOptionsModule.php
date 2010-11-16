@@ -15,7 +15,7 @@ namespace fajr\modules;
 
 use fajr\FajrConfig;
 use fajr\injection\Module;
-use sfServiceContainer;
+use sfServiceContainerBuilder;
 
 /**
  * Injector module for CurlConnection options parameter.
@@ -29,9 +29,9 @@ class CurlConnectionOptionsModule implements Module
   /**
    * Configure CurlConnection.options
    *
-   * @param sfServiceContainer $container Symfony container to configure
+   * @param sfServiceContainerBuilder $container Symfony container to configure
    */
-  public function configure(sfServiceContainer $container)
+  public function configure(sfServiceContainerBuilder $container)
   {
     $options = array(
         CURLOPT_FORBID_REUSE => false, // Keepalive konekcie

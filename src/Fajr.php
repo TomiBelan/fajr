@@ -12,10 +12,7 @@
  */
 namespace fajr;
 use Exception;
-use fajr\htmlgen\Collapsible;
-use fajr\htmlgen\HtmlHeader;
-use fajr\htmlgen\Table;
-use fajr\HtmlTrace;
+use fajr\ArrayTrace;
 use fajr\libfajr\pub\base\Trace;
 use fajr\injection\Injector;
 use fajr\libfajr\AIS2Session;
@@ -24,16 +21,14 @@ use fajr\libfajr\connection;
 use fajr\libfajr\pub\connection\HttpConnection;
 use fajr\libfajr\pub\login\CosignServiceCookie;
 use fajr\libfajr\pub\base\NullTrace;
-use fajr\libfajr\pub\login\AIS2Login;
-use fajr\libfajr\pub\login\LoginFactoryImpl;
-use fajr\libfajr\pub\window\VSES017_administracia_studia as VSES017; // *
-use fajr\presentation\HodnoteniaCallback;
-use fajr\presentation\MojeTerminyHodnoteniaCallback;
-use fajr\presentation\ZapisanePredmetyCallback;
-use fajr\presentation\ZoznamTerminovCallback;
-use fajr\TabManager;
+use fajr\libfajr\pub\login\Login;
 use fajr\libfajr\pub\connection\AIS2ServerConnection;
 use fajr\libfajr\pub\connection\AIS2ServerUrlMap;
+use fajr\Request;
+use fajr\Response;
+use fajr\Context;
+use fajr\Statistics;
+use fajr\Version;
 
 /**
  * This is "main()" of the fajr. It instantiates all neccessary
@@ -45,13 +40,20 @@ use fajr\libfajr\pub\connection\AIS2ServerUrlMap;
  */
 class Fajr {
 
-  const LOGGED_IN = 0;
-  const LOGGED_OUT = 1;
-
   /**
    * @var Injector $injector dependency injector.
    */
   private $injector;
+
+  /**
+   * @var Context $context application context
+   */
+  private $context;
+
+  /**
+   * @var Statistics $statistics
+   */
+  private $statistics;
 
   /**
    * Constructor.
@@ -64,80 +66,110 @@ class Fajr {
   }
 
   /**
+   * @returns true iff the user initiated a login
+   */
+  private function shouldLogin()
+  {
+    return $this->context->getRequest()->hasParameter('loginType');
+  }
+
+  /**
    * WARNING: Must be called before provideConnection().
    */
   private function regenerateSessionOnLogin()
   {
-    $login = Input::get('login');
-    $krbpwd = Input::get('krbpwd');
-    $cosignCookie = Input::get('cosignCookie');
-
-    // FIXME this should be refactored
-    if (($login !== null && $krbpwd !== null) || ($cosignCookie !== null)) {
-      // we are going to log in, so we get a clean session
-      // this needs to be done before a connection
-      // is created, because we pass cookie file name
-      // that contains session_id into AIS2CurlConnection
-      // If we regenerated the session id afterwards,
-      // we could not find the cookie file after a redirect
-      FajrUtils::dropSession();
-    }
+    if (!$this->shouldLogin()) return;
+   
+    // we are going to log in, so we get a clean session
+    // this needs to be done before a connection
+    // is created, because we pass cookie file name
+    // that contains session_id into AIS2CurlConnection
+    // If we regenerated the session id afterwards,
+    // we could not find the cookie file after a redirect
+    FajrUtils::dropSession();
   }
 
   /**
-   * Provides login object created from POST-data.
+   * Provides login object created from POST-data
+   * or null if login info is not (fully) present in the request.
    *
-   * @returns AIS2Login
+   * This function should be called only once (it will
+   * return null on subsequent calls).
+   *
+   * @returns Login login instance recognized
    */
   private function provideLogin()
   {
-    // TODO(ppershing): use injector here
-    $factory = new LoginFactoryImpl();
+    $factory = $this->injector->getInstance('LoginFactory.class');
 
-    if (FajrConfig::get('Login.Type') == 'cosign') {
-      if (Input::get('loginType') == 'cosign') {
+    $request = $this->context->getRequest();
+
+    $loginType = $request->getParameter("loginType");
+    $login = $request->getParameter('login');
+    $krbpwd = $request->getParameter('krbpwd');
+    $cosignCookie = $request->getParameter('cosignCookie');
+
+    // we don't need this info in the global scope anymore
+    $request->clearParameter('login');
+    $request->clearParameter('krbpwd');
+    $request->clearParameter('cosignCookie');
+
+    if (empty($loginType)) return null;
+
+    if ($loginType == 'cosign') {
+      if (FajrConfig::get('Login.Type') == 'cosign') {
         return $factory->newLoginUsingCosignProxy(
             FajrConfig::get('Login.Cosign.ProxyDB'),
             FajrConfig::get('Login.Cosign.CookieName'));
       }
       return null;
     }
+    else if ($loginType == 'password') {
+      if ($login == null || $krbpwd == null) {
+        // TODO(anty): maybe throw an exception? (and display login form...)
+        return null;
+      }
 
-    $login = Input::get('login'); Input::set('login', null);
-    $krbpwd = Input::get('krbpwd'); Input::set('krbpwd', null);
-    $cosignCookie = Input::get('cosignCookie'); Input::set('cosignCookie', null);
-
-    //TODO(ppershing): create hidden field "loginType" in the form
-    if ($login !== null && $krbpwd !== null) {
       return $factory->newLoginUsingCosign($login, $krbpwd);
-    } else if ($cosignCookie !== null) {
+    }
+    else if ($loginType == 'cookie') {
+      if ($cosignCookie == null) {
+        // TODO(anty): maybe throw an exception? (and display login form...)
+        return null;
+      }
       $cosignCookie = CosignServiceCookie::fixCookieValue($cosignCookie);
       return $factory->newLoginUsingCookie(
           new CosignServiceCookie(FajrConfig::get('Login.Cosign.CookieName'),
                                   $cosignCookie,
                                   FajrConfig::get('AIS2.ServerName')));
-    } else {
-      return null;
     }
-  }
 
-  // TODO(ppershing): We need to do something about these connections.
-  // Currently, this is really ugly solution and should be refactored.
-  private $rawStatsConnection;
-  private $statsConnection;
+    return null;
+  }
 
   private function provideConnection()
   {
     $curlOptions = $this->injector->getParameter('CurlConnection.options');
     $connection = new connection\CurlConnection($curlOptions, FajrUtils::getCookieFile());
 
-    $this->rawStatsConnection = new connection\StatsConnection($connection, new SystemTimer());
+    $connection = $this->statistics->hookRawConnection($connection);
 
-    $connection = new connection\GzipDecompressingConnection($this->rawStatsConnection, FajrConfig::getDirectory('Path.Temporary'));
+    $connection = new connection\GzipDecompressingConnection($connection, FajrConfig::getDirectory('Path.Temporary'));
     $connection = new connection\AIS2ErrorCheckingConnection($connection);
 
-    $this->statsConnection = new connection\StatsConnection($connection, new SystemTimer());
-    return $this->statsConnection;
+    return $this->statistics->hookFinalConnection($connection);
+  }
+
+  /**
+   * Set an exception to be displayed in DisplayManager
+   * @param Exception $ex
+   */
+  private function setException(Exception $ex) {
+    $response = $this->context->getResponse();
+    $response->set('exception', $ex);
+    $response->set('showStackTrace',
+                   FajrConfig::get('Debug.Exception.ShowStacktrace'));
+    $response->setTemplate('exception');
   }
 
   /**
@@ -149,14 +181,10 @@ class Fajr {
   {
     $this->injector->getInstance('SessionInitializer.class')->startSession();
 
-    $timer = new SystemTimer();
-
-    // TODO(ppershing): use injector here!
-    $trace = new NullTrace();
-
-    if (FajrConfig::get('Debug.Trace') === true) {
-      $trace = new HtmlTrace($timer, "--Trace--");
-    }
+    $trace = $this->injector->getInstance('Trace.class');
+    $this->statistics = $this->injector->getInstance('Statistics.class');
+    $this->displayManager = $this->injector->getInstance('DisplayManager.class');
+    $this->context = $this->injector->getInstance('Context.class');
 
     try {
       Input::prepare();
@@ -168,156 +196,96 @@ class Fajr {
       if ($connection) {
         FajrUtils::logout($connection);
       }
-      DisplayManager::addException($e);
-    } catch (Exception $e) {
-      DisplayManager::addException($e);
-    }
 
-    DisplayManager::setBase(hescape(FajrUtils::basePath()));
+      $this->setException($e);
+    } catch (Exception $e) {
+      $this->setException($e);      
+    }
 
     $trace->tlog("everything done, generating html");
 
     if (FajrConfig::get('Debug.Trace')===true) {
-      $traceHtml = $trace->getHtml();
-      DisplayManager::addContent('<div class="span-24">' . $traceHtml . 
-          '<div> Trace size:' .
-          sprintf("%.2f", strlen($traceHtml) / 1024.0 / 1024.0) .
-          ' MB</div></div>');
+      $this->context->getResponse()->set('trace', $trace);
     }
-    echo DisplayManager::display();
+
+    $this->context->getResponse()->set('base', FajrUtils::basePath());
+    $this->context->getResponse()->set('language', 'sk');
+    try {
+      echo $this->displayManager->display($this->context->getResponse());
+    }
+    catch (Exception $e) {
+      throw new Exception('Chyba pri renderovaní template: '.$e->getMessage(),
+                          null, $e);
+    }
   }
 
   public function runLogic(Trace $trace, HttpConnection $connection)
   {
-      $serverConnection = new AIS2ServerConnection($connection,
-          new AIS2ServerUrlMap(FajrConfig::get('AIS2.ServerName')));
-      $timer = new SystemTimer();
+    $response = $this->context->getResponse();
+    $response->set('version', new Version());
+    $response->set('banner_debug', FajrConfig::get('Debug.Banner'));
+    // TODO(anty): toto by chcelo nastavovat nejako lepsie
+    $response->set('banner_beta',
+        FajrConfig::get('AIS2.ServerName') == 'ais2-beta.uniba.sk');
+    $response->set('google_analytics',
+                   FajrConfig::get('GoogleAnalytics.Account'));
+    $response->set('serverName', FajrConfig::get('AIS2.ServerName'));
+    $response->set('cosignCookieName', FajrConfig::get('Login.Cosign.CookieName'));
+    $response->set('instanceName', FajrConfig::get('AIS2.InstanceName'));
 
-      if (Input::get('logout') !== null) {
-        FajrUtils::logout($serverConnection);
-        // TODO(anty): fix this in a better way
-        if (FajrConfig::get('Login.Type') == 'cosign') {
-          // location header set in CosignProxyLogin
-          // but we can't exit there because
-          // the session wouldn't get dropped
-          exit;
-        }
-        FajrUtils::redirect(array(), 'index.php');
-      }
+    $serverConnection = new AIS2ServerConnection($connection,
+        new AIS2ServerUrlMap(FajrConfig::get('AIS2.ServerName')));
       
       $loggedIn = FajrUtils::isLoggedIn($serverConnection);
 
-      $cosignLogin = $this->provideLogin();
-      if (!$loggedIn && $cosignLogin != null) {
-          FajrUtils::login($trace->addChild("logging in"), $cosignLogin, $serverConnection);
-          $loggedIn = true;
+    $this->context->setAisConnection($serverConnection);
+
+    $action = $this->context->getRequest()->getParameter('action',
+                                           'studium.MojeTerminyHodnotenia');
+
+    if ($action == 'logout') {
+      FajrUtils::logout($serverConnection);
+      // TODO(anty): fix this in a better way
+      if (FajrConfig::get('Login.Type') == 'cosign') {
+        // location header set in CosignProxyLogin
+        // but we can't exit there because
+        // the session wouldn't get dropped
+        exit;
       }
+      FajrUtils::redirect(array(), 'index.php');
+    }
+    // TODO(anty): refactor this
+    else if ($action == 'termsOfUse') {
+      $response->setTemplate('termsOfUse');
+      return;
+    }
 
-      if ($loggedIn) {
-        DisplayManager::addContent(
-        '<div class=\'logout\'><a class="button negative" href="'.FajrUtils::linkUrl(array('logout'=>true)).'">
-        <img src="images/door_in.png" alt=""/>Odhlásiť</a></div>'
-        );
-        $screenFactory = new VSES017\VSES017_factory($serverConnection);
-        $adminStudia = $screenFactory->newAdministraciaStudiaScreen($trace);
-        
-        if (Input::get('studium') === null) Input::set('studium',0);
-        
-        $zoznamStudii = $adminStudia->getZoznamStudii($trace->addChild("Get Zoznam Studii:"));
-        $zoznamStudiiTable = new Table(TableDefinitions::zoznamStudii(), 'studium',
-          array('tab' => Input::get('tab')));
-        $zoznamStudiiTable->addRows($zoznamStudii->getData());
-        $zoznamStudiiTable->setOption('selected_key', Input::get('studium'));
-        $zoznamStudiiTable->setOption('collapsed', true);
+    $loggedIn = FajrUtils::isLoggedIn($serverConnection);
 
-        $zoznamStudiiCollapsible = new Collapsible(new HtmlHeader('Zoznam štúdií'), $zoznamStudiiTable, true);
+    $cosignLogin = $this->provideLogin();
+    if (!$loggedIn && $cosignLogin != null) {
+        FajrUtils::login($trace->addChild("logging in"), $cosignLogin,
+                         $serverConnection);
+        $loggedIn = true;
+    }
 
-        DisplayManager::addContent($zoznamStudiiCollapsible->getHtml());    
-        
-        $zapisneListy = $adminStudia->getZapisneListy($trace->addChild('getZapisneListy'), Input::get('studium'));
-        
-        $zapisneListyTable = new
-          Table(TableDefinitions::zoznamZapisnychListov(),
-            'list', array('studium' => Input::get('studium'),
-              'tab'=>Input::get('tab')));
-        
-        if (Input::get('list') === null) {
-          $tmp = $zapisneListy->getData();
-          $lastList = end($tmp);
-          Input::set('list', $lastList['index']);
-        }
-        
-        $zapisneListyTable->addRows($zapisneListy->getData());
-        $zapisneListyTable->setOption('selected_key', Input::get('list'));
-        $zapisneListyTable->setOption('collapsed', true);
+    if ($loggedIn) {
+      $controller = $this->injector->getInstance('Controller.class');
 
-        $zapisneListyCollapsible = new Collapsible(new HtmlHeader('Zoznam zápisných listov'), $zapisneListyTable, true);
-
-        DisplayManager::addContent($zapisneListyCollapsible->getHtml());
-        
-        
-        $terminyHodnotenia = $screenFactory->newTerminyHodnoteniaScreen(
-              $trace,
-              $adminStudia->getZapisnyListIdFromZapisnyListIndex($trace, Input::get('list')),
-              $adminStudia->getStudiumIdFromZapisnyListIndex($trace, Input::get('list')));
-        
-        if (Input::get('tab') === null) Input::set('tab', 'TerminyHodnotenia');
-        $tabs = new TabManager('tab', array('studium'=>Input::get('studium'),
-              'list'=>Input::get('list')));
-        // FIXME: chceme to nejak refaktorovat, aby sme nevytvarali zbytocne
-        // objekty, ktore v konstruktore robia requesty
-        $hodnoteniaScreen = $screenFactory->newHodnoteniaPriemeryScreen(
-              $trace,
-              $adminStudia->getZapisnyListIdFromZapisnyListIndex($trace, Input::get('list')));
-        $tabs->addTab('TerminyHodnotenia', 'Moje skúšky',
-              new MojeTerminyHodnoteniaCallback($trace, $terminyHodnotenia, $hodnoteniaScreen));
-        $tabs->addTab('ZapisSkusok', 'Prihlásenie na skúšky',
-              new ZoznamTerminovCallback($trace, $terminyHodnotenia, $hodnoteniaScreen));
-        $tabs->addTab('ZapisnyList', 'Zápisný list',
-              new ZapisanePredmetyCallback($trace, $terminyHodnotenia));
-        $tabs->addTab('Hodnotenia', 'Hodnotenia/Priemery',
-            new HodnoteniaCallback($trace, $hodnoteniaScreen));
-
-        $tabs->setActive(Input::get('tab'));
-        DisplayManager::addContent($tabs->getHtml());
-        ;
-        $version = '<div>Fajr verzia '.hescape(Version::getVersionString()).'</div>';
-        DisplayManager::addContent($version);
-        $statistics = "<div> Fajr made ".$this->statsConnection->getTotalCount().
-                " requests and downloaded ".$this->rawStatsConnection->getTotalSize().
-                " bytes (".$this->statsConnection->getTotalSize().
-                " bytes uncompressed) of data from AIS2 in ".
-                sprintf("%.3f", $this->statsConnection->getTotalTime()).
-                " seconds. It took ".sprintf("%.3f", $timer->getElapsedTime()).
-                " seconds to generate this page.</div>";
-        DisplayManager::addContent($statistics);
+      $response->set("action", $action);
+      $controller->invokeAction($trace, $action, $this->context);
+      $response->set('statistics', $this->statistics);
+    }
+    else
+    {
+      if (FajrConfig::get('Login.Type') == 'password') {
+        $response->setTemplate('welcome');
       }
-      else
-      {
-        if (FajrConfig::get('Login.Type') == 'password') {
-          $text = DisplayManager::getPredefinedContent('loginBox');
-
-          $html = sprintf($text, FajrConfig::get('Login.Cosign.CookieName'),
-                          FajrConfig::get('AIS2.ServerName'));
-          DisplayManager::addContent($html);
-        }
-        else if (FajrConfig::get('Login.Type') == 'cosign') {
-          DisplayManager::addContent('cosignLoginBox', true);
-        }
-        else {
-          throw new Exception('Nespravna hodnota konfiguracnej volby Login.Type');
-        }
-        DisplayManager::addContent('warnings', true);
-        if (FajrConfig::get('Login.Type') == 'password') {
-          DisplayManager::addContent('classicLoginInfo', true);
-        }
-        DisplayManager::addContent('terms', true);
-        DisplayManager::addContent('credits', true);
-        $version = "<div class='version prepend-1 span-21 last increase-line-height'>\n<strong>Verzia fajru:</strong> \n";
-        $version .= hescape(Version::getVersionString());
-        $version .= '</div>';
-        DisplayManager::addContent($version);
-        DisplayManager::addContent(Version::getChangelog(), false);
+      else {
+        $response->setTemplate('welcomeCosign');
       }
+    }
+
+    
   }
 }

@@ -15,7 +15,7 @@ namespace fajr\libfajr\connection;
 
 use fajr\libfajr\pub\connection\HttpConnection;
 use fajr\libfajr\pub\base\Trace;
-use fajr\libfajr\base\Timer;
+use fajr\libfajr\base\MutableTimer;
 use \Exception;
 
 /**
@@ -35,10 +35,10 @@ class StatsConnection implements HttpConnection
   private $timer = null;
 
   /**
-   * @var Timer $timer Timer to time requests.
+   * @var MutableTimer $timer Timer to time requests.
    * Note that timer WILL BE RESETTED.
    */
-  function __construct(HttpConnection $delegate, Timer $timer)
+  function __construct(HttpConnection $delegate, MutableTimer $timer)
   {
     $this->delegate = $delegate;
     $this->timer = $timer;

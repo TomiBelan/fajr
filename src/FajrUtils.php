@@ -71,7 +71,7 @@ class FajrUtils
 
   public static function redirect($newParams = array(), $file='fajr.php')
   {
-    header('Location: ' . self::buildUrl(array_merge(Input::getUrlParams(), $newParams), $file));
+    header('Location: ' . self::buildUrl($newParams, $file));
     exit();
   }
 
@@ -89,8 +89,18 @@ class FajrUtils
     return self::joinPath(FajrConfig::getDirectory('Path.Temporary.Cookies'), 'cookie_'.session_id());
   }
 
-  public static function buildUrl($params, $file='fajr.php')
+  public static function buildUrl($params, $file=null)
   {
+    if ($file === null) {
+      if (!empty($params['_file'])) {
+        $file = $params['_file'];
+        unset($params['_file']);
+      }
+      else {
+        $file = 'fajr.php';
+      }
+    }
+
     $path = '';
     if (FajrConfig::get('URL.Path')) {
       $path = FajrRouter::paramsToPath($params);
@@ -110,14 +120,6 @@ class FajrUtils
     }
 
     return self::basePath() . $base . $path . $query;
-  }
-
-  /**
-   * creates htmlescaped url
-   */
-  public static function linkUrl($params)
-  {
-    return hescape(self::buildUrl($params));
   }
 
   public static function pathInfo()

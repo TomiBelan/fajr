@@ -16,7 +16,7 @@
 namespace fajr\libfajr\base;
 
 /**
- * Simple timer which can measure elapsed time.
+ * Interface for timers
  *
  * @package    Fajr
  * @subpackage Libfajr__Base
@@ -24,18 +24,13 @@ namespace fajr\libfajr\base;
  */
 interface Timer
 {
+  
   /**
-   * Start counting time from this moment.
-   *
-   * @returns void
-   */
-  public function reset();
-
-  /**
-   * Get time in seconds elapsed from last resetting.
+   * Get time in seconds elapsed from last interesting event of this timer.
    * Note that calling this function does not reset timer.
    *
-   * @returns double elapsed time
+   * @returns float elapsed time
    */
   public function getElapsedTime();
+  
 }

@@ -15,7 +15,7 @@ namespace fajr\modules;
 
 use fajr\FajrConfig;
 use fajr\injection\Module;
-use sfServiceContainer;
+use sfServiceContainerBuilder;
 
 /**
  * Injector module for SessionInitializer.
@@ -29,9 +29,9 @@ class SessionInitializerModule implements Module
   /**
    * Configure injection of SessionInitializer.class
    *
-   * @param sfServiceContainer $container Symfony container to configure
+   * @param sfServiceContainerBuilder $container Symfony container to configure
    */
-  public function configure(sfServiceContainer $container)
+  public function configure(sfServiceContainerBuilder $container)
   {
     $container->register('SessionInitializer.class', 'fajr\SessionInitializer')
               ->addArgument('%session.life_time_sec%')
@@ -46,8 +46,6 @@ class SessionInitializerModule implements Module
               'session.domain' => '.' . $_SERVER['HTTP_HOST'],
               );
     // Note, we can't use setParameters as it will destroy previous values!
-    foreach ($parameters as $key=>$value) {
-      $container->setParameter($key, $value);
-    }
+    $container->addParameters($parameters);
   }
 }
