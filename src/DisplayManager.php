@@ -121,7 +121,7 @@ súhlasíte s <a href="terms_of_use.php">podmienkami používania</a>.
   
 </head>
 <body>
-<div class="container"><h1><img src=\'images/fajr_small.gif\' alt="[logo]" class=\'logo\' /> FAJR beta</h1>
+<div class="container"><h1><img src=\'images/fajr_small.gif\' alt="[logo]" class=\'logo\' /> FAJR</h1>
 ',
       'debugBanner' => '
   <h2 style="color:red"> Development verzia. Ostrú verziu nájdeš na
