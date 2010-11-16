@@ -204,6 +204,7 @@ class Fajr {
 
     $trace->tlog("everything done, generating html");
 
+    $this->context->getResponse()->set('trace', null);    
     if (FajrConfig::get('Debug.Trace')===true) {
       $this->context->getResponse()->set('trace', $trace);
     }
