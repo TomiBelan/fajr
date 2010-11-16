@@ -236,8 +236,6 @@ class Fajr {
     $serverConnection = new AIS2ServerConnection($connection,
         new AIS2ServerUrlMap(FajrConfig::get('AIS2.ServerName')));
       
-      $loggedIn = FajrUtils::isLoggedIn($serverConnection);
-
     $this->context->setAisConnection($serverConnection);
 
     $action = $this->context->getRequest()->getParameter('action',
