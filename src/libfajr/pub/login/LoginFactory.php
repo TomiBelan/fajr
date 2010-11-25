@@ -20,14 +20,14 @@ interface LoginFactory
    * @param CosignServiceCookie $cookie
    * @returns Login
    */
-  public function newLoginUsingCookie(CosignServiceCookie $cookie);
+  public function newLoginUsingCosignCookie(CosignServiceCookie $cookie);
 
   /**
    * @param string $username
    * @param string $password
    * @returns Login
    */
-  public function newLoginUsingCosign($username, $password);
+  public function newLoginUsingCosignPassword($username, $password);
 
   /**
    * @param string $proxyDb    Cosign ProxyDB directory
@@ -35,6 +35,13 @@ interface LoginFactory
    * @returns Login
    */
   public function newLoginUsingCosignProxy($proxyDb, $cookieName);
+
+  /**
+   * @param string $username
+   * @param string $password
+   * @returns Login
+   */
+  public function newLoginUsingPassword($username, $password);
 
   /**
    * @returns Login

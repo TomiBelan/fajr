@@ -82,7 +82,7 @@ return array(
   //'AIS2.InstanceName' => 'AIS2',
 
   /*
-   * Typ prihlásenia (password alebo cosign)
+   * Typ prihlásenia (password, cosign, cosignproxy)
    */
   //'Login.Type'=>'password',
 

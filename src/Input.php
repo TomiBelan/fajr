@@ -28,6 +28,7 @@ class Input
       'predmet' => 'int',
       'termin' => 'int',
       'action' => 'string',
+      // We need loginType in GET due to cosign proxy login!
       'loginType' => 'string',
     ),
     '_post' => array(
@@ -37,7 +38,7 @@ class Input
       'hash' => 'string',
       'action' => 'string',
       'login' => 'string',
-      'krbpwd' => 'string',
+      'password' => 'string',
       'cosignCookie' => 'string',
       'loginType' => 'string',
     ),

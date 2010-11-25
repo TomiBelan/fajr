@@ -106,44 +106,53 @@ class Fajr {
 
     $loginType = $request->getParameter("loginType");
     $login = $request->getParameter('login');
-    $krbpwd = $request->getParameter('krbpwd');
+    $password = $request->getParameter('password');
     $cosignCookie = $request->getParameter('cosignCookie');
 
     // we don't need this info in the global scope anymore
     $request->clearParameter('login');
-    $request->clearParameter('krbpwd');
+    $request->clearParameter('password');
     $request->clearParameter('cosignCookie');
 
     if (empty($loginType)) return null;
 
-    if ($loginType == 'cosign') {
-      if (FajrConfig::get('Login.Type') == 'cosign') {
+    switch (FajrConfig::get('Login.Type')) {
+      case 'password':
+        assert($loginType == 'password');
+        if ($login == null || $password == null) {
+          // TODO(anty): maybe throw an exception? (and display login form...)
+          return null;
+        }
+        return $factory->newLoginUsingPassword($login, $password);
+        break;
+      case 'cosign':
+        if ($loginType == 'cosigncookie') {
+          assert(!empty($cosignCookie));
+          if ($cosignCookie == null) {
+            // TODO(anty): maybe throw an exception? (and display login form...)
+            return null;
+          }
+          $cosignCookie = CosignServiceCookie::fixCookieValue($cosignCookie);
+          return $factory->newLoginUsingCosignCookie(
+              new CosignServiceCookie(FajrConfig::get('Login.Cosign.CookieName'),
+                $cosignCookie,
+                FajrConfig::get('AIS2.ServerName')));
+        } else if ($loginType == 'cosignpassword') {
+          if ($login == null || $password == null) {
+            // TODO(anty): maybe throw an exception? (and display login form...)
+            return null;
+          }
+          return $factory->newLoginUsingCosignPassword($login, $password);
+        } else {
+          assert(false);
+        }
+        break;
+      case 'cosignproxy':
+        assert($loginType == 'cosignproxy');
         return $factory->newLoginUsingCosignProxy(
             FajrConfig::get('Login.Cosign.ProxyDB'),
             FajrConfig::get('Login.Cosign.CookieName'));
-      }
-      return null;
     }
-    else if ($loginType == 'password') {
-      if ($login == null || $krbpwd == null) {
-        // TODO(anty): maybe throw an exception? (and display login form...)
-        return null;
-      }
-
-      return $factory->newLoginUsingCosign($login, $krbpwd);
-    }
-    else if ($loginType == 'cookie') {
-      if ($cosignCookie == null) {
-        // TODO(anty): maybe throw an exception? (and display login form...)
-        return null;
-      }
-      $cosignCookie = CosignServiceCookie::fixCookieValue($cosignCookie);
-      return $factory->newLoginUsingCookie(
-          new CosignServiceCookie(FajrConfig::get('Login.Cosign.CookieName'),
-                                  $cosignCookie,
-                                  FajrConfig::get('AIS2.ServerName')));
-    }
-
     return null;
   }
 
@@ -245,7 +254,7 @@ class Fajr {
     if ($action == 'logout') {
       FajrUtils::logout($serverConnection);
       // TODO(anty): fix this in a better way
-      if (FajrConfig::get('Login.Type') == 'cosign') {
+      if (FajrConfig::get('Login.Type') == 'cosignproxy') {
         // location header set in CosignProxyLogin
         // but we can't exit there because
         // the session wouldn't get dropped
@@ -277,14 +286,19 @@ class Fajr {
     }
     else
     {
-      if (FajrConfig::get('Login.Type') == 'password') {
-        $response->setTemplate('welcome');
-      }
-      else {
-        $response->setTemplate('welcomeCosign');
+      switch (FajrConfig::get('Login.Type')) {
+        case 'password':
+          $response->setTemplate('welcome');
+          break;
+        case 'cosign':
+          $response->setTemplate('welcomeCosign');
+          break;
+        case 'cosignproxy':
+          $response->setTemplate('welcomeCosignProxy');
+          break;
+        default:
+          throw new Exception("Invalid configuration of Login.Type!");
       }
     }
-
-    
   }
 }

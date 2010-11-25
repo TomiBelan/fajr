@@ -4,7 +4,7 @@
 // found in the LICENSE file in the project root directory.
 
 /**
- * This file contains tests for AIS2LoginImpl class
+ * This file contains tests for AIS2CosignLoginImpl class
  *
  * @package    Fajr
  * @subpackage Tests
@@ -26,7 +26,7 @@ require_once 'test_include.php';
 /**
  * @ignore
  */
-class AIS2LoginImplTest extends PHPUnit_Framework_TestCase
+class AIS2CosignLoginTest extends PHPUnit_Framework_TestCase
 {
   private $responseLoggedIn;
   private $responseNotLogged;
@@ -34,6 +34,8 @@ class AIS2LoginImplTest extends PHPUnit_Framework_TestCase
 
   private $serverConection;
   private $connection;
+  private $cosignLogin;
+  private $login;
 
   public function setUp()
   {
@@ -42,8 +44,10 @@ class AIS2LoginImplTest extends PHPUnit_Framework_TestCase
     $this->responseLogout = file_get_contents(__DIR__.'/testdata/aisLogout.dat');
 
     $this->connection = $this->getMock('\fajr\libfajr\pub\connection\HttpConnection');
+    $this->cosignLogin = $this->getMock('\fajr\libfajr\pub\login\Login');
     $this->serverConnection = new AIS2ServerConnection($this->connection,
         new AIS2ServerUrlMap("ais2.test"), null);
+    $this->login = new AIS2CosignLogin($this->cosignLogin);
   }
 
   public function testIsLoggedAlreadyLogged()
@@ -51,8 +55,7 @@ class AIS2LoginImplTest extends PHPUnit_Framework_TestCase
     $this->connection->expects($this->once())
                      ->method('get')
                      ->will($this->returnValue($this->responseLoggedIn));
-    $login = new AIS2LoginImpl();
-    $this->assertTrue($login->isLoggedIn($this->serverConnection));
+    $this->assertTrue($this->login->isLoggedIn($this->serverConnection));
   }
 
   public function testIsLoggedNotLogged()
@@ -60,8 +63,7 @@ class AIS2LoginImplTest extends PHPUnit_Framework_TestCase
     $this->connection->expects($this->once())
                      ->method('get')
                      ->will($this->returnValue($this->responseNotLogged));
-    $login = new AIS2LoginImpl();
-    $this->assertFalse($login->isLoggedIn($this->serverConnection));
+    $this->assertFalse($this->login->isLoggedIn($this->serverConnection));
   }
 
   public function testIsLoggedFailure()
@@ -69,9 +71,8 @@ class AIS2LoginImplTest extends PHPUnit_Framework_TestCase
     $this->connection->expects($this->once())
                      ->method('get')
                      ->will($this->returnValue("problem"));
-    $login = new AIS2LoginImpl();
     $this->setExpectedException('\Exception');
-    $login->isLoggedIn($this->serverConnection);
+    $this->login->isLoggedIn($this->serverConnection);
   }
 
   public function testLoginOk()
@@ -79,8 +80,10 @@ class AIS2LoginImplTest extends PHPUnit_Framework_TestCase
     $this->connection->expects($this->once())
                      ->method('get')
                      ->will($this->returnValue($this->responseLoggedIn));
-    $login = new AIS2LoginImpl();
-    $login->login($this->serverConnection);
+    $this->cosignLogin->expects($this->once())
+                      ->method('login')
+                      ->will($this->returnValue(true));
+    $this->login->login($this->serverConnection);
   }
 
   public function testLoginFailure()
@@ -88,9 +91,11 @@ class AIS2LoginImplTest extends PHPUnit_Framework_TestCase
     $this->connection->expects($this->once())
                      ->method('get')
                      ->will($this->returnValue($this->responseNotLogged));
-    $login = new AIS2LoginImpl();
+    $this->cosignLogin->expects($this->once())
+                      ->method('login')
+                      ->will($this->returnValue(true));
     $this->setExpectedException('\Exception');
-    $login->login($this->serverConnection);
+    $this->login->login($this->serverConnection);
   }
 
 }
