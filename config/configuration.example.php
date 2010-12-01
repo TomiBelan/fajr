@@ -10,6 +10,9 @@
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */
+
+use fajr\ServerConfig;
+
 return array(
   /*
    * Ak táto voľba obsahuje tracking code na Google Analytics,
@@ -90,7 +93,7 @@ return array(
   /*
    * Názov defaultného servera (viď zoznam serverov)
    */
-  'AIS2.ServerName' => 'ais2.uniba.sk',
+  'AIS2.DefaultServer' => 'ais2.uniba.sk',
 
   /*
    * Zoznam serverov a ich konfigurácia.
