@@ -1,4 +1,4 @@
-<?
+<?php
 
 namespace fajr;
 use fajr\Request;
