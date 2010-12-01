@@ -3,7 +3,7 @@
     <fieldset>
       <legend>Zmeň AIS2 Server<br/>na ktorý sa fajr pripája:</legend>
       <select name="serverName"
-        onChange="document.forms('serverSelectForm').submit();">
+        onChange="$('serverSelectForm').submit();">
         {% for key,item in availableServers|items  %}
           {% if item == currentServer %}
             {% set selected='selected="true"' %}
