@@ -29,10 +29,7 @@ class FajrConfig
     'Path.Temporary'=>'./temp',
     'Path.Temporary.Cookies'=>'./cookies',
     'Path.Temporary.Sessions'=>'./sessions',
-    'AIS2.ServerName'=>'ais2.uniba.sk',
-    'AIS2.InstanceName'=>'AIS2',
-    'Login.Type'=>'password',
-    'Login.Cosign.CookieName'=>'cosign-filter-ais2.uniba.sk',
+    'AIS2.ServerList' => array(),
     'SSL.CertificatesDir'=>null,
     'Connection.UserAgent'=>'Mozilla/5.0 (Windows; U; Windows NT 5.1; sk; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7',
     'Template.Directory'=>'./templates/fajr',
@@ -56,7 +53,7 @@ class FajrConfig
       return;
     }
 
-    @$result = (include '../config/configuration.php');
+    $result = (include '../config/configuration.php');
     if ($result !== false && is_array($result)) {
       self::$config = array_merge(self::$defaultOptions, $result);
     }

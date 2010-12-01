@@ -6,6 +6,10 @@
   {# loginBox #}
   {% include "parts/passwordLoginBox.xhtml" %}
 {% endblock %}
+
+{# server selection #}
+{% include "parts/serverSelection.xhtml" %}
+
 <hr class="space" />
 
 {# warnings #}
@@ -13,7 +17,7 @@
   <p>
     Vitajte pred bránou do aplikácie FAJR.
     Snahou tejto miniaplikácie je poskytovať najčastejšie používané funkcie
-    {{ utils.instanceLink(instanceName, serverName) }} a to jednoducho, rýchlo,
+    {{ utils.instanceLink(instanceName, currentServer.serverName) }} a to jednoducho, rýchlo,
     bez zbytočných klikaní a na všetkých browseroch.
   </p>
   <p>

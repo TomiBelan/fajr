@@ -29,6 +29,7 @@ use fajr\Response;
 use fajr\Context;
 use fajr\Statistics;
 use fajr\Version;
+use sfSessionStorage;
 
 /**
  * This is "main()" of the fajr. It instantiates all neccessary
@@ -65,97 +66,6 @@ class Fajr {
     $this->injector = $injector;
   }
 
-  /**
-   * @returns true iff the user initiated a login
-   */
-  private function shouldLogin()
-  {
-    return $this->context->getRequest()->hasParameter('loginType');
-  }
-
-  /**
-   * WARNING: Must be called before provideConnection().
-   */
-  private function regenerateSessionOnLogin()
-  {
-    if (!$this->shouldLogin()) return;
-   
-    // we are going to log in, so we get a clean session
-    // this needs to be done before a connection
-    // is created, because we pass cookie file name
-    // that contains session_id into AIS2CurlConnection
-    // If we regenerated the session id afterwards,
-    // we could not find the cookie file after a redirect
-    FajrUtils::dropSession();
-  }
-
-  /**
-   * Provides login object created from POST-data
-   * or null if login info is not (fully) present in the request.
-   *
-   * This function should be called only once (it will
-   * return null on subsequent calls).
-   *
-   * @returns Login login instance recognized
-   */
-  private function provideLogin()
-  {
-    $factory = $this->injector->getInstance('LoginFactory.class');
-
-    $request = $this->context->getRequest();
-
-    $loginType = $request->getParameter("loginType");
-    $login = $request->getParameter('login');
-    $password = $request->getParameter('password');
-    $cosignCookie = $request->getParameter('cosignCookie');
-
-    // we don't need this info in the global scope anymore
-    $request->clearParameter('login');
-    $request->clearParameter('password');
-    $request->clearParameter('cosignCookie');
-
-    if (empty($loginType)) return null;
-
-    switch (FajrConfig::get('Login.Type')) {
-      case 'password':
-        assert($loginType == 'password');
-        if ($login == null || $password == null) {
-          // TODO(anty): maybe throw an exception? (and display login form...)
-          return null;
-        }
-        return $factory->newLoginUsingPassword($login, $password);
-        break;
-      case 'cosign':
-        if ($loginType == 'cosigncookie') {
-          assert(!empty($cosignCookie));
-          if ($cosignCookie == null) {
-            // TODO(anty): maybe throw an exception? (and display login form...)
-            return null;
-          }
-          $cosignCookie = CosignServiceCookie::fixCookieValue($cosignCookie);
-          return $factory->newLoginUsingCosignCookie(
-              new CosignServiceCookie(FajrConfig::get('Login.Cosign.CookieName'),
-                $cosignCookie,
-                FajrConfig::get('AIS2.ServerName')));
-        } else if ($loginType == 'cosignpassword') {
-          if ($login == null || $password == null) {
-            // TODO(anty): maybe throw an exception? (and display login form...)
-            return null;
-          }
-          return $factory->newLoginUsingCosignPassword($login, $password);
-        } else {
-          assert(false);
-        }
-        break;
-      case 'cosignproxy':
-        assert($loginType == 'cosignproxy');
-        return $factory->newLoginUsingCosignProxy(
-            FajrConfig::get('Login.Cosign.ProxyDB'),
-            FajrConfig::get('Login.Cosign.CookieName'));
-    }
-    return null;
-  }
-
   private function provideConnection()
   {
     $curlOptions = $this->injector->getParameter('CurlConnection.options');
@@ -167,6 +77,29 @@ class Fajr {
     $connection = new connection\AIS2ErrorCheckingConnection($connection);
 
     return $this->statistics->hookFinalConnection($connection);
+  }
+
+  public function getServer()
+  {
+    $request = $this->context->getRequest();
+    $session = $this->injector->getInstance("Session.Storage.class");
+
+    $serverList = FajrConfig::get('AIS2.ServerList');
+    $serverName = FajrConfig::get('AIS2.DefaultServer');
+
+    if (($server = $session->read('server')) !== null) {
+      return $server;
+    }
+
+    if ($request->getParameter("serverName")) {
+      $serverName = $request->getParameter("serverName");
+      if (!isset($serverList[$serverName])) {
+        throw new SecurityException("Invalid serverName!");
+      }
+    }
+    
+    assert(isset($serverList[$serverName]));
+    return $serverList[$serverName];
   }
 
   /**
@@ -182,24 +115,44 @@ class Fajr {
   }
 
   /**
+   * Save information about security violation for analysis.
+   * @param SecurityException
+   * @returns void
+   */
+  private function logSecurityException(SecurityException $e) {
+    
+  }
+
+  /**
    * Runs the whole logic. It is fajr's main()
    *
    * @returns void
    */
   public function run()
   {
-    $this->injector->getInstance('SessionInitializer.class')->startSession();
-
     $trace = $this->injector->getInstance('Trace.class');
     $this->statistics = $this->injector->getInstance('Statistics.class');
     $this->displayManager = $this->injector->getInstance('DisplayManager.class');
     $this->context = $this->injector->getInstance('Context.class');
 
+    $session = $this->injector->getInstance('Session.Storage.class');
+    $loginManager = new LoginManager($session, $this->context->getRequest());
+    $response = $this->context->getResponse();
+
     try {
       Input::prepare();
 
-      $this->regenerateSessionOnLogin();
+      // we are going to log in, so we get a clean session
+      // this needs to be done before a connection
+      // is created, because we pass cookie file name
+      // that contains session_id into AIS2CurlConnection
+      if ($loginManager->shouldLogin()) {
+        $session->regenerate(true);
+      }
+
+
       $connection = $this->provideConnection();
+      $this->setResponseFields($response);
       $this->runLogic($trace, $connection);
     } catch (LoginException $e) {
       if ($connection) {
@@ -207,74 +160,84 @@ class Fajr {
       }
 
       $this->setException($e);
+    } catch (SecurityException $e) {
+      die($e);
+      $this->logSecurityException($e);
+      $response->setTemplate("securityViolation");
     } catch (Exception $e) {
-      $this->setException($e);      
+      die($e);
+      $this->setException($e);
     }
 
-    $trace->tlog("everything done, generating html");
+    $trace->tlog("everything done, rendering template");
 
-    $this->context->getResponse()->set('trace', null);    
-    if (FajrConfig::get('Debug.Trace')===true) {
-      $this->context->getResponse()->set('trace', $trace);
+    if (FajrConfig::get('Debug.Trace') === true) {
+      $response->set('trace', $trace);
+    } else {
+      $response->set('trace', null);
     }
 
-    $this->context->getResponse()->set('base', FajrUtils::basePath());
-    $this->context->getResponse()->set('language', 'sk');
     try {
       echo $this->displayManager->display($this->context->getResponse());
-    }
-    catch (Exception $e) {
-      throw new Exception('Chyba pri renderovaní template: '.$e->getMessage(),
+    } catch (Exception $e) {
+      throw new Exception('Chyba pri renderovaní template '.
+          $this->context->getResponse()->getTemplate().':' .$e->getMessage(),
                           null, $e);
     }
   }
 
-  public function runLogic(Trace $trace, HttpConnection $connection)
+  private function setResponseFields(Response $response)
   {
     $response = $this->context->getResponse();
     $response->set('version', new Version());
     $response->set('banner_debug', FajrConfig::get('Debug.Banner'));
-    // TODO(anty): toto by chcelo nastavovat nejako lepsie
-    $response->set('banner_beta',
-        FajrConfig::get('AIS2.ServerName') == 'ais2-beta.uniba.sk');
     $response->set('google_analytics',
                    FajrConfig::get('GoogleAnalytics.Account'));
-    $response->set('serverName', FajrConfig::get('AIS2.ServerName'));
-    $response->set('cosignCookieName', FajrConfig::get('Login.Cosign.CookieName'));
     $response->set('instanceName', FajrConfig::get('AIS2.InstanceName'));
+    $response->set('base', FajrUtils::basePath());
+    $response->set('language', 'sk');
 
+    $server = $this->getServer();
+    $serverList = FajrConfig::get('AIS2.ServerList');
+    $response->set('availableServers', $serverList);
+    $response->set('currentServer', $server);
+//    $response->set('serverName', $server->getServerName());
+//    $response->set('banner_beta', $server->isBeta());
+//    $response->set('cosignCookieName', $server->getCosignCookieName());
+  }
+
+  public function runLogic(Trace $trace, HttpConnection $connection)
+  {
+    $session = $this->injector->getInstance('Session.Storage.class');
+    $loginManager = new LoginManager($session, $this->context->getRequest());
+    $server = $this->getServer();
     $serverConnection = new AIS2ServerConnection($connection,
-        new AIS2ServerUrlMap(FajrConfig::get('AIS2.ServerName')));
+        new AIS2ServerUrlMap($server->getServerName()));
       
     $this->context->setAisConnection($serverConnection);
 
     $action = $this->context->getRequest()->getParameter('action',
                                            'studium.MojeTerminyHodnotenia');
+    $response = $this->context->getResponse();
 
     if ($action == 'logout') {
-      FajrUtils::logout($serverConnection);
-      // TODO(anty): fix this in a better way
-      if (FajrConfig::get('Login.Type') == 'cosignproxy') {
-        // location header set in CosignProxyLogin
-        // but we can't exit there because
-        // the session wouldn't get dropped
-        exit;
-      }
-      FajrUtils::redirect(array(), 'index.php');
-    }
-    // TODO(anty): refactor this
-    else if ($action == 'termsOfUse') {
+      $loginManager->logout($serverConnection);
+      // unless there is an error, logout redirects and ends script execution
+    } else if ($action == 'termsOfUse') {
+      // TODO(anty): refactor this
       $response->setTemplate('termsOfUse');
       return;
     }
 
-    $loggedIn = FajrUtils::isLoggedIn($serverConnection);
-
-    $cosignLogin = $this->provideLogin();
-    if (!$loggedIn && $cosignLogin != null) {
-        FajrUtils::login($trace->addChild("logging in"), $cosignLogin,
-                         $serverConnection);
-        $loggedIn = true;
+    if ($loginManager->shouldLogin()) {
+      $factory = $this->injector->getInstance('LoginFactory.class');
+      $session->write('server', $server);
+      $loginManager->login($trace->addChild("Logging in..."),
+          $server, $factory, $serverConnection);
+      $loggedIn = false; // login makes redirect on success
+      $session->remove('server');
+    } else {
+      $loggedIn = $loginManager->isLoggedIn($serverConnection);
     }
 
     if ($loggedIn) {
@@ -286,7 +249,8 @@ class Fajr {
     }
     else
     {
-      switch (FajrConfig::get('Login.Type')) {
+      $server = $this->getServer();
+      switch ($server->getLoginType()) {
         case 'password':
           $response->setTemplate('welcome');
           break;
@@ -297,7 +261,7 @@ class Fajr {
           $response->setTemplate('welcomeCosignProxy');
           break;
         default:
-          throw new Exception("Invalid configuration of Login.Type!");
+          throw new Exception("Invalid type of login");
       }
     }
   }

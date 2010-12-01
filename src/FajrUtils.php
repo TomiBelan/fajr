@@ -21,54 +21,6 @@ use fajr\libfajr\util\StrUtil;
 
 class FajrUtils
 {
-  public static function login(Trace $trace, Login $login, AIS2ServerConnection $connection)
-  {
-    $trace->tlog("Creating AIS2Session");
-    $session = new AIS2Session($login);
-
-    $trace->tlog("logging in");
-    if (!$login->login($connection)) {
-      return false;
-    }
-    $trace->tlog("logged in correctly.");
-
-    $_SESSION['AISSession'] = $session;
-    self::redirect();
-    return true;
-  }
-
-  /**
-   * Odhlási z Cosignu a zmaže lokálne cookies.
-   */
-  public static function logout(AIS2ServerConnection $connection)
-  {
-    if (!isset($_SESSION['AISSession'])) {
-      return false;
-    }
-    if ($_SESSION['AISSession']->getLogin()->logout($connection)) {
-      unset($_SESSION['AISSession']);
-      self::dropSession();
-    }
-  }
-
-  /**
-   * Ensure current session is disposed of and new clean session is created
-   */
-  public static function dropSession()
-  {
-    session_regenerate_id(true);
-  }
-
-  public static function isLoggedIn(AIS2ServerConnection $connection)
-  {
-    if (!isset($_SESSION['AISSession'])) {
-      return false;
-    }
-    $login = $_SESSION['AISSession']->getLogin();
-    return $login->isLoggedIn($connection) ||
-           $login->ais2Relogin($connection);
-  }
-
   public static function redirect($newParams = array(), $file='fajr.php')
   {
     header('Location: ' . self::buildUrl($newParams, $file));

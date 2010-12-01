@@ -30,6 +30,7 @@ class Input
       'action' => 'string',
       // We need loginType in GET due to cosign proxy login!
       'loginType' => 'string',
+      'serverName' => 'string',
     ),
     '_post' => array(
       'prihlasPredmetIndex' => 'int',
@@ -41,6 +42,7 @@ class Input
       'password' => 'string',
       'cosignCookie' => 'string',
       'loginType' => 'string',
+      'serverName' => 'string',
     ),
   );
   
@@ -52,7 +54,7 @@ class Input
     ),
     'string' => array(
       'cond' => 'isString',
-      'options' => array('minLength' => 1),
+      'options' => array('minLength' => 0),
       'message' => 'Vstupný parameter "%%NAME%%" nesmie byť prázdny.',
     ),
   );

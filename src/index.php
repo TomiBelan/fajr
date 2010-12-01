@@ -18,7 +18,7 @@ use fajr\injection\Module;
 use fajr\modules\ContextModule;
 use fajr\modules\ControllerModule;
 use fajr\modules\CurlConnectionOptionsModule;
-use fajr\modules\SessionInitializerModule;
+use fajr\modules\SessionModule;
 use fajr\modules\TraceModule;
 use fajr\modules\TimerModule;
 use fajr\modules\StatisticsModule;
@@ -26,6 +26,7 @@ use fajr\modules\DisplayManagerModule;
 use fajr\modules\LoginFactoryModule;
 use Loader;
 use sfServiceContainerAutoloader;
+use sfStorageAutoloader;
 use Twig_Autoloader;
 use Exception;
 
@@ -87,15 +88,19 @@ error_reporting(E_ALL | E_STRICT);
 date_default_timezone_set('Europe/Bratislava');
 mb_internal_encoding("UTF-8");
 
-// register Symfony autoloader first, because ours will eat the loading instead.
+// register Symfony DI autoloader
 require_once '../third_party/symfony_di/lib/sfServiceContainerAutoloader.php';
 sfServiceContainerAutoloader::register();
+
+// register Symfony Storage autoloader
+require_once '../third_party/symfony_storage/sfStorageAutoloader.php';
+sfStorageAutoloader::register();
 
 // register Twig autoloader
 require_once '../third_party/twig/lib/Twig/Autoloader.php';
 Twig_Autoloader::register();
 
-// register our autoloader
+// register our autoloader as last
 require_once 'libfajr/libfajr.php';
 Loader::register();
 Loader::searchForClasses(dirname(__FILE__), true);
@@ -133,7 +138,7 @@ $modules = array(
     new ControllerModule(),
     new DisplayManagerModule(),
     new CurlConnectionOptionsModule(),
-    new SessionInitializerModule(),
+    new SessionModule(),
     new TraceModule(),
     new LoginFactoryModule(),
   );

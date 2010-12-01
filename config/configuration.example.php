@@ -70,31 +70,6 @@ return array(
    */
   //'Path.Temporary.Sessions'=>'./sessions',
 
-  /*
-   * Hostname AIS2 servera
-   */
-  //'AIS2.ServerName' => 'ais2.uniba.sk',
-
-  /*
-   * Názov inštancie AIS2
-   * (Text, ktorý sa zobrazuje používateľom)
-   */
-  //'AIS2.InstanceName' => 'AIS2',
-
-  /*
-   * Typ prihlásenia (password, cosign, cosignproxy)
-   */
-  //'Login.Type'=>'password',
-
-  /*
-   * Adresár pre proxy súbory cosignu
-   */
-  //'Login.Cosign.ProxyDB'=>'',
-
-  /*
-   * Názov AIS-ovej cosign cookie
-   */
-  //'Login.Cosign.CookieName'=>'cosign-filter-ais2.uniba.sk',
 
   /*
    * Adresár s certifikátmi pre SSL spojenie (null je curl default).
@@ -111,4 +86,44 @@ return array(
    * Použitý template
    */
   //'Template.Directory'=>'./templates/fajr',
+
+  /*
+   * Názov defaultného servera (viď zoznam serverov)
+   */
+  'AIS2.ServerName' => 'ais2.uniba.sk',
+
+  /*
+   * Zoznam serverov a ich konfigurácia.
+   * Konfigurácia servera pozostáva z nasledujúcich položiek:
+   * - Hostname AIS2 servera (musí sedieť s kľúčom asociatívneho poľa)
+   *   'AIS2.ServerName' => 'ais2.uniba.sk',
+   * - Názov inštancie AIS2 (Text, ktorý sa zobrazuje používateľom)
+   *   'AIS2.InstanceName' => 'AIS2',
+   * - Typ prihlásenia (password, cosign, cosignproxy)
+   *   'Login.Type'=>'password',
+   * - Adresár pre proxy súbory cosignu
+   *   'Login.Cosign.ProxyDB'=>'',
+   * - Názov AIS-ovej cosign cookie
+   *   'Login.Cosign.CookieName'=>'cosign-filter-ais2.uniba.sk',
+   * - Je daná inštancia ostrá verzia AISu?
+   *   'Server.Beta'=>false
+   */
+  'AIS2.ServerList' => array(
+    'ais2.uniba.sk' => new ServerConfig(
+      array(
+        'Server.InstanceName' => 'AIS2',
+        'Server.Name' => 'ais2.uniba.sk',
+        'Login.Type' => 'cosign',
+        'Login.Cosign.CookieName' => 'cosign-filter-ais2.uniba.sk',
+        'Server.Beta' => false,
+        )),
+    'ais2-beta.uniba.sk' => new ServerConfig(
+      array(
+        'Server.InstanceName' => 'AIS2-Beta',
+        'Server.Name' => 'ais2-beta.uniba.sk',
+        'Login.Type' => 'cosign',
+        'Login.Cosign.CookieName' => 'cosign-filter-ais2-beta.uniba.sk',
+        'Server.Beta' => true,
+        )),
+    ),
 );
