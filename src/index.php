@@ -24,6 +24,7 @@ use fajr\modules\TimerModule;
 use fajr\modules\StatisticsModule;
 use fajr\modules\DisplayManagerModule;
 use fajr\modules\LoginFactoryModule;
+use fajr\modules\InputModule;
 use Loader;
 use sfServiceContainerAutoloader;
 use sfStorageAutoloader;
@@ -141,6 +142,7 @@ $modules = array(
     new SessionModule(),
     new TraceModule(),
     new LoginFactoryModule(),
+    new InputModule(),
   );
 $injector = new Injector($modules);
 $fajr = new Fajr($injector);

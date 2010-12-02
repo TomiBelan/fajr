@@ -6,6 +6,7 @@ use sfStorage;
 use fajr\libfajr\pub\connection\AIS2ServerConnection;
 use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\pub\login\LoginFactory;
+use fajr\exceptions\SecurityException;
 
 class LoginManager
 {

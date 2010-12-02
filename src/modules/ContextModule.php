@@ -34,7 +34,8 @@ class ContextModule implements Module
    */
   public function configure(sfServiceContainerBuilder $container)
   {
-    $container->register('Request.class', '\fajr\Request');
+    $container->register('Request.class', '\fajr\Request')
+              ->addArgument(new sfServiceReference('Input.class'));
     $container->register('Response.class', '\fajr\Response');
     $container->register('Context.class', '\fajr\Context')
               ->addMethodCall('setRequest', array(new sfServiceReference('Request.class')))

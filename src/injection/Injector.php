@@ -15,7 +15,7 @@ namespace fajr\injection;
 
 use sfServiceContainerBuilder;
 use fajr\libfajr\base\Preconditions;
-
+use fajr\FajrConfig;
 /**
  * Dependency injector.
  *
@@ -55,7 +55,7 @@ class Injector
   /**
    * Return instance of object given its name.
    *
-   * Note that the scope of the object (singleron/per call) depends on
+   * Note that the scope of the object (singleton/per call) depends on
    * how the object is configured by injector modules.
    *
    * @returns mixed instance of whatever is asked for
@@ -63,7 +63,11 @@ class Injector
   public function getInstance($name)
   {
     Preconditions::checkIsString($name);
-    return $this->container->getService($name);
+    if (FajrConfig::get('Debug.Exception.ShowStacktrace')) {
+      return $this->container->getService($name);
+    } else {
+      return @$this->container->getService($name);
+    }
   }
 
   /**

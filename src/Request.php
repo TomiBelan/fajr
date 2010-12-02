@@ -23,7 +23,12 @@ use fajr\libfajr\pub\connection\AIS2ServerConnection;
  */
 class Request
 {
-
+  private $input;
+  
+  public function __construct(Input $input)
+  {
+    $this->input = $input;
+  }
   /**
    * Return a named parameter
    *
@@ -38,7 +43,7 @@ class Request
       Preconditions::checkIsString($defaultValue, 'defaultValue');
     }
 
-    $value = Input::get($name);
+    $value = $this->input->get($name);
     if ($value === null) {
       return $defaultValue;
     }
@@ -54,7 +59,7 @@ class Request
   public function hasParameter($name)
   {
     Preconditions::checkIsString($name, 'name');
-    return Input::get($name) !== null;
+    return $this->input->get($name) !== null;
   }
 
   /**
@@ -65,7 +70,7 @@ class Request
   public function clearParameter($name)
   {
     Preconditions::checkIsString($name, 'name');
-    Input::set($name, null);
+    $this->input->set($name, null);
   }
 
 }

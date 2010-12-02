@@ -30,6 +30,8 @@ use fajr\Context;
 use fajr\Statistics;
 use fajr\Version;
 use sfSessionStorage;
+use fajr\exceptions\ValidationException;
+use fajr\exceptions\SecurityException;
 
 /**
  * This is "main()" of the fajr. It instantiates all neccessary
@@ -119,7 +121,7 @@ class Fajr {
    * @param SecurityException
    * @returns void
    */
-  private function logSecurityException(SecurityException $e) {
+  private function logSecurityException(Exception $e) {
     
   }
 
@@ -130,17 +132,15 @@ class Fajr {
    */
   public function run()
   {
-    $trace = $this->injector->getInstance('Trace.class');
-    $this->statistics = $this->injector->getInstance('Statistics.class');
-    $this->displayManager = $this->injector->getInstance('DisplayManager.class');
-    $this->context = $this->injector->getInstance('Context.class');
-
-    $session = $this->injector->getInstance('Session.Storage.class');
-    $loginManager = new LoginManager($session, $this->context->getRequest());
-    $response = $this->context->getResponse();
-
     try {
-      Input::prepare();
+      $trace = $this->injector->getInstance('Trace.class');
+      $this->statistics = $this->injector->getInstance('Statistics.class');
+      $this->displayManager = $this->injector->getInstance('DisplayManager.class');
+      $this->context = $this->injector->getInstance('Context.class');
+
+      $session = $this->injector->getInstance('Session.Storage.class');
+      $loginManager = new LoginManager($session, $this->context->getRequest());
+      $response = $this->context->getResponse();
 
       // we are going to log in, so we get a clean session
       // this needs to be done before a connection
@@ -161,11 +161,13 @@ class Fajr {
 
       $this->setException($e);
     } catch (SecurityException $e) {
-      die($e);
       $this->logSecurityException($e);
-      $response->setTemplate("securityViolation");
+      if (!FajrConfig::get('Debug.Exception.ShowStacktrace')) {
+        die("Internal error");
+      } else {
+        die($e);
+      }
     } catch (Exception $e) {
-      die($e);
       $this->setException($e);
     }
 
