@@ -68,7 +68,7 @@ class StudiumController extends BaseController
 
     $this->zapisnyList = $request->getParameter('list');
 
-    if (empty($this->zapisnyList)) {
+    if ($this->zapisnyList === '') {
       $tmp = $this->zapisneListy->getData();
       $lastList = end($tmp);
       $this->zapisnyList = $lastList['index'];
