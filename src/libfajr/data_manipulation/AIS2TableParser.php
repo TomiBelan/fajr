@@ -121,6 +121,10 @@ class AIS2TableParser
     $value = $element->textContent;
 
     // special fix for &nbsp;
+    // xml decoder decodes &nbsp; into special utf-8 character
+    // TODO(ppershing): nehodili by sa tie &nbsp; niekedy dalej v aplikacii niekedy?
+    $nbsp = chr(0xC2).chr(0xA0);
+    $value = str_replace($nbsp, ' ', $value);
     if ($value == ' ') {
       return '';
     }
