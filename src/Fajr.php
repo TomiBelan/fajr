@@ -110,9 +110,18 @@ class Fajr {
    */
   private function setException(Exception $ex) {
     $response = $this->context->getResponse();
-    $response->set('exception', $ex);
+    $response->set('exception', array("message" => $ex->getMessage()));
+    $response->set('showStackTrace', false);
+
+    // Note: We can't store function agruments from
+    // stacktrace for template rendering, because
+    // it can hold cyclic dependency to Context
+    // and thus makes order of destruction unpredictable.
+
+    /* TODO(anty): fix exception stacktrace
     $response->set('showStackTrace',
                    FajrConfig::get('Debug.Exception.ShowStacktrace'));
+    */
     $response->setTemplate('exception');
   }
 
@@ -169,6 +178,11 @@ class Fajr {
       }
     } catch (Exception $e) {
       $this->setException($e);
+      // Note: We MUST unset this exception, because it's
+      // stacktrace holds cyclic references to context
+      // and therefore the order of destruction of all objects 
+      // is really random.
+      unset($e);
     }
 
     $trace->tlog("everything done, rendering template");
