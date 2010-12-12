@@ -43,6 +43,15 @@ class LoginManager
    */
   public function logout(AIS2ServerConnection $connection)
   {
+    // It is better to remove all session information also
+    // in case when logout fails. Otherwise it may be not
+    // possible for user to logout from fajr and this
+    // is greater security risk than leaving active cookies
+    // on server side.
+    $this->session->remove('login/login.class');
+    $this->session->remove('server');
+    $this->session->regenerate(true);
+
     $login = $this->session->read('login/login.class');
     $server = $this->session->read('server');
     if ($login === null) return false;
@@ -50,9 +59,6 @@ class LoginManager
       return false;
     }
 
-    $this->session->remove('login/login.class');
-    $this->session->remove('server');
-    $this->session->regenerate(true);
     // TODO(ppershing): refactor redirects into one place
     if ($server->getLoginType() == 'cosignproxy') {
         // location header set in CosignProxyLogin
@@ -76,6 +82,7 @@ class LoginManager
     }
     $trace->tlog("logged in correctly.");
     $this->session->write('login/login.class', $login);
+    $this->session->write('server', $serverConfig);
 
     FajrUtils::redirect();
     assert(false);

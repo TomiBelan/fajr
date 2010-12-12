@@ -90,6 +90,9 @@ class Fajr {
     $serverName = FajrConfig::get('AIS2.DefaultServer');
 
     if (($server = $session->read('server')) !== null) {
+      if ($session->read('login/login.class') === null) {
+        throw new Exception('Fajr is in invalid state. Delete cookies and try again.');
+      }
       return $server;
     }
 
@@ -247,11 +250,9 @@ class Fajr {
 
     if ($loginManager->shouldLogin()) {
       $factory = $this->injector->getInstance('LoginFactory.class');
-      $session->write('server', $server);
       $loginManager->login($trace->addChild("Logging in..."),
           $server, $factory, $serverConnection);
       $loggedIn = false; // login makes redirect on success
-      $session->remove('server');
     } else {
       $loggedIn = $loginManager->isLoggedIn($serverConnection);
     }
