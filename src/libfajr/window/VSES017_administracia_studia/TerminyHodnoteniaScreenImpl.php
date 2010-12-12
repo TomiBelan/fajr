@@ -24,6 +24,7 @@ use fajr\libfajr\window\RequestBuilderImpl;
 use fajr\libfajr\window\ScreenRequestExecutor;
 use fajr\libfajr\window\AIS2AbstractScreen;
 use fajr\libfajr\data_manipulation\AIS2TableParser;
+use Exception;
 
 /**
  * Trieda reprezentujúca jednu obrazovku so zoznamom predmetov zápisného listu
@@ -92,7 +93,7 @@ class TerminyHodnoteniaScreenImpl extends AIS2AbstractScreen
   {
     $this->openIfNotAlready($trace);
     // Posleme request ze sa chceme odhlasit.
-    $data = $this->requestData(array(
+    $data = $this->executor->doRequest($trace, array(
       'compName' => 'odstranitTerminAction',
       'eventClass' => 'avc.ui.event.AVCActionEvent',
       'embObj' => array(
@@ -103,9 +104,12 @@ class TerminyHodnoteniaScreenImpl extends AIS2AbstractScreen
         ),
       ),
     ));
+    if (!preg_match("@Skutočne chcete odobrať vybraný riadok?@", $data)) {
+      throw new Exception("Problém pri odhlasovaní - neočakávaná odozva AISu");
+    }
     
     // Odklikneme konfirmacne okno ze naozaj.
-    $data = $this->requestData(array(
+    $data = $this->executor->doRequest($trace, array(
       'events' => false,
       'app' => false,
       'dlgName' => false,
@@ -114,27 +118,15 @@ class TerminyHodnoteniaScreenImpl extends AIS2AbstractScreen
       ),
     ));
     
-    if (!preg_match('@dialogManager\.openDialog\("PleaseWaitDlg0"@', $data)) {
-      throw new Exception('Z termínu sa nepodarilo odhlásiť.<br/>' .
-                          'Pravdepodobne termín s daným indexom neexistuje.');
-    }
-    
-    // Nacitame loading obrazovku.
-    $data = AIS2Utils::request('https://ais2.uniba.sk/ais/servlets/WebUIServlet?appId='.$this->getAppId().'&form=PleaseWaitDlg0&antiCache='.random());
-    
-    // Zavrieme loading obrazovku. Az po tomto kroku sme naozaj odhlaseni.
-    $data = $this->requestData(array(
-      'events' => false,
-      'dlgName' => false,
-      'appProperties' => array(
-        'activeDlgName' => 'PleaseWaitDlg0',
-      ),
-    ));
-    
     $message = match($data, '@webui\.messageBox\("([^"]*)"@');
     if (($message !== false) && ($message != 'Činnosť úspešne dokončená.')) {
       throw new Exception("Z termínu sa (pravdepodobne) nepodarilo odhlásiť." .
                           "Dôvod:<br/><b>".$message.'</b>');
+    }
+
+    if (!preg_match("@dm\(\).setActiveDialogName\(".
+          "'VSES007_StudentZoznamPrihlaseniNaSkuskuDlg0'\);@", $data)) {
+      throw new Exception("Problém pri odhlasovaní - neočakávaná odpoveď od AISu");
     }
     
     return true;

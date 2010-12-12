@@ -21,7 +21,7 @@ use fajr\libfajr\window\DialogData;
 use fajr\libfajr\window\DialogParent;
 use fajr\libfajr\window\AIS2AbstractDialog;
 use fajr\libfajr\data_manipulation\AIS2TableParser;
-
+use Exception;
 /**
  * Trieda pre dialóg s termínmi skúšok k jednému predmetu.
  *
@@ -67,12 +67,18 @@ class TerminyDialogImpl extends AIS2AbstractDialog
       ),
     ));
     
-    $error = match($data, '@webui\.messageBox\("([^"]*)",@');
+    $error = match($data, '@webui\(\)\.messageBox\("([^"]*)",@');
     if ($error) {
-      throw new Exception('Nepodarilo sa prihlásiť na zvolený termín.<br/>Dôvod: <b>'.$error.'</b>');
+      throw new Exception('Nepodarilo sa prihlásiť na zvolený termín.<br/>'.
+          'Dôvod: <b>'.$error.'</b>');
+    }
+    if (!preg_match("@dm\(\)\.closeDialog\("
+          ."\"VSES206_VyberTerminuHodnoteniaDlg1\"\);@", $data)) {
+      throw new Exception("Problém pri prihlasovaní: ".
+          "Neočakávaná odozva od AISu");
     }
     
-    $this->terminated = true; // po uspesnom prihlaseni za dialog hned zavrie
+    $this->closeIfNeeded($trace);
     return true;
   }
   
