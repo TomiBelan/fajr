@@ -105,26 +105,44 @@ class AIS2TableParser
     return new DataTableImpl($headers, $data);
   }
 
-  public function getCellContent(DOMElement $element)
+  public function fixNbsp($str)
   {
-    // special fix for checkboxes
-    if ($element->hasAttribute('datatype')) {
-      assert($element->getAttribute('datatype')=='boolean');
-      foreach ($element->getElementsByTagName('img') as $img) {
-        assert($img->hasAttribute('class'));
-        assert($img->getAttribute('class')=='checkedImg');
-        return "TRUE";
-      }
-      assert($element->textContent == "\302\240");
-      return "FALSE";
-    }
-    $value = $element->textContent;
-
     // special fix for &nbsp;
     // xml decoder decodes &nbsp; into special utf-8 character
     // TODO(ppershing): nehodili by sa tie &nbsp; niekedy dalej v aplikacii niekedy?
     $nbsp = chr(0xC2).chr(0xA0);
-    $value = str_replace($nbsp, ' ', $value);
+    return str_replace($nbsp, ' ', $str);
+  }
+
+  public function getCellContent(DOMElement $element)
+  {
+    // special fix for checkboxes
+    if ($element->hasAttribute('datatype')) {
+      switch ($element->getAttribute('datatype')) {
+        case 'image':
+          assert($element->getAttribute('datatype') == 'image');
+          foreach ($element->getElementsByTagName('img') as $img) {
+            assert($img->hasAttribute('src'));
+            $src = $img->getAttribute('src');
+            if (preg_match('@checked.gif@', $src)) return "TRUE";
+            if (preg_match('@removeFlag.gif@', $src)) return "FALSE";
+            assert(false);
+          }
+          assert(false);
+        case 'boolean':
+          foreach($element->getElementsByTagName('img') as $img) {
+            assert($img->hasAttribute('class'));
+            assert($img->getAttribute('class') === 'checkedImg');
+            return "TRUE";
+          }
+          assert($this->fixNbsp($element->textContent) === ' ');
+          return 'FALSE';
+        default:
+        assert(false);
+      }
+    }
+    $value = $this->fixNbsp($element->textContent);
+
     if ($value == ' ') {
       return '';
     }

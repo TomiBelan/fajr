@@ -39,7 +39,8 @@ class AIS2TableParserTest extends PHPUnit_Framework_TestCase
   public function testZoznamStudiiTableParsing()
   {
     $definition = \fajr\regression\zoznamStudiiTable::get();
-    $table = $this->parser->createTableFromHtml(new NullTrace(), $this->html, 'studiaTable_dataView');
+    $table = $this->parser->createTableFromHtml(new NullTrace(), $this->html,
+                                                'studiaTable_dataView');
     $data = $table->getData();
     $this->assertEquals(2, count($data));
     $this->assertEquals('mINF', $data[0]['studijnyProgramSkratka']);
@@ -50,11 +51,26 @@ class AIS2TableParserTest extends PHPUnit_Framework_TestCase
   public function testZapisneListyTableParsing()
   {
     $table = $this->parser->createTableFromHtml(new NullTrace(), $this->html,
-        'zapisneListyTable_dataView');
+                                                'zapisneListyTable_dataView');
     $data = $table->getData();
 
     $this->assertEquals(1, count($data));
     $this->assertEquals($data[0]['rokRocnik'], '1');
+  }
+
+  // obrazky pri datatype=img
+  public function testCheckImageParsing()
+  {
+    $html = file_get_contents(__DIR__.'/testdata/terminyHodnotenia.dat');
+    $table = $this->parser->createTableFromHtml(new NullTrace(), $html,
+                                                'terminyTable_dataView');
+    $data = $table->getData();
+    $this->assertEquals(13, count($data));
+    $this->assertEquals('TRUE', $data[0]['jePrihlaseny']);
+    $this->assertEquals('TRUE', $data[1]['jePrihlaseny']);
+    $this->assertEquals('FALSE', $data[3]['jePrihlaseny']);
+
+
   }
 }
 
