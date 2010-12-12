@@ -16,7 +16,7 @@
 namespace fajr\libfajr;
 
 use fajr\libfajr\util\CodeSnippet;
-use \Exception;
+use Exception;
 // We can't depend on autoloader here!
 require_once 'util/CodeSnippet.php';
 
