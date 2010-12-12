@@ -34,7 +34,8 @@ class ControllerModule implements Module
   public function configure(sfServiceContainerBuilder $container)
   {
     $container->register('Controller.class', '\fajr\controller\DispatchController')
-              ->addArgument('%controller.dispatchMap%');
+              ->addArgument('%controller.dispatchMap%')
+              ->setShared(false);
     $parameters = 
         array('controller.dispatchMap' => array(
                   'studium' => '\fajr\controller\studium\StudiumController',
