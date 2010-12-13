@@ -59,17 +59,14 @@ class LoginManager
       return false;
     }
 
-    // TODO(ppershing): refactor redirects into one place
     if ($server->getLoginType() == 'cosignproxy') {
         // location header set in CosignProxyLogin
-        // but we can't exit there because
-        // the session wouldn't get dropped
-        exit;
+        // do nothing.
     } else {
       FajrUtils::redirect(array(), 'index.php');
-      exit;
     }
-    assert(false);
+    // it should be safe to end script execution here.
+    exit();
   }
 
   public function login(Trace $trace, ServerConfig $serverConfig, LoginFactory $factory, AIS2ServerConnection $connection)
@@ -85,7 +82,8 @@ class LoginManager
     $this->session->write('server', $serverConfig);
 
     FajrUtils::redirect();
-    assert(false);
+    // it should be safe to end script execution here.
+    exit();
   }
 
   private function assertSecurity($condition, $message)
