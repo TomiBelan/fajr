@@ -17,10 +17,10 @@
  */
 namespace fajr\libfajr\connection;
 
-use fajr\libfajr\pub\base\Trace;
 use Exception;
-use fajr\libfajr\pub\exceptions\LoginException;
+use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\pub\connection\HttpConnection;
+use fajr\libfajr\pub\exceptions\LoginException;
 
 /**
  * HttpConnection which checks for generic
@@ -107,8 +107,7 @@ class AIS2ErrorCheckingConnection implements HttpConnection
     }
     if (preg_match(self::UNAUTHORIZED, $response)) {
       $trace->tlog("Exception encountered");
-      throw new LoginException("AIS hlási neautorizovaný prístup -
-        pravdepodobne vypršala platnosť cookie");
+      throw new LoginException("AIS hlási neautorizovaný prístup - má užívateľ prístup k aplikácii?");
     }
     return $response;
   }
