@@ -43,7 +43,7 @@
   {% set body %}
     {% for row in terminyActive %}
       {{ table.row(none, (termin != none) and (row.index == termin)) }}
-        {% if row.mozeOdhlasit == 1 %}
+        {% if row.mozeOdhlasit %}
           {% set class="terminmozeodhlasit" %}
           {% url formAction for ['action': 'studium.OdhlasZoSkusky',
                                  'studium': studium,
@@ -63,7 +63,7 @@
           {% set class="terminnemozeodhlasit" %}
           {% set odhlas="nedá sa" %}
         {% endif %}
-        {% if row.prihlaseny != 'A' %}
+        {% if row.jePrihlaseny != 'TRUE' %}
           {% set class="terminodhlaseny" %}
           {% set odhlas="Si odhlásený. Ak chceš, opäť sa prihlás." %}
         {% endif %}
