@@ -44,7 +44,7 @@
       {{ table.row(none, (termin != none) and (predmet != none) and
                          (row.index == termin) and (row.predmetIndex == predmet)) }}
         {% if row.mozeSaPrihlasit <= 0 %} {# moze sa prihlasit #}
-          {% url action for ['action': 'studium.PrihlasNaSkusku',
+          {% url form_action for ['action': 'studium.PrihlasNaSkusku',
                              'studium': studium,
                              'list': zapisnyList] %}
           {% set prihlas %}
@@ -52,7 +52,7 @@
             {% if row.mozeSaPrihlasit == "fajr\\controller\\studium\\MozePrihlasitNaTerminHelper::PRIHLASIT_MOZE_ZNAMKA"|constant %}
               Už máš zapísané "{{ row.znamka }}"
             {% endif %}
-            <form method='post' action='{{ action }}'>
+            <form method='post' action='{{ form_action }}'>
               <div>
                 <input type="hidden" name="prihlasPredmetIndex"
                        value="{{ row.predmetIndex }}" />
