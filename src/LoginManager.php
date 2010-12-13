@@ -43,6 +43,9 @@ class LoginManager
    */
   public function logout(AIS2ServerConnection $connection)
   {
+    $login = $this->session->read('login/login.class');
+    $server = $this->session->read('server');
+
     // It is better to remove all session information also
     // in case when logout fails. Otherwise it may be not
     // possible for user to logout from fajr and this
@@ -52,8 +55,6 @@ class LoginManager
     $this->session->remove('server');
     $this->session->regenerate(true);
 
-    $login = $this->session->read('login/login.class');
-    $server = $this->session->read('server');
     if ($login === null) return false;
     if (!$login->logout($connection)) {
       return false;
