@@ -9,16 +9,18 @@
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */
-namespace fajr;
+namespace fajr\controller\studium;
 
+use fajr\libfajr\base\DisableEvilCallsObject;
+use InvalidArgumentException;
 
-class PriemeryInternal
+class PriemeryInternal extends DisableEvilCallsObject
 {
   protected $sucet = 0;
   protected $sucetVah = 0;
-  protected $pocet = 0; // TODO(ppershing): rename to pocetPredmetov
-  protected $pocetKreditov = 0;
-  protected $pocetNeohodnotenych = 0; // TODO(ppershing): rename
+  protected $pocetPredmetovOhodnotenych = 0;
+  protected $pocetKreditovOhodnotenych = 0;
+  protected $pocetPredmetovNeohodnotenych = 0;
   protected $pocetKreditovNeohodnotenych = 0;
 
   protected static $numerickaHodnotaZnamky = array(
@@ -34,13 +36,13 @@ class PriemeryInternal
   {
     $this->sucet += $hodnota;
     $this->sucetVah += $hodnota*$kredity;
-    $this->pocet += 1;
-    $this->pocetKreditov += $kredity;
+    $this->pocetPredmetovOhodnotenych += 1;
+    $this->pocetKreditovOhodnotenych += $kredity;
   }
 
   private function addNeohodnotene($kredity)
   {
-    $this->pocetNeohodnotenych += 1;
+    $this->pocetPredmetovNeohodnotenych += 1;
     $this->pocetKreditovNeohodnotenych += $kredity;
   }
 
@@ -50,20 +52,21 @@ class PriemeryInternal
       $hodnota = PriemeryInternal::$numerickaHodnotaZnamky[$znamka];
       $this->addOhodnotene($hodnota, $kredity);
     }
-    else { // FIXME(co tak porovnat na '' a pripadne vyrazit exception ak
-           // je to neocakavana znamka?
+    else if ($znamka === '') {
       $this->addNeohodnotene($kredity);
+    } else {
+      throw new InvalidArgumentException("Známka '$znamka' nie je platná");
     }
   }
 
   public function studijnyPriemer($neohodnotene = true)
   {
     $suma = $this->sucet;
-    $pocet = $this->pocet;
+    $pocet = $this->pocetPredmetovOhodnotenych;
 
     if ($neohodnotene) {
-      $suma += $this->pocetNeohodnotenych*self::$numerickaHodnotaZnamky['Fx'];
-      $pocet += $this->pocetNeohodnotenych;
+      $suma += $this->pocetPredmetovNeohodnotenych * self::$numerickaHodnotaZnamky['Fx'];
+      $pocet += $this->pocetPredmetovNeohodnotenych;
     }
 
     if ($pocet == 0) {
@@ -75,20 +78,30 @@ class PriemeryInternal
   public function vazenyPriemer($neohodnotene=true)
   {
     $suma = $this->sucetVah;
-    $pocet = $this->pocetKreditov;
+    $pocet = $this->pocetKreditovOhodnotenych;
     if ($neohodnotene) {
-      $suma += $this->pocetKreditovNeohodnotenych*self::$numerickaHodnotaZnamky['Fx'];
+      $suma += $this->pocetKreditovNeohodnotenych * self::$numerickaHodnotaZnamky['Fx'];
       $pocet += $this->pocetKreditovNeohodnotenych;
     }
     if ($pocet == 0) {
       return null;
     }
-    return $suma/$pocet;
+    return $suma / $pocet;
   }
 
   public function hasPriemer()
   {
-    return $this->pocet > 0;
+    return $this->pocetPredmetovOhodnotenych > 0;
+  }
+
+  public function kreditovCelkom()
+  {
+    return $this->pocetKreditovOhodnotenych + $this->pocetKreditovNeohodnotenych;
+  }
+
+  public function predmetovCelkom()
+  {
+    return $this->pocetPredmetovOhodnotenych + $this->pocetPredmetovNeohodnotenych;
   }
 
 }

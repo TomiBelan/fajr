@@ -18,11 +18,15 @@ use fajr\libfajr\pub\base\Trace;
 use fajr\controller\BaseController;
 use fajr\Request;
 use fajr\Response;
+use fajr\FajrUtils;
 use fajr\libfajr\pub\window\VSES017_administracia_studia as VSES017; // *
-use fajr\PriemeryCalculator;
+use fajr\controller\studium\PriemeryCalculator;
 use fajr\Sorter;
 use fajr\libfajr\AIS2Utils;
 use fajr\Context;
+use Exception;
+
+fields::autoload();
 
 /**
  * Controller, ktory nacita informacie o aktualnom studiu
@@ -33,9 +37,16 @@ use fajr\Context;
  */
 class StudiumController extends BaseController
 {
+  // @input
+  private $studium;
+  private $zapisnyList;
 
-  /** @var VSES017_factory Screen factory to use */
-  protected $screenFactory = null;
+  // @private
+  private $zoznamStudii;
+  private $zapisneListy;
+  private $terminyHodnoteniaScreen;
+  private $hodnoteniaScreen;
+
 
   /**
    * Invoke an action given its name
@@ -49,20 +60,20 @@ class StudiumController extends BaseController
    */
   public function invokeAction(Trace $trace, $action, Context $context)
   {
+    Preconditions::checkIsString($action);
+
     $request = $context->getRequest();
     $response = $context->getResponse();
 
-    Preconditions::checkIsString($action);
-
-    $this->screenFactory = new VSES017\VSES017_factory($context->getAisConnection());
-    $this->adminStudia = $this->screenFactory->newAdministraciaStudiaScreen($trace);
+    $screenFactory = new VSES017\VSES017_factory($context->getAisConnection());
+    $adminStudia = $screenFactory->newAdministraciaStudiaScreen($trace);
 
     $this->studium = $request->getParameter('studium', '0');
 
-    $this->zoznamStudii = $this->adminStudia->getZoznamStudii(
+    $this->zoznamStudii = $adminStudia->getZoznamStudii(
                                       $trace->addChild("Get Zoznam Studii:"));
 
-    $this->zapisneListy = $this->adminStudia->getZapisneListy(
+    $this->zapisneListy = $adminStudia->getZapisneListy(
                                       $trace->addChild('getZapisneListy'),
                                       $this->studium);
 
@@ -74,21 +85,21 @@ class StudiumController extends BaseController
       $this->zapisnyList = $lastList['index'];
     }
 
-    $this->terminyHodnoteniaScreen = $this->screenFactory->newTerminyHodnoteniaScreen(
+    $this->terminyHodnoteniaScreen = $screenFactory->newTerminyHodnoteniaScreen(
               $trace,
-              $this->adminStudia->getZapisnyListIdFromZapisnyListIndex($trace, $this->zapisnyList),
-              $this->adminStudia->getStudiumIdFromZapisnyListIndex($trace, $this->zapisnyList));
+              $adminStudia->getZapisnyListIdFromZapisnyListIndex($trace, $this->zapisnyList),
+              $adminStudia->getStudiumIdFromZapisnyListIndex($trace, $this->zapisnyList));
 
     // FIXME: chceme to nejak refaktorovat, aby sme nevytvarali zbytocne
     // objekty, ktore v konstruktore robia requesty
-    $this->hodnoteniaScreen = $this->screenFactory->newHodnoteniaPriemeryScreen(
+    $this->hodnoteniaScreen = $screenFactory->newHodnoteniaPriemeryScreen(
           $trace,
-          $this->adminStudia->getZapisnyListIdFromZapisnyListIndex($trace, $this->zapisnyList));
+          $adminStudia->getZapisnyListIdFromZapisnyListIndex($trace, $this->zapisnyList));
 
     $response->set('zoznamStudii', $this->zoznamStudii);
     $response->set('studium', $this->studium);
     $response->set('zapisneListy', $this->zapisneListy);
-    $response->set('zapisnyList', $this->zapisnyList);    
+    $response->set('zapisnyList', $this->zapisnyList);
 
     parent::invokeAction($trace, $action, $context);
   }
@@ -103,42 +114,36 @@ class StudiumController extends BaseController
     $request = $context->getRequest();
     $response = $context->getResponse();
 
-    $this->hodnotenia = $this->hodnoteniaScreen->getHodnotenia($trace);
-    $this->priemeryCalculator = new PriemeryCalculator();
+    $hodnotenia = $this->hodnoteniaScreen->getHodnotenia($trace);
+    $priemeryCalculator = new PriemeryCalculator();
 
-    $this->hodnoteniaData = Sorter::sort($this->hodnotenia->getData(),
+    $hodnoteniaData = Sorter::sort($hodnotenia->getData(),
           array("semester"=>-1, "nazov"=>1));
 
-    foreach($this->hodnoteniaData as $row) {
-      if ($row['semester']=='L') {
-        $this->priemeryCalculator->add(PriemeryCalculator::SEMESTER_LETNY,
-          $row['znamka'], $row['kredit']);
-      }
-      else {
-        $this->priemeryCalculator->add(PriemeryCalculator::SEMESTER_ZIMNY,
-          $row['znamka'], $row['kredit']);
-      }
+    foreach($hodnoteniaData as $hodnoteniaRow) {
+      $semester = $hodnoteniaRow[HodnoteniaFields::SEMESTER] == 'L' ?
+          PriemeryCalculator::SEMESTER_LETNY : PriemeryCalculator::SEMESTER_ZIMNY;
+
+      $priemeryCalculator->add($semester,
+                               $hodnoteniaRow[HodnoteniaFields::ZNAMKA],
+                               $hodnoteniaRow[HodnoteniaFields::KREDIT]);
     }
 
-    $this->priemery = $this->hodnoteniaScreen->getPriemery($trace);
+    $priemery = $this->hodnoteniaScreen->getPriemery($trace);
 
-    $response->set('hodnotenia', $this->hodnoteniaData);
-    $response->set('priemery', $this->priemery->getData());
-    $response->set('priemeryCalculator', $this->priemeryCalculator);
+    $response->set('hodnotenia', $hodnoteniaData);
+    $response->set('priemery', $priemery->getData());
+    $response->set('priemeryCalculator', $priemeryCalculator);
     $response->setTemplate('studium/hodnotenia');
   }
 
-  /**
-   * ked odhlasujeme z predmetu, narozdiel od AISu robime opat
-   * inicializaciu vsetkych aplikacii. Just for sure chceme
-   * okontrolovat, ze sa nic nezmenilo a ze sme dostali rovnake data
-   * ako predtym!
-   */
-  private function hashNaOdhlasenie($row) {
-    return
-      md5($row['index'].'|'.$row['datum'].'|'.$row['cas'].'|'.$row['predmet']);
-  }
 
+  /**
+   * Akcia ktora odhlasi cloveka z danej skusky
+   *
+   * @param Trace $trace trace object
+   * @param Context $context
+   */
   public function runOdhlasZoSkusky(Trace $trace, Context $context) {
 
     $request = $context->getRequest();
@@ -146,8 +151,9 @@ class StudiumController extends BaseController
 
     $terminIndex = $request->getParameter("odhlasIndex");
 
-    $terminy = $this->terminyHodnoteniaScreen->getTerminyHodnotenia($this->trace->addChild('get terminy
-          hodnotenia '))->getData();
+    $terminy = $this->terminyHodnoteniaScreen
+        ->getTerminyHodnotenia($trace->addChild('get terminy hodnotenia '))
+        ->getData();
 
     $terminKey = -1;
     foreach ($terminy as $key=>$row) {
@@ -158,14 +164,16 @@ class StudiumController extends BaseController
       throw new Exception("Ooops, predmet/termín nenájdený. Pravdepodobne
           zmena dát v AISe.");
     }
-    if ($request->getParameter("hash") != $this->hashNaOdhlasenie($terminy[$terminKey])) {
+    if ($request->getParameter("hash") !== StudiumUtils::hashNaOdhlasenie($terminy[$terminKey])) {
       throw new Exception("Ooops, nesedia údaje o termíne. Pravdepodobne zmena
           dát v AISe spôsobila posunutie tabuliek.");
     }
 
-    if (!$this->terminyHodnoteniaScreen->odhlasZTerminu($terminIndex)) {
+    if (!$this->terminyHodnoteniaScreen->odhlasZTerminu($trace->addChild('odhlasujem'), $terminIndex)) {
       throw new Exception('Z termínu sa nepodarilo odhlásiť.');
     }
+
+    $response->setTemplate('redirect');
 
     FajrUtils::redirect(array('action' => 'studium.MojeTerminyHodnotenia',
                               'studium' => $this->studium,
@@ -186,101 +194,96 @@ class StudiumController extends BaseController
 
     $termin = $request->getParameter('termin');
 
-    $this->terminyHodnotenia = $this->terminyHodnoteniaScreen->getTerminyHodnotenia(
+    $terminyHodnotenia = $this->terminyHodnoteniaScreen->getTerminyHodnotenia(
         $trace->addChild("get terminy hodnotenia"));
     $hodnotenia = $this->hodnoteniaScreen->getHodnotenia(
         $trace->addChild("get hodnotenia"));
-
+    
     $hodnoteniePredmetu = array();
-    foreach($hodnotenia->getData() as $row) {
-      $hodnoteniePredmetu[$row['nazov']] = $row['znamka'];
+    foreach($hodnotenia->getData() as $hodnoteniaRow) {
+      $hodnoteniePredmetu[$hodnoteniaRow[HodnoteniaFields::PREDMET_SKRATKA]] =
+            $hodnoteniaRow[HodnoteniaFields::ZNAMKA];
     }
 
-    $this->terminyHodnoteniaActive = array();
-    $this->terminyHodnoteniaOld = array();
+    $terminyHodnoteniaActive = array();
+    $terminyHodnoteniaOld = array();
 
-    foreach($this->terminyHodnotenia->getData() as $row) {
-      $datum = AIS2Utils::parseAISDateTime($row['dat']." ".$row['cas']);
+    foreach($terminyHodnotenia->getData() as $terminyRow) {
+      $mojeTerminyRow = $terminyRow;
 
-      if ($row['znamka']=="") { // skusme najst znamku v hodnoteniach
-        if (isset($hodnoteniePredmetu[$row['predmet']]) &&
-              $hodnoteniePredmetu[$row['predmet']]!="") {
-            $row['znamka'] =
-                $hodnoteniePredmetu[$row['predmet']]." (z&nbsp;predmetu)";
+      if ($terminyRow[TerminyFields::ZNAMKA] == '') { // skusme najst znamku v hodnoteniach
+        $predmet = $terminyRow[TerminyFields::PREDMET_SKRATKA];
+        if (isset($hodnoteniePredmetu[$predmet]) &&
+              $hodnoteniePredmetu[$predmet] != '' ) {
+            // TODO(ppershing): move this to another field and deal with it in template!
+            $mojeTerminyRow[TerminyFields::ZNAMKA] =
+                $hodnoteniePredmetu[$predmet]." (nepriradená k termínu)";
             }
       }
 
+      $datum = AIS2Utils::parseAISDateTime($terminyRow[TerminyFields::DATUM]." ".$terminyRow[TerminyFields::CAS]);
       if ($datum < time()) {
-        if ($row['jePrihlaseny']=='A') {
-          $this->terminyHodnoteniaOld[] = $row;
+        if ($terminyRow[TerminyFields::JE_PRIHLASENY]=='TRUE') {
+          $terminyHodnoteniaOld[] = $mojeTerminyRow;
         }
       } else {
-        if ($row['mozeOdhlasit'] == 1) {
-          $row['hashNaOdhlasenie'] = $this->hashNaOdhlasenie($row);
+        if ($terminyRow[TerminyFields::MOZE_ODHLASIT] == 1) {
+          $mojeTerminyRow[MojeTerminyFields::HASH_ODHLASENIE] = StudiumUtils::hashNaOdhlasenie($terminyRow);
         }
 
-        $this->terminyHodnoteniaActive[] = $row;
+        $terminyHodnoteniaActive[] = $mojeTerminyRow;
       }
     }
 
-    $this->prihlaseni = null;
     $response->set('prihlaseni', null);
-    if ($request->getParameter('termin')!=null) {
-      $this->prihlaseni = $this->terminyHodnoteniaScreen->
+    if ($request->getParameter('termin') !== '') {
+      $prihlaseni = $this->terminyHodnoteniaScreen->
             getZoznamPrihlasenychDialog($trace, $termin)->
               getZoznamPrihlasenych($trace);
-      $response->set('prihlaseni', $this->prihlaseni->getData());
+      $response->set('prihlaseni', $prihlaseni->getData());
     }
 
-    $response->set('terminyActive', $this->terminyHodnoteniaActive);
-    $response->set('terminyOld', $this->terminyHodnoteniaOld);
+    $response->set('terminyActive', $terminyHodnoteniaActive);
+    $response->set('terminyOld', $terminyHodnoteniaOld);
     $response->set('termin', $termin);
-
-    
 
     $response->setTemplate('studium/mojeTerminyHodnotenia');
   }
 
+  /**
+   * Akcia ktora zobrazi predmety zapisane danym clovekom
+   *
+   * @param Trace $trace trace object
+   * @param Context $context
+   */
   public function runZapisanePredmety(Trace $trace, Context $context) {
-
     $request = $context->getRequest();
     $response = $context->getResponse();
-    
-    $predmetyZapisnehoListu = $this->terminyHodnoteniaScreen->getPredmetyZapisnehoListu($trace);
-    
-    $this->kreditovCelkomLeto = 0;
-    $this->kreditovCelkomZima = 0;
-    $this->pocetPredmetovLeto = 0;
-    $this->pocetPredmetovZima = 0;
 
-    $this->predmetyZapisnehoListuData = Sorter::sort($predmetyZapisnehoListu->getData(),
+    $predmetyZapisnehoListu = $this->terminyHodnoteniaScreen->getPredmetyZapisnehoListu($trace);
+
+    $priemeryCalculator = new PriemeryCalculator();
+
+    $predmetyZapisnehoListuData = Sorter::sort($predmetyZapisnehoListu->getData(),
           array("kodSemester"=>-1, "nazov"=>1));
 
-    foreach ($this->predmetyZapisnehoListuData as $row) {
-      if ($row['kodSemester']=='L') {
-        $this->pocetPredmetovLeto += 1;
-        $this->kreditovCelkomLeto += $row['kredit'];
-      }
-      else {
-        $this->pocetPredmetovZima += 1;
-        $this->kreditovCelkomZima += $row['kredit'];
-      }
+    foreach ($predmetyZapisnehoListuData as $predmetyRow) {
+      $semester = $predmetyRow[PredmetyFields::SEMESTER] == 'L' ?
+          PriemeryCalculator::SEMESTER_LETNY : PriemeryCalculator::SEMESTER_ZIMNY;
+      $priemeryCalculator->add($semester, '', $predmetyRow[PredmetyFields::KREDIT]);
     }
 
-    $response->set('predmetyZapisnehoListu', $this->predmetyZapisnehoListuData);
-    $response->set('kreditovCelkomLeto', $this->kreditovCelkomLeto);
-    $response->set('kreditovCelkomZima', $this->kreditovCelkomZima);
-    $response->set('pocetPredmetovLeto', $this->pocetPredmetovLeto);
-    $response->set('pocetPredmetovZima', $this->pocetPredmetovZima);
+    $response->set('predmetyZapisnehoListu', $predmetyZapisnehoListuData);
+    $response->set('predmetyStatistika', $priemeryCalculator);
     $response->setTemplate('studium/zapisanePredmety');
   }
 
-  private function hashNaPrihlasenie($predmet, $row) {
-    return
-      md5($row['index'].'|'.$row['dat'].'|'.$row['cas'].'|'.$predmet);
-
-  }
-
+  /**
+   * Akcia ktora sa pokusi prihlasit cloveka na danu skusku
+   *
+   * @param Trace $trace trace object
+   * @param Context $context
+   */
   public function runPrihlasNaSkusku(Trace $trace, Context $context)
   {
     $request = $context->getRequest();
@@ -289,138 +292,111 @@ class StudiumController extends BaseController
     $predmetIndex = $request->getParameter("prihlasPredmetIndex");
     $terminIndex = $request->getParameter("prihlasTerminIndex");
 
-    $predmety = $this->terminyHodnoteniaScreen->getPredmetyZapisnehoListu()->getData();
+    $predmety = $this->terminyHodnoteniaScreen
+          ->getPredmetyZapisnehoListu($trace->addChild('Predmety zapisneho listu'))
+          ->getData();
     $predmetKey = -1;
     foreach ($predmety as $key=>$row) {
-      if ($row['index']==$predmetIndex) $predmetKey = $key;
+      if ($row[PredmetyFields::INDEX] == $predmetIndex) $predmetKey = $key;
     }
 
-    $terminy =
-      $this->terminyHodnoteniaScreen->getZoznamTerminovDialog($predmetIndex)->getZoznamTerminov()->getData();
+    $childTrace = $trace->addChild('Zoznam terminov');
+    $terminyDialog = $this->terminyHodnoteniaScreen
+        ->getZoznamTerminovDialog($childTrace, $predmetIndex);
+
+    $terminy = $terminyDialog->getZoznamTerminov($childTrace)->getData();
     $terminKey = -1;
-    foreach($terminy as $key=>$row) {
-      if ($row['index']==$terminIndex) $terminKey = $key;
+    foreach($terminy as $key=>$terminyRow) {
+      if ($terminyRow[TerminyFields::INDEX] == $terminIndex) $terminKey = $key;
     }
     if ($predmetKey == -1 || $terminKey == -1) {
       throw new Exception("Ooops, predmet/termín nenájdený. Pravdepodobne
           zmena dát v AISe.");
     }
 
-    $hash = $this->hashNaPrihlasenie($predmety[$predmetIndex]['nazov'],
-        $terminy[$terminIndex]);
+    $hash = StudiumUtils::hashNaPrihlasenie($predmety[$predmetKey][PredmetyFields::SKRATKA],
+                                     $terminy[$terminIndex]);
     if ($hash != $request->getParameter('hash')) {
       throw new Exception("Ooops, nesedia údaje o termíne. Pravdepodobne zmena
           dát v AISe spôsobila posunutie tabuliek.");
     }
-    if (!$this->terminyHodnoteniaScreen->getZoznamTerminovDialog($predmetIndex)->prihlasNaTermin($terminIndex)) {
+    if (!$terminyDialog->prihlasNaTermin($trace->addChild('prihlasujem na termin'), $terminIndex)) {
       throw new Exception('Na skúšku sa nepodarilo prihlásiť.');
     }
 
+    $response->setTemplate('redirect');
+    
     FajrUtils::redirect(array('action' => 'studium.MojeTerminyHodnotenia',
                               'studium' => $this->studium,
                               'list' => $this->zapisnyList));
   }
 
-  const PRIHLASIT_MOZE = 0;
-  const PRIHLASIT_MOZE_ZNAMKA = -1;
-  const PRIHLASIT_NEMOZE_CAS = 1;
-  const PRIHLASIT_NEMOZE_POCET = 2;
-  const PRIHLASIT_NEMOZE_ZNAMKA = 3;
-  const PRIHLASIT_NEMOZE_INE = 4;
 
   /**
-   * TODO: toto by malo byt v modeli, nie v controlleri
-   * @param <type> $row
-   * @return <type>
+   * Akcia ktora zobrazi terminy, na ktore je mozne potencialne sa prihlasit.
+   *
+   * @param Trace $trace trace object
+   * @param Context $context
    */
-  private function mozeSaPrihlasit($row) {
-    $prihlasRange = AIS2Utils::parseAISDateTimeRange($row['prihlasovanie']);
-    $predmet = $row['predmet'];
-    if (isset($this->hodnoteniaData[$predmet]['znamka'])) {
-      $znamka = $this->hodnoteniaData[$predmet]['znamka'];
-    } else {
-      $znamka = "";
-    }
-
-    if (isset($this->hodnoteniaData[$predmet]['mozePrihlasit']) &&
-        $this->hodnoteniaData[$predmet]['mozePrihlasit']=='N') {
-      $mozePredmet = false;
-    } else {
-      $mozePredmet = true;
-    }
-
-    if ($znamka!="" && $znamka!="FX" && !$mozePredmet) {
-      return self::PRIHLASIT_NEMOZE_ZNAMKA;
-    }
-
-    if (!($prihlasRange['od'] < time() && $prihlasRange['do']>time())) {
-      return self::PRIHLASIT_NEMOZE_CAS;
-    }
-    if ($row['maxPocet'] != '' &&
-        $row['maxPocet']==$row['pocetPrihlasenych']) {
-      return self::PRIHLASIT_NEMOZE_POCET;
-    }
-
-    if (!$mozePredmet) {
-      return self::PRIHLASIT_NEMOZE_INE;
-    }
-
-    if ($znamka!="" && $znamka!="FX" && $mozePredmet) {
-      return self::PRIHLASIT_MOZE_ZNAMKA;
-    }
-
-    return self::PRIHLASIT_MOZE;
-  }
-
   public function runZoznamTerminov(Trace $trace, Context $context) {
     $request = $context->getRequest();
     $response = $context->getResponse();
 
-    $this->predmetyZapisnehoListu = $this->terminyHodnoteniaScreen->getPredmetyZapisnehoListu($trace);
+    $predmetyZapisnehoListu = $this->terminyHodnoteniaScreen->getPredmetyZapisnehoListu($trace);
     $hodnoteniaData = array();
 
     foreach ($this->hodnoteniaScreen->getHodnotenia($trace)->getData() as $row) {
-      $hodnoteniaData[$row['nazov']]=$row;;
+      $hodnoteniaData[$row[HodnoteniaFields::PREDMET_SKRATKA]] = $row;
     }
-    $this->hodnoteniaData = $hodnoteniaData;
 
-    $this->terminyData = array();
-    
-    foreach ($this->predmetyZapisnehoListu->getData() as $predmetRow) {
+    $mozePrihlasitHelper = new MozePrihlasitNaTerminHelper($hodnoteniaData);
 
+    $terminyData = array();
+
+    foreach ($predmetyZapisnehoListu->getData() as $predmetRow) {
+      $predmetSkratka = $predmetRow[PredmetyFields::SKRATKA];
+      $predmetId = $predmetRow[PredmetyFields::INDEX];
+      $predmet = $predmetRow[PredmetyFields::NAZOV];
+
+      $childTrace = $trace->addChild('Get zoznam terminov');
       $dialog = $this->terminyHodnoteniaScreen->getZoznamTerminovDialog(
-          $trace->addChild('Get zoznam terminov'), $predmetRow['index']);
-      $terminy = $dialog->getZoznamTerminov($trace->addChild('Get zoznam terminov'));
-      unset($dialog);
+          $childTrace, $predmetId);
+      $terminy = $dialog->getZoznamTerminov($childTrace);
+      // explicitly close this dialog otherwise we will be blocked for next iteration!
+      $dialog->closeIfNeeded($childTrace);
 
       foreach($terminy->getData() as $row) {
-        $row['predmet'] = $predmetRow['nazov'];
-        $row['predmetIndex'] = $predmetRow['index'];
-        $row['znamka'] = $hodnoteniaData[$row['predmet']]['znamka'];
+        $prihlasTerminyRow = $row;
+        $prihlasTerminyRow[PrihlasTerminyFields::PREDMET] = $predmet;
+        $prihlasTerminyRow[PrihlasTerminyFields::PREDMET_INDEX] = $predmetId;
+        $prihlasTerminyRow[PrihlasTerminyFields::PREDMET_SKRATKA] = $predmetSkratka;
+        $prihlasTerminyRow[PrihlasTerminyFields::ZNAMKA] = $hodnoteniaData[$predmetSkratka][HodnoteniaFields::ZNAMKA];
 
-        $row['hashNaPrihlasenie'] = $this->hashNaPrihlasenie($predmetRow['nazov'], $row);
+        $prihlasTerminyRow[PrihlasTerminyFields::HASH_PRIHLASENIE] =
+            StudiumUtils::hashNaPrihlasenie($predmetSkratka, $row);
 
-        $row['mozeSaPrihlasit'] = $this->mozeSaPrihlasit($row);
-        
-        $this->terminyData[] = $row;
+        // PrihlasTerminyFields::ZNAMKA, PREDMET_SKRATKA must be set before!
+        $prihlasTerminyRow[PrihlasTerminyFields::FAJR_MOZE_PRIHLASIT] =
+          $mozePrihlasitHelper->mozeSaPrihlasit($prihlasTerminyRow, time());
+
+        $terminyData[] = $prihlasTerminyRow;
       }
     }
 
-    $this->prihlaseni = null;
     $response->set('prihlaseni', null);
-    if ($request->getParameter('termin') != null && $request->getParameter('predmet')!=null) {
-      $this->prihlaseni = $this->terminyHodnoteniaScreen->getZoznamTerminovDialog($trace, $request->getParameter('predmet'))
+    if ($request->getParameter('termin') !== '' &&
+        $request->getParameter('predmet') !== '') {
+      $prihlaseni = $this->terminyHodnoteniaScreen->getZoznamTerminovDialog($trace, $request->getParameter('predmet'))
         ->getZoznamPrihlasenychDialog($trace, $request->getParameter('termin'))
         ->getZoznamPrihlasenych($trace);
-      $response->set('prihlaseni', $this->prihlaseni->getData());
+      $response->set('prihlaseni', $prihlaseni->getData());
     }
 
-    $response->set('predmetyZapisnehoListu', $this->predmetyZapisnehoListu);
-    $response->set('terminy', $this->terminyData);
+    $response->set('predmetyZapisnehoListu', $predmetyZapisnehoListu);
+    $response->set('terminy', $terminyData);
     $response->set('termin', $request->getParameter('termin'));
     $response->set('predmet', $request->getParameter('predmet'));
 
     $response->setTemplate('studium/zoznamTerminov');
   }
-
 }

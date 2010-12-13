@@ -49,7 +49,7 @@
                              'list': zapisnyList] %}
           {% set prihlas %}
             {# TODO(anty): update after those checks are moved to the model #}
-            {% if row.mozeSaPrihlasit == "fajr\\controller\\studium\\StudiumController::PRIHLASIT_MOZE_ZNAMKA"|constant %}
+            {% if row.mozeSaPrihlasit == "fajr\\controller\\studium\\MozePrihlasitNaTerminHelper::PRIHLASIT_MOZE_ZNAMKA"|constant %}
               Už máš zapísané "{{ row.znamka }}"
             {% endif %}
             <form method='post' action='{{ action }}'>
@@ -65,11 +65,11 @@
               </div>
             </form>
           {% endset %}
-        {% elseif row.mozeSaPrihlasit == "fajr\\controller\\studium\\StudiumController::PRIHLASIT_NEMOZE_CAS"|constant %}
+        {% elseif row.mozeSaPrihlasit == "fajr\\controller\\studium\\MozePrihlasitNaTerminHelper::PRIHLASIT_NEMOZE_CAS"|constant %}
           {% set prihlas="Nedá sa (mimo termínu prihlasovania)" %}
-        {% elseif row.mozeSaPrihlasit == "fajr\\controller\\studium\\StudiumController::PRIHLASIT_NEMOZE_POCET"|constant %}
+        {% elseif row.mozeSaPrihlasit == "fajr\\controller\\studium\\MozePrihlasitNaTerminHelper::PRIHLASIT_NEMOZE_POCET"|constant %}
           {% set prihlas="Termín je plný" %}
-        {% elseif row.mozeSaPrihlasit == "fajr\\controller\\studium\\StudiumController::PRIHLASIT_NEMOZE_ZNAMKA"|constant %}
+        {% elseif row.mozeSaPrihlasit == "fajr\\controller\\studium\\MozePrihlasitNaTerminHelper::PRIHLASIT_NEMOZE_ZNAMKA"|constant %}
           {% set prihlas %}Už máš zapísané "{{ row.znamka }}"{% endset %}
         {% else %}
           {% set prihlas="Nedá sa, dôvod neznámy" %}

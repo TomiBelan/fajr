@@ -28,10 +28,12 @@
   {% set foot %}
     {{ table.row(none, false) }}
       <td></td>
-      <td>Celkom {{ pocetPredmetovZima+pocetPredmetovLeto }} predmetov
-        ({{ pocetPredmetovZima }} v zime, {{ pocetPredmetovLeto }} v lete)</td>
-      <td>{{ kreditovCelkomZima+kreditovCelkomLeto }}
-        ({{ kreditovCelkomZima }}+{{ kreditovCelkomLeto }})</td>
+      <td>Celkom {{ predmetyStatistika.obdobia.rok.predmetovCelkom() }} predmetov
+        ({{ predmetyStatistika.obdobia.zima.predmetovCelkom() }} v zime,
+         {{ predmetyStatistika.obdobia.leto.predmetovCelkom() }} v lete)</td>
+      <td>{{ predmetyStatistika.obdobia.rok.kreditovCelkom() }}
+        ({{ predmetyStatistika.obdobia.zima.kreditovCelkom() }}+{{
+            predmetyStatistika.obdobia.leto.kreditovCelkom() }})</td>
       <td></td>
       <td></td>
     {{ table.endrow() }}
