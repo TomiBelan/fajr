@@ -19,7 +19,6 @@ use fajr\libfajr\AIS2Session;
 use fajr\libfajr\base\SystemTimer;
 use fajr\libfajr\connection;
 use fajr\libfajr\pub\connection\HttpConnection;
-use fajr\libfajr\pub\login\CosignServiceCookie;
 use fajr\libfajr\pub\base\NullTrace;
 use fajr\libfajr\pub\login\Login;
 use fajr\libfajr\pub\connection\AIS2ServerConnection;
