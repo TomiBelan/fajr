@@ -1,3 +1,4 @@
+{% if availableServers|length > 1 %}
 <div class='prepend-1 span-7 last increase-line-height'>
   <form id="serverSelectForm" method="post" action="index.php">
     <fieldset>
@@ -21,3 +22,4 @@
     </fieldset>
   </form>
 </div>
+{% endif %}
