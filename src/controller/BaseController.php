@@ -48,7 +48,7 @@ abstract class BaseController extends DisableEvilCallsObject implements Controll
     Preconditions::checkIsString($action);
     Preconditions::checkMatchesPattern('@^[A-Z][a-zA-Z]*$@', $action,
         '$action must start with capital letter and ' .
-        'contain only alphanumeric characters.');
+        'contain only letters.');
 
     $methodName = 'run'.$action;
 
