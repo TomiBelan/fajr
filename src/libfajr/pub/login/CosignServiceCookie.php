@@ -48,9 +48,12 @@ final class CosignServiceCookie
    */
   public function __construct($name, $value, $domain)
   {
-    Preconditions::checkMatchesPattern(self::NAME_PATTERN, $name, 'name');
-    Preconditions::checkMatchesPattern(self::VALUE_PATTERN, $value, 'value');
-    Preconditions::checkMatchesPattern(self::DOMAIN_PATTERN, $domain, 'domain');
+    Preconditions::checkMatchesPattern(self::NAME_PATTERN, $name,
+        '$name did not match allowed pattern.');
+    Preconditions::checkMatchesPattern(self::VALUE_PATTERN, $value,
+        '$value did not match allowed pattern.');
+    Preconditions::checkMatchesPattern(self::DOMAIN_PATTERN, $domain,
+        '$domain did not match allowed pattern.');
     $this->name = $name;
     $this->value = $value;
     $this->domain = $domain;
@@ -98,7 +101,7 @@ final class CosignServiceCookie
    */
   public static function removeTimestamp($value)
   {
-    Preconditions::checkIsString($value, 'value');
+    Preconditions::checkIsString($value, '$value should be string.');
     $parts = explode('/', $value, 2);
     return $parts[0];
   }
@@ -111,7 +114,7 @@ final class CosignServiceCookie
    */
   public static function replaceSpaces($value)
   {
-    Preconditions::checkIsString($value, 'value');
+    Preconditions::checkIsString($value, '$value should be string.');
     return strtr($value, ' ', '+');
   }
 
@@ -124,7 +127,7 @@ final class CosignServiceCookie
    */
   public static function fixCookieValue($value)
   {
-    Preconditions::checkIsString($value, 'value');
+    Preconditions::checkIsString($value, '$value should be string.');
     $value = self::removeTimestamp($value);
     $value = self::replaceSpaces($value);
     return $value;

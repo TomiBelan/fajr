@@ -43,7 +43,7 @@ class ArrayTrace implements Trace
    */
   public function setHeader($header)
   {
-    Preconditions::checkIsString($header, 'header');
+    Preconditions::checkIsString($header, '$header should be string');
     $this->header = $header;
   }
 
@@ -53,7 +53,7 @@ class ArrayTrace implements Trace
    */
   public function tlog($text)
   {
-    Preconditions::checkIsString($text, 'text');
+    Preconditions::checkIsString($text, '$text should be string');
     $this->children[] = array('info'=>$this->getInfoArray(),
                               'type'=>'log',
                               'data'=>$text);
@@ -65,7 +65,7 @@ class ArrayTrace implements Trace
    */
   public function tlogData($text)
   {
-    Preconditions::checkIsString($text, 'text');
+    Preconditions::checkIsString($text, '$text should be string');
     $this->children[] = array('info'=>$this->getInfoArray(),
                               'type'=>'data',
                               'data'=>$text);
@@ -92,7 +92,7 @@ class ArrayTrace implements Trace
    */
   public function addChild($header = "")
   {
-    Preconditions::checkIsString($header, 'header');
+    Preconditions::checkIsString($header, '$header should be string');
     $child = new ArrayTrace($this->timer, $header);
     $this->children[] = array('info'=>$this->getInfoArray(),
                               'type'=>'trace',

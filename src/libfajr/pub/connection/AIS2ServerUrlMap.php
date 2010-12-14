@@ -52,7 +52,7 @@ class AIS2ServerUrlMap extends DisableEvilCallsObject
    */
   public function __construct($serverName)
   {
-    Preconditions::checkIsString($serverName);
+    Preconditions::checkIsString($serverName, '$serverName should be string.');
     $this->serverName = $serverName;
   }
 
@@ -65,8 +65,8 @@ class AIS2ServerUrlMap extends DisableEvilCallsObject
    */
   private function _getUrl($path)
   {
-    Preconditions::checkNotNull($path, "url path");
-    Preconditions::checkIsString($path, "url path");
+    Preconditions::checkNotNull($path, "url path shouldn't be null.");
+    Preconditions::checkIsString($path, "url path should be string.");
     return self::PROTOCOL . $this->serverName . '/' . $path;
   }
 

@@ -41,7 +41,7 @@ class CurlConnection implements HttpConnection
 
   public function  __construct(array $options, $cookieFile)
   {
-    Preconditions::checkIsString($cookieFile);
+    Preconditions::checkIsString($cookieFile, '$cookieFile should be string');
     $this->options = $options;
     $this->cookieFile = $cookieFile;
     $this->_curlInit();

@@ -10,7 +10,7 @@ class StringValidator implements InputValidator
 
   public function validate($data)
   {
-    Preconditions::checkIsString($data);
+    Preconditions::checkIsString($data, '$data should be string.');
     return true;
   }
 

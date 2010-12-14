@@ -40,7 +40,7 @@ class CosignProxyFileParser
    */
   private function parseString(Trace $trace, $line)
   {
-    Preconditions::checkIsString($line, 'line');
+    Preconditions::checkIsString($line, '$line should be string.');
     $matches = array();
     if (!preg_match(self::PROXY_LINE_PATTERN, $line, $matches)) {
       $trace->tlog('Line did not match');
@@ -64,7 +64,7 @@ class CosignProxyFileParser
    */
   public function parseFile(Trace $trace, $filename)
   {
-    Preconditions::checkIsString($filename, 'filename');
+    Preconditions::checkIsString($filename, '$filename should be string.');
     $cookies = array();
     $subTrace = $trace->addChild('Parsing cosign proxy file');
     $subTrace->tlogVariable('filename', $filename);

@@ -35,7 +35,7 @@ class Response
    */
   public function set($name, $value)
   {
-    Preconditions::checkIsString($name, 'name');
+    Preconditions::checkIsString($name, '$name should be string.');
     $this->data[$name] = $value;
   }
 
@@ -69,7 +69,7 @@ class Response
    */
   public function setTemplate($template)
   {
-    Preconditions::checkIsString($template, 'template');
+    Preconditions::checkIsString($template, '$template should be string.');
     $this->template = $template;
   }
 

@@ -31,7 +31,6 @@ class LoginFactoryImpl implements LoginFactory
    */
   public function newLoginUsingCosignCookie(CosignServiceCookie $cookie)
   {
-    Preconditions::checkNotNull($cookie, 'cookie');
     return new AIS2CosignLogin(new CosignCookieLogin($cookie));
   }
 
@@ -42,8 +41,8 @@ class LoginFactoryImpl implements LoginFactory
    */
   public function newLoginUsingCosignPassword($username, $password)
   {
-    Preconditions::checkIsString($username, 'username');
-    Preconditions::checkIsString($password, 'password');
+    Preconditions::checkIsString($username, '$username should be string.');
+    Preconditions::checkIsString($password, '$password should be string.');
     return new AIS2CosignLogin(new CosignPasswordLogin($username, $password));
   }
 
@@ -54,8 +53,8 @@ class LoginFactoryImpl implements LoginFactory
    */
   public function newLoginUsingPassword($username, $password)
   {
-    Preconditions::checkIsString($username, 'username');
-    Preconditions::checkIsString($password, 'password');
+    Preconditions::checkIsString($username, '$username should be string.');
+    Preconditions::checkIsString($password, '$password should be string.');
     return new AIS2PasswordLogin($username, $password);
   }
 
@@ -66,8 +65,8 @@ class LoginFactoryImpl implements LoginFactory
    */
   public function newLoginUsingCosignProxy($proxyDb, $cookieName)
   {
-    Preconditions::checkIsString($proxyDb, 'proxyDb');
-    Preconditions::checkIsString($cookieName, 'cookieName');
+    Preconditions::checkIsString($proxyDb, '$proxyDb should be string.');
+    Preconditions::checkIsString($cookieName, '$cookieName should be string.');
     return new AIS2CosignLogin(new CosignProxyLogin($proxyDb, $cookieName));
   }
 

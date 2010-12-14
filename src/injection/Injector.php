@@ -62,7 +62,7 @@ class Injector
    */
   public function getInstance($name)
   {
-    Preconditions::checkIsString($name);
+    Preconditions::checkIsString($name, '$name should be string.');
     if (FajrConfig::get('Debug.Exception.ShowStacktrace')) {
       return $this->container->getService($name);
     } else {
@@ -81,7 +81,7 @@ class Injector
    */
   public function getParameter($name)
   {
-    Preconditions::checkIsString($name);
+    Preconditions::checkIsString($name, '$name should be string.');
     assert($this->container->hasParameter($name));
     return $this->container->getParameter($name);
   }

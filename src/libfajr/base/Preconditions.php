@@ -35,14 +35,10 @@ class Preconditions
    * @returns void
    * @throws InvalidArgumentException
    */
-  // TODO: change $name to $message and fix existing function calls
-  public static function checkNotNull($variable, $name = null)
+  public static function checkNotNull($variable, $message = null)
   {
     if ($variable === null) {
-      if ($name === null) { // TODO: change $name to $message and fix existing function calls
-        $name = "Argument";
-      }
-      throw new InvalidArgumentException("$name should not be null!");
+      throw new InvalidArgumentException($message);
     }
   }
 
@@ -55,14 +51,31 @@ class Preconditions
    * @returns void
    * @throws InvalidArgumentException
    */
-  // TODO: change $name to $message and fix existing function calls
-  public static function checkIsString($variable, $name = null)
+  public static function checkIsString($variable, $message = null)
   {
     if (!is_string($variable)) {
-      if ($name === null) {
-        $name = "Argument";
-      }
-      throw new InvalidArgumentException("$name should be a string!");
+      throw new InvalidArgumentException($message);
+    }
+  }
+
+  /**
+   * Checks that $variable contain an integer.
+   * Note that we DO NOT CHECK type of variable but content.
+   * Note: '' empty string is not valid
+   * Note: boolean values are not valid too
+   *
+   * @param mixed  $variable variable to check
+   * @param string $message message to throw
+   *
+   * @returns void
+   * @throws InvalidArgumentException
+   */
+  public static function checkContainsInteger($variable, $message = null)
+  {
+    if (is_object($variable) ||
+        is_bool($variable) ||
+        (string)(int)$variable != $variable) {
+      throw new InvalidArgumentException($message);
     }
   }
 
@@ -76,20 +89,16 @@ class Preconditions
    * @returns void
    * @throws InvalidArgumentException
    */
-  // TODO: change $name to $message and fix existing function calls
-  public static function checkMatchesPattern($pattern, $variable, $name = null)
+  public static function checkMatchesPattern($pattern, $variable, $message = null)
   {
-    if ($name === null) {
-      $name = "Argument";
-    }
-    self::checkIsString($variable, $name);
+    self::checkIsString($variable, $message);
     if (!preg_match($pattern, $variable)) {
-      throw new InvalidArgumentException("$name should match $pattern!");
+      throw new InvalidArgumentException($message);
     }
   }
 
   /**
-   * Checks that $variable is a string
+   * Checks that $expression is true
    *
    * @param bool   $expression boolean result of an expression
    * @param string $message error message
@@ -97,7 +106,7 @@ class Preconditions
    * @returns void
    * @throws InvalidArgumentException
    */
-  public static function check($expression, $message)
+  public static function check($expression, $message = null)
   {
     assert(is_bool($expression));
     if (!$expression) {

@@ -15,7 +15,7 @@ class IntegerValidator implements InputValidator
 
   public function validate($data)
   {
-    Preconditions::checkIsString($data);
+    Preconditions::checkIsString($data, '$data should be string.');
     if ((strlen($data)> 0) && ($data[0] == '-') && $this->signed) {
       $data = substr($data, 1);
     }

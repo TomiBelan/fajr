@@ -33,15 +33,16 @@ class Request
    * Return a named parameter
    *
    * @param string $name
-   * @param string|null defaultValue
-   * @returns string|null parameter value
+   * @param string defaultValue
+   * @returns string parameter value
    */
   public function getParameter($name, $defaultValue = '')
   {
-    Preconditions::checkIsString($name, "name");
-    if ($defaultValue != null) {
-      Preconditions::checkIsString($defaultValue, 'defaultValue');
-    }
+    // Note: if we want to change default from '' to null,
+    // we must fix all controllers
+    Preconditions::checkIsString($name, '$name should be string.');
+    Preconditions::checkIsString($defaultValue,
+        '$defaultValue should be string.');
 
     $value = $this->input->get($name);
     if ($value === null) {
@@ -58,7 +59,7 @@ class Request
    */
   public function hasParameter($name)
   {
-    Preconditions::checkIsString($name, 'name');
+    Preconditions::checkIsString($name, '$name should be string.');
     return $this->input->get($name) !== null;
   }
 
@@ -69,7 +70,7 @@ class Request
    */
   public function clearParameter($name)
   {
-    Preconditions::checkIsString($name, 'name');
+    Preconditions::checkIsString($name, '$name should be string.');
     $this->input->set($name, null);
   }
 

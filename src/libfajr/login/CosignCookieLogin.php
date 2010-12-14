@@ -12,7 +12,6 @@
  * @filesource
  */
 namespace fajr\libfajr\login;
-use fajr\libfajr\base\Preconditions;
 use fajr\libfajr\pub\connection\HttpConnection;
 use fajr\libfajr\pub\login\CosignServiceCookie;
 use fajr\libfajr\pub\base\NullTrace;
@@ -37,7 +36,6 @@ class CosignCookieLogin extends CosignAbstractLogin
 
   public function  __construct(CosignServiceCookie $cookie)
   {
-    Preconditions::checkNotNull($cookie, 'cookie');
     $this->cookie = $cookie;
   }
 

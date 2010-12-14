@@ -13,6 +13,7 @@
  */
 namespace fajr\libfajr\base;
 
+use Exception;
 use fajr\libfajr\base\Preconditions;
 use InvalidArgumentException;
 use PHPUnit_Framework_TestCase;
@@ -30,7 +31,7 @@ class PreconditionsTest extends PHPUnit_Framework_TestCase
   public function testNull()
   {
     Preconditions::checkNotNull("simple");
-    Preconditions::checkNotNull("simple", "no_name");
+    Preconditions::checkNotNull("simple", "should be non null");
     Preconditions::checkNotNull(0, "zero");
     Preconditions::checkNotNull(0.0, "zero");
     Preconditions::checkNotNull("", "empty string");
@@ -42,7 +43,7 @@ class PreconditionsTest extends PHPUnit_Framework_TestCase
   {
     $this->setExpectedException("InvalidArgumentException");
     $x = null;
-    Preconditions::checkNotNull($x, "name");
+    Preconditions::checkNotNull($x, "x should'n be null");
   }
 
   public function testCheck()
@@ -61,9 +62,9 @@ class PreconditionsTest extends PHPUnit_Framework_TestCase
 
   public function testString()
   {
-    Preconditions::checkIsString("aa", "string");
+    Preconditions::checkIsString("aa", "should be string");
     $x = "bb";
-    Preconditions::checkIsString($x, "string");
+    Preconditions::checkIsString($x, "x should be string");
   }
 
   public function testStringFail()
@@ -93,4 +94,50 @@ class PreconditionsTest extends PHPUnit_Framework_TestCase
     $x = 'def';
     Preconditions::checkMatchesPattern("/^abc$/", $x, "not matching");
   }
+
+  public function testContainsInteger()
+  {
+    Preconditions::checkContainsInteger("47");
+    Preconditions::checkContainsInteger("-47");
+    Preconditions::checkContainsInteger(-47);
+    Preconditions::checkContainsInteger(-47.0);
+    Preconditions::checkContainsInteger(0);
+  }
+
+  public function testContainsIntegerFailNull()
+  {
+    $this->setExpectedException("InvalidArgumentException");
+    Preconditions::checkContainsInteger(null);
+  }
+
+  public function testContainsIntegeriFailString()
+  {
+    $this->setExpectedException("InvalidArgumentException");
+    Preconditions::checkContainsInteger('string');
+  }
+
+  public function testContainsIntegeriFailString2()
+  {
+    $this->setExpectedException("InvalidArgumentException");
+    Preconditions::checkContainsInteger('');
+  }
+
+  public function testContainsIntegerFailObject()
+  {
+    $this->setExpectedException("InvalidArgumentException");
+    Preconditions::checkContainsInteger(new Exception());
+  }
+
+  public function testContainsIntegerFailBool()
+  {
+    $this->setExpectedException("InvalidArgumentException");
+    Preconditions::checkContainsInteger(false);
+  }
+
+  public function testContainsIntegerFailReal()
+  {
+    $this->setExpectedException("InvalidArgumentException");
+    Preconditions::checkContainsInteger(44.3);
+  }
+
 }

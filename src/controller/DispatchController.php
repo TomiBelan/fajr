@@ -54,7 +54,7 @@ class DispatchController implements Controller
    */
   public function invokeAction(Trace $trace, $action, Context $context)
   {
-    Preconditions::checkIsString($action);
+    Preconditions::checkIsString($action, '$action should be string!');
 
     $parts = explode('.', $action, 2);
 

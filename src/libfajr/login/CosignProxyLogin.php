@@ -41,8 +41,9 @@ class CosignProxyLogin extends CosignAbstractLogin
    */
   public function  __construct($proxyDir, $proxyCookieName)
   {
-    Preconditions::checkIsString($proxyDir, 'proxyDir');
-    Preconditions::checkIsString($proxyDir, 'proxyCookieName');
+    Preconditions::checkIsString($proxyDir, '$proxyDir should be string.');
+    Preconditions::checkIsString($proxyCookieName,
+        '$proxyCookieName should be string');
     $this->proxyDir = $proxyDir;
     $this->proxyCookieName = $proxyCookieName;
   }

@@ -21,7 +21,7 @@ use fajr\controller\Controller;
 use ReflectionMethod;
 use Exception;
 use fajr\Context;
-
+use fajr\libfajr\base\DisableEvilCallsObject;
 /**
  * Base class for controllers
  *
@@ -29,7 +29,7 @@ use fajr\Context;
  * @subpackage Controller
  * @author     Martin Sucha <anty.sk@gmail.com>
  */
-abstract class BaseController implements Controller
+abstract class BaseController extends DisableEvilCallsObject implements Controller
 {
  
   /**
@@ -45,7 +45,10 @@ abstract class BaseController implements Controller
    */
   public function invokeAction(Trace $trace, $action, Context $context)
   {
-    Preconditions::checkMatchesPattern('@^[A-Z][a-zA-Z]*$@', $action, 'action');
+    Preconditions::checkIsString($action);
+    Preconditions::checkMatchesPattern('@^[A-Z][a-zA-Z]*$@', $action,
+        '$action must start with capital letter and ' .
+        'contain only alphanumeric characters.');
 
     $methodName = 'run'.$action;
 
