@@ -21,7 +21,7 @@ use fajr\libfajr\pub\base\NullTrace;
  * @ignore
  */
 require_once 'test_include.php';
-require_once '../src/libfajr/window/VSES017_administracia_studia/regression/zoznamStudii.table';
+require_once 'testdata/zoznamStudii.table';
 
 /**
  * @ignore
@@ -38,7 +38,7 @@ class AIS2TableParserTest extends PHPUnit_Framework_TestCase
 
   public function testZoznamStudiiTableParsing()
   {
-    $definition = \fajr\regression\zoznamStudiiTable::get();
+    $definition = ZoznamStudiiTable::get();
     $table = $this->parser->createTableFromHtml(new NullTrace(), $this->html,
                                                 'studiaTable_dataView');
     $data = $table->getData();
