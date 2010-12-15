@@ -112,6 +112,13 @@ class Fajr {
    * @param Exception $ex
    */
   private function setException(Exception $ex) {
+    if ($this->context == null) {
+      // May happen if exception occured before or in context
+      // instantiation. We don't know how to handle the
+      // exception in this case, so just pass it to the
+      // outer exception handler
+      throw $ex;
+    }
     $response = $this->context->getResponse();
     $response->set('exception', array("message" => $ex->getMessage()));
     $response->set('showStackTrace', false);
@@ -212,9 +219,11 @@ class Fajr {
     $response->set('banner_debug', FajrConfig::get('Debug.Banner'));
     $response->set('google_analytics',
                    FajrConfig::get('GoogleAnalytics.Account'));
-    $response->set('instanceName', FajrConfig::get('AIS2.InstanceName'));
     $response->set('base', FajrUtils::basePath());
     $response->set('language', 'sk');
+
+    $response->set('availableServers', array());
+    $response->set('currentServer', array('isBeta'=>false, 'instanceName'=>'Chyba'));
 
     $server = $this->getServer();
     $serverList = FajrConfig::get('AIS2.ServerList');

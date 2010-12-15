@@ -29,14 +29,14 @@
 <div class="span-7 last">
   <form method="post" action="">
     <fieldset class="login-box">
-      <input type="hidden" name="serverName" value="{{ currentServer.serverName }}">
+      <input type="hidden" name="serverName" value="{{ currentServer.serverName }}" />
       <input type="hidden" name="loginType" value="cosigncookie" />
       <legend>Prihlásenie cez cookie do <br/>{{ currentServer.serverName }} </legend>
       <div>
       bezpečne sa
       <a href="https://login.uniba.sk/?{{ currentServer.cosignCookieName|urlencode }}&amp;https://{{ currentServer.serverName|urlencode }}/ais/login.do?"
          >prihlás</a>
-      do {{ instanceName }} a skopíruj si cookie.
+      do {{ currentServer.instanceName }} a skopíruj si cookie.
       <hr/>
       <label for="cosignCookie">{{ currentServer.cosignCookieName }}</label>
       <br/>
