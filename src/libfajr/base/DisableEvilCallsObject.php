@@ -4,15 +4,23 @@
 // found in the LICENSE file in the project root directory.
 
 /**
+ * Object which disallows fishy class access.
  *
  * @package    Fajr
- * @subpackage Libfajr__Pub__Window__VSES017_administracia_studia
+ * @subpackage Libfajr__Base
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
 namespace fajr\libfajr\base;
 use \Exception;
 
+/**
+ * Disallow all access to unset methods/properties of an object.
+ *
+ * @package    Fajr
+ * @subpackage Libfajr__Base
+ * @author     Peter Perešíni <ppershing+fajr@gmail.com>
+ */
 class DisableEvilCallsObject
 {
   public static function __callStatic($name, $arguments)
