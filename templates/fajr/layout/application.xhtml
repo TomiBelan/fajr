@@ -9,14 +9,15 @@
   {% parent %}
   {% block application_content %}{% endblock %}
   <div>
-    Fajr verzia {{ version.versionString }}
+    Fajr verzia {{ version.versionString }} 
+      (pripojený na systém AIS verzie {{ aisVersion }} na stránke {{ currentServer.serverName}})
   </div>
   <div>
-    Fajr made {{ statistics.requestCount }} requests and downloaded
-    {{ statistics.downloadedByteCount }} bytes
-    ({{ statistics.decodedByteCount }} bytes uncompressed)
-    of data from AIS2 in {{ "%.3f"|format(statistics.totalRequestTime) }}
-    seconds. It took {{ "%.3f"|format(statistics.totalTime) }} seconds to
-    generate this page.
+    Fajr spravil {{ statistics.requestCount }} dotazov a stiahol
+    {{ "%.2f"|format(statistics.downloadedByteCount/1024) }} kB
+    ({{ "%.2f"|format(statistics.decodedByteCount/1024) }} kB nekomprimovane)
+    dát z AISu za {{ "%.3f"|format(statistics.totalRequestTime) }} sekundy.
+    Vygenerovanie tejto stránky trvalo 
+    {{ "%.3f"|format(statistics.totalTime) }} sekundy.
   </div>
 {% endblock %}

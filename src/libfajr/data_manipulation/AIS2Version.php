@@ -13,6 +13,7 @@
  */
 namespace fajr\libfajr\data_manipulation;
 
+use fajr\libfajr\base\Preconditions;
 /**
  * AIS2 Version information.
  *
@@ -35,6 +36,10 @@ class AIS2Version {
 
   public function __construct($ais, $major, $minor, $patch)
   {
+    Preconditions::checkContainsInteger($ais);
+    Preconditions::checkContainsInteger($major);
+    Preconditions::checkContainsInteger($minor);
+    Preconditions::checkContainsInteger($patch);
     $this->ais = $ais;
     $this->major = $major;
     $this->minor = $minor;
@@ -66,6 +71,11 @@ class AIS2Version {
   {
     return $this->ais . '.' . $this->major . '.' .
       $this->minor . '.' . $this->patch;
+  }
+
+  public function __toString()
+  {
+    return $this->toString();
   }
 
   /**
