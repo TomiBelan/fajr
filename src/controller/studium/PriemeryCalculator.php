@@ -15,7 +15,7 @@ use fajr\libfajr\base\DisableEvilCallsObject;
 use fajr\libfajr\base\Preconditions;
 use InvalidArgumentException;
 
-class PriemeryInternal extends DisableEvilCallsObject
+class PriemeryInternal
 {
   protected $sucet = 0;
   protected $sucetVah = 0;
@@ -50,7 +50,7 @@ class PriemeryInternal extends DisableEvilCallsObject
   public function add($znamka, $kredity)
   {
     Preconditions::checkContainsInteger($kredity);
-    Preconditions::check($kredity > 0, "Kreditov musí byť kladný počet.");
+    Preconditions::check($kredity >= 0, "Kreditov musí byť nezáporný počet.");
     Preconditions::checkIsString($znamka);
 
     if (isset(PriemeryInternal::$numerickaHodnotaZnamky[$znamka])) {
