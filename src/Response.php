@@ -26,7 +26,7 @@ class Response
   /** @var string template name to be used */
   private $template = null;
 
-  protected $data = array();
+  protected $data = array('warnings' => array());
 
   /**
    * Set a variable to be available to the display subsystem
@@ -73,6 +73,9 @@ class Response
     $this->template = $template;
   }
 
-
+  public function addWarning($message)
+  {
+    $this->data['warnings'][] = $message;
+  }
 
 }

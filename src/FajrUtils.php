@@ -18,6 +18,7 @@ use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\login\AIS2LoginImpl;
 use fajr\libfajr\AIS2Session;
 use fajr\libfajr\util\StrUtil;
+use fajr\libfajr\base\Preconditions;
 
 class FajrUtils
 {
@@ -249,4 +250,13 @@ class FajrUtils
     }
   }
 
+  public static function warnWrongTableStructure($response, $tableName,
+      array $expectedDefinition, array $definition) {
+    Preconditions::checkIsString($tableName);
+    if ($expectedDefinition != $definition) {
+      $message = array('type' => 'unexpectedTableStructure',
+                       'tableName' => $tableName);
+      $response->addWarning($message);
+    }
+  }
 }

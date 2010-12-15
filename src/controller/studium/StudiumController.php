@@ -25,6 +25,7 @@ use fajr\Sorter;
 use fajr\libfajr\AIS2Utils;
 use fajr\Context;
 use Exception;
+use fajr\regression;
 
 fields::autoload();
 
@@ -77,6 +78,14 @@ class StudiumController extends BaseController
                                       $trace->addChild('getZapisneListy'),
                                       $this->studium);
 
+    FajrUtils::warnWrongTableStructure($response, 'zoznam studii',
+        regression\ZoznamStudiiRegression::get(),
+        $this->zoznamStudii->getTableDefinition());
+
+    FajrUtils::warnWrongTableStructure($response, 'zoznam zapisnych listov',
+        regression\ZoznamZapisnychListovRegression::get(),
+        $this->zapisneListy->getTableDefinition());
+
     $this->zapisnyList = $request->getParameter('list');
 
     if ($this->zapisnyList === '') {
@@ -111,11 +120,15 @@ class StudiumController extends BaseController
    * @param Context $context
    */
   public function runHodnotenia(Trace $trace, Context $context) {
+    $priemeryCalculator = new PriemeryCalculator();
     $request = $context->getRequest();
     $response = $context->getResponse();
 
-    $hodnotenia = $this->hodnoteniaScreen->getHodnotenia($trace);
-    $priemeryCalculator = new PriemeryCalculator();
+    $hodnotenia = $this->hodnoteniaScreen->getHodnotenia($trace->addChild('get hodnotenia'));
+
+    FajrUtils::warnWrongTableStructure($response, 'hodnotenia',
+        regression\HodnoteniaRegression::get(),
+        $hodnotenia->getTableDefinition());
 
     $hodnoteniaData = Sorter::sort($hodnotenia->getData(),
           array("semester"=>-1, "nazov"=>1));
@@ -129,7 +142,11 @@ class StudiumController extends BaseController
                                $hodnoteniaRow[HodnoteniaFields::KREDIT]);
     }
 
-    $priemery = $this->hodnoteniaScreen->getPriemery($trace);
+    $priemery = $this->hodnoteniaScreen->getPriemery($trace->addChild('get priemery'));
+
+    FajrUtils::warnWrongTableStructure($response, 'priemery',
+        regression\PriemeryRegression::get(),
+        $priemery->getTableDefinition());
 
     $response->set('hodnotenia', $hodnoteniaData);
     $response->set('priemery', $priemery->getData());
@@ -198,6 +215,9 @@ class StudiumController extends BaseController
         $trace->addChild("get terminy hodnotenia"));
     $hodnotenia = $this->hodnoteniaScreen->getHodnotenia(
         $trace->addChild("get hodnotenia"));
+    FajrUtils::warnWrongTableStructure($response, 'priemery',
+        regression\HodnoteniaRegression::get(),
+        $hodnotenia->getTableDefinition());
     
     $hodnoteniePredmetu = array();
     foreach($hodnotenia->getData() as $hodnoteniaRow) {

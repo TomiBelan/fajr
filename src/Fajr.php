@@ -31,6 +31,7 @@ use fajr\Version;
 use sfSessionStorage;
 use fajr\exceptions\ValidationException;
 use fajr\exceptions\SecurityException;
+use fajr\libfajr\data_manipulation\AIS2VersionParser;
 
 /**
  * This is "main()" of the fajr. It instantiates all neccessary
@@ -219,9 +220,9 @@ class Fajr {
     $serverList = FajrConfig::get('AIS2.ServerList');
     $response->set('availableServers', $serverList);
     $response->set('currentServer', $server);
-//    $response->set('serverName', $server->getServerName());
-//    $response->set('banner_beta', $server->isBeta());
-//    $response->set('cosignCookieName', $server->getCosignCookieName());
+
+    $response->set('aisVersion', null);
+    $response->set('aisVersionIncompatible', false);
   }
 
   public function runLogic(Trace $trace, HttpConnection $connection)
@@ -257,6 +258,21 @@ class Fajr {
     }
 
     if ($loggedIn) {
+      if (($aisVersion = $session->read('ais/aisVersion')) == null) {
+        $versionParser = new AIS2VersionParser(); // TODO(ppershing): move to "main screen"
+        $aisConnection = $this->context->getAisConnection();
+        $html = $aisConnection->getSimpleConnection()->request(
+            $trace->addChild('requesting AIS2 main page'),
+            $aisConnection->getUrlMap()->getStartPageUrl());
+        $aisVersion = $versionParser->parseVersionStringFromMainPage($html); 
+
+        $session->write('ais/aisVersion', $aisVersion);
+      }
+      $response->set('aisVersion', $aisVersion);
+      $response->set('aisVersionIncompatible', 
+        !($aisVersion >= regression\VersionRange::getMinVersion() &&
+          $aisVersion <= regression\VersionRange::getMaxVersion()));
+
       $controller = $this->injector->getInstance('Controller.class');
 
       $response->set("action", $action);

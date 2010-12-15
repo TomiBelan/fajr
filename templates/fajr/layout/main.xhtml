@@ -25,18 +25,9 @@
   <body>
     <div class="container">
       <h1>FAJR: {% display title %}</h1>
-      {% if banner_debug %}
-        <div class="warningBanner">
-          <strong>Development verzia. Ostrú verziu nájdeš na
-          <a href="https://fajr.dcs.fmph.uniba.sk"> fajr.dcs.fmph.uniba.sk </a></strong>
-        </div>
-      {% endif %}
-      {% if currentServer.isBeta %}
-        <div class="warningBanner">
-          <strong>Používa sa AIS2 BETA. Všetky informácie v tejto inštancii AISu sú
-          dočasné a neovplyvňujú ostrú verziu AISu!</strong>
-        </div>
-      {% endif %}
+      {% block warnings %}
+        {% include "parts/warnings.xhtml" %}
+      {% endblock %}
       {% block content %}{% endblock %}
       {% if trace %}
         <div class="span-24">
