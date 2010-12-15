@@ -40,6 +40,7 @@ class AIS2ServerUrlMap extends DisableEvilCallsObject
       'login' => 'ais/login.do',
       'logout' => 'ais/logout.do',
       'start' => 'ais/start.do',
+      'changeModule' => 'ais/portal/changeModul.do',
     );
 
   /**
@@ -78,18 +79,38 @@ class AIS2ServerUrlMap extends DisableEvilCallsObject
     return $this->_getUrl($this->paths['webui']);
   }
 
+  /**
+   * @returns string url to ais login page
+   */
   public function getLoginUrl()
   {
     return $this->_getUrl($this->paths['login']);
   }
 
+  /**
+   * @returns string url to ais logour page
+   */
   public function getLogoutUrl()
   {
     return $this->_getUrl($this->paths['logout']);
   }
 
+  /**
+   * @returns string url to first ais page after login
+   */
   public function getStartPageUrl()
   {
     return $this->_getUrl($this->paths['start']);
+  }
+
+  /**
+   * @param string $module AIS2 modul
+   *
+   * @returns string url for changing selected page in ais menu
+   */
+  public function getChangeModulePage($module)
+  {
+    Preconditions::checkIsString($module);
+    return $this->_getUrl($this->paths['changeModule'].'?modul='.$module);
   }
 }

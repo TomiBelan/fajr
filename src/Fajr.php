@@ -31,8 +31,8 @@ use fajr\Version;
 use sfSessionStorage;
 use fajr\exceptions\ValidationException;
 use fajr\exceptions\SecurityException;
-use fajr\libfajr\data_manipulation\AIS2VersionParser;
 
+use fajr\libfajr\window\AIS2MainScreenImpl;
 /**
  * This is "main()" of the fajr. It instantiates all neccessary
  * objects, query ais and renders results.
@@ -243,6 +243,7 @@ class Fajr {
         new AIS2ServerUrlMap($server->getServerName()));
       
     $this->context->setAisConnection($serverConnection);
+    $this->context->setSessionStorage($session);
 
     $action = $this->context->getRequest()->getParameter('action',
                                            'studium.MojeTerminyHodnotenia');
@@ -267,15 +268,15 @@ class Fajr {
     }
 
     if ($loggedIn) {
-      if (($aisVersion = $session->read('ais/aisVersion')) == null) {
-        $versionParser = new AIS2VersionParser(); // TODO(ppershing): move to "main screen"
-        $aisConnection = $this->context->getAisConnection();
-        $html = $aisConnection->getSimpleConnection()->request(
-            $trace->addChild('requesting AIS2 main page'),
-            $aisConnection->getUrlMap()->getStartPageUrl());
-        $aisVersion = $versionParser->parseVersionStringFromMainPage($html); 
+      $mainScreen = new AIS2MainScreenImpl($this->context->getAisConnection());
 
+      if (($aisVersion = $session->read('ais/aisVersion')) == null) {
+        $aisVersion = $mainScreen->getAisVersion($trace->addChild('Get AIS version'));
         $session->write('ais/aisVersion', $aisVersion);
+      }
+      if (($aisApps = $session->read('ais/aisApps')) == null) {
+        $aisApps = $mainScreen->getAllAvailableApplications($trace->addChild('Get all applications'));
+        $session->write('ais/aisApps', $aisApps);
       }
       $response->set('aisVersion', $aisVersion);
       $response->set('aisVersionIncompatible', 

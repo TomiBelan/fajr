@@ -26,6 +26,7 @@ use fajr\libfajr\AIS2Utils;
 use fajr\Context;
 use Exception;
 use fajr\regression;
+use fajr\libfajr\pub\window\AIS2ApplicationEnum;
 
 fields::autoload();
 
@@ -65,6 +66,13 @@ class StudiumController extends BaseController
 
     $request = $context->getRequest();
     $response = $context->getResponse();
+    $session = $context->getSessionStorage();
+    // check access to application
+    if (!in_array(AIS2ApplicationEnum::ADMINISTRACIA_STUDIA,
+                  $session->read('ais/aisApps'))) {
+      $response->setTemplate('studium/notAvailable');
+      return;
+    }
 
     $screenFactory = new VSES017\VSES017_factory($context->getAisConnection());
     $adminStudia = $screenFactory->newAdministraciaStudiaScreen($trace);

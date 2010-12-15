@@ -24,7 +24,6 @@ use fajr\libfajr\pub\connection\AIS2ServerConnection;
  */
 class Context
 {
-
   /** var AIS2ServerConnection */
   private $aisConnection;
 
@@ -34,10 +33,13 @@ class Context
   /** var Response */
   private $response;
 
+  /** var sfStorage*/
+  private $session;
+
   /**
    * Return a ServerConnection
    *
-   * @return ServerConnection connection to AIS server
+   * @returns ServerConnection connection to AIS server
    */
   public function getAisConnection()
   {
@@ -57,7 +59,7 @@ class Context
   /**
    * Get a request associated with this context
    *
-   * @return Request
+   * @returns Request
    */
   public function getRequest()
   {
@@ -76,7 +78,7 @@ class Context
 
   /**
    * Get a Response for this context
-   * @return Response
+   * @returns Response
    */
   public function getResponse()
   {
@@ -90,6 +92,24 @@ class Context
   public function setResponse($response)
   {
     $this->response = $response;
+  }
+
+  /**
+   * Get a session storage for this context
+   * @returns sfStorage session storage
+   */
+  public function getSessionStorage()
+  {
+    return $this->session;
+  }
+
+  /**
+   * Set a session storage.
+   * @param sfStorage $session
+   */
+  public function setSessionStorage(sfStorage $session)
+  {
+    $this->session = $session;
   }
 
 
