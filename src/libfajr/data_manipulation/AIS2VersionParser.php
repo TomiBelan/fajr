@@ -15,6 +15,7 @@ namespace fajr\libfajr\data_manipulation;
 
 use fajr\libfajr\pub\exceptions\ParseException;
 use fajr\libfajr\util\StrUtil;
+use fajr\libfajr\base\Preconditions;
 
 /**
  * Parses AIS2 html response and finds AIS2 version.
@@ -39,6 +40,7 @@ class AIS2VersionParser {
    * @throws ParseException on error
    */
   public function parseVersionStringFromMainPage($html) {
+    Preconditions::checkIsString($html);
     $data = StrUtil::matchAll(self::VERSION_PATTERN, $html);
     if ($data === false) {
       throw new ParseException("Cannot parse AIS version from response.");
