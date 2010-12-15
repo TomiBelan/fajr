@@ -19,6 +19,7 @@ use DOMElement;
 use DOMXPath;
 use fajr\libfajr\data_manipulation\DataTableImpl;
 use fajr\libfajr\pub\base\Trace;
+use fajr\libfajr\base\Preconditions;
 use fajr\libfajr\pub\exceptions\ParseException;
 
 /**
@@ -32,8 +33,20 @@ use fajr\libfajr\pub\exceptions\ParseException;
  */
 class AIS2TableParser
 {
+  /**
+   * Fix problems PHP DOM parser have with ais-generated html.
+   *
+   * The major problem is <script> tag inside which are the table data.
+   * Here, we fix these <script> tags replacing them as <div> tags.
+   *
+   * @param Trace $trace
+   * @param string $html html code to fix
+   *
+   * @returns string fixed html code ready for DOM parsing.
+   */
   public function fixProblematicTags(Trace $trace, $html)
   {
+    Preconditions::checkIsString($html);
     $html = str_replace("<!--", "", $html);
     $html = str_replace("-->", "", $html);
     $html = str_replace("script", "div", $html);
@@ -41,6 +54,17 @@ class AIS2TableParser
     return $html;
   }
 
+  /**
+   * Fix problem with PHP DOM "id" attribute parsing.
+   *
+   * Sometimes "id" attribute is not recognized as id attribute during parsing.
+   * This method will fix the problem.
+   *
+   * @param Trace $trace
+   * @param DOMDocument $dom DOM document to be fixed
+   *
+   * @returns void
+   */
   public function fixIdAttributes(Trace $trace, DOMDocument $dom)
   {
     $xpath = new DOMXPath($dom);
@@ -54,8 +78,18 @@ class AIS2TableParser
     }
   }
 
+  /**
+   * Parses ais html into DOM.
+   *
+   * @param Trace $trace
+   * @param string $html
+   *
+   * @returns DOMDocument parsed DOM
+   * @throws ParseException on failure
+   */
   public function createDomFromHtml(Trace $trace, $html)
   {
+    Preconditions::checkIsString($html);
     $dom = new DOMDocument();
     $trace->tlog("Loading html to DOM");
     $loaded = @$dom->loadHTML($html);
@@ -67,8 +101,19 @@ class AIS2TableParser
     return $dom;
   }
 
+  /**
+   * Find an element with specified id in $dom.
+   *
+   * @param Trace $trace
+   * @param DOMDocument $dom document to search
+   * @param string $elementId id of element to find
+   *
+   * @returns DOMElement element
+   * @throws ParseException if not found
+   */
   public function findEnclosingElement(Trace $trace, DOMDocument $dom, $elementId)
   {
+    Preconditions::checkIsString($elementId);
     $trace->tlog("Finding element with id '$elementId'");
     $element = $dom->getElementById($elementId);
     if ($element === null) {
@@ -76,13 +121,22 @@ class AIS2TableParser
     }
     $trace->tlog("Element found");
     $child = $trace->addChild("Element xml content (pretty formatted)");
-    $child->tlogVariable("content", $this->prettyFormatXml($dom, $element));
+    $child->tlogVariable("content", $this->prettyFormatXml($element));
     return $element;
   }
 
-  public function prettyFormatXml($dom, $element)
+  /**
+   * Returns xml representation of DOM rooted at $element.
+   * Returned xml will be nicely formatted (nested indentation).
+   *
+   * @param DOMElement $element node with subnodes which souble be formatted.
+   *
+   * @returns string formatted xml
+   */
+  public function prettyFormatXml(DOMElement $element)
   {
-    $outXML = '<?xml version="1.0" encoding="UTF-8"?>'.$dom->saveXML($element);
+    $outXML = '<?xml version="1.0" encoding="UTF-8"?>' .
+        $element->ownerDocument->saveXML($element);
     $tmp = new DOMDocument();
     $tmp->encoding='UTF-8';
     $tmp->preserveWhiteSpace = false;
@@ -93,6 +147,8 @@ class AIS2TableParser
 
   public function createTableFromHtml(Trace $trace, $aisResponseHtml, $dataViewName)
   {
+    Preconditions::checkIsString($aisResponseHtml);
+    Preconditions::checkIsString($dataViewName);
     $html = $this->fixProblematicTags($trace->addChild("Fixing html for better DOM parsing."),
                                                        $aisResponseHtml);
     $domWholeHtml = $this->createDomFromHtml($trace, $html);
@@ -105,8 +161,16 @@ class AIS2TableParser
     return new DataTableImpl($headers, $data);
   }
 
+  /**
+   * Fix non-breakable spaces which were converted to special character furing parsing.
+   *
+   * @param string $str string to fix
+   * 
+   * @returns string fixed string
+   */
   public function fixNbsp($str)
   {
+    Preconditions::checkIsString($str);
     // special fix for &nbsp;
     // xml decoder decodes &nbsp; into special utf-8 character
     // TODO(ppershing): nehodili by sa tie &nbsp; niekedy dalej v aplikacii niekedy?
@@ -150,7 +214,7 @@ class AIS2TableParser
     return $value;
   }
 
-  public function getTableData(Trace $trace, $dom)
+  public function getTableData(Trace $trace, DOMDocument $dom)
   {
     $data = array();
     $trace->tlog("finding tbody element");
