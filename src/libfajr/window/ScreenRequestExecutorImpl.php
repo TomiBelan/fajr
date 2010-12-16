@@ -62,12 +62,6 @@ class ScreenRequestExecutorImpl extends DisableEvilCallsObject
     }
   }
 
-
-  public function spawnChild(DialogData $data, $parentFormName)
-  {
-    return new AIS2DialogRequestExecutor($this->requestBuilder, $this->connection, $data, $this->parentAppId, $parentFormName);
-  }
-
   /**
    * Nadviaže spojenie, spustí danú "aplikáciu" v AISe
    * a natiahne prvotné dáta do atribútu $data.

@@ -18,8 +18,6 @@ use fajr\libfajr\pub\connection\SimpleConnection;
 
 interface ScreenRequestExecutor
 {
-  public function spawnChild(DialogData $data, $parentFormName);
-
   /**
    * Nadviaže spojenie, spustí danú "aplikáciu" v AISe
    * a natiahne prvotné dáta do atribútu $data.
