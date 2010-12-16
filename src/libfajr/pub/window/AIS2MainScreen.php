@@ -38,4 +38,12 @@ interface AIS2MainScreen
    */
   public function getAllAvailableApplications(Trace $trace);
 
+  /**
+   * Get full name of the user.
+   * Note: resulting string is not sanitized and shouldn't be
+   * used by file/other access.
+   *
+   * @returns string
+   */
+  public function getFullUserName(Trace $trace);
 }

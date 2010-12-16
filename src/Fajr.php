@@ -278,10 +278,15 @@ class Fajr {
         $aisApps = $mainScreen->getAllAvailableApplications($trace->addChild('Get all applications'));
         $session->write('ais/aisApps', $aisApps);
       }
+      if (($userName = $session->read('ais/aisUserName')) == null) {
+        $userName = $mainScreen->getFullUserName($trace->addChild('Get user name'));
+        $session->write('ais/aisUserName', $userName);
+      }
       $response->set('aisVersion', $aisVersion);
       $response->set('aisVersionIncompatible', 
         !($aisVersion >= regression\VersionRange::getMinVersion() &&
           $aisVersion <= regression\VersionRange::getMaxVersion()));
+      $response->set('aisUserName', $userName);
 
       $controller = $this->injector->getInstance('Controller.class');
 

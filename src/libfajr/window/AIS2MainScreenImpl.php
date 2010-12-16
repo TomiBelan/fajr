@@ -21,6 +21,8 @@ use fajr\libfajr\pub\connection\AIS2ServerConnection;
 use fajr\libfajr\base\DisableEvilCallsObject;
 use fajr\libfajr\data_manipulation\AIS2VersionParser;
 use fajr\libfajr\data_manipulation\AIS2ApplicationAvailabilityParser;
+use fajr\libfajr\data_manipulation\AIS2UserNameParser;
+use fajr\libfajr\base\Preconditions;
 /**
  * Represents main page of AIS.
  *
@@ -51,6 +53,7 @@ class AIS2MainScreenImpl extends DisableEvilCallsObject implements AIS2MainScree
 
     $html = $simpleConn->request($trace->addChild('requesting AIS2 main page'),
                                  $urlMap->getStartPageUrl());
+    $html = $this->convertEncoding($html);
     return $versionParser->parseVersionStringFromMainPage($html); 
   }
 
@@ -73,6 +76,7 @@ class AIS2MainScreenImpl extends DisableEvilCallsObject implements AIS2MainScree
       $childTrace = $trace->addChild('Listing applications for module '.$module);
       $html = $simpleConn->request($childTrace->addChild('Requesting page'),
                                    $urlMap->getChangeModulePage($module));
+      $html = $this->convertEncoding($html);
       $moduleApp = $appParser->findAllApplications($html);
       $childTrace->tlogVariable('applications', $moduleApp);
       $applications = array_merge($applications, $moduleApp);
@@ -80,6 +84,38 @@ class AIS2MainScreenImpl extends DisableEvilCallsObject implements AIS2MainScree
 
     // remove duplicates
     return array_values($applications);
+  }
+
+  /**
+   * Returns user's full name as reported by ais.
+   *
+   * @returns string
+   */
+  public function getFullUserName(Trace $trace)
+  {
+    $userNameParser = new AIS2UserNameParser();
+    $simpleConn = $this->connection->getSimpleConnection();
+    $urlMap = $this->connection->getUrlMap();
+
+    $html = $simpleConn->request($trace->addChild('requesting AIS2 main page'),
+                                 $urlMap->getStartPageUrl());
+    $html = $this->convertEncoding($html);
+    $username =  $userNameParser->parseUserNameFromMainPage($html); 
+    $trace->tlogVariable('username', $username);
+    return $username;
+  }
+
+  /**
+   * Converts ais portal's Windows-1250 encoding to UTF-8.
+   *
+   * @param string $html in Windows-1250
+   *
+   * @returns string $html in UTF-8
+   */
+  private function convertEncoding($html)
+  {
+    Preconditions::checkIsString($html);
+    return @iconv("WINDOWS-1250", "UTF-8", $html);
   }
 }
 ?>
