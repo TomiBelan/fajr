@@ -10,53 +10,164 @@
  * @filesource
  */
 namespace fajr;
+
+use Exception;
+use fajr\validators\StringValidator;
+use fajr\validators\ChoiceValidator;
+
 class FajrConfig
 {
   protected static $config = null;
 
+  protected static $parameterDescription = null;
+
   /**
-   * Default values for configuration options
+   * Return description of configuration parameters
    *
-   * @var array key=>value
+   * This function caches its result so that it may be called
+   * multiple times without performance overhead
+   *
+   * @returns array key=>
+   *                 array('defaultValue'=>value, // if not present,
+   *                                              // the param is required
+   *                       'relativeTo'=>path, // for directories
+   *                       'validator'=>validator // name of validator to use)
    * @see configuration.example.php for more information
    */
-  protected static $defaultOptions = array(
-    'Debug.Banner'=>false,
-    'Debug.Trace'=>false,
-    'Debug.Path'=>false,
-    'Debug.Rewrite'=>false,
-    'Debug.Exception.ShowStacktrace'=>false,
-    'Path.Temporary'=>'./temp',
-    'Path.Temporary.Cookies'=>'./cookies',
-    'Path.Temporary.Sessions'=>'./sessions',
-    'AIS2.ServerList' => array(),
-    'SSL.CertificatesDir'=>null,
-    'Connection.UserAgent'=>'Mozilla/5.0 (Windows; U; Windows NT 5.1; sk; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7',
-    'Template.Directory'=>'./templates/fajr',
-  );
+  protected static function getParameterDescription()
+  {
+    if (self::$parameterDescription !== null) {
+      return self::$parameterDescription;
+    }
+
+    $booleanValidator = new ChoiceValidator(array(true, false));
+    $stringValidator = new StringValidator();
+    $pathValidator = new StringValidator();
+
+    self::$parameterDescription = array(
+      'GoogleAnalytics.Account' =>
+        array('defaultValue'=>null),
+
+      'Debug.Banner' =>
+        array('defaultValue' => false,
+              'validator' => $booleanValidator),
+
+      'Debug.Trace' =>
+        array('defaultValue' => false,
+              'validator' => $booleanValidator),
+
+      'Debug.Exception.ShowStacktrace' =>
+        array('defaultValue' => false,
+              'validator' => $booleanValidator),
+
+      'URL.Path' =>
+        array('defaultValue' => false,
+              'validator' => $booleanValidator),
+
+      'URL.Rewrite' =>
+        array('defaultValue' => false,
+              'validator' => $booleanValidator),
+
+      'Path.Temporary' =>
+        array('defaultValue' => './temp',
+              'validator' => $pathValidator),
+
+      'Path.Temporary.Cookies' =>
+        array('defaultValue' => './cookies',
+              'relativeTo' => 'Path.Temporary',
+              'validator' => $pathValidator),
+
+      'Path.Temporary.Sessions' =>
+        array('defaultValue' => './sessions',
+              'relativeTo' => 'Path.Temporary',
+              'validator' => $pathValidator),
+
+      'AIS2.ServerList' =>
+        array(),
+
+      'AIS2.DefaultServer' =>
+        array('validator' => $stringValidator),
+
+      'SSL.CertificatesDir' =>
+        array('defaultValue' => null),
+
+      'Connection.UserAgent' =>
+        array('defaultValue' => 'Mozilla/5.0 (Windows; U; Windows NT 5.1; sk; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7',
+              'validator' => $stringValidator),
+
+      'Template.Directory' =>
+        array('defaultValue' => './templates/fajr',
+              'validator' => $pathValidator),
+    );
+    return self::$parameterDescription;
+  }
 
   /**
-   * Specified to which directory a given configuration option
-   * should be relative. It maps option names to option names.
-   * 'A'=>'B' means, that option A should be resolved relative to
-   * directory stored in option B. If not specified or null,
-   * directories are resolved relative to the project root directory.
+   * Load configuration file, if it was not loaded previously.
+   *
+   * This means that second and subsequent calls attempt to load
+   * the configuration again only if previous attempts have failed.
+   *
+   * Otherwise, cached configuration data is used.
+   *
+   * If the loading fails, isConfigured() will return false.
+   *
+   * @return void
    */
-  protected static $directoriesRelativeTo = array(
-    'Path.Temporary.Cookies'=>'Path.Temporary',
-    'Path.Temporary.Sessions'=>'Path.Temporary',
-  );
-
   public static function load()
   {
     if (self::isConfigured()) {
       return;
     }
 
-    $result = (include '../config/configuration.php');
-    if ($result !== false && is_array($result)) {
-      self::$config = array_merge(self::$defaultOptions, $result);
+    $parameters = self::getParameterDescription();
+
+    if (!file_exists('../config/configuration.php')) {
+      // Leave fajr unconfigured, index.php will then show nice error message
+      // to the user
+      return;
     }
+
+    // Don't suppress errors so parse errors are reported
+    // TODO(anty): use yaml for configuration
+    $result = (include '../config/configuration.php');
+
+    if (!is_array($result)) {
+      throw new Exception('Konfiguračný súbor nevrátil pole');
+    }
+
+    $config = array();
+    foreach ($parameters as $name => $info) {
+      // Note: isset() returns false for keys with null value!
+      if (array_key_exists($name, $result)) {
+        $value = $result[$name];
+        // Validate the value from config file
+        if (isset($info['validator'])) {
+          $validator = $info['validator'];
+          
+          try {
+            $validator->validate($value);
+          }
+          catch (Exception $e) {
+            throw new Exception('Chyba v konfiguračnej volbe ' . $name .
+                                ': ' .$e->getMessage(), null, $e);
+          }
+        }
+        // And set it to config
+        $config[$name] = $value;
+      }
+      else {
+        // If the parameter is optional, we have a default value
+        // Note: isset() returns false for keys with null value!
+        if (!array_key_exists('defaultValue', $info)) {
+          throw new Exception('Required configuration parameter ' .
+                               $name . ' missing');
+        }
+        
+        $config[$name] = $info['defaultValue'];
+      }
+    }
+    self::$config = $config;
   }
 
   public static function isConfigured()
@@ -66,8 +177,10 @@ class FajrConfig
 
   public static function get($key)
   {
-    if (!isset(self::$config[$key])) {
-      return null;
+    // Note: isset() returns false if the item value is null
+    if (!array_key_exists($key, self::$config)) {
+      throw new InvalidArgumentException('Unknown configuration parameter: ' .
+                                         $key);
     }
     return self::$config[$key];
   }
@@ -98,8 +211,15 @@ class FajrConfig
     }
     // default resolve relative
     $relativeTo = FajrUtils::joinPath(dirname(__FILE__), '..');
-    if (!empty(self::$directoriesRelativeTo[$key])) {
-      $relativeTo = self::getDirectory(self::$directoriesRelativeTo[$key]);
+
+    $parameters = self::getParameterDescription();
+
+    assert(array_key_exists($key, $parameters));
+
+    $param = $parameters[$key];
+
+    if (array_key_exists('relativeTo', $param)) {
+      $relativeTo = self::getDirectory($param['relativeTo']);
     }
     return FajrUtils::joinPath($relativeTo, $dir);
   }
