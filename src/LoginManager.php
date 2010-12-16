@@ -54,7 +54,11 @@ class LoginManager
     // on server side.
     $this->session->remove('login/login.class');
     $this->session->remove('server');
-    $this->session->regenerate(true);
+    // wipe out all other session data
+    // Note, calling $session->regenerate() preserve data
+    // so we force destroy in old way
+    session_destroy();
+
 
     if ($login === null) return false;
     if (!$login->logout($connection)) {
