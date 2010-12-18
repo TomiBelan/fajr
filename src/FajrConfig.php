@@ -91,6 +91,10 @@ class FajrConfig
       'SSL.CertificatesDir' =>
         array('defaultValue' => null),
 
+      'SSL.Require' =>
+        array('defaultValue' => true,
+              'validator' => $booleanValidator),
+
       'Connection.UserAgent' =>
         array('defaultValue' => 'Mozilla/5.0 (Windows; U; Windows NT 5.1; sk; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7',
               'validator' => $stringValidator),

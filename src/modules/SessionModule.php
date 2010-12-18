@@ -38,7 +38,7 @@ class SessionModule implements Module
         array('session_cookie_lifetime' => $lifeTimeSec/60,
               'session_cookie_path' => '/',
               'session_cookie_domain' => '.' . $_SERVER['HTTP_HOST'],
-              'session_cookie_secure' => true,
+              'session_cookie_secure' => FajrConfig::get('SSL.Require'),
               'session_cookie_httponly' => true,
               'session_name' => 'fajr_session_id',
               );

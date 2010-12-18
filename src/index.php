@@ -131,6 +131,20 @@ if (!FajrConfig::isConfigured()) {
   ');
 }
 
+if (FajrConfig::get('SSL.Require') && !FajrUtils::isHTTPS()) {
+  fajr_bootstrap_error('
+     <p>
+       Pre túto inštanciu fajr-u je vyžadované HTTPS spojenie.
+       Prosím skontrolujte prepisovacie pravidlá v <code>.htaccess</code>
+       (alebo konfigurácii web servera), ktoré presmerovávajú HTTP spojenia na HTTPS.
+       Ak nechcete vyžadovať SSL spojenie, je možné túto kontrolu
+       vypnúť v konfiguračnom súbore, <strong>avšak na produkčných inštaláciách,
+       alebo inštaláciách s funkčným SSL sa neodporúča túto kontrolu vypínať.
+       </strong>
+     </p>
+   ');
+}
+
 // bootstrapping whole application
 $modules = array(
     new TimerModule($startTime),
