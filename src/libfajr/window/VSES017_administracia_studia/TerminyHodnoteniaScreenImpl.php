@@ -4,8 +4,6 @@
 // found in the LICENSE file in the project root directory.
 
 /**
- * TODO
- *
  * PHP version 5.3.0
  *
  * @package    Fajr
@@ -57,18 +55,37 @@ class TerminyHodnoteniaScreenImpl extends AIS2AbstractScreen
   public function getPredmetyZapisnehoListu(Trace $trace)
   {
     $this->openIfNotAlready($trace);
-    $data = $this->executor->requestContent($trace);
+    $data = $this->executor->doRequest($trace,
+      array('eventClass' => 'avc.ui.event.AVCActionEvent',
+        'compName' => 'filterAction',
+        'embObj' => array(
+          'objName' => 'semesterComboBox',
+          'dataView' => array(
+            'selectedIndexes' => 0,
+          ),
+        ),
+    ));
+
     return $this->parser->createTableFromHtml($trace->addChild("Parsing table"), $data,
-        'predmetyTable_dataView');
+        'VSES007_StudentZoznamPrihlaseniNaSkuskuDlg0_predmetyTable_dataView');
   }
 
   public function getTerminyHodnotenia(Trace $trace)
   {
     $this->openIfNotAlready($trace);
-    $data = $this->executor->requestContent($trace);
+    $data = $this->executor->doRequest($trace,
+      array('eventClass' => 'avc.ui.event.AVCActionEvent',
+        'compName' => 'zobrazitTerminyAction',
+        'embObj' => array(
+          'objName' => 'zobrazitTerminyComboBox',
+          'dataView' => array(
+            'selectedIndexes' => 0,
+          ),
+        ),
+    ));
 
     return $this->parser->createTableFromHtml($trace->addChild("Parsing table"),
-                $data, 'terminyTable_dataView');
+                $data, 'VSES007_StudentZoznamPrihlaseniNaSkuskuDlg0_terminyTable_dataView');
   }
 
   public function getZoznamTerminovDialog(Trace $trace, $predmetIndex)
@@ -126,7 +143,7 @@ class TerminyHodnoteniaScreenImpl extends AIS2AbstractScreen
 
     if (!preg_match("@dm\(\).setActiveDialogName\(".
           "'VSES007_StudentZoznamPrihlaseniNaSkuskuDlg0'\);@", $data)) {
-      throw new Exception("Problém pri odhlasovaní - neočakávaná odpoveď od AISu");
+      throw new Exception("Problém pri odhlasovaní z termínu - neočakávaná odpoveď od AISu");
     }
     
     return true;
