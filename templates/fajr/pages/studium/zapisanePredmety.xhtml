@@ -15,9 +15,9 @@
 
   {% set body %}
     {% for row in predmetyZapisnehoListu %}
-      {% if row.semester == 'L' %}
+      {% if row.kodSemester == 'L' %}
         {% set rowClass = 'leto' %}
-      {% elseif row.semester == 'Z' %}
+      {% elseif row.kodSemester == 'Z' %}
         {% set rowClass = 'zima' %}
       {% else %}
         {% set rowClass = 'rok' %}
