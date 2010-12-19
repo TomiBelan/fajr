@@ -7,16 +7,16 @@
 {# --------------------- ZOZNAM STUDII -------------------------------#}
 
 {% set head %}
-  {{ table.column("ročník") }}
-  {{ table.column("rok štúdia") }}
-  {{ table.column("skratka") }}
-  {{ table.column("študijný program") }}
-  {{ table.column("doplňujúce údaje") }}
-  {{ table.column("dĺžka štúdia") }}
-  {{ table.column("dĺžka v semestroch") }}
-  {{ table.column("začiatok štúdia") }}
-  {{ table.column("koniec štúdia") }}
-  {{ table.column("číslo programu") }}
+  {{ table.column("ročník", "sortable-numeric") }}
+  {{ table.column("rok štúdia", "sortable-numeric") }}
+  {{ table.column("skratka", "sortable-text") }}
+  {{ table.column("študijný program", "sortable-text") }}
+  {{ table.column("doplňujúce údaje", "sortable-text") }}
+  {{ table.column("dĺžka štúdia", "sortable-numeric") }}
+  {{ table.column("dĺžka v semestroch", "sortable-numeric") }}
+  {{ table.column("začiatok štúdia", "sortable-date-dmy") }}
+  {{ table.column("koniec štúdia", "sortable-date-dmy") }}
+  {{ table.column("číslo programu", "sortable-numeric") }}
 {% endset %}
 
 {% set body %}
@@ -50,14 +50,14 @@
 {# --------------------- ZOZNAM ZAPISNYCH LISTOV -------------------#}
 
 {% set head %}
-  {{ table.column("akademicky rok") }}
-  {{ table.column("ročník") }}
-  {{ table.column("krúžok") }}
-  {{ table.column("skratka") }}
-  {{ table.column("doplňujúce údaje") }}
-  {{ table.column("dĺžka v semestroch") }}
-  {{ table.column("dátum zápisu") }}
-  {{ table.column("číslo programu") }}
+  {{ table.column("akademicky rok", "sortable-text") }}
+  {{ table.column("ročník", "sortable-numeric") }}
+  {{ table.column("skratka", "sortable-text") }}
+  {{ table.column("štud. program", "sortable-text") }}
+  {{ table.column("doplňujúce údaje", "sortable-text") }}
+  {{ table.column("dĺžka v semestroch", "sortable-numeric") }}
+  {{ table.column("dátum zápisu", "sortable-date-dmy") }}
+  {{ table.column("číslo programu", "sortable-numeric") }}
 {% endset %}
 
 {% set body %}

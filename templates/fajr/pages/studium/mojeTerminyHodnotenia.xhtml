@@ -7,18 +7,19 @@
 {% parent %}
 {% set tabContent %}
   {% set head %}
-    {{ table.column("predmet") }}
-    {{ table.column("čas") }}
-    {{ table.column("dátum") }}
-    {{ table.column("miestnosť") }}
-    {{ table.column("hodnotiaci") }}
-    {{ table.column("počet prihlásených") }}
-    {{ table.column("maximálny počet") }}
-    {{ table.column("poznámka") }}
-    {{ table.column("prihlasovanie") }}
-    {{ table.column("odhlasovanie") }}
-    {{ table.column("Odhlás") }}
-    {{ table.column("známka") }}
+    {{ table.column("predmet", "sortable-text") }}
+    {{ table.column("čas", "sortable-text") }} {# cas je hh:mm #}
+    {{ table.column("dátum", "sortable-date-dmy") }}
+    {{ table.column("miestnosť", "sortable-text") }}
+    {{ table.column("hodnotiaci", "sortable-text") }}
+    {{ table.column("počet prihlásených", "sortable-numeric") }}
+    {{ table.column("maximálny počet", "sortable-numeric") }}
+    {{ table.column("poznámka", "sortable-text") }}
+    {{ table.column("prihlasovanie", "sortable-sortPrihlasovanieOdhlasovanie") }}
+    {{ table.column("odhlasovanie", "sortable-sortPrihlasovanieOdhlasovanie") }}
+    {{ table.column("Odhlás", "") }}
+    {{ table.column("známka", "sortable-text") }}
+    
   {% endset %}
 
   {% macro riadok(row, odhlas, studium, zapisnyList, action) %}

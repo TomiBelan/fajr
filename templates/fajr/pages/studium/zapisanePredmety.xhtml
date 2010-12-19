@@ -6,11 +6,11 @@
 {% parent %}
 {% set tabContent %}
   {% set head %}
-    {{ table.column("semester") }}
-    {{ table.column("názov predmetu") }}
-    {{ table.column("kredit") }}
-    {{ table.column("kód typu výučby") }}
-    {{ table.column("skratka") }}
+    {{ table.column("semester", "sortable-text favour-reverse") }}
+    {{ table.column("názov predmetu", "sortable-text") }}
+    {{ table.column("kredit", "sortable-numeric") }}
+    {{ table.column("kód typu výučby", "sortable-text") }}
+    {{ table.column("skratka", "sortable-text") }}
   {% endset %}
 
   {% set body %}

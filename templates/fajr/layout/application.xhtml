@@ -1,5 +1,10 @@
 {% extends "layout/main.xhtml" %}
 
+{% block head %}
+{% parent %}
+<script type="text/javascript" src="javascripts/sortFunctions.js"></script>
+{% endblock %}
+
 {% block content %}
   {% url logout for ['action': 'logout'] %}
   <div class="logout">

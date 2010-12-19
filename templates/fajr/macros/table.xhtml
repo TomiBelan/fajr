@@ -1,5 +1,8 @@
-{% macro column(title) %}
-  <th class="sortable">{{ title }}</th>
+{% macro column(title, class) %}
+  {% if not class %}
+    {% set class='' %}
+  {% endif %}
+  <th class="{{ class }}">{{ title }}</th>
 {% endmacro %}
 
 {% macro row(class, selected) %}

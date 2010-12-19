@@ -9,13 +9,13 @@
   {# -------------------- Hodnotenia -------------------- #}
 
   {% set head %}
-    {{ table.column("Semester") }}
-    {{ table.column("Názov predmetu") }}
-    {{ table.column("Kredit predmetu") }}
-    {{ table.column("Klasifikačný stupeň") }}
-    {{ table.column("Dátum hodnotenia") }}
-    {{ table.column("Termín") }}
-    {{ table.column("Známka popis") }}
+    {{ table.column("Semester", "sortable-text favour-reverse") }}
+    {{ table.column("Názov predmetu", "sortable-text") }}
+    {{ table.column("Kredit predmetu", "sortable-numeric") }}
+    {{ table.column("Klasifikačný stupeň", "sortable-text") }}
+    {{ table.column("Dátum hodnotenia", "sortable-date-dmy") }}
+    {{ table.column("Termín", "sortable-text") }}
+    {{ table.column("Známka popis", "sortable-text") }}
   {% endset %}
 
   {% set body %}
@@ -45,16 +45,16 @@
   {# ---------------- Priemery ------------------------ #}
 
   {% set head %}
-    {{ table.column("Akademický rok") }}
-    {{ table.column("Názov priemeru") }}
-    {{ table.column("Kód semestra") }}
-    {{ table.column("Získaný kredit") }}
-    {{ table.column("Celkový počet predmetov") }}
-    {{ table.column("Počet neabsolvovaných predmetov") }}
-    {{ table.column("Študijný priemer") }}
-    {{ table.column("Vážený priemer") }}
-    {{ table.column("Priemer na koľký pokus") }}
-    {{ table.column("Dátum výpočtu priemeru") }}
+    {{ table.column("Akademický rok", "sortable-text") }}
+    {{ table.column("Názov priemeru", "sortable-text") }}
+    {{ table.column("Kód semestra", "sortable-text") }}
+    {{ table.column("Získaný kredit", "sortable-numeric") }}
+    {{ table.column("Celkový počet predmetov", "sortable-numeric") }}
+    {{ table.column("Počet neabsolvovaných predmetov", "sortable-numeric") }}
+    {{ table.column("Študijný priemer", "sortable-numeric") }}
+    {{ table.column("Vážený priemer", "sortable-numeric") }}
+    {{ table.column("Priemer na koľký pokus", "sortable-numeric") }}
+    {{ table.column("Dátum výpočtu priemeru", "sortable-date-dmy") }}
   {% endset %}
 
   {% set body %}
