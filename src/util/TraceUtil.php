@@ -9,7 +9,7 @@
  * @package    Fajr
  * @subpackage Fajr_Util
  * @author     Martin Sucha <anty.sk+fajr@gmail.com>
- * @author Peter Perešíni <ppershing+fajr@gmail.com>
+ * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 namespace fajr\util;
 
@@ -17,6 +17,11 @@ use fajr\libfajr\base\Preconditions;
 
 /**
  * Utilities for trace implementations
+ *
+ * @package    Fajr
+ * @subpackage Fajr_Util
+ * @author     Martin Sucha <anty.sk+fajr@gmail.com>
+ * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 class TraceUtil
 {
