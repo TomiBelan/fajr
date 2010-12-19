@@ -132,6 +132,8 @@ return array(
    *   'Login.Cosign.CookieName'=>'cosign-filter-ais2.uniba.sk',
    * - Je daná inštancia ostrá verzia AISu?
    *   'Server.Beta'=>false
+   * - Typ serveru
+   *   'Backend'=>ServerConfig::BACKEND_LIBFAJR
    */
   'AIS2.ServerList' => array(
     'ais2.uniba.sk' => new ServerConfig(

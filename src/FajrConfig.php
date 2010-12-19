@@ -14,6 +14,7 @@ namespace fajr;
 use Exception;
 use fajr\validators\StringValidator;
 use fajr\validators\ChoiceValidator;
+use fajr\util\ConfigUtils;
 
 class FajrConfig
 {
@@ -154,35 +155,10 @@ class FajrConfig
       throw new Exception('Konfiguračný súbor nevrátil pole');
     }
 
-    $config = array();
-    foreach ($parameters as $name => $info) {
-      // Note: isset() returns false for keys with null value!
-      if (array_key_exists($name, $result)) {
-        $value = $result[$name];
-        // Validate the value from config file
-        if (isset($info['validator'])) {
-          $validator = $info['validator'];
-          
-          try {
-            $validator->validate($value);
-          }
-          catch (Exception $e) {
-            throw new Exception('Chyba v konfiguračnej volbe ' . $name .
-                                ': ' .$e->getMessage(), null, $e);
-          }
-        }
-        // And set it to config
-        $config[$name] = $value;
-      }
-      else {
-        // If the parameter is optional, we have a default value
-        // Note: isset() returns false for keys with null value!
-        if (!array_key_exists('defaultValue', $info)) {
-          throw new Exception('Required configuration parameter ' .
-                               $name . ' missing');
-        }
-        
-        $config[$name] = $info['defaultValue'];
+    $config = ConfigUtils::parseAndValidateConfiguration($parameters, $result);
+    foreach ($config['AIS2.ServerList'] as $key => $server) {
+      if ($key !== $server->geServerName()) {
+        throw new Exception("Nesedí meno servera v konfiguracii AIS2.ServerList");
       }
     }
     self::$config = $config;
