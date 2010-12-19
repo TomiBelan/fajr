@@ -130,9 +130,11 @@ class PriemeryCalculator
 
   public function add($castRoka, $znamka, $kredity)
   {
-    Preconditions::check($castRoka == self::SEMESTER_LETNY ||
-                         $castRoka == self::SEMESTER_ZIMNY,
-                         "Predmet musí byť priradený k semestru");
+    Preconditions::check(in_array($castRoka,
+                            array(self::SEMESTER_LETNY,
+                                  self::SEMESTER_ZIMNY,
+                                  self::AKADEMICKY_ROK)),
+                         "Neplatná časť študijného roka.");
     $this->obdobia[$castRoka]->add($znamka, $kredity);
     $this->obdobia[self::AKADEMICKY_ROK]->add($znamka, $kredity);
   }

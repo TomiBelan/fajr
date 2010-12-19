@@ -97,7 +97,7 @@ tr.terminodhlaseny {
 }
 
 tr.leto {
-  background-color: #FFFFE0;
+  background-color: #FFFFD0;
 }
 
 tr.leto:nth-child(even) {
@@ -110,6 +110,14 @@ tr.zima {
 
 tr.zima:nth-child(even) {
   background-color: #D1D1FF;
+}
+
+tr.rok {
+  background-color: #E0FFE0;
+}
+
+tr.rok:nth-child(even) {
+  background-color: #D1FFD1;
 }
 
 /* table footer */

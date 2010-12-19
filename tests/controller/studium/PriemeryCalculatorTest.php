@@ -52,7 +52,7 @@ class PriemeryCalculatorTest extends PHPUnit_Framework_TestCase
   public function testInvalidSemester()
   {
     $this->setExpectedException('InvalidArgumentException');
-    $this->calculator->add(PriemeryCalculator::AKADEMICKY_ROK, 'A', 1);
+    $this->calculator->add('junk', 'A', 1);
   }
 
   public function testInvalidZnamka()
