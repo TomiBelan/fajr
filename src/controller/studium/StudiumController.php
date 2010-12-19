@@ -18,7 +18,7 @@ use fajr\libfajr\pub\base\Trace;
 use fajr\controller\BaseController;
 use fajr\Request;
 use fajr\Response;
-use fajr\FajrUtils;
+use fajr\util\FajrUtils;
 use fajr\libfajr\pub\window\VSES017_administracia_studia as VSES017; // *
 use fajr\controller\studium\PriemeryCalculator;
 use fajr\Sorter;
