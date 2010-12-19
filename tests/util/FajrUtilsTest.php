@@ -11,7 +11,7 @@
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */
-namespace fajr;
+namespace fajr\util;
 
 use PHPUnit_Framework_TestCase;
 use Exception;

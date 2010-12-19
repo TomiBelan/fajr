@@ -33,6 +33,7 @@ use fajr\exceptions\ValidationException;
 use fajr\exceptions\SecurityException;
 
 use fajr\libfajr\window\AIS2MainScreenImpl;
+use fajr\util\FajrUtils;
 /**
  * This is "main()" of the fajr. It instantiates all neccessary
  * objects, query ais and renders results.

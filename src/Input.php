@@ -19,6 +19,7 @@ use fajr\libfajr\base\IllegalStateException;
 use fajr\validators\InputValidator;
 use fajr\validators\IntegerValidator;
 use fajr\validators\StringValidator;
+use fajr\util\FajrUtils;
 use InvalidArgumentException;
 
 class Input

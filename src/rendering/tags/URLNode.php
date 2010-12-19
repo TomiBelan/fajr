@@ -47,7 +47,7 @@ class URLNode extends Twig_Node
     $compiler
       ->addDebugInfo($this)
       ->write('$context[\''.$this['name'].'\'] = ')
-      ->raw('\\fajr\\FajrUtils::buildUrl(')
+      ->raw('\\fajr\\util\\FajrUtils::buildUrl(')
       ->subcompile($this->parameters)
       ->raw(");\n");
   }

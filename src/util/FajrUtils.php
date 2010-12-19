@@ -9,9 +9,8 @@
  * @author Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */
-namespace fajr;
+namespace fajr\util;
 
-require_once 'FajrRouter.php';
 use fajr\libfajr\pub\connection\AIS2ServerConnection;
 use fajr\libfajr\pub\login\Login;
 use fajr\libfajr\pub\base\Trace;
@@ -19,6 +18,8 @@ use fajr\libfajr\login\AIS2LoginImpl;
 use fajr\libfajr\AIS2Session;
 use fajr\libfajr\util\StrUtil;
 use fajr\libfajr\base\Preconditions;
+use fajr\FajrRouter;
+use fajr\FajrConfig;
 use Exception;
 
 class FajrUtils

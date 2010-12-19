@@ -15,6 +15,7 @@ use Exception;
 use fajr\validators\StringValidator;
 use fajr\validators\ChoiceValidator;
 use fajr\util\ConfigUtils;
+use fajr\util\FajrUtils;
 
 class FajrConfig
 {
@@ -157,7 +158,7 @@ class FajrConfig
 
     $config = ConfigUtils::parseAndValidateConfiguration($parameters, $result);
     foreach ($config['AIS2.ServerList'] as $key => $server) {
-      if ($key !== $server->geServerName()) {
+      if ($key !== $server->getServerName()) {
         throw new Exception("Nesedí meno servera v konfiguracii AIS2.ServerList");
       }
     }

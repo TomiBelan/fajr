@@ -8,6 +8,7 @@ use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\pub\login\LoginFactory;
 use fajr\exceptions\SecurityException;
 use fajr\libfajr\pub\login\CosignServiceCookie;
+use fajr\util\FajrUtils;
 
 class LoginManager
 {
