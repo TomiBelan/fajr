@@ -56,6 +56,11 @@ class FajrConfig
         array('defaultValue' => false,
               'validator' => $booleanValidator),
 
+      'Debug.Trace.File' =>
+        array('defaultValue' => null,
+              'relativeTo' => 'Path.Temporary',
+              'validator' => $pathValidator),
+
       'Debug.Exception.ShowStacktrace' =>
         array('defaultValue' => false,
               'validator' => $booleanValidator),

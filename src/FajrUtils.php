@@ -19,6 +19,7 @@ use fajr\libfajr\login\AIS2LoginImpl;
 use fajr\libfajr\AIS2Session;
 use fajr\libfajr\util\StrUtil;
 use fajr\libfajr\base\Preconditions;
+use Exception;
 
 class FajrUtils
 {
@@ -258,5 +259,54 @@ class FajrUtils
                        'tableName' => $tableName);
       $response->addWarning($message);
     }
+  }
+
+  /** @var array fields of exception that to be preserved for template */
+  private static $exceptionFields = array('file', 'line', 'function', 'class',
+                                          'type');
+
+  /**
+   * Extract information about exception.
+   *
+   * The result satisfies following conditions:
+   *  - it has no references to objects from stack trace
+   *  - contains type names instead of values
+   *  - recursively contains any referenced exceptions
+   *  - contains whole stack trace for an exception
+   *
+   * @param Exception $ex
+   * @returns array that mimics Exception interface
+   */
+  public static function extractExceptionInfo(Exception $ex)
+  {
+    $info = array();
+    $info['message'] = $ex->getMessage();
+    $info['code'] = $ex->getCode();
+    $info['file'] = $ex->getFile();
+    $info['line'] = $ex->getLine();
+    $trace = array();
+    foreach ($ex->getTrace() as $item) {
+      $itemInfo = array();
+      foreach (self::$exceptionFields as $key) {
+        if (array_key_exists($key, $item)) {
+          $itemInfo[$key] = $item[$key];
+        }
+        else {
+          $itemInfo[$key] = 'N/A';
+        }
+      }
+      $itemInfo['args'] = array_map('gettype', $item['args']);
+      $trace[] = $itemInfo;
+    }
+    $info['trace'] = $trace;
+    if ($ex->getPrevious() === null) {
+      // Note(anty): null causes Twig to throw exception
+      // is this a bug in Twig?
+      $info['previous'] = false;
+    }
+    else {
+      $info['previous'] = self::extractExceptionInfo($ex->getPrevious());
+    }
+    return $info;
   }
 }

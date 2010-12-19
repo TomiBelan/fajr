@@ -14,6 +14,7 @@
 namespace fajr;
 
 use PHPUnit_Framework_TestCase;
+use Exception;
 /**
  * @ignore
  */
@@ -58,6 +59,69 @@ class FajrUtilsTest extends PHPUnit_Framework_TestCase
     $this->assertEquals(FajrUtils::formatPlural(4, 'failed zero %d', 'failed one %d', 'ok %d', 'failed other %d'), 'ok 4');
     $this->assertEquals(FajrUtils::formatPlural(5, 'failed zero %d', 'failed one %d', 'failed 2-4 %d', 'ok %d'), 'ok 5');
     $this->assertEquals(FajrUtils::formatPlural(10, 'failed zero %d', 'failed one %d', 'failed 2-4 %d', 'ok %d'), 'ok 10');
+  }
+
+  public function testExtractExceptionInfo()
+  {
+    $exception = new Exception('testMessage');
+    $info = FajrUtils::extractExceptionInfo($exception);
+    $this->assertEquals($info['message'], 'testMessage');
+    $this->assertEquals($info['file'], $exception->getFile());
+    $this->assertEquals($info['line'], $exception->getLine());
+    $this->assertEquals($info['code'], $exception->getCode());
+    $this->assertEquals($info['previous'], false);
+    $trace = $exception->getTrace();
+    $infoTrace = $info['trace'];
+    $this->assertEquals(count($infoTrace), count($trace));
+    foreach ($infoTrace as $item) {
+      foreach ($item as $key => $value) {
+        if ($key == 'args') {
+          $this->assertTrue(is_array($value));
+          foreach ($value as $arg) {
+            $this->assertTrue(is_string($arg));
+          }
+        }
+        else if ($key == 'line') {
+          $this->assertTrue(is_string($value) || is_int($value));
+        }
+        else {
+          $this->assertTrue(is_string($value));
+        }
+      }
+    }
+  }
+
+  public function testExtractExceptionInfoWithPrevious()
+  {
+    $previous = new Exception('previousMessage');
+    $exception = new Exception('testMessage', null, $previous);
+    $info = FajrUtils::extractExceptionInfo($exception);
+    $this->assertTrue(is_array($info['previous']));
+    $infoPrevious = $info['previous'];
+    $this->assertEquals($infoPrevious['message'], 'previousMessage');
+    $this->assertEquals($infoPrevious['file'], $previous->getFile());
+    $this->assertEquals($infoPrevious['line'], $previous->getLine());
+    $this->assertEquals($infoPrevious['code'], $previous->getCode());
+    $this->assertEquals($infoPrevious['previous'], false);
+    $trace = $exception->getTrace();
+    $infoTrace = $infoPrevious['trace'];
+    $this->assertEquals(count($infoTrace), count($trace));
+    foreach ($infoTrace as $item) {
+      foreach ($item as $key => $value) {
+        if ($key == 'args') {
+          $this->assertTrue(is_array($value));
+          foreach ($value as $arg) {
+            $this->assertTrue(is_string($arg));
+          }
+        }
+        else if ($key == 'line') {
+          $this->assertTrue(is_string($value) || is_int($value));
+        }
+        else {
+          $this->assertTrue(is_string($value));
+        }
+      }
+    }
   }
 
 }

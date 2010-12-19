@@ -12,16 +12,9 @@
       <ul>
         {% for item in exception.trace %}
           <li>
-            <strong>{{ item.file}}: {{ item.line }}</strong>
+            {{ item.file}}: {{ item.line }}
             <br />
-            Function: {{ item.function }}
-            <br />
-            Arguments:
-            <ul>
-              {% for arg in item.args %}
-                <li>{{ arg }}</li>
-              {% endfor %}
-            </ul>
+            Function: {{ item.function }}({{ item.args|join(', ') }})
           </li>
         {% endfor %}
       </ul>
@@ -43,4 +36,8 @@
   <h2>Pri spracúvaní požiadavky nastala chyba:</h2>
   {{ _self.recursiveException(exception, showStackTrace) }}
 </div>
+  <div class="prepend-1">
+    {% url mainPage for [] %}
+    <a href="{{ mainPage }}">Späť na hlavnú stránku</a>
+  </div>
 {% endblock %}

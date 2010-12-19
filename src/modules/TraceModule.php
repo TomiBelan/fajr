@@ -35,9 +35,24 @@ class TraceModule implements Module
   public function configure(sfServiceContainerBuilder $container)
   {
     if (FajrConfig::get('Debug.Trace') === true) {
-      $container->register('Trace.class', 'fajr\ArrayTrace')
+      $debugFile = FajrConfig::getDirectory('Debug.Trace.File');
+      if ($debugFile !== null) {
+        $container->setParameter('Debug.Trace.File', $debugFile);
+        $container->setParameter('Debug.Trace.File.Mode', 'a');
+        $container->register('Debug.Trace.File.class', 'fajr\util\PHPFile')
+                ->addArgument('%Debug.Trace.File%')
+                ->addArgument('%Debug.Trace.File.Mode%');
+        $container->register('Trace.class', 'fajr\FileTrace')
                 ->addArgument(new sfServiceReference('Timer.class'))
+                ->addArgument(new sfServiceReference('Debug.Trace.File.class'))
+                ->addArgument(0)
                 ->addArgument('--Trace--');
+      }
+      else {
+        $container->register('Trace.class', 'fajr\ArrayTrace')
+                  ->addArgument(new sfServiceReference('Timer.class'))
+                  ->addArgument('--Trace--');
+      }
     }
     else {
       $container->register('Trace.class', 'fajr\libfajr\pub\base\NullTrace');

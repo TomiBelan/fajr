@@ -13,6 +13,7 @@ use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\base\Timer;
 use fajr\libfajr\util\CodeSnippet;
 use fajr\libfajr\base\Preconditions;
+use fajr\util\TraceUtil;
 
 /**
  * A Trace that stores its data in an array
@@ -101,23 +102,6 @@ class ArrayTrace implements Trace
   }
 
   /**
-   * Finds appropriate caller data associated with stacktrace.
-   *
-   * @param int $depth How much back in stack we should go.
-   *                   Zero defaults to caller of this function.
-   *
-   * @returns array @see debug_backtrace for details
-   */
-  public static function getCallerData($depth) {
-    $data = debug_backtrace();
-    for ($i = 0; $i < $depth + 1; $i++) {
-      array_shift($data);
-    }
-    $caller = array_shift($data);
-    return $caller;
-  }
-
-  /**
    * Returns information about this particular trace event.
    *
    * @returns array with with time, caller data and code snippet
@@ -125,12 +109,12 @@ class ArrayTrace implements Trace
   private function getInfoArray() {
     $info = array();
 
-    $caller = $this->getCallerData(2);
+    $caller = TraceUtil::getCallerData(2);
     $class = isset($caller['class']) ? $caller['class'] : "";
     $class = preg_replace("@.*\\\\@", "", $class);
     $function = $caller['function'];
 
-    $caller = $this->getCallerData(1);
+    $caller = TraceUtil::getCallerData(1);
     $file = $caller['file'];
     $line = $caller['line'];
     $snippet = CodeSnippet::getCodeSnippet($file, $line, 5);
