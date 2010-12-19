@@ -102,6 +102,15 @@ class FajrConfig
       'Template.Directory' =>
         array('defaultValue' => './templates/fajr',
               'validator' => $pathValidator),
+
+      'Template.Cache' =>
+        array('defaultValue' => false,
+              'validator' => $booleanValidator),
+
+      'Template.Cache.Path' =>
+        array('defaultValue' => './twig_cache',
+              'relativeTo' => 'Path.Temporary',
+              'validator' => $pathValidator),
     );
     return self::$parameterDescription;
   }

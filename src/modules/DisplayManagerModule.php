@@ -60,9 +60,16 @@ class DisplayManagerModule implements Module
     $container->setParameter('Twig.Template.Directory',
                              FajrConfig::getDirectory('Template.Directory'));
 
+    if (FajrConfig::get('Template.Cache')) {
+      $cache = FajrConfig::getDirectory('Template.Cache.Path');
+    } else {
+      $cache = false;
+    }
+
     $container->setParameter('Twig.Environment.options',
                       array(
                         'base_template_class' => '\fajr\rendering\Template',
+                        'cache' => $cache,
                         'strict_variables' => true
                       ));
   }

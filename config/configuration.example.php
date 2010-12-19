@@ -91,6 +91,19 @@ return array(
   //'Template.Directory'=>'./templates/fajr',
 
   /*
+   * Má sa použiť cache na skompilované templaty?
+   * Upozornenie: Cache na templaty je po každom update
+   * fajru treba vymazať!
+   */
+  //'Template.Cache'=>false,
+
+  /*
+   * Cache na skompilované templaty
+   * (absolútna, alebo relatívna k adresáru Path.Temporary)
+   */
+  //'Template.Cache.Path'=>'./twig_cache',
+
+  /*
    * Názov defaultného servera (viď zoznam serverov)
    */
   'AIS2.DefaultServer' => 'ais2.uniba.sk',
