@@ -158,6 +158,10 @@ class LoginManager
         return $factory->newLoginUsingCosignProxy(
             $serverConfig->getCosignProxyDB(),
             $serverConfig->getCosignCookieName());
+      case 'nologin':
+        $this->assertSecurity($loginType === 'nologin',
+                              "Wrong loginType $loginType");
+        return $factory->newNoLogin();
       default:
         // TODO(ppershing): throw ConfigError
         assert(false);
