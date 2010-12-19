@@ -81,6 +81,15 @@ return array(
   //'SSL.CertificatesDir'=>null,
 
   /*
+   * Pri zapnutí tejto voľby bude fajr vyžadovať SSL spojenie.
+   * Pri vypnutí voľby dôjde k uvoľneniu politiky cookies (vypne sa príznak
+   * secure), aby sessions fungovali aj cez nezabezpečené spojenie.
+   *
+   * Vypnutie SSL.Require sa na produkčnej inštalácii neodporúča!
+   */
+  //'SSL.Require'=>true,
+
+  /*
    * User agent pod akým sa má libfajr identifikovať.
    */
   //'Connection.UserAgent'=>'Mozilla/5.0 (Windows; U; Windows NT 5.1; sk; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7',
