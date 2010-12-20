@@ -39,6 +39,7 @@ class ContextModule implements Module
     $container->register('Response.class', '\fajr\Response');
     $container->register('Context.class', '\fajr\Context')
               ->addMethodCall('setRequest', array(new sfServiceReference('Request.class')))
-              ->addMethodCall('setResponse', array(new sfServiceReference('Response.class')));
+              ->addMethodCall('setResponse', array(new sfServiceReference('Response.class')))
+              ->addMethodCall('setSessionStorage', array(new sfServiceReference('Session.Storage.class')));
   }
 }

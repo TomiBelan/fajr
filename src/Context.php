@@ -25,9 +25,6 @@ use sfStorage;
  */
 class Context
 {
-  /** var AIS2ServerConnection */
-  private $aisConnection;
-
   /** var Request */
   private $request;
 
@@ -36,26 +33,6 @@ class Context
 
   /** var sfStorage*/
   private $session;
-
-  /**
-   * Return a ServerConnection
-   *
-   * @returns ServerConnection connection to AIS server
-   */
-  public function getAisConnection()
-  {
-    return $this->aisConnection;
-  }
-
-  /**
-   * Set a ServerConnection
-   *
-   * @param ServerConnection $aisConnection
-   */
-  public function setAisConnection(AIS2ServerConnection $aisConnection)
-  {
-    $this->aisConnection = $aisConnection;
-  }
 
   /**
    * Get a request associated with this context
