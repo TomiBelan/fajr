@@ -7,7 +7,6 @@
  *
  * @package    Fajr
  * @subpackage Libfajr__Pub__Window__VSES017_administracia_studia
- * @author     Martin Králik <majak47@gmail.com>
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
@@ -17,7 +16,8 @@ use fajr\libfajr\window\VSES017_administracia_studia as VSES017;
 use fajr\libfajr\window\VSES017_administracia_studia\fake as VSES017fake;
 use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\window\fake\FakeRequestExecutor;
-class VSES017_fakeFactory
+
+class VSES017_FakeFactoryImpl implements VSES017_Factory
 {
   private $connection;
 

@@ -21,7 +21,7 @@ use fajr\libfajr\window\ScreenRequestExecutorImpl;
 use fajr\libfajr\data_manipulation\AIS2TableParser;
 use fajr\libfajr\pub\connection\AIS2ServerConnection;
 
-class VSES017_factory
+class VSES017_FactoryImpl implements VSES017_Factory
 {
   private $connection;
 
