@@ -33,6 +33,8 @@ use fajr\exceptions\ValidationException;
 use fajr\exceptions\SecurityException;
 
 use fajr\libfajr\window\AIS2MainScreenImpl;
+use fajr\modules\ControllerInjectorModule;
+use fajr\controller\DispatchController;
 use fajr\util\FajrUtils;
 /**
  * This is "main()" of the fajr. It instantiates all neccessary
@@ -85,7 +87,7 @@ class Fajr {
   public function getServer()
   {
     $request = $this->context->getRequest();
-    $session = $this->injector->getInstance("Session.Storage.class");
+    $session = $this->context->getSessionStorage();
 
     $serverList = FajrConfig::get('AIS2.ServerList');
     $serverName = FajrConfig::get('AIS2.DefaultServer');
@@ -109,7 +111,7 @@ class Fajr {
   }
 
   /**
-   * Set an exception to be displayed in DisplayManager
+   * Set an exception to be displayed.
    * @param Exception $ex
    */
   private function setException(Exception $ex) {
@@ -144,6 +146,20 @@ class Fajr {
     
   }
 
+
+  public function render(Response $response)
+  {
+    try {
+      $displayManager = $this->injector->getInstance('DisplayManager.class');
+      echo $displayManager->display($response);
+    } catch (Exception $e) {
+      throw new Exception('Chyba pri renderovaní template '.
+          $response->getTemplate().':' .$e->getMessage(),
+                          null, $e);
+    }
+  }
+
+
   /**
    * Runs the whole logic. It is fajr's main()
    *
@@ -154,12 +170,11 @@ class Fajr {
     try {
       $trace = $this->injector->getInstance('Trace.class');
       $this->statistics = $this->injector->getInstance('Statistics.class');
-      $this->displayManager = $this->injector->getInstance('DisplayManager.class');
       $this->context = $this->injector->getInstance('Context.class');
 
-      $session = $this->injector->getInstance('Session.Storage.class');
-      $loginManager = new LoginManager($session, $this->context->getRequest());
+      $session = $this->context->getSessionStorage();
       $response = $this->context->getResponse();
+      $loginManager = new LoginManager($session, $this->context->getRequest());
 
       // we are going to log in, so we get a clean session
       // this needs to be done before a connection
@@ -205,13 +220,7 @@ class Fajr {
       }
     }
 
-    try {
-      echo $this->displayManager->display($this->context->getResponse());
-    } catch (Exception $e) {
-      throw new Exception('Chyba pri renderovaní template '.
-          $this->context->getResponse()->getTemplate().':' .$e->getMessage(),
-                          null, $e);
-    }
+    $this->render($this->context->getResponse());
   }
 
   private function setResponseFields(Response $response)
@@ -238,22 +247,20 @@ class Fajr {
 
   public function runLogic(Trace $trace, HttpConnection $connection)
   {
-    $session = $this->injector->getInstance('Session.Storage.class');
+    $session = $this->context->getSessionStorage();
     $loginManager = new LoginManager($session, $this->context->getRequest());
     $server = $this->getServer();
     $serverConnection = new AIS2ServerConnection($connection,
         new AIS2ServerUrlMap($server->getServerName()));
       
-    $this->context->setAisConnection($serverConnection);
-    $this->context->setSessionStorage($session);
-
     $action = $this->context->getRequest()->getParameter('action',
                                            'studium.MojeTerminyHodnotenia');
     $response = $this->context->getResponse();
 
     if ($action == 'logout') {
       $loginManager->logout($serverConnection);
-      // unless there is an error, logout redirects and ends script execution
+      FajrUtils::redirect(array(), 'index.php');
+      exit();
     } else if ($action == 'termsOfUse') {
       // TODO(anty): refactor this
       $response->setTemplate('termsOfUse');
@@ -270,7 +277,9 @@ class Fajr {
     }
 
     if ($loggedIn) {
-      $mainScreen = new AIS2MainScreenImpl($this->context->getAisConnection());
+      $controllerInjector = new Injector(array(new
+            ControllerInjectorModule($serverConnection, $server)));
+      $mainScreen = $controllerInjector->getInstance('AIS2MainScreen.class');
 
       if (($aisVersion = $session->read('ais/aisVersion')) == null) {
         $aisVersion = $mainScreen->getAisVersion($trace->addChild('Get AIS version'));
@@ -290,7 +299,8 @@ class Fajr {
           $aisVersion <= regression\VersionRange::getMaxVersion()));
       $response->set('aisUserName', $userName);
 
-      $controller = $this->injector->getInstance('Controller.class');
+      $controller = new DispatchController($controllerInjector,
+          $this->injector->getParameter('controller.dispatchMap'));
 
       $response->set("action", $action);
       $controller->invokeAction($trace, $action, $this->context);
@@ -308,6 +318,9 @@ class Fajr {
           break;
         case 'cosignproxy':
           $response->setTemplate('welcomeCosignProxy');
+          break;
+        case 'nologin':
+          $response->setTemplate('welcomeDemo');
           break;
         default:
           throw new Exception("Invalid type of login");
