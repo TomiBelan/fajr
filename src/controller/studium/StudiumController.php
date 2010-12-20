@@ -49,6 +49,12 @@ class StudiumController extends BaseController
   private $terminyHodnoteniaScreen;
   private $hodnoteniaScreen;
 
+  private $factory;
+
+  public function __construct(VSES017\VSES017_Factory $factory)
+  {
+    $this->factory = $factory;
+  }
 
   /**
    * Invoke an action given its name
@@ -74,7 +80,7 @@ class StudiumController extends BaseController
       return;
     }
 
-    $screenFactory = new VSES017\VSES017_factory($context->getAisConnection());
+    $screenFactory = $this->factory;
     $adminStudia = $screenFactory->newAdministraciaStudiaScreen($trace);
 
     $this->studium = $request->getParameter('studium', '0');
@@ -325,7 +331,7 @@ class StudiumController extends BaseController
           ->getData();
     $predmetKey = -1;
     foreach ($predmety as $key=>$row) {
-      if ($row[PredmetyFields::INDEX] == $predmetIndex) $predmetKey = $key;
+      if ($row[PredmetyFields::INDEX] === $predmetIndex) $predmetKey = $key;
     }
 
     $childTrace = $trace->addChild('Zoznam terminov');
@@ -335,7 +341,7 @@ class StudiumController extends BaseController
     $terminy = $terminyDialog->getZoznamTerminov($childTrace)->getData();
     $terminKey = -1;
     foreach($terminy as $key=>$terminyRow) {
-      if ($terminyRow[TerminyFields::INDEX] == $terminIndex) $terminKey = $key;
+      if ($terminyRow[TerminyFields::INDEX] === $terminIndex) $terminKey = $key;
     }
     if ($predmetKey == -1 || $terminKey == -1) {
       throw new Exception("Ooops, predmet/termín nenájdený. Pravdepodobne

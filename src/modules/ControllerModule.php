@@ -38,8 +38,8 @@ class ControllerModule implements Module
               ->setShared(false);
     $parameters = 
         array('controller.dispatchMap' => array(
-                  'studium' => '\fajr\controller\studium\StudiumController',
-                ),
+                  'studium' => 'studium.controller.class',
+                  ),
               );
     $container->addParameters($parameters);
   }

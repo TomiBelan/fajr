@@ -18,6 +18,8 @@ use fajr\libfajr\pub\base\Trace;
 use fajr\controller\Controller;
 use Exception;
 use fajr\Context;
+use fajr\injection\Injector;
+use fajr\libfajr\base\DisableEvilCallsObject;
 
 /**
  * Controller dispatching its request to the appropriate controller
@@ -26,20 +28,24 @@ use fajr\Context;
  * @subpackage Controller
  * @author     Martin Sucha <anty.sk@gmail.com>
  */
-class DispatchController implements Controller
+class DispatchController extends DisableEvilCallsObject implements Controller
 {
 
   /** @var array(string=>string) lookup table for class names */
   private $classNameTable;
+
+  /** @var Injector injector to be used for creating controllers */
+  private $injector;
 
   /**
    * Construct a new DispatchController
    *
    * @param array(string=>string) $classNameTable mapping from names to classes
    */
-  public function __construct(array $classNameTable)
+  public function __construct(Injector $injector, array $classNameTable)
   {
     $this->classNameTable = $classNameTable;
+    $this->injector = $injector;
   }
 
   /**
@@ -62,21 +68,23 @@ class DispatchController implements Controller
       throw new Exception('Action name does not contain "."');
     }
 
-    if (empty($this->classNameTable[$parts[0]])) {
+    $controllerName = $parts[0];
+    $subaction = $parts[1];
+    if (empty($this->classNameTable[$controllerName])) {
       throw new Exception('Could not find a mapping for action ' . $action);
     }
 
-    $className = $this->classNameTable[$parts[0]];
+    $class = $this->classNameTable[$controllerName];
 
-    $instance = new $className();
+    $instance = $this->injector->getInstance($class);
 
     if (!($instance instanceof Controller)) {
-      throw new Exception('Class "' . $className . '" mapped to action "' . 
+      throw new Exception('Class "' . $controllerName . '" mapped to action "' . 
                           $action . '" is not a controller');
     }
 
-    $instance->invokeAction($trace->addChild('Target action ' . $parts[1]),
-                            $parts[1], $context);
+    $instance->invokeAction($trace->addChild('Target action ' . $subaction),
+                            $subaction, $context);
   }
 
 }
