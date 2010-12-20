@@ -331,7 +331,9 @@ class StudiumController extends BaseController
           ->getData();
     $predmetKey = -1;
     foreach ($predmety as $key=>$row) {
-      if ($row[PredmetyFields::INDEX] === $predmetIndex) $predmetKey = $key;
+      if ((string) $row[PredmetyFields::INDEX] === $predmetIndex) {
+        $predmetKey = $key;
+      }
     }
 
     $childTrace = $trace->addChild('Zoznam terminov');
@@ -341,8 +343,11 @@ class StudiumController extends BaseController
     $terminy = $terminyDialog->getZoznamTerminov($childTrace)->getData();
     $terminKey = -1;
     foreach($terminy as $key=>$terminyRow) {
-      if ($terminyRow[TerminyFields::INDEX] === $terminIndex) $terminKey = $key;
+      if ((string) $terminyRow[TerminyFields::INDEX] === $terminIndex) {
+        $terminKey = $key;
+      }
     }
+
     if ($predmetKey == -1 || $terminKey == -1) {
       throw new Exception("Ooops, predmet/termín nenájdený. Pravdepodobne
           zmena dát v AISe.");
