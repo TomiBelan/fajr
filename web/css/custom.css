@@ -166,10 +166,13 @@ tfoot tr {
 /* Main title && logo */
 
 h1 {
-  padding-left: 64px;
-  background: transparent url("../images/logo.png") 16px 50% no-repeat;
   margin: 0.5ex;
   font-size: 300%;
+}
+
+.logo {
+  padding-left: 64px;
+  background: transparent url("../images/logo.png") 16px 50% no-repeat;
   min-height: 32px;
 }
 

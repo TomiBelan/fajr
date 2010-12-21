@@ -24,7 +24,8 @@
   </head>
   <body>
     <div class="container">
-      <h1>FAJR: {% display title %}</h1>
+      {% url mainPage for ['_file': 'index.php'] %}
+      <h1><a class="logo" href="{{ mainPage }}">FAJR</a>: {% display title %}</h1>
       {% block warnings %}
         {% include "parts/warnings.xhtml" %}
       {% endblock %}
