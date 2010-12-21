@@ -52,28 +52,40 @@ class CurlConnection implements HttpConnection
     curl_close($this->curl);
   }
 
+  private function _curlSetOption($option, $value)
+  {
+    if (!curl_setopt($this->curl, $option, $value)) {
+      throw new Exception('Failed to set CURL option ' . $option);
+    }
+  }
+
   public function _curlInit()
   {
     $ch = curl_init();
-    foreach ($this->options as $option=>$value) {
-      curl_setopt($ch, $option, $value);
+    if ($ch === false) {
+      throw new Exception('Cannot create CURL handle');
     }
-    // do not put http response header in result
-    curl_setopt($ch, CURLOPT_HEADER, false);
-    // return response instead of echoing it to output
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_COOKIEFILE, $this->cookieFile);
-    curl_setopt($ch, CURLOPT_COOKIEJAR, $this->cookieFile);
 
     $this->curl = $ch;
+
+    foreach ($this->options as $option=>$value) {
+      $this->_curlSetOption($option, $value);
+    }
+    // do not put http response header in result
+    $this->_curlSetOption(CURLOPT_HEADER, false);
+    // return response instead of echoing it to output
+    $this->_curlSetOption(CURLOPT_RETURNTRANSFER, true);
+    $this->_curlSetOption(CURLOPT_COOKIEFILE, $this->cookieFile);
+    $this->_curlSetOption(CURLOPT_COOKIEJAR, $this->cookieFile);
+    
   }
 
   public function get(Trace $trace, $url)
   {
     $trace->tlog("Http GET");
     $trace->tlogVariable("URL", $url);
-    curl_setopt($this->curl, CURLOPT_URL, $url);
-    curl_setopt($this->curl, CURLOPT_HTTPGET, true);
+    $this->_curlSetOption(CURLOPT_URL, $url);
+    $this->_curlSetOption(CURLOPT_HTTPGET, true);
     return $this->exec($trace);
   }
 
@@ -83,8 +95,8 @@ class CurlConnection implements HttpConnection
     $trace->tlogVariable("URL", $url);
     $child=$trace->addChild("POST data");
     $child->tlogVariable("post_data", $data);
-    curl_setopt($this->curl, CURLOPT_URL, $url);
-    curl_setopt($this->curl, CURLOPT_POST, true);
+    $this->_curlSetOption(CURLOPT_URL, $url);
+    $this->_curlSetOption(CURLOPT_POST, true);
 
     $newPost = '';
     foreach ($data as $key => $value) {
@@ -92,7 +104,7 @@ class CurlConnection implements HttpConnection
     }
     $post = substr($newPost, 0, -1);
 
-    curl_setopt($this->curl, CURLOPT_POSTFIELDS, $post);
+    $this->_curlSetOption(CURLOPT_POSTFIELDS, $post);
 
     return $this->exec($trace);
   }
@@ -135,7 +147,7 @@ class CurlConnection implements HttpConnection
   private function exec(Trace $trace)
   {
     // read cookie file
-    curl_setopt($this->curl, CURLOPT_COOKIEFILE, $this->cookieFile);
+    $this->_curlSetOption(CURLOPT_COOKIEFILE, $this->cookieFile);
 
     $output = curl_exec($this->curl);
     $child = $trace->addChild("Response");
@@ -150,7 +162,7 @@ class CurlConnection implements HttpConnection
           curl_error($this->curl));
     }
     // Do not forget to save current file content
-    curl_setopt($this->curl, CURLOPT_COOKIEJAR, $this->cookieFile);
+    $this->_curlSetOption(CURLOPT_COOKIEJAR, $this->cookieFile);
 
     return $output;
   }
