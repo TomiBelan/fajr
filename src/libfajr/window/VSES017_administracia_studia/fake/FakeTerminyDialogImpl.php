@@ -74,12 +74,8 @@ class FakeTerminyDialogImpl extends FakeAbstractDialog
   
   public function getZoznamPrihlasenychDialog(Trace $trace, $terminIndex)
   {
-    assert(false);
-    $data = new DialogData();
-    $data->compName = 'zobrazitZoznamPrihlasenychAction';
-    $data->embObjName = 'zoznamTerminovTable';
-    $data->index = $terminIndex;
-    return new ZoznamPrihlasenychDialogImpl($trace, $this, $data);
+    $data = array('termin' => $terminIndex);
+    return new FakeZoznamPrihlasenychDialogImpl($trace, $this, $data);
   }
   
 }
