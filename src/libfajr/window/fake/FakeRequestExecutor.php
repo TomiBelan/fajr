@@ -70,9 +70,11 @@ class FakeRequestExecutor extends DisableEvilCallsObject
   {
    $fullPath = $this->getFullPath($this->rootPath, $options, $tableName);
     if (!(file_exists($fullPath))) {
-      throw new Exception("Cannot find file '$fullPath'.");
+      return array(); // default
     }
-    return include "$fullPath";
+    $data = include "$fullPath";
+    assert(is_array($data));
+    return $data;
   }
 
 }
