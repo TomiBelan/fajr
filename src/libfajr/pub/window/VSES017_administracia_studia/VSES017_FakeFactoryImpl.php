@@ -16,34 +16,35 @@ use fajr\libfajr\window\VSES017_administracia_studia as VSES017;
 use fajr\libfajr\window\VSES017_administracia_studia\fake as VSES017fake;
 use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\window\fake\FakeRequestExecutor;
+use sfStorage;
 
 class VSES017_FakeFactoryImpl implements VSES017_Factory
 {
-  private $connection;
+  /** @var sfStorage session storage to save modifications to defaults */
+  private $storage;
 
-  const FAKE_DATA_DIR = '/home/ppershing/fajr_devel/src/regression/fake_data';
-
-  public function __construct($dataDir)
+  public function __construct($dataDir, sfStorage $sessionStorage)
   {
     $this->dataDir = $dataDir;
+    $this->storage = $sessionStorage;
   }
 
   public function newAdministraciaStudiaScreen(Trace $trace)
   {
     return new VSES017fake\FakeAdministraciaStudiaScreenImpl($trace,
-        new FakeRequestExecutor($this->dataDir, array()));
+        new FakeRequestExecutor($this->dataDir, $this->storage, array()));
   }
 
   public function newTerminyHodnoteniaScreen(Trace $trace, $idZapisnyList, $idStudium)
   {
     return new VSES017fake\FakeTerminyHodnoteniaScreenImpl($trace,
-        new FakeRequestExecutor($this->dataDir, array()), $idZapisnyList);
+        new FakeRequestExecutor($this->dataDir, $this->storage, array()), $idZapisnyList);
   }
 
   public function newHodnoteniaPriemeryScreen(Trace $trace, $idZapisnyList)
   {
     return new VSES017fake\FakeHodnoteniaPriemeryScreenImpl($trace,
-        new FakeRequestExecutor($this->dataDir, array()),
+        new FakeRequestExecutor($this->dataDir, $this->storage, array()),
         $idZapisnyList);
   }
 }

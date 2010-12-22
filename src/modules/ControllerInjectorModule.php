@@ -18,6 +18,7 @@ use sfServiceContainerBuilder;
 use sfServiceReference;
 use fajr\libfajr\pub\connection\AIS2ServerConnection;
 use fajr\ServerConfig;
+use sfStorage;
 
 /**
  * Injector module for arguments passed to controllers.
@@ -30,12 +31,18 @@ class ControllerInjectorModule implements Module
 {
   /** @var AIS2ServerConnection */
   private $connection;
+
   /** @var ServerConfig */
   private $server;
 
-  public function __construct(AIS2ServerConnection $connection, ServerConfig $server) {
+  /** @var sfStorage */
+  private $storage;
+
+  public function __construct(AIS2ServerConnection $connection,
+      ServerConfig $server, sfStorage $storage) {
     $this->connection = $connection;
     $this->server = $server;
+    $this->storage = $storage;
   }
 
   /**
@@ -50,9 +57,12 @@ class ControllerInjectorModule implements Module
               ->setShared(false);
     switch ($this->server->getBackendType()) {
       case ServerConfig::BACKEND_FAKE:
+        $container->setService('session.storage.class', $this->storage);
+
         $container->register('administracia_studia_screen.factory.class',
                              '\fajr\libfajr\pub\window\VSES017_administracia_studia\VSES017_FakeFactoryImpl')
                   ->addArgument('%FakeDataDir.string%')
+                  ->addArgument(new sfServiceReference('session.storage.class'))
                   ->setShared(false);
 
         $container->register('AIS2MainScreen.class', '\fajr\libfajr\window\fake\FakeMainScreen')

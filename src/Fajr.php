@@ -278,7 +278,7 @@ class Fajr {
 
     if ($loggedIn) {
       $controllerInjector = new Injector(array(new
-            ControllerInjectorModule($serverConnection, $server)));
+            ControllerInjectorModule($serverConnection, $server, $session)));
       $mainScreen = $controllerInjector->getInstance('AIS2MainScreen.class');
 
       if (($aisVersion = $session->read('ais/aisVersion')) == null) {
