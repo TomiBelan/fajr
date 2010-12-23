@@ -1,4 +1,15 @@
 <?php
+// Copyright (c) 2010 The Fajr authors (see AUTHORS).
+// Use of this source code is governed by a MIT license that can be
+// found in the LICENSE file in the project root directory.
+/**
+ * Validates if input is in the set of predefined values.
+ *
+ * @package    Fajr
+ * @subpackage Validators
+ * @author     Martin Sucha <anty.sk@gmail.com>
+ * @filesource
+ */
 
 namespace fajr\validators;
 
@@ -6,15 +17,19 @@ use fajr\exceptions\ValidationException;
 
 /**
  * Validator for validating choices from a predefined set of values
+ *
+ * @package    Fajr
+ * @subpackage Validators
+ * @author     Martin Sucha <anty.sk@gmail.com>
  */
 class ChoiceValidator implements InputValidator
 {
-
+  /** @var array(mixed) predefined choices which are allowed */
   private $choices;
 
   /**
    * Construct a new ChoiceValidator
-   * @param array $choices array of allowed values
+   * @param array(mixed) $choices array of allowed values
    */
   public function __construct(array $choices) {
     $this->choices = $choices;

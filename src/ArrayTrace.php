@@ -2,21 +2,31 @@
 // Copyright (c) 2010 The Fajr authors.
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file in the project root directory.
-
 /**
- * @author Martin Sucha <anty.sk@gmail.com>
- * @author Peter Perešíni <ppershing+fajr@gmail.com>
+ * Contains Trace which stores it's data in array.
+ *
+ * @package    Fajr
+ * @subpackage Fajr
+ * @author     Martin Sucha <anty.sk@gmail.com>
+ * @author     Peter Perešíni <ppershing+fajr@gmail.com>
+ * @filesource
  */
 
 namespace fajr;
-use fajr\libfajr\pub\base\Trace;
-use fajr\libfajr\base\Timer;
-use fajr\libfajr\util\CodeSnippet;
+
 use fajr\libfajr\base\Preconditions;
+use fajr\libfajr\base\Timer;
+use fajr\libfajr\pub\base\Trace;
+use fajr\libfajr\util\CodeSnippet;
 use fajr\util\TraceUtil;
 
 /**
  * A Trace that stores its data in an array
+ *
+ * @package    Fajr
+ * @subpackage Fajr
+ * @author     Martin Sucha <anty.sk@gmail.com>
+ * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 class ArrayTrace implements Trace
 {
