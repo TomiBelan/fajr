@@ -48,9 +48,9 @@ class DataTableImpl implements SimpleDataTable
     $this->definition = $tableDefinition;
     assert(is_array($tableData));
     $this->data = array();
-    foreach ($tableData as $key=>$tableRow) {
+    foreach ($tableData as $rowKey=>$tableRow) {
       $myRow = array();
-      $myRow['index'] = $key;
+      $myRow['index'] = $rowKey;
       assert(count($tableDefinition) == count($tableRow));
 
       foreach($tableRow as $key=>$value) {
@@ -59,7 +59,7 @@ class DataTableImpl implements SimpleDataTable
         $myRow[$tableDefinition[$key]] = $value;
       }
 
-      $this->data[] = $myRow;
+      $this->data[$rowKey] = $myRow;
 
     }
   }
