@@ -397,7 +397,7 @@ class StudiumController extends BaseController
       $predmetId = $predmetRow[PredmetyFields::INDEX];
       $predmet = $predmetRow[PredmetyFields::NAZOV];
 
-      $childTrace = $trace->addChild('Get zoznam terminov');
+      $childTrace = $trace->addChild('Zoznam terminov k predmetu ' . $predmet);
       $dialog = $this->terminyHodnoteniaScreen->getZoznamTerminovDialog(
           $childTrace, $predmetId);
       $terminy = $dialog->getZoznamTerminov($childTrace);
