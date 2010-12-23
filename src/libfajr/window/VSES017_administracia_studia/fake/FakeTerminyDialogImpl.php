@@ -23,6 +23,8 @@ use fajr\libfajr\window\fake\FakeAbstractDialog;
 use fajr\libfajr\window\fake\FakeRequestExecutor;
 use fajr\regression\TerminyKPredmetuRegression;
 use fajr\libfajr\base\Preconditions;
+use Exception;
+
 /**
  * Trieda pre dialóg s termínmi skúšok k jednému predmetu.
  *
@@ -38,40 +40,43 @@ class FakeTerminyDialogImpl extends FakeAbstractDialog
   {
     $this->openIfNotAlready($trace);
     $data = $this->executor->readTable(array(), 'terminy');
-    return new DataTableImpl(TerminyKPredmetuRegression::get(), $data);
+    $result = array();
+    foreach ($data as $index => $value) {
+      $info = $this->executor->readTable(array('termin' => $index), 'prihlas');
+      if (isset($info['jePrihlaseny']) && $info['jePrihlaseny']) {
+        // skip this in list
+      } else {
+        $result[$index] = $value;
+      }
+    }
+    return new DataTableImpl(TerminyKPredmetuRegression::get(), $result);
   }
-  
+
   public function prihlasNaTermin(Trace $trace, $terminIndex)
   {
-    assert(false);
-    $this->openIfNotAlready($trace);
-    $data = $this->executor->doRequest($trace, array(
-      'compName' => 'enterAction',
-      'eventClass' => 'avc.ui.event.AVCActionEvent',
-      'embObj' => array(
-        'objName' => 'zoznamTerminovTable',
-        'dataView' => array(
-          'activeIndex' => $terminIndex,
-          'selectedIndexes' => $terminIndex,
-        ),
-      ),
-    ));
-    
-    $error = match($data, '@webui\(\)\.messageBox\("([^"]*)",@');
-    if ($error) {
-      throw new Exception('Nepodarilo sa prihlásiť na zvolený termín.<br/>'.
-          'Dôvod: <b>'.$error.'</b>');
+    $terminy = $this->executor->readTable(array(), 'terminy');
+    foreach ($terminy as $index => $unused) {
+      $info = $this->executor->readTable(array('termin' => $index), 'prihlas');
+      if (isset($info['jePrihlaseny']) && $info['jePrihlaseny']) {
+        throw new Exception("Už si prihlásený na iný termín z tohoto predmetu!");
+      }
     }
-    if (!preg_match("@dm\(\)\.closeDialog\("
-          ."\"VSES206_VyberTerminuHodnoteniaDlg1\"\);@", $data)) {
-      throw new Exception("Problém pri prihlasovaní: ".
-          "Neočakávaná odozva od AISu");
+    $info = $this->executor->readTable(array('termin' => $terminIndex), 'prihlas');
+    if (!isset($info['mozePrihlasit']) || !$info['mozePrihlasit']) {
+      $dovod = isset($info['nemozePrihlasitDovod']) ? $info['nemozePrihlasitDovod'] : 'neznámy';
+      throw new Exception("Nemôžem prihlásiť na termín - dôvod: " . $dovod);
     }
-    
+    if (isset($info['jePrihlaseny']) && $info['jePrihlaseny']) {
+      throw new Exception("Na daný termín si už prihlásený.");
+    }
+    $info['jePrihlaseny'] = true;
+    $this->executor->writeTable(array('termin' => $terminIndex), 'prihlas', $info);
+
+
     $this->closeIfNeeded($trace);
     return true;
   }
-  
+
   public function getZoznamPrihlasenychDialog(Trace $trace, $terminIndex)
   {
     $data = array('termin' => $terminIndex);

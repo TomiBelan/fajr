@@ -24,6 +24,7 @@ use fajr\libfajr\window\fake\FakeAbstractScreen;
 use fajr\libfajr\window\fake\FakeRequestExecutor;
 use fajr\regression\ZapisanePredmetyRegression;
 use fajr\libfajr\base\Preconditions;
+use fajr\regression\MojeTerminyRegression;
 
 /**
  * Trieda reprezentujúca jednu obrazovku so zoznamom predmetov zápisného listu
@@ -36,90 +37,110 @@ use fajr\libfajr\base\Preconditions;
 class FakeTerminyHodnoteniaScreenImpl extends FakeAbstractScreen
     implements TerminyHodnoteniaScreen
 {
-  private $idZapisnyList;
 
   public function __construct(Trace $trace, FakeRequestExecutor $executor, $idZapisnyList)
   {
-    parent::__construct($trace, $executor);
-    $this->idZapisnyList = $idZapisnyList;
+    parent::__construct($trace, $executor->spawnChild(array('list' => $idZapisnyList)));
   }
 
   public function getPredmetyZapisnehoListu(Trace $trace)
   {
     $this->openIfNotAlready($trace);
-    $data = $this->executor->readTable(
-        array('list' => $this->idZapisnyList),
-        'zapisanePredmety');
+    $data = $this->executor->readTable(array(), 'zapisanePredmety');
     $table = new DataTableImpl(ZapisanePredmetyRegression::get(), $data);
     return $table;
   }
 
   public function getTerminyHodnotenia(Trace $trace)
   {
-    $this->openIfNotAlready($trace);
-    return new DataTableImpl(array(), array());
-    $data = $this->executor->requestContent($trace);
+    $result = array();
 
-    return $this->parser->createTableFromHtml($trace->addChild("Parsing table"),
-                $data, 'terminyTable_dataView');
+    $this->openIfNotAlready($trace);
+    $predmety = $this->executor->readTable(array(), 'zapisanePredmety');
+    foreach($predmety as $predmetIndex=>$unused) {
+      $terminy = $this->executor->readTable(
+          array('predmet' => $predmetIndex),
+          'terminy');
+      foreach($terminy as $terminIndex=>$unused2) {
+        $info = $this->executor->readTable(
+          array('predmet' => $predmetIndex,
+                'termin' => $terminIndex,
+               ),
+          'prihlas');
+        if (isset($info['jePrihlaseny'])) {
+          $terminData = $info['prihlasenyData'];
+          $terminData[0] = $info['jePrihlaseny'] ? 'TRUE' : 'FALSE';
+          $result[] = $terminData;
+        }
+      }
+    }
+    return new DataTableImpl(MojeTerminyRegression::get(), $result);
   }
 
   public function getZoznamTerminovDialog(Trace $trace, $predmetIndex)
   {
-    $data = array('list' => $this->idZapisnyList,
-                  'predmet' => $predmetIndex);
-    return new FakeTerminyDialogImpl($trace, $this, $data);
+    Preconditions::checkContainsInteger($predmetIndex);
+    $data = $this->executor->readTable(array(), 'zapisanePredmety');
+    if (!array_key_exists($predmetIndex, $data)) {
+      throw new Exception("Zadaný predmet neexistuje!");
+    }
+    return new FakeTerminyDialogImpl($trace, $this,
+        array('predmet' => $predmetIndex));
+  }
+
+  private function getPredmetTerminInternalIndex($terminIndex_)
+  {
+    $__id = 0;
+    $predmety = $this->executor->readTable(array(), 'zapisanePredmety');
+    foreach($predmety as $predmetIndex=>$unused) {
+      $predmetExecutor = $this->executor->spawnChild(array('predmet' => $predmetIndex));
+      $terminy = $predmetExecutor->readTable(array(), 'terminy');
+      foreach($terminy as $terminIndex=>$unused2) {
+        $info = $predmetExecutor->readTable(
+            array('termin' => $terminIndex),
+            'prihlas');
+        if (isset($info['jePrihlaseny'])) {
+          if ($__id == $terminIndex_) {
+            return array($predmetIndex, $terminIndex);
+          }
+          $__id++;
+        }
+      }
+    }
+
+    throw new Exception("Termín sa nepodarilo nájsť!");
   }
 
   public function getZoznamPrihlasenychDialog(Trace $trace, $terminIndex)
   {
-    $data = new DialogData();
-    $data->compName = 'zoznamPrihlasenychStudentovAction';
-    $data->embObjName = 'terminyTable';
-    $data->index = $terminIndex;
-    return new ZoznamPrihlasenychDialogImpl($trace, $this, $data);
+    $indexy = $this->getPredmetTerminInternalIndex($terminIndex);
+    return new FakeZoznamPrihlasenychDialogImpl($trace, $this,
+        array('predmet' => $indexy[0], 'termin' => $indexy[1]));
   }
   
   public function odhlasZTerminu(Trace $trace, $terminIndex)
   {
     $this->openIfNotAlready($trace);
-    // Posleme request ze sa chceme odhlasit.
-    $data = $this->executor->doRequest($trace, array(
-      'compName' => 'odstranitTerminAction',
-      'eventClass' => 'avc.ui.event.AVCActionEvent',
-      'embObj' => array(
-        'objName' => 'terminyTable',
-        'dataView' => array(
-          'activeIndex' => $terminIndex,
-          'selectedIndexes' => $terminIndex,
-        ),
-      ),
-    ));
-    if (!preg_match("@Skutočne chcete odobrať vybraný riadok?@", $data)) {
-      throw new Exception("Problém pri odhlasovaní - neočakávaná odozva AISu");
-    }
-    
-    // Odklikneme konfirmacne okno ze naozaj.
-    $data = $this->executor->doRequest($trace, array(
-      'events' => false,
-      'app' => false,
-      'dlgName' => false,
-      'changedProperties' => array(
-        'confirmResult' => 2,
-      ),
-    ));
-    
-    $message = match($data, '@webui\.messageBox\("([^"]*)"@');
-    if (($message !== false) && ($message != 'Činnosť úspešne dokončená.')) {
-      throw new Exception("Z termínu sa (pravdepodobne) nepodarilo odhlásiť." .
-                          "Dôvod:<br/><b>".$message.'</b>');
+  
+    $indexy = $this->getPredmetTerminInternalIndex($terminIndex);
+
+    $info = $this->executor->readTable(
+        array('predmet' => $indexy[0],
+              'termin' => $indexy[1],
+             ),
+        'prihlas');
+
+    if (!$info['mozeOdhlasit']) {
+      throw new Exception("Z termínu nie je možné sa odhlásiť!");
     }
 
-    if (!preg_match("@dm\(\).setActiveDialogName\(".
-          "'VSES007_StudentZoznamPrihlaseniNaSkuskuDlg0'\);@", $data)) {
-      throw new Exception("Problém pri odhlasovaní - neočakávaná odpoveď od AISu");
-    }
-    
+    $info['jePrihlaseny'] = false;
+    $this->executor->writeTable(
+        array('predmet' => $indexy[0],
+              'termin' => $indexy[1],
+             ),
+        'prihlas', $info);
+
     return true;
   }
 
