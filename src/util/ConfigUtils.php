@@ -7,7 +7,7 @@
  * Contains utilities for various config holders.
  *
  * @package    Fajr
- * @subpackage Fajr_Util
+ * @subpackage Util
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 namespace fajr\util;
@@ -18,7 +18,7 @@ use Exception;
  * Utility function for classes holding configurations.
  *
  * @package    Fajr
- * @subpackage Fajr_Util
+ * @subpackage Util
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 class ConfigUtils

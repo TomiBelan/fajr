@@ -6,7 +6,8 @@
 /**
  *
  * @package    Fajr
- * @author Martin Sucha <anty.sk@gmail.com>
+ * @subpackage Util
+ * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */
 namespace fajr\util;
@@ -22,6 +23,12 @@ use fajr\FajrRouter;
 use fajr\FajrConfig;
 use Exception;
 
+/**
+ *
+ * @package    Fajr
+ * @subpackage Util
+ * @author     Martin Sucha <anty.sk@gmail.com>
+ */
 class FajrUtils
 {
 

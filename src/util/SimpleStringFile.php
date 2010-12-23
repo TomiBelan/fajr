@@ -7,8 +7,9 @@
  * Contains implementation of in-memory File
  *
  * @package    Fajr
- * @subpackage Fajr_Util
+ * @subpackage Util
  * @author     Martin Sucha <anty.sk+fajr@gmail.com>
+ * @filesource
  */
 namespace fajr\util;
 
@@ -17,6 +18,10 @@ use Exception;
 
 /**
  * A File that uses string as file contents
+ *
+ * @package    Fajr
+ * @subpackage Util
+ * @author     Martin Sucha <anty.sk+fajr@gmail.com>
  */
 class SimpleStringFile implements File {
 

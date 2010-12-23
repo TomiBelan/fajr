@@ -7,8 +7,9 @@
  * Contains implementation of File
  *
  * @package    Fajr
- * @subpackage Fajr_Util
+ * @subpackage Util
  * @author     Martin Sucha <anty.sk+fajr@gmail.com>
+ * @filesource
  */
 namespace fajr\util;
 
@@ -20,6 +21,10 @@ use Exception;
  *
  * Users of this class are advised to close the file explicitly, as
  * close errors in destructor are silently ignored.
+ *
+ * @package    Fajr
+ * @subpackage Util
+ * @author     Martin Sucha <anty.sk+fajr@gmail.com>
  */
 class PHPFile implements File {
 

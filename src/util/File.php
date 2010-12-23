@@ -7,13 +7,18 @@
  * Contains abstraction representing open file
  *
  * @package    Fajr
- * @subpackage Fajr_Util
+ * @subpackage Util
  * @author     Martin Sucha <anty.sk+fajr@gmail.com>
+ * @filesource
  */
 namespace fajr\util;
 
 /**
  * Represents a open file
+ *
+ * @package    Fajr
+ * @subpackage Util
+ * @author     Martin Sucha <anty.sk+fajr@gmail.com>
  */
 interface File {
 
