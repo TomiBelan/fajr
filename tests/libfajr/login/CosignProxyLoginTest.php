@@ -7,17 +7,20 @@
  * This file contains tests for CosignProxyLogin class
  *
  * @package    Fajr
- * @subpackage Tests
+ * @subpackage Libfajr__Login
  * @author     Martin Sucha <anty.sk@gmail.com>
  */
+
 namespace fajr\libfajr\login;
-use PHPUnit_Framework_TestCase;
-use fajr\libfajr\pub\exceptions\LoginException;
+
 use fajr\libfajr\login\CosignCookieLogin;
-use fajr\libfajr\pub\connection\HttpConnection;
-use fajr\libfajr\pub\login\CosignServiceCookie;
 use fajr\libfajr\pub\connection\AIS2ServerConnection;
 use fajr\libfajr\pub\connection\AIS2ServerUrlMap;
+use fajr\libfajr\pub\connection\HttpConnection;
+use fajr\libfajr\pub\exceptions\LoginException;
+use fajr\libfajr\pub\login\CosignServiceCookie;
+use PHPUnit_Framework_TestCase;
+
 /**
  * @ignore
  */

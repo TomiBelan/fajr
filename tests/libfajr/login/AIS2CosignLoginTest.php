@@ -7,16 +7,17 @@
  * This file contains tests for AIS2CosignLoginImpl class
  *
  * @package    Fajr
- * @subpackage Tests
+ * @subpackage Libfajr__Login
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 namespace fajr\libfajr\login;
-use PHPUnit_Framework_TestCase;
-use fajr\libfajr\pub\exceptions\AIS2LoginException;
+
 use fajr\libfajr\login\CosignLogin;
-use fajr\libfajr\pub\connection\HttpCoonection;
 use fajr\libfajr\pub\connection\AIS2ServerConnection;
 use fajr\libfajr\pub\connection\AIS2ServerUrlMap;
+use fajr\libfajr\pub\connection\HttpCoonection;
+use fajr\libfajr\pub\exceptions\AIS2LoginException;
+use PHPUnit_Framework_TestCase;
 
 /**
  * @ignore

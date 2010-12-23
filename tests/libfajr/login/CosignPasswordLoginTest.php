@@ -4,20 +4,21 @@
 // found in the LICENSE file in the project root directory.
 
 /**
- * This file contains tests for Validator class
+ * This file contains tests for CosignPasswordLogin class.
  *
  * @package    Fajr
- * @subpackage Tests
+ * @subpackage Libfajr__Login
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 namespace fajr\libfajr\login;
 
-use PHPUnit_Framework_TestCase;
-use fajr\libfajr\pub\exceptions\LoginException;
 use fajr\libfajr\login\CosignPasswordLogin;
-use fajr\libfajr\pub\connection\HttpConnection;
 use fajr\libfajr\pub\connection\AIS2ServerConnection;
 use fajr\libfajr\pub\connection\AIS2ServerUrlMap;
+use fajr\libfajr\pub\connection\HttpConnection;
+use fajr\libfajr\pub\exceptions\LoginException;
+use PHPUnit_Framework_TestCase;
+
 /**
  * @ignore
  */
