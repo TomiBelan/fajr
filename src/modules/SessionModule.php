@@ -35,7 +35,7 @@ class SessionModule implements Module
   {
     $lifeTimeSec = 36000;
     $options = 
-        array('session_cookie_lifetime' => $lifeTimeSec/60,
+        array('session_cookie_lifetime' => $lifeTimeSec,
               'session_cookie_path' => '/',
               'session_cookie_domain' => '.' . $_SERVER['HTTP_HOST'],
               'session_cookie_secure' => FajrConfig::get('SSL.Require'),
