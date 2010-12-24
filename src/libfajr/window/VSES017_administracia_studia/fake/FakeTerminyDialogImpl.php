@@ -52,13 +52,20 @@ class FakeTerminyDialogImpl extends FakeAbstractDialog
     return new DataTableImpl(TerminyKPredmetuRegression::get(), $result);
   }
 
+  const MOJE_TERMINY_ZNAMKA = 12;
+
   public function prihlasNaTermin(Trace $trace, $terminIndex)
   {
     $terminy = $this->executor->readTable(array(), 'terminy');
+    // Jemna napodobenina logiky pre prihlasovanie,
+    // checkuje ci uz nie som zapisany na iny termin s vyslednou znamkou.
     foreach ($terminy as $index => $unused) {
       $info = $this->executor->readTable(array('termin' => $index), 'prihlas');
       if (isset($info['jePrihlaseny']) && $info['jePrihlaseny']) {
-        throw new Exception("Už si prihlásený na iný termín z tohoto predmetu!");
+        $znamka = $info['prihlasenyData'][self::MOJE_TERMINY_ZNAMKA];
+        if ($znamka != 'Fx') {
+          throw new Exception("Už si prihlásený na iný termín z tohoto predmetu!");
+        }
       }
     }
     $info = $this->executor->readTable(array('termin' => $terminIndex), 'prihlas');
