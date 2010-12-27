@@ -15,6 +15,9 @@ require_once 'PHPUnit/Framework.php';
 require_once '../third_party/symfony_di/lib/sfServiceContainerAutoloader.php';
 sfServiceContainerAutoloader::register();
 
+require_once '../third_party/symfony_storage/sfStorageAutoloader.php';
+sfStorageAutoloader::register();
+
 require_once '../third_party/twig/lib/Twig/Autoloader.php';
 Twig_Autoloader::register();
 
