@@ -4,6 +4,7 @@
 // found in the LICENSE file in the project root directory.
 
 /**
+ * Contains CodeSnippet which can extract source code near specific line.
  *
  * @package    Fajr
  * @subpackage Libfajr__Util
@@ -12,6 +13,14 @@
  */
 namespace fajr\libfajr\util;
 
+/**
+ * Provides simple way of extracting source code near specific line.
+ *
+ * @package    Fajr
+ * @subpackage Libfajr__Util
+ * @author     Peter Perešíni <ppershing+fajr@gmail.com>; original source: fks.sk database
+ * @filesource
+ */
 class CodeSnippet
 {
   /**

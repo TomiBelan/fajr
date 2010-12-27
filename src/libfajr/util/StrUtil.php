@@ -4,15 +4,26 @@
 // found in the LICENSE file in the project root directory.
 
 /**
+ * Contains utility functions for manipulating with strings.
  *
  * @package    Fajr
- * @subpackage Libfajr
+ * @subpackage Libfajr__Util
  * @author     Martin Králik <majak47@gmail.com>
  * @filesource
  */
+
 namespace fajr\libfajr\util;
+
 use fajr\libfajr\base\Preconditions;
 
+/**
+ * String utilities.
+ *
+ * @package    Fajr
+ * @subpackage Libfajr__Util
+ * @author     Martin Králik <majak47@gmail.com>
+ * @filesource
+ */
 class StrUtil {
   /**
    * Searches haystack for perl-like pattern and
