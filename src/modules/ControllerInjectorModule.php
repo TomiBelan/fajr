@@ -57,19 +57,27 @@ class ControllerInjectorModule implements Module
               ->setShared(false);
     switch ($this->server->getBackendType()) {
       case ServerConfig::BACKEND_FAKE:
-        $container->setService('session.storage.class', $this->storage);
-
         $container->register('administracia_studia_screen.factory.class',
                              '\fajr\libfajr\pub\window\VSES017_administracia_studia\VSES017_FakeFactoryImpl')
-                  ->addArgument('%FakeDataDir.string%')
-                  ->addArgument(new sfServiceReference('session.storage.class'))
+                  ->addArgument(new sfServiceReference('fake.storage.class'))
                   ->setShared(false);
+
+        $container->register('fake.storage.class', '\fajr\libfajr\storage\TemporarilyModifiableStorage')
+                  ->addArgument('%TempStorage.options%');
+
+        $container->setParameter('TempStorage.options',
+                    array('permanent_storage' => new sfServiceReference('fake.file.storage.class'),
+                          'temporary_storage' => $this->storage));
+
+        $container->register('fake.file.storage.class', '\fajr\libfajr\storage\FileStorage')
+                  ->addArgument('%Fake.FileStorage.options%');
+
+        $container->setParameter('Fake.FileStorage.options',
+                    array('root_path' => \fajr\regression\fake_data\fake_data::getDirectory()));
 
         $container->register('AIS2MainScreen.class', '\fajr\libfajr\window\fake\FakeMainScreen')
                   ->setShared(false);
 
-        $container->setParameter('FakeDataDir.string',
-            __DIR__.'/../regression/fake_data');
         break;
       case ServerConfig::BACKEND_LIBFAJR:
         $container->register('administracia_studia_screen.factory.class',

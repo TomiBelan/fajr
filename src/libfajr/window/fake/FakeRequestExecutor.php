@@ -30,70 +30,66 @@ use sfStorage;
  */
 class FakeRequestExecutor extends DisableEvilCallsObject
 {
-  /** @var string file path to the data directory */
-  private $rootPath;
-
   /** @var array default options which are added to each call */
   private $options;
 
-  /** @var sfStorage storage to save modifications to data */
+  /** @var sfStorage data storage */
   private $storage;
 
   /**
    * Konštruktor.
    *
    */
-  public function __construct($rootPath, sfStorage $storage, array $options)
+  public function __construct(sfStorage $storage, array $options)
   {
-    Preconditions::checkIsString($rootPath);
-    $this->rootPath = $rootPath;
     $this->options = $options;
     $this->storage = $storage;
   }
 
   public function spawnChild(array $options)
   {
-    return new FakeRequestExecutor($this->rootPath, $this->storage,
+    return new FakeRequestExecutor($this->storage,
                                    array_merge($this->options, $options));
   }
 
-  public function getFullPath($rootPath, array $options, $tableName)
+  /** Allowed characters for option keys/values and table name. */
+  const ALLOWED_CHARS_REGEX = '@^[a-zA-Z0-9._]*$@';
+
+  public function getFullPath(array $options, $tableName)
   {
-    $path = $rootPath;
+    Preconditions::checkIsString($tableName);
+    Preconditions::check($tableName != '', "Table name must be non-empty");
+
+    $path = '';
     $options = array_merge($this->options, $options);
     foreach ($options as $key=>$value)
     {
       $pathSegment = $key.$value;
-      if (!preg_match('@^[a-zA-Z0-9.]*$@', $pathSegment)) {
-        throw IllegalArgumentException();
+      if (!preg_match(self::ALLOWED_CHARS_REGEX, $pathSegment)) {
+        throw IllegalArgumentException('Invalid characters in options');
       }
       $path .= '/' . $pathSegment;
     }
-    if (!preg_match('@^[a-zA-Z0-9.]*$@', $tableName)) {
-      throw IllegalArgumentException();
+    if (!preg_match(self::ALLOWED_CHARS_REGEX, $tableName)) {
+      throw IllegalArgumentException('Invalid characters in tableName');
     }
-    return $path .= '/' . $tableName . '.dat';
+    return $path .= '/' . $tableName;
   }
 
   public function readTable($options, $tableName)
   {
-    $fullPath = $this->getFullPath($this->rootPath, $options, $tableName);
-    $storedData = $this->storage->read("fakeExecutorData/" . $fullPath);
+    $fullPath = $this->getFullPath($options, $tableName);
+    $storedData = $this->storage->read($fullPath);
     if ($storedData !== null) {
       return $storedData;
     }
-    if (!(file_exists($fullPath))) {
-      return array(); // default
-    }
-    $data = include "$fullPath";
-    assert(is_array($data));
-    return $data;
+    return array();
   }
 
   public function writeTable($options, $tableName, array $data)
   {
-    $fullPath = $this->getFullPath($this->rootPath, $options, $tableName);
-    $this->storage->write("fakeExecutorData/" . $fullPath, $data);
+    $fullPath = $this->getFullPath($options, $tableName);
+    $this->storage->write($fullPath, $data);
   }
 
 }

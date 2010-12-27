@@ -23,28 +23,27 @@ class VSES017_FakeFactoryImpl implements VSES017_Factory
   /** @var sfStorage session storage to save modifications to defaults */
   private $storage;
 
-  public function __construct($dataDir, sfStorage $sessionStorage)
+  public function __construct(sfStorage $sessionStorage)
   {
-    $this->dataDir = $dataDir;
     $this->storage = $sessionStorage;
   }
 
   public function newAdministraciaStudiaScreen(Trace $trace)
   {
     return new VSES017fake\FakeAdministraciaStudiaScreenImpl($trace,
-        new FakeRequestExecutor($this->dataDir, $this->storage, array()));
+        new FakeRequestExecutor($this->storage, array()));
   }
 
   public function newTerminyHodnoteniaScreen(Trace $trace, $idZapisnyList, $idStudium)
   {
     return new VSES017fake\FakeTerminyHodnoteniaScreenImpl($trace,
-        new FakeRequestExecutor($this->dataDir, $this->storage, array()), $idZapisnyList);
+        new FakeRequestExecutor($this->storage, array()), $idZapisnyList);
   }
 
   public function newHodnoteniaPriemeryScreen(Trace $trace, $idZapisnyList)
   {
     return new VSES017fake\FakeHodnoteniaPriemeryScreenImpl($trace,
-        new FakeRequestExecutor($this->dataDir, $this->storage, array()),
+        new FakeRequestExecutor($this->storage, array()),
         $idZapisnyList);
   }
 }
