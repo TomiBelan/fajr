@@ -7,7 +7,7 @@
  * This file contains tests for IntegerValidator class
  *
  * @package    Fajr
- * @subpackage Tests
+ * @subpackage Validators
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */

@@ -7,7 +7,7 @@
  * This file contains tests for ChoiceValidator class
  *
  * @package    Fajr
- * @subpackage Tests
+ * @subpackage Validators
  * @author     Martin Sucha <anty.sk+fajr@gmail.com>
  * @filesource
  */
