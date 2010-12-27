@@ -1,3 +1,2 @@
-<?php
 return
 array(0 => 'Nepouzite/nemoze odhlasit z terminu');
