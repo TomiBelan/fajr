@@ -25,7 +25,7 @@ require_once 'test_include.php';
 /**
  * @ignore
  */
-class StrUtilTest extends PHPUnit_Framework_TestCase
+class FakeDataTest extends PHPUnit_Framework_TestCase
 {
 
   /**
