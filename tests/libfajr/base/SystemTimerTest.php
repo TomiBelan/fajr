@@ -7,7 +7,7 @@
  * This file contains tests for SystemTimer class
  *
  * @package    Fajr
- * @subpackage TODO
+ * @subpackage Libfajr__Base
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 
@@ -23,6 +23,7 @@ use \fajr\libfajr\base\SystemTimer;
 class SystemTimerTest extends PHPUnit_Framework_TestCase
 {
   private $TEST_TIME = 0.3;
+
   public function testPassedTime()
   {
     $timer = new SystemTimer();
