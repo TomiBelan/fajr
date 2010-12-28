@@ -1,11 +1,12 @@
 <?php
-// Copyright (c) 2010 The Fajr authors (see AUTHORS).
-// Use of this source code is governed by a MIT licence that can be
-// found in the LICENCE file in the project root directory.
-
 /**
  *
+ * @copyright  Copyright (c) 2010 The Fajr authors (see AUTHORS).
+ *             Use of this source code is governed by a MIT license that can be
+ *             found in the LICENSE file in the project root directory.
+ *
  * @package    Fajr
+ * @subpackage Controller__Studium
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */
@@ -15,6 +16,12 @@ use fajr\libfajr\base\DisableEvilCallsObject;
 use fajr\libfajr\base\Preconditions;
 use InvalidArgumentException;
 
+/**
+ *
+ * @package    Fajr
+ * @subpackage Controller__Studium
+ * @author     Martin Sucha <anty.sk@gmail.com>
+ */
 class PriemeryInternal
 {
   protected $sucet = 0;
@@ -111,6 +118,12 @@ class PriemeryInternal
 
 }
 
+/**
+ *
+ * @package    Fajr
+ * @subpackage Controller__Studium
+ * @author     Martin Sucha <anty.sk@gmail.com>
+ */
 class PriemeryCalculator
 {
   const SEMESTER_LETNY = 'leto';

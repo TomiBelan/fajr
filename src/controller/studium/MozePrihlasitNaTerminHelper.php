@@ -1,13 +1,32 @@
 <?php
+/**
+ *
+ * @copyright  Copyright (c) 2010 The Fajr authors (see AUTHORS).
+ *             Use of this source code is governed by a MIT license that can be
+ *             found in the LICENSE file in the project root directory.
+ *
+ * @package    Fajr
+ * @subpackage Controller__Studium
+ * @author     Peter Perešíni <ppershing+fajr@gmail.com>
+ * @filesource
+ */
 namespace fajr\controller\studium;
-use fajr\libfajr\base\DisableEvilCallsObject;
+
 use fajr\libfajr\AIS2Utils;
+use fajr\libfajr\base\DisableEvilCallsObject;
+
 include_once 'fields.php';
 
 /**
+ *
+ * @package    Fajr
+ * @subpackage Controller__Studium
+ * @author     Peter Perešíni <ppershing+fajr@gmail.com>
+ *
  * TODO: toto by malo byt v modeli, nie v controlleri
  */
-class MozePrihlasitNaTerminHelper extends DisableEvilCallsObject{
+class MozePrihlasitNaTerminHelper extends DisableEvilCallsObject
+{
   const PRIHLASIT_MOZE = 0;
   const PRIHLASIT_MOZE_ZNAMKA = -1;
   const PRIHLASIT_NEMOZE_CAS = 1;
@@ -20,11 +39,13 @@ class MozePrihlasitNaTerminHelper extends DisableEvilCallsObject{
    */
   private $hodnoteniaData;
 
-  public function __construct(array $hodnoteniaData) {
+  public function __construct(array $hodnoteniaData)
+  {
     $this->hodnoteniaData = $hodnoteniaData;
   }
 
-  public function mozeSaPrihlasit($prihlasTerminyRow, $time) {
+  public function mozeSaPrihlasit($prihlasTerminyRow, $time)
+  {
     $predmet = $prihlasTerminyRow[PrihlasTerminyFields::PREDMET_SKRATKA];
     if (isset($this->hodnoteniaData[$predmet][HodnoteniaFields::ZNAMKA])) {
       $znamka = $this->hodnoteniaData[$predmet][HodnoteniaFields::ZNAMKA];

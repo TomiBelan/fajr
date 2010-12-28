@@ -1,10 +1,25 @@
 <?php
+/**
+ *
+ * @copyright  Copyright (c) 2010 The Fajr authors (see AUTHORS).
+ *             Use of this source code is governed by a MIT license that can be
+ *             found in the LICENSE file in the project root directory.
+ *
+ * @package    Fajr
+ * @subpackage Controller__Studium
+ * @author     Peter Perešíni <ppershing+fajr@gmail.com>
+ * @filesource
+ */
 namespace fajr\controller\studium;
 
 /**
  * This class is here just to enable including of rest of this file
  * without need of explicit path inclusion.
  * usage: fields::autoload()
+ *
+ * @package    Fajr
+ * @subpackage Controller__Studium
+ * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 class fields
 {
@@ -38,6 +53,13 @@ array (
   20 => 'moznostPrihlasenia',
 )
 */
+
+/**
+ *
+ * @package    Fajr
+ * @subpackage Controller__Studium
+ * @author     Peter Perešíni <ppershing+fajr@gmail.com>
+ */
 class TerminyFields
 {
   const INDEX = 'index';
@@ -48,7 +70,15 @@ class TerminyFields
   const ZNAMKA = 'znamka';
   const PREDMET_SKRATKA = 'predmetSkratka';
 }
-class MojeTerminyFields extends TerminyFields {
+
+/**
+ *
+ * @package    Fajr
+ * @subpackage Controller__Studium
+ * @author     Peter Perešíni <ppershing+fajr@gmail.com>
+ */
+class MojeTerminyFields extends TerminyFields
+{
   const HASH_ODHLASENIE = 'hashNaOdhlasenie';
 }
 
@@ -70,7 +100,15 @@ array(14) {
 ["moznostPrihlasenia"]=> string(1) "A"
 }
 */
-class ZoznamTerminovFields {
+
+/**
+ *
+ * @package    Fajr
+ * @subpackage Controller__Studium
+ * @author     Peter Perešíni <ppershing+fajr@gmail.com>
+ */
+class ZoznamTerminovFields
+{
   const MAX_POCET = 'maxPocet';
   const POCET_PRIHLASENYCH = 'pocetPrihlasenych';
   const PRIHLASOVANIE_DATUM = 'prihlasovanie';
@@ -79,6 +117,12 @@ class ZoznamTerminovFields {
   const INDEX = 'index';
 }
 
+/**
+ *
+ * @package    Fajr
+ * @subpackage Controller__Studium
+ * @author     Peter Perešíni <ppershing+fajr@gmail.com>
+ */
 class PrihlasTerminyFields extends ZoznamTerminovFields
 {
   const HASH_PRIHLASENIE = 'hashNaPrihlasenie';
@@ -88,6 +132,7 @@ class PrihlasTerminyFields extends ZoznamTerminovFields
   const FAJR_MOZE_PRIHLASIT = 'mozeSaPrihlasit';
   const ZNAMKA = 'znamka';
 }
+
 /* getHodnotenia
 array (
   0 => 'semester',
@@ -112,6 +157,13 @@ array (
   19 => 'priebHodn',
 )
 */
+
+/**
+ *
+ * @package    Fajr
+ * @subpackage Controller__Studium
+ * @author     Peter Perešíni <ppershing+fajr@gmail.com>
+ */
 class HodnoteniaFields
 {
   const MOZE_PRIHLASIT = 'mozePrihlasit';
@@ -135,6 +187,13 @@ array (
   9 => 'aktualnost',
 )
 */
+
+/**
+ *
+ * @package    Fajr
+ * @subpackage Controller__Studium
+ * @author     Peter Perešíni <ppershing+fajr@gmail.com>
+ */
 class PredmetyFields
 {
   const INDEX = 'index';

@@ -1,10 +1,10 @@
 <?php
-// Copyright (c) 2010 The Fajr authors (see AUTHORS).
-// Use of this source code is governed by a MIT license that can be
-// found in the LICENSE file in the project root directory.
-
 /**
  * Tento súbor obsahuje controller fajru, ktorý predáva prácu iným controllerom
+ *
+ * @copyright  Copyright (c) 2010 The Fajr authors (see AUTHORS).
+ *             Use of this source code is governed by a MIT license that can be
+ *             found in the LICENSE file in the project root directory.
  *
  * @package    Fajr
  * @subpackage Controller
@@ -13,13 +13,13 @@
  */
 namespace fajr\controller;
 
-use fajr\libfajr\base\Preconditions;
-use fajr\libfajr\pub\base\Trace;
-use fajr\controller\Controller;
 use Exception;
 use fajr\Context;
+use fajr\controller\Controller;
 use fajr\injection\Injector;
 use fajr\libfajr\base\DisableEvilCallsObject;
+use fajr\libfajr\base\Preconditions;
+use fajr\libfajr\pub\base\Trace;
 
 /**
  * Controller dispatching its request to the appropriate controller

@@ -1,10 +1,10 @@
 <?php
-// Copyright (c) 2010 The Fajr authors (see AUTHORS).
-// Use of this source code is governed by a MIT license that can be
-// found in the LICENSE file in the project root directory.
-
 /**
  * Tento súbor obsahuje controller, ktorý implementuje základ časti pre štúdium
+ *
+ * @copyright  Copyright (c) 2010 The Fajr authors (see AUTHORS).
+ *             Use of this source code is governed by a MIT license that can be
+ *             found in the LICENSE file in the project root directory.
  *
  * @package    Fajr
  * @subpackage Controller__Studium
@@ -13,20 +13,20 @@
  */
 namespace fajr\controller\studium;
 
+use Exception;
+use fajr\Context;
+use fajr\controller\BaseController;
+use fajr\controller\studium\PriemeryCalculator;
+use fajr\libfajr\AIS2Utils;
 use fajr\libfajr\base\Preconditions;
 use fajr\libfajr\pub\base\Trace;
-use fajr\controller\BaseController;
+use fajr\libfajr\pub\window\AIS2ApplicationEnum;
+use fajr\libfajr\pub\window\VSES017_administracia_studia as VSES017;
+use fajr\regression;
 use fajr\Request;
 use fajr\Response;
-use fajr\util\FajrUtils;
-use fajr\libfajr\pub\window\VSES017_administracia_studia as VSES017; // *
-use fajr\controller\studium\PriemeryCalculator;
 use fajr\Sorter;
-use fajr\libfajr\AIS2Utils;
-use fajr\Context;
-use Exception;
-use fajr\regression;
-use fajr\libfajr\pub\window\AIS2ApplicationEnum;
+use fajr\util\FajrUtils;
 
 fields::autoload();
 
