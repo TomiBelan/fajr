@@ -1,13 +1,14 @@
 <?php
-// Copyright (c) 2010 The Fajr authors (see AUTHORS).
-// Use of this source code is governed by a MIT license that can be
-// found in the LICENSE file in the project root directory.
-
 /**
- * Tento súbor obsahuje objekt starajúci sa o základné štatistiky
- * behu fajr-u
+ * This file contains the object that handles basic statistics about fajr
+ * execution
+ *
+ * @copyright  Copyright (c) 2010 The Fajr authors (see AUTHORS).
+ *             Use of this source code is governed by a MIT license that can be
+ *             found in the LICENSE file in the project root directory.
  *
  * @package    Fajr
+ * @subpackage Fajr
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */
@@ -28,13 +29,13 @@ use fajr\libfajr\base\SystemTimer;
 class Statistics
 {
 
-  /** var Timer $timer */
+  /** @var Timer $timer */
   private $timer = null;
 
-  /** var StatsConnection $rawConnection */
+  /** @var StatsConnection $rawConnection */
   private $rawConnection = null;
 
-  /** var StatsConnection $allConnection */
+  /** @var StatsConnection $allConnection */
   private $finalConnection = null;
 
   /**

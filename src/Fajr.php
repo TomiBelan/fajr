@@ -1,40 +1,43 @@
 <?php
-// Copyright (c) 2010 The Fajr authors (see AUTHORS).
-// Use of this source code is governed by a MIT license that can be
-// found in the LICENSE file in the project root directory.
 /**
  * The main logic of fajr application.
+ *
+ * @copyright  Copyright (c) 2010 The Fajr authors (see AUTHORS).
+ *             Use of this source code is governed by a MIT license that can be
+ *             found in the LICENSE file in the project root directory.
  *
  * @package    Fajr
  * @subpackage Fajr
  * @author     Martin Králik <majak47@gmail.com>
+ * @filesource
  */
 namespace fajr;
+
 use Exception;
 use fajr\ArrayTrace;
-use fajr\libfajr\pub\base\Trace;
+use fajr\Context;
+use fajr\controller\DispatchController;
+use fajr\exceptions\SecurityException;
+use fajr\exceptions\ValidationException;
 use fajr\injection\Injector;
 use fajr\libfajr\AIS2Session;
 use fajr\libfajr\base\SystemTimer;
 use fajr\libfajr\connection;
-use fajr\libfajr\pub\connection\HttpConnection;
 use fajr\libfajr\pub\base\NullTrace;
-use fajr\libfajr\pub\login\Login;
+use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\pub\connection\AIS2ServerConnection;
 use fajr\libfajr\pub\connection\AIS2ServerUrlMap;
-use fajr\Request;
-use fajr\Response;
-use fajr\Context;
-use fajr\Statistics;
-use fajr\Version;
-use sfSessionStorage;
-use fajr\exceptions\ValidationException;
-use fajr\exceptions\SecurityException;
-
+use fajr\libfajr\pub\connection\HttpConnection;
+use fajr\libfajr\pub\login\Login;
 use fajr\libfajr\window\AIS2MainScreenImpl;
 use fajr\modules\ControllerInjectorModule;
-use fajr\controller\DispatchController;
+use fajr\Request;
+use fajr\Response;
+use fajr\Statistics;
 use fajr\util\FajrUtils;
+use fajr\Version;
+use sfSessionStorage;
+
 /**
  * This is "main()" of the fajr. It instantiates all neccessary
  * objects, query ais and renders results.
