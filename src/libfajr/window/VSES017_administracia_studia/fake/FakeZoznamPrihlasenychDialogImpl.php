@@ -4,22 +4,21 @@
 // found in the LICENSE file in the project root directory.
 
 /**
- * TODO
- *
- * PHP version 5.3.0
+ * Reprezentuje diálóg so zoznamom študentov prihlásených na termín.
  *
  * @package    Fajr
  * @subpackage Libfajr__Window__VSES017_administracia_studia__Fake
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
+
 namespace fajr\libfajr\window\VSES017_administracia_studia\fake;
 
-use fajr\libfajr\pub\window\VSES017_administracia_studia\ZoznamPrihlasenychDialog;
-use fajr\libfajr\data_manipulation\DataTableImpl;
-use fajr\libfajr\window\fake\FakeAbstractDialog;
 
+use fajr\libfajr\data_manipulation\DataTableImpl;
 use fajr\libfajr\pub\base\Trace;
+use fajr\libfajr\pub\window\VSES017_administracia_studia\ZoznamPrihlasenychDialog;
+use fajr\libfajr\window\fake\FakeAbstractDialog;
 use fajr\regression\PrihlaseniNaTerminRegression;
 
 /**
