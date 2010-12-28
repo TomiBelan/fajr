@@ -14,7 +14,6 @@ namespace fajr\libfajr\storage;
 
 use \PHPUnit_Framework_TestCase;
 
-
 /**
  * @ignore
  */
@@ -57,14 +56,16 @@ class FileStorageTest extends PHPUnit_Framework_TestCase
   // do not allow to write to file, as it is a security risk.
   public function testNoWrite()
   {
-    $this->setExpectedException('Exception');
-    $this->storage->write('key');
+    $this->setExpectedException(
+        '\fajr\libfajr\pub\exceptions\NotImplementedException');
+    $this->storage->write('key', 'data');
   }
 
   // do not allow to remove a file, as it is a security risk.
   public function testNoRemove()
   {
-    $this->setExpectedException('Exception');
+    $this->setExpectedException(
+        'fajr\libfajr\pub\exceptions\NotImplementedException');
     $this->storage->remove('key');
   }
   
