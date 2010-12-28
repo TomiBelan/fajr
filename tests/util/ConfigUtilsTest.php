@@ -7,9 +7,8 @@
  * This file contains tests for ConfigUtils class
  *
  * @package    Fajr
- * @subpackage Fajr__Util
+ * @subpackage Util
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
- * @filesource
  */
 namespace fajr;
 

@@ -7,9 +7,8 @@
  * This file contains tests for FileTrace class
  *
  * @package    Fajr
- * @subpackage TODO
+ * @subpackage Fajr
  * @author     Martin Sucha <anty.sk@gmail.com>
- * @filesource
  */
 namespace fajr;
 

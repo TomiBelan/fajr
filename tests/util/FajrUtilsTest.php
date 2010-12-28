@@ -7,9 +7,8 @@
  * This file contains tests for FajrUtils class
  *
  * @package    Fajr
- * @subpackage TODO
+ * @subpackage Utils
  * @author     Martin Sucha <anty.sk@gmail.com>
- * @filesource
  */
 namespace fajr\util;
 
