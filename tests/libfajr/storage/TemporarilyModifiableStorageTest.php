@@ -93,4 +93,31 @@ class TemporarilyModifiableStorageTest extends PHPUnit_Framework_TestCase
     $this->assertEquals(null, $this->storage->remove('key2'));
     $this->assertEquals(47, $this->storage->read('key2'));
   }
+
+  // TemporarilyModifiableStorage must retain content
+  // for another http request!
+  public function testWriteReadAnotherInstance()
+  {
+    $this->storage->write('new', 'new_data');
+    $options = array(
+      TemporarilyModifiableStorage::PERMANENT => $this->perm_storage,
+      TemporarilyModifiableStorage::TEMPORARY => $this->temp_storage,
+      );
+    $this->storage = new TemporarilyModifiableStorage($options);
+    $this->assertEquals('new_data', $this->storage->read('new'));
+  }
+  public function testWriteRemoveReadAnotherInstance()
+  {
+    $this->storage->write('key2', 'new_data');
+    $options = array(
+      TemporarilyModifiableStorage::PERMANENT => $this->perm_storage,
+      TemporarilyModifiableStorage::TEMPORARY => $this->temp_storage,
+      );
+    $this->storage = new TemporarilyModifiableStorage($options);
+    $this->assertEquals('new_data', $this->storage->read('key2'));
+    $this->storage->remove('key2');
+
+    $this->storage = new TemporarilyModifiableStorage($options);
+    $this->assertEquals(47, $this->storage->read('key2'));
+  }
 }

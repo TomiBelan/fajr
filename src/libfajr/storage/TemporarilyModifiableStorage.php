@@ -40,6 +40,9 @@ class TemporarilyModifiableStorage extends sfStorage
   /** temporary storage option key */
   const TEMPORARY = 'temporary_storage';
 
+  /** key under which we save our own data to temporary storage */
+  const KEY = 'TemporarilyModifiableStorage/changedKeys';
+
   /** @var array holds keys which were changed */
   private $changedKeys;
 
@@ -72,7 +75,12 @@ class TemporarilyModifiableStorage extends sfStorage
     }
     Preconditions::check($this->options[self::TEMPORARY] instanceof sfStorage,
                         'Temporary storage must be instance of sfStorage');
-    $this->changedKeys = array();
+
+    if (($initialKeys = $this->options[self::TEMPORARY]->read(self::KEY)) !== null) {
+      $this->changedKeys = $initialKeys;
+    } else {
+      $this->changedKeys = array();
+    }
   }
 
   /**
@@ -104,6 +112,7 @@ class TemporarilyModifiableStorage extends sfStorage
     Preconditions::checkIsString($key);
     $this->options[self::TEMPORARY]->write($key, $data);
     $this->changedKeys[$key] = true;
+    $this->options[self::TEMPORARY]->write(self::KEY, $this->changedKeys);
   }
 
   /**
@@ -120,6 +129,7 @@ class TemporarilyModifiableStorage extends sfStorage
     $retval = $this->options[self::TEMPORARY]->read($key);
     $this->options[self::TEMPORARY]->remove($key);
     unset($this->changedKeys[$key]);
+    $this->options[self::TEMPORARY]->write(self::KEY, $this->changedKeys);
     return $retval;
   }
 
