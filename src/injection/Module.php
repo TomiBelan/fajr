@@ -1,20 +1,21 @@
 <?php
-// Copyright (c) 2010 The Fajr authors (see AUTHORS).
-// Use of this source code is governed by a MIT license that can be
-// found in the LICENSE file in the project root directory.
-
 /**
  * Contains interface of all modules configuring dependency injector.
+ *
+ * @copyright  Copyright (c) 2010 The Fajr authors (see AUTHORS).
+ *             Use of this source code is governed by a MIT license that can be
+ *             found in the LICENSE file in the project root directory.
  *
  * @package    Fajr
  * @subpackage Injection
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
+
 namespace fajr\injection;
 
-use sfServiceContainerBuilder;
 use sfServiceContainerAutoloader;
+use sfServiceContainerBuilder;
 
 require_once '../third_party/symfony_di/lib/sfServiceContainerAutoloader.php';
 sfServiceContainerAutoloader::register();

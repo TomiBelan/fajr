@@ -1,21 +1,23 @@
 <?php
-// Copyright (c) 2010 The Fajr authors (see AUTHORS).
-// Use of this source code is governed by a MIT license that can be
-// found in the LICENSE file in the project root directory.
-
 /**
  * Contains dependency injector.
+ *
+ * @copyright  Copyright (c) 2010 The Fajr authors (see AUTHORS).
+ *             Use of this source code is governed by a MIT license that can be
+ *             found in the LICENSE file in the project root directory.
  *
  * @package    Fajr
  * @subpackage Injection
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
+
 namespace fajr\injection;
 
-use sfServiceContainerBuilder;
-use fajr\libfajr\base\Preconditions;
 use fajr\FajrConfig;
+use fajr\libfajr\base\Preconditions;
+use sfServiceContainerBuilder;
+
 /**
  * Dependency injector.
  *

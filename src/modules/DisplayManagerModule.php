@@ -1,30 +1,31 @@
 <?php
-// Copyright (c) 2010 The Fajr authors (see AUTHORS).
-// Use of this source code is governed by a MIT license that can be
-// found in the LICENSE file in the project root directory.
-
 /**
- * Injector module for DisplayManager
+ * Injector module for DisplayManager.class
+ *
+ * @copyright  Copyright (c) 2010 The Fajr authors (see AUTHORS).
+ *             Use of this source code is governed by a MIT license that can be
+ *             found in the LICENSE file in the project root directory.
  *
  * @package    Fajr
  * @subpackage Modules
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */
+
 namespace fajr\modules;
 
-use fajr\injection\Module;
-use sfServiceContainerBuilder;
-use sfServiceReference;
 use fajr\FajrConfig;
-
-use Twig_Loader_Filesystem;
-use Twig_Environment;
-use Twig_Extension_Escaper;
+use fajr\injection\Module;
 use fajr\libfajr\base\Preconditions;
 use fajr\rendering\Extension;
+use sfServiceContainerBuilder;
+use sfServiceReference;
+use Twig_Environment;
+use Twig_Extension_Escaper;
+use Twig_Loader_Filesystem;
+
 /**
- * Injector module for DisplayManager
+ * Injector module for DisplayManager.class
  *
  * @package    Fajr
  * @subpackage Modules
