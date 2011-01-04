@@ -1,26 +1,27 @@
 <?php
-// Copyright (c) 2010 The Fajr authors (see AUTHORS).
-// Use of this source code is governed by a MIT license that can be
-// found in the LICENSE file in the project root directory.
-
 /**
+ *
+ * @copyright  Copyright (c) 2010 The Fajr authors (see AUTHORS).
+ *             Use of this source code is governed by a MIT license that can be
+ *             found in the LICENSE file in the project root directory.
  *
  * @package    Fajr
  * @subpackage Util
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */
+
 namespace fajr\util;
 
+use fajr\FajrConfig;
+use fajr\FajrRouter;
+use fajr\libfajr\AIS2Session;
+use fajr\libfajr\base\Preconditions;
+use fajr\libfajr\login\AIS2LoginImpl;
+use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\pub\connection\AIS2ServerConnection;
 use fajr\libfajr\pub\login\Login;
-use fajr\libfajr\pub\base\Trace;
-use fajr\libfajr\login\AIS2LoginImpl;
-use fajr\libfajr\AIS2Session;
 use fajr\libfajr\util\StrUtil;
-use fajr\libfajr\base\Preconditions;
-use fajr\FajrRouter;
-use fajr\FajrConfig;
 use Exception;
 
 /**

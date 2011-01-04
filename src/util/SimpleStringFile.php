@@ -1,20 +1,21 @@
 <?php
-// Copyright (c) 2010 The Fajr authors (see AUTHORS).
-// Use of this source code is governed by a MIT license that can be
-// found in the LICENSE file in the project root directory.
-
 /**
  * Contains implementation of in-memory File
+ *
+ * @copyright  Copyright (c) 2010 The Fajr authors (see AUTHORS).
+ *             Use of this source code is governed by a MIT license that can be
+ *             found in the LICENSE file in the project root directory.
  *
  * @package    Fajr
  * @subpackage Util
  * @author     Martin Sucha <anty.sk+fajr@gmail.com>
  * @filesource
  */
+
 namespace fajr\util;
 
-use fajr\libfajr\base\Preconditions;
 use Exception;
+use fajr\libfajr\base\Preconditions;
 
 /**
  * A File that uses string as file contents
