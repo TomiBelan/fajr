@@ -16,6 +16,12 @@
       Všetky informácie v tejto inštancii AISu sú
       dočasné a neovplyvňujú ostrú verziu AISu!') }}
 {% endif %}
+{% if currentServer.backendType == 'fake' %}
+  {{ _self.addWarning('Používa sa fake backend (demo režim).
+      Informácie v tejto inštancii sú vymyslené a fajr nekomunikuje so
+      žiadnou inštanciou AISu!
+      (Modifikácie sa pamätajú v session, po odhlásení sa stratia)') }}
+{% endif %}
 {% if aisVersionIncompatible %}
   {% set aisVersionWarning %}
     Fajr komunikuje s  AISom verzie {{ aisVersion }}, lenže
