@@ -17,6 +17,7 @@ use fajr\validators\StringValidator;
 use fajr\validators\ChoiceValidator;
 use fajr\util\ConfigUtils;
 use fajr\util\FajrUtils;
+use InvalidArgumentException;
 
 /**
  *
@@ -130,6 +131,14 @@ class FajrConfig
   }
 
   /**
+   * @returns string absolute path to configuration file
+   */
+  public static function getConfigurationFileName()
+  {
+    return FajrUtils::joinPath(__DIR__, '../config/configuration.php');
+  }
+
+  /**
    * Load configuration file, if it was not loaded previously.
    *
    * This means that second and subsequent calls attempt to load
@@ -149,7 +158,9 @@ class FajrConfig
 
     $parameters = self::getParameterDescription();
 
-    if (!file_exists('../config/configuration.php')) {
+    $configurationFileName = self::getConfigurationFileName();
+
+    if (!file_exists($configurationFileName)) {
       // Leave fajr unconfigured, index.php will then show nice error message
       // to the user
       return;
@@ -157,7 +168,7 @@ class FajrConfig
 
     // Don't suppress errors so parse errors are reported
     // TODO(anty): use yaml for configuration
-    $result = (include '../config/configuration.php');
+    $result = (include $configurationFileName);
 
     if (!is_array($result)) {
       throw new Exception('Konfiguračný súbor nevrátil pole');
