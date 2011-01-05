@@ -86,8 +86,8 @@
   {% endset %}
 
   {% macro vazenyPriemer(priemer) %}
-    {% set ibaOhodnotene = priemer.vazenyPriemer(true) %}
-    {% set vsetky = priemer.vazenyPriemer(false) %}
+    {% set ibaOhodnotene = priemer.vazenyPriemer(false) %}
+    {% set vsetky = priemer.vazenyPriemer(true) %}
     {{ "%.2f"|format(vsetky) }}
     {% if ibaOhodnotene != vsetky %}
       ({{ "%.2f"|format(ibaOhodnotene)}} iba doteraz ohodnotené predmety)
