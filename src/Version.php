@@ -14,7 +14,7 @@ namespace fajr;
 
 class Version
 {
-  private static $version = '0.4.3';
+  private static $version = '0.4.4';
 
   private static $changelog = array (
       array('2010-01-xx', '0.1', 'Maják zverejnil prvú verziu Fajr-u'),
@@ -30,6 +30,7 @@ class Version
       array('2010-12-01', '0.4.1', 'Konfiguračná voľba pre nastavenie viacerých serverov'),
       array('2010-12-13', '0.4.2', 'Prihlasovanie na skúšky znova funguje'),
       array('2010-12-20', '0.4.3', 'Opravené viaceré chyby'),
+      array('2011-01-06', '0.4.4', 'Ďaľšie drobné opravy, nové testy, demo režim')
     );
 
   private static $changelogLimit = 6;
