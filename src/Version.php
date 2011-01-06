@@ -1,5 +1,6 @@
 <?php
 /**
+ * Contains information about version of fajr.
  *
  * @copyright  Copyright (c) 2010 The Fajr authors (see AUTHORS).
  *             Use of this source code is governed by a MIT license that can be
@@ -12,10 +13,19 @@
  */
 namespace fajr;
 
+/**
+ * Various information about fajr version.
+ *
+ * @package    Fajr
+ * @subpackage Fajr
+ * @author     Peter Perešíni <ppershing+fajr@gmail.com>
+ */
 class Version
 {
+  /** @var string current version number */
   private static $version = '0.4.4';
 
+  /** @var array basic changelog information */
   private static $changelog = array (
       array('2010-01-xx', '0.1', 'Maják zverejnil prvú verziu Fajr-u'),
       array('2010-02-15', '0.1', 'Fajr sa presunul na google code'),
@@ -33,9 +43,17 @@ class Version
       array('2011-01-06', '0.4.4', 'Ďaľšie drobné opravy, nové testy, demo režim')
     );
 
+  /** @var int how many entries from changelog we want to show */
   private static $changelogLimit = 6;
 
-  public function getChangelog() {
+  /**
+   * Return last $changelogLimit changelog entries.
+   *
+   * @returns array('date'=>string,'version'=>string,'description'=>string)
+   *          changelog entries
+   */
+  public function getChangelog()
+  {
 
     $output = array();
     $tmp_array = array_slice(array_reverse(Version::$changelog), 0, Version::$changelogLimit);
@@ -46,30 +64,26 @@ class Version
     return $output;
   }
 
+  /**
+   * Returns info about svn checkout and versions
+   * TODO(ppershing): make this to return object
+   *
+   * @returns array|null
+   */
   public function getBuildTimeInfo()
   {
     @$result = (include '../version_info.php');
     return $result;
   }
 
-  public function getVersion()
+  /**
+   * Returns string containing current fajr version.
+   *
+   * @returns string current version number
+   */
+  public function getVersionNumber()
   {
     return self::$version;
-  }
-
-  public function getVersionString()
-  {
-    $versionString = self::$version;
-    $buildInfo = self::getBuildTimeInfo();
-    if ($buildInfo !== false) {
-      if (!empty($buildInfo['revision'])) {
-        $versionString .= '/'.$buildInfo['revision'];
-      }
-      if (!empty($buildInfo['date'])) {
-        $versionString .= ' ('.date('d.m.Y', $buildInfo['timestamp']).')';
-      }
-    }
-    return $versionString;
   }
 }
 

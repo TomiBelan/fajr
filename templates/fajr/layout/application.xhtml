@@ -15,7 +15,7 @@
   {% parent %}
   {% block application_content %}{% endblock %}
   <div>
-    Fajr verzia {{ version.versionString }} 
+    Fajr verzia {% include "parts/version.xhtml" %}
       (pripojený na systém AIS verzie {{ aisVersion }} na stránke {{ currentServer.serverName}})
   </div>
   <div>
