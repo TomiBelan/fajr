@@ -35,7 +35,7 @@ function sortPrihlasovanieOdhlasovanie(a, b)
 
 function sortDatumCasPrepareData(tdNode, innerText)
 {
-  var m = innerText.match(/(\d{1,2})\.(\d{1,2})\.(\d{4}) (\d{1,2}):(\d{2}):(\d{2})$/);
+  var m = innerText.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4}) (\d{1,2}):(\d{2}):(\d{2})$/);
   if (!m) {
     return -1;
   }
