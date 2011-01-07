@@ -24,31 +24,41 @@ use fajr\libfajr\pub\base\NullTrace;
 /**
  * @ignore
  */
-class AIS2AbstractScreenTest extends PHPUnit_Framework_TestCase
+class ScreenRequestExecutorTest extends PHPUnit_Framework_TestCase
 {
-  public function getExecutor()
+  private $executor;
+
+  public function setUp()
   {
     $builder = $this->getMock('\fajr\libfajr\window\RequestBuilder',
         array('buildRequestData', 'getRequestUrl', 'newSerial',
               'getAppInitializationUrl'));
     $connection = $this->getMock('\fajr\libfajr\pub\connection\SimpleConnection');
-    return new ScreenRequestExecutorImpl($builder, $connection);
+    $this->executor = new ScreenRequestExecutorImpl($builder, $connection);
   }
 
   public function testAppIdParsing()
   {
-    $executor = $this->getExecutor();
     $response = file_get_contents(__DIR__.'/testdata/appid.dat');
-    $appId = $executor->parseAppIdFromResponse($response);
+    $appId = $this->executor->parseAppIdFromResponse($response);
     $this->assertEquals(21767494, $appId);
   }
 
   public function testFormNameParsing()
   {
-    $executor = $this->getExecutor();
     $response = file_get_contents(__DIR__.'/testdata/formName.dat');
-    $formName = $executor->parseFormNameFromResponse($response);
+    $formName = $this->executor->parseFormNameFromResponse($response);
     $this->assertEquals("VSES017_StudentZapisneListyDlg0", $formName);
+  }
+
+  /** Regression from issue 77 */
+  public function testFormNameParsingZaporneCisla()
+  {
+    $response = 'dm().openMainDialog("VSES017_StudentZapisneListyDlg0","VSES017: Administrácia '.
+        'štúdií študenta","VSES017",-8,-8,616,594,1272,664,true,true,true);';
+
+    $name = $this->executor->parseFormNameFromResponse($response);
+    $this->assertEquals($name, "VSES017_StudentZapisneListyDlg0");
   }
 
 }

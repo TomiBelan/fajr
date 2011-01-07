@@ -37,12 +37,18 @@ class ScreenRequestExecutorImpl extends DisableEvilCallsObject
   }
 
 
-  const FORM_NAME_PATTERN = '@dm\(\)\.openMainDialog\("(?P<formName>[^"]*)","(?P<name>[^"]*)","(?P<formId>[^"]*)",[0-9]*,[^,]*,[^,]*,[^,]*,[^,]*,[^,]*,[^,]*,[^,]*,[^,]*\);@';
-
+  // this is too long and complex for constant.
+  private static function FORM_NAME_PATTERN()
+  {
+    return
+      '@dm\(\)\.openMainDialog\("(?P<formName>[^"]*)","(?P<name>[^"]*)",' .
+      '"(?P<formId>[^"]*)"' . str_repeat(',-?[0-9]+', 6) .
+      str_repeat(',(?:true)|(?:false)', 3) . '\);@';
+  }
   public function parseFormNameFromResponse($response)
   {
     $matches = array();
-    if (preg_match(self::FORM_NAME_PATTERN, $response, $matches)) {
+    if (preg_match(self::FORM_NAME_PATTERN(), $response, $matches)) {
       return $matches['formName'];
     } else {
       throw new Exception('Neviem nájsť formName v odpovedi ' .

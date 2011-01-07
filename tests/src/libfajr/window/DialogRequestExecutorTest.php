@@ -25,15 +25,34 @@ use fajr\libfajr\window\RequestBuilder;
  */
 class DialogRequestExecutorTest extends PHPUnit_Framework_TestCase
 {
+  private $requestBuilder;
+  private $connection;
+  private $executor;
+
+  public function setUp()
+  {
+    $this->requestBuilder = $this->getMock('fajr\libfajr\window\RequestBuilder');
+    $data = new DialogData();
+    $this->connection = $this->getMock('fajr\libfajr\pub\connection\SimpleConnection');
+    $this->executor = new DialogRequestExecutor($this->requestBuilder,
+        $this->connection, $data, null, null);
+  }
+
   public function testDialogNameParsing()
   {
-    $requestBuilder = $this->getMock('fajr\libfajr\window\RequestBuilder');
-    $data = new DialogData();
-    $connection = $this->getMock('fajr\libfajr\pub\connection\SimpleConnection');
-    $executor = new DialogRequestExecutor($requestBuilder, $connection, $data, null, null);
-
     $response = file_get_contents(__DIR__.'/testdata/vyberTerminuDialogName.dat');
-    $name = $executor->parseDialogNameFromResponse($response);
+    $name = $this->executor->parseDialogNameFromResponse($response);
     $this->assertEquals($name, "VSES206_VyberTerminuHodnoteniaDlg1");
   }
+
+  /** Regression -  issue 77 */
+  public function testDialogNameParsingZaporneCisla()
+  {
+    $response = 'dm().openDialog("VSES017_StudentZapisneListyDlg0","VSES017: Administrácia '.
+        'štúdií študenta","VSES017",-8,-8,616,594,1272,664,true,true,true);';
+
+    $name = $this->executor->parseDialogNameFromResponse($response);
+    $this->assertEquals($name, "VSES017_StudentZapisneListyDlg0");
+  }
+
 }
