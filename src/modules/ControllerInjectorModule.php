@@ -57,6 +57,7 @@ class ControllerInjectorModule implements Module
     $container->register('studium.controller.class', '\fajr\controller\studium\StudiumController')
               ->addArgument(new sfServiceReference('administracia_studia_screen.factory.class'))
               ->setShared(false);
+
     switch ($this->server->getBackendType()) {
       case ServerConfig::BACKEND_FAKE:
         $container->register('administracia_studia_screen.factory.class',

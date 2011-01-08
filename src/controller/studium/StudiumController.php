@@ -263,7 +263,7 @@ class StudiumController extends BaseController
       }
 
       $datum = AIS2Utils::parseAISDateTime($terminyRow[TerminyFields::DATUM]." ".$terminyRow[TerminyFields::CAS]);
-      if ($datum < time()) {
+      if ($datum < $request->getRequestTime()) {
         if ($terminyRow[TerminyFields::JE_PRIHLASENY]=='TRUE') {
           $terminyHodnoteniaOld[] = $mojeTerminyRow;
         }
@@ -423,7 +423,7 @@ class StudiumController extends BaseController
 
         // PrihlasTerminyFields::ZNAMKA, PREDMET_SKRATKA must be set before!
         $prihlasTerminyRow[PrihlasTerminyFields::FAJR_MOZE_PRIHLASIT] =
-          $mozePrihlasitHelper->mozeSaPrihlasit($prihlasTerminyRow, time());
+          $mozePrihlasitHelper->mozeSaPrihlasit($prihlasTerminyRow, $request->getRequestTime());
 
         $terminyData[] = $prihlasTerminyRow;
       }

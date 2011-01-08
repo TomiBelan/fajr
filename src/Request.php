@@ -25,10 +25,15 @@ use fajr\libfajr\pub\connection\AIS2ServerConnection;
 class Request
 {
   private $input;
-  
-  public function __construct(InvocationParameters $input)
+  private $time;
+
+  /**
+   * @param double time of the request as unix timestamp
+   */
+  public function __construct(InvocationParameters $input, $time)
   {
     $this->input = $input;
+    $this->time = $time;
   }
 
   /**
@@ -74,6 +79,14 @@ class Request
   {
     Preconditions::checkIsString($name, '$name should be string.');
     $this->input->setParameter($name, null);
+  }
+
+  /**
+   * @returns double time of the request as unix timestamp
+   */
+  public function getRequestTime()
+  {
+    return $this->time;
   }
 
 }
