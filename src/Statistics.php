@@ -17,6 +17,7 @@ namespace fajr;
 use libfajr\base\IllegalStateException;
 use fajr\libfajr\connection\StatsConnection;
 use fajr\libfajr\pub\connection\HttpConnection;
+use fajr\libfajr\pub\connection\RequestStatistics;
 use fajr\libfajr\base\Timer;
 use fajr\libfajr\base\SystemTimer;
 
@@ -32,8 +33,11 @@ class Statistics
   /** @var Timer $timer */
   private $timer = null;
 
-  /** @var StatsConnection $rawConnection */
-  private $rawConnection = null;
+  /** @var RequestStatistics */
+  private $rawStats = null;
+
+  /** @var RequestStatistics */
+  private $finalStats = null;
 
   /** @var StatsConnection $allConnection */
   private $finalConnection = null;
@@ -49,19 +53,12 @@ class Statistics
   }
 
   /**
-   * Decorate a raw underlying connection with ability to track
-   * statistical information.
-   *
-   * @param HttpConnection $connection underlying connection to wrap
-   * @returns HttpConnection decorated connection
+   * @param RequestStatistics $stats
+   * @returns void
    */
-  public function hookRawConnection(HttpConnection $connection)
+  public function setRawStatistics(RequestStatistics $stats)
   {
-    if ($this->rawConnection !== null) {
-      throw new IllegalStateException('Raw connection already set');
-    }
-    $this->rawConnection = new StatsConnection($connection, new SystemTimer());
-    return $this->rawConnection;
+    $this->rawStats = $stats;
   }
 
   /**
@@ -76,8 +73,9 @@ class Statistics
     if ($this->finalConnection !== null) {
       throw new IllegalStateException('Final connection already set');
     }
-    $this->finalConnection = new StatsConnection($connection, new SystemTimer());
-    return $this->finalConnection;
+    $finalConnection = new StatsConnection($connection, new SystemTimer());
+    $this->finalStats = $finalConnection->getStats();
+    return $finalConnection;
   }
 
   /**
@@ -85,7 +83,7 @@ class Statistics
    */
   public function getRequestCount()
   {
-    return $this->finalConnection->getTotalCount();
+    return $this->finalStats->getRequestCount();
   }
 
   /**
@@ -93,7 +91,7 @@ class Statistics
    */
   public function getDecodedByteCount()
   {
-    return $this->finalConnection->getTotalSize();
+    return $this->finalStats->getDownloadedBytes();
   }
 
   /**
@@ -101,7 +99,7 @@ class Statistics
    */
   public function getDownloadedByteCount()
   {
-    return $this->rawConnection->getTotalSize();
+    return $this->rawStats->getDownloadedBytes();
   }
 
   /**
@@ -117,7 +115,7 @@ class Statistics
    */
   public function getTotalRequestTime()
   {
-    return $this->finalConnection->getTotalTime();
+    return $this->finalStats->getTotalTime();
   }
 
 }

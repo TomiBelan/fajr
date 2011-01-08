@@ -35,9 +35,19 @@ use Exception;
 class CurlConnection implements HttpConnection
 {
 
+  /** @var curl_handle */
   private $curl = null;
+
+  /** @var string */
   private $cookieFile = null;
+
+  /** @var array */
   private $options = null;
+
+  /**
+   * @var RequestStatisticsImpl
+   */
+  private $stats = null;
 
   public function  __construct(array $options, $cookieFile)
   {
@@ -45,6 +55,7 @@ class CurlConnection implements HttpConnection
     $this->options = $options;
     $this->cookieFile = $cookieFile;
     $this->_curlInit();
+    $this->stats = new RequestStatisticsImpl();
   }
 
   public function __destruct()
@@ -77,7 +88,6 @@ class CurlConnection implements HttpConnection
     $this->_curlSetOption(CURLOPT_RETURNTRANSFER, true);
     $this->_curlSetOption(CURLOPT_COOKIEFILE, $this->cookieFile);
     $this->_curlSetOption(CURLOPT_COOKIEJAR, $this->cookieFile);
-    
   }
 
   public function get(Trace $trace, $url)
@@ -144,6 +154,15 @@ class CurlConnection implements HttpConnection
     $this->_curlInit();
   }
 
+  private function processStatistics($curl)
+  {
+    $size = curl_getinfo($curl, CURLINFO_SIZE_DOWNLOAD) +
+            curl_getinfo($curl, CURLINFO_HEADER_SIZE);
+    $time = curl_getinfo($curl, CURLINFO_TOTAL_TIME);
+    $errors = curl_errno($curl) ? 1 : 0;
+    $this->stats->addStats($errors, $size, $time);
+  }
+
   private function exec(Trace $trace)
   {
     // read cookie file
@@ -156,15 +175,26 @@ class CurlConnection implements HttpConnection
     $child->tlogVariable("Http content type",
         curl_getinfo($this->curl, CURLINFO_CONTENT_TYPE));
     $child->tlogVariable("Response", $output);
+
+    $this->processStatistics($this->curl);
+
     if (curl_errno($this->curl)) {
       $child->tlog("There was an error receiving data");
       throw new Exception("Chyba pri nadväzovaní spojenia:".
           curl_error($this->curl));
-    }
+    };
+
     // Do not forget to save current file content
     $this->_curlSetOption(CURLOPT_COOKIEJAR, $this->cookieFile);
 
     return $output;
   }
 
+  /**
+   * @returns RequestStatistics
+   */
+  public function getStats()
+  {
+    return $this->stats;
+  }
 }

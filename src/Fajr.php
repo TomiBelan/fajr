@@ -78,7 +78,7 @@ class Fajr {
     $curlOptions = $this->injector->getParameter('CurlConnection.options');
     $connection = new connection\CurlConnection($curlOptions, FajrUtils::getCookieFile());
 
-    $connection = $this->statistics->hookRawConnection($connection);
+    $this->statistics->setRawStatistics($connection->getStats());
 
     $connection = new connection\GzipDecompressingConnection($connection, FajrConfig::getDirectory('Path.Temporary'));
     $connection = new connection\AIS2ErrorCheckingConnection($connection);
