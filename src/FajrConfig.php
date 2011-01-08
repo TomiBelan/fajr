@@ -13,6 +13,7 @@
 namespace fajr;
 
 use Exception;
+use fajr\libfajr\base\IllegalStateException;
 use fajr\validators\StringValidator;
 use fajr\validators\ChoiceValidator;
 use fajr\util\ConfigUtils;
@@ -188,8 +189,16 @@ class FajrConfig
     return (self::$config !== null);
   }
 
+  public static function assertInitialized()
+  {
+    if (!self::isConfigured()) {
+      throw new IllegalStateException("You must initialize config first.");
+    }
+  }
+
   public static function get($key)
   {
+    self::assertInitialized();
     // Note: isset() returns false if the item value is null
     if (!array_key_exists($key, self::$config)) {
       throw new InvalidArgumentException('Unknown configuration parameter: ' .
@@ -215,6 +224,7 @@ class FajrConfig
    */
   public static function getDirectory($key)
   {
+    self::assertInitialized();
     $dir = self::get($key);
     if ($dir === null) {
       return null;
