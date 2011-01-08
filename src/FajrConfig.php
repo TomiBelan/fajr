@@ -76,14 +76,6 @@ class FajrConfig
         array('defaultValue' => false,
               'validator' => $booleanValidator),
 
-      'URL.Path' =>
-        array('defaultValue' => false,
-              'validator' => $booleanValidator),
-
-      'URL.Rewrite' =>
-        array('defaultValue' => false,
-              'validator' => $booleanValidator),
-
       'Path.Temporary' =>
         array('defaultValue' => './temp',
               'validator' => $pathValidator),

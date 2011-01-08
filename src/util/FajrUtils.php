@@ -14,7 +14,6 @@
 namespace fajr\util;
 
 use fajr\FajrConfig;
-use fajr\FajrRouter;
 use fajr\libfajr\AIS2Session;
 use fajr\libfajr\base\Preconditions;
 use fajr\libfajr\login\AIS2LoginImpl;
@@ -72,25 +71,12 @@ class FajrUtils
       }
     }
 
-    $path = '';
-    if (FajrConfig::get('URL.Path')) {
-      $path = FajrRouter::paramsToPath($params);
-    }
     $query = http_build_query($params);
     if (strlen($query) > 0) {
       $query = '?' . $query;
     }
 
-    $base = '';
-
-    if (!FajrConfig::get('URL.Rewrite') || $file != 'fajr.php' || $path == '' || $path == '/') {
-      $base = $file;
-      if (strlen($path) > 0) {
-        $base .= '/';
-      }
-    }
-
-    return self::basePath() . $base . $path . $query;
+    return self::basePath() . $file . $query;
   }
 
   public static function pathInfo()

@@ -41,21 +41,6 @@ return array(
   //'Debug.Exception.ShowStacktrace'=>true,
 
   /*
-   * Ak je táto voľba zapnutá, budú sa používať cesty tvaru index.php/nieco.
-   * Predvolená hodnota false znamená, že sa takéto cesty nebudú používať
-   * (najväčšia kompatibilita).
-   */
-  //'URL.Path'=>true,
-
-  /*
-   * Ak je táto voľba zapnutá, URL-ka aplikácie nebudú obsahovať časť
-   * "index.php". Aplikácia v tomto prípade bude fungovať, len ak je správne
-   * nastavený a povolený mod_rewrite, či jeho ekvivalent.
-   * Táto voľba má účinok len vtedy, keď je zapnutá voľba URL.Path
-   */
-  //'URL.Rewrite'=>true,
-
-  /*
    * Cesta k adresáru pre dočasné súbory (absolútna,
    * alebo relatívna k adresáru projektu)
    */
