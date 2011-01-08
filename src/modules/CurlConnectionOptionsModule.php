@@ -41,6 +41,7 @@ class CurlConnectionOptionsModule implements Module
         CURLOPT_SSL_VERIFYPEER => true,
         CURLOPT_SSL_VERIFYHOST => true,
         CURLOPT_USERAGENT => FajrConfig::get('Connection.UserAgent'),
+        CURLOPT_ENCODING => 'gzip',
         );
     // overridnutie adresara pre certifikaty
     if (FajrConfig::get('SSL.CertificatesDir')) {

@@ -80,7 +80,6 @@ class Fajr {
 
     $this->statistics->setRawStatistics($connection->getStats());
 
-    $connection = new connection\GzipDecompressingConnection($connection, FajrConfig::getDirectory('Path.Temporary'));
     $connection = new connection\AIS2ErrorCheckingConnection($connection);
 
     return $this->statistics->hookFinalConnection($connection);
