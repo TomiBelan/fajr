@@ -73,9 +73,16 @@ class StudiumController extends BaseController
     $request = $context->getRequest();
     $response = $context->getResponse();
     $session = $context->getSessionStorage();
+    Preconditions::checkNotNull($request);
+    Preconditions::checkNotNull($response);
+    Preconditions::checkNotNull($session);
     // check access to application
+    $apps = $session->read('ais/aisApps');
+    if (!is_array($apps)) {
+      throw new Exception("Interná chyba - zoznam AIS aplikácii je nekorektný.");
+    }
     if (!in_array(AIS2ApplicationEnum::ADMINISTRACIA_STUDIA,
-                  $session->read('ais/aisApps'))) {
+                  $apps)) {
       $response->setTemplate('studium/notAvailable');
       return;
     }
