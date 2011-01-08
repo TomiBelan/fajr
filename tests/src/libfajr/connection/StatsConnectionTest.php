@@ -68,16 +68,12 @@ class StatsConnectionTest extends PHPUnit_Framework_TestCase
     }
     $statsConnection->get(new NullTrace(), 'url');
 
-    $this->assertEquals(1, $statsConnection->getTotalErrors());
-    $this->assertEquals(3, $statsConnection->getCount('GET'));
-    $this->assertEquals(2, $statsConnection->getCount('POST'));
-    $this->assertEquals(5, $statsConnection->getTotalCount());
-    $this->assertEquals(10, $statsConnection->getSize('GET'));
-    $this->assertEquals(9, $statsConnection->getSize('POST'));
-    $this->assertEquals(19, $statsConnection->getTotalSize());
-    $this->assertEquals(0.3, $statsConnection->getTime('GET'), '', 0.01);
-    $this->assertEquals(0.2, $statsConnection->getTime('POST'), '', 0.01);
-    $this->assertEquals(0.5, $statsConnection->getTotalTime(), '', 0.01);
+    $stats = $statsConnection->getStats();
+
+    $this->assertEquals(1, $stats->getErrorCount());
+    $this->assertEquals(5, $stats->getRequestCount());
+    $this->assertEquals(19, $stats->getDownloadedBytes());
+    $this->assertEquals(0.5, $stats->getTotalTime(), '', 0.01);
   }
 
 }
