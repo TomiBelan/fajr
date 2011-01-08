@@ -17,6 +17,7 @@ SortFunctionsTest = TestCase("SortFunctionsTest");
  * Test basic padding.
  */
 SortFunctionsTest.prototype.testPad0Basic = function() {
+  expectAsserts(4);
   assertEquals("12", pad0("12", 1));
   assertEquals("12", pad0("12", 2));
   assertEquals("012", pad0("12", 3));
@@ -27,8 +28,58 @@ SortFunctionsTest.prototype.testPad0Basic = function() {
  * Test some tricky cases.
  */
 SortFunctionsTest.prototype.testPad0Tricky = function() {
+  expectAsserts(4);
   assertEquals("0000", pad0("", 4));
   assertEquals("00 0", pad0(" 0", 4));
   assertEquals("00  ", pad0("  ", 4));
   assertEquals("  ", pad0("  ", -4));
+}
+
+/**
+ * Test parsing date and time
+ */
+SortFunctionsTest.prototype.testParseDatumCas = function() {
+  expectAsserts(3);
+  assertEquals(new Date(2011, 1, 11, 20, 00, 00),
+               parseDatumCas("11.01.2011 20:00"));
+  assertEquals(new Date(2010, 11, 22, 17, 34, 22),
+               parseDatumCas("22.11.2010 17:34:22"));
+  assertException(function() {parseDatumCas("wrong")}, Error());
+}
+
+
+SortFunctionsTest.prototype.testNormalizePriezviskoMeno = function() {
+  expectAsserts(1);
+  assertEquals("brejova bronislava",
+      normalizePriezviskoMenoForCmp("Mgr. Bronislava Brejová, PhD."));
+}
+
+/**
+ * Test sorting names
+ */
+SortFunctionsTest.prototype.testSortPriezviskoMeno = function() {
+  var testdata = [
+      "Mgr. Bronislava Brejová, PhD.",
+      "doc. RNDr. Pavol Ďuriš, CSc.",
+      "RNDr. Michal Forišek, PhD.",
+      "Ing. Janko Hraško",
+      "Martinko Klingáč",
+      "doc. RNDr. Rastislav Královič, PhD.",
+      "doc. RNDr. Martin Mačaj, PhD.",
+      "Bc. Peter Perešíni",
+      "Mgr. Milan Plžík",
+      "RNDr. Ján Šturc, CSc.",
+      "prof. RNDr. Branislav Rovan, PhD.",
+      "doc. RNDr. Eduard Toman, CSc.",
+      "doc. RNDr. Martin Stanek, PhD.",
+      "prof. RNDr. Martin Škoviera, PhD.",
+      ];
+  for (var i = 0; i < testdata.length; i++) {
+    for (var j = i+1; j < testdata.length; j++) {
+      var a = normalizePriezviskoMenoForCmp(testdata[i]);
+      var b = normalizePriezviskoMenoForCmp(testdata[j]);
+      assertTrue(testdata[i] + "ma byt menej ako " + testdata[j], a.localeCompare(b) < 0);
+    }
+  }
+  
 }
