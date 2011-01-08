@@ -26,10 +26,11 @@ class Request
 {
   private $input;
   
-  public function __construct(Input $input)
+  public function __construct(InvocationParameters $input)
   {
     $this->input = $input;
   }
+
   /**
    * Return a named parameter
    *
@@ -45,7 +46,7 @@ class Request
     Preconditions::checkIsString($defaultValue,
         '$defaultValue should be string.');
 
-    $value = $this->input->get($name);
+    $value = $this->input->getParameter($name);
     if ($value === null) {
       return $defaultValue;
     }
@@ -61,7 +62,7 @@ class Request
   public function hasParameter($name)
   {
     Preconditions::checkIsString($name, '$name should be string.');
-    return $this->input->get($name) !== null;
+    return $this->input->getParameter($name) !== null;
   }
 
   /**
@@ -72,7 +73,7 @@ class Request
   public function clearParameter($name)
   {
     Preconditions::checkIsString($name, '$name should be string.');
-    $this->input->set($name, null);
+    $this->input->setParameter($name, null);
   }
 
 }

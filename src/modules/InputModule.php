@@ -37,7 +37,7 @@ class InputModule implements Module
    */
   public function configure(sfServiceContainerBuilder $container)
   {
-    $container->register('Input.class', '\fajr\Input')
+    $container->register('InvocationParameters.class', '\fajr\HttpInputParameters')
               ->addArgument('%Request.Parameters.GET%')
               ->addArgument('%Request.Parameters.POST%')
               ->addMethodCall('prepare', array())
