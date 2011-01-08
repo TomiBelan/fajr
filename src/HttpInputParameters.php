@@ -116,13 +116,9 @@ class HttpInputParameters implements InvocationParameters
     self::$global_prepared = true;
     $this->prepared = true;
 
-    if (FajrConfig::get('URL.Path')) {
-      $_get = array_merge(FajrRouter::pathToParams(FajrUtils::pathInfo()),
-                          $_GET);
-    } else {
-      $_get = $_GET;
-    }
+    $_get = $_GET;
     $_post = $_POST;
+
     // budeme pouzivat uz len Input
     unset($_GET);
     unset($_POST);
