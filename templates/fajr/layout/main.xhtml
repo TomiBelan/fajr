@@ -8,16 +8,24 @@
       {% if base %}
         <base href="{{ base }}" />
       {% endif %}
-      <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/prototype/1.6.1.0/prototype.js"></script>
+      {# javascripty #}
+      <script type="text/javascript" src="javascripts/third_party/prototype.js"></script>
+      <script type="text/javascript" src="javascripts/third_party/tablesort.min.js"></script>
       <script type="text/javascript" src="javascripts/fajr.js"></script>
       <script type="text/javascript" src="javascripts/toggleVisibility.js"></script>
-      <script type="text/javascript" src="javascripts/tablesort.min.js"></script>
-      <link rel="stylesheet" href="css/screen.css" type="text/css" media="screen, projection" />
-      <link rel="stylesheet" href="css/plugins/buttons/screen.css" type="text/css" media="screen, projection" />
+      {# blueprint #}
+      <link rel="stylesheet" href="css/third_party/blueprint/screen.css"
+          type="text/css" media="screen, projection" />
+      <link rel="stylesheet" href="css/third_party/blueprint/plugins/buttons/screen.css"
+          type="text/css" media="screen, projection" />
+      <link rel="stylesheet" href="css/third_party/blueprint/print.css"
+          type="text/css" media="print" />
+      <!--[if lt IE 8]><link rel="stylesheet" href="css/third_party/blueprint/ie.css"
+          type="text/css" media="screen, projection" /><![endif]-->
+      {# nase css #}
       <link rel="stylesheet" href="css/custom.css" type="text/css" media="screen, projection" />
-      <link rel="stylesheet" href="css/print.css" type="text/css" media="print" />
       <link rel="stylesheet" href="css/customprint.css" type="text/css" media="print" />
-      <!--[if lt IE 8]><link rel="stylesheet" href="css/ie.css" type="text/css" media="screen, projection" /><![endif]-->
+
       <link href="favicon.ico" rel="icon" type="image/x-icon" />
       <title>{% block title %}{% endblock %} - Fajr</title>
     {% endblock %}
@@ -44,7 +52,7 @@
 
         (function() {
           var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+          ga.src = 'javascripts/third_party/ga.js';
           var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
         })();
       </script>

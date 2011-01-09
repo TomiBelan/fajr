@@ -2,7 +2,7 @@
 
 {% block head %}
 {% parent %}
-<script type="text/javascript" src="javascripts/latinise.js"></script>
+<script type="text/javascript" src="javascripts/third_party/latinise.js"></script>
 <script type="text/javascript" src="javascripts/sortFunctions.js"></script>
 {% endblock %}
 
@@ -11,7 +11,7 @@
   <div class="logout">
     Prihlásený ako "{{ aisUserName }}"
     <a class="button negative" href="{{ logout }}">
-    <img src="images/door_in.png" alt=""/>Odhlásiť</a>
+    <img src="images/third_party/silk/door_in.png" alt=""/>Odhlásiť</a>
   </div>
   {% parent %}
   {% block application_content %}{% endblock %}
