@@ -1,3 +1,4 @@
+//JsTestDriver:use-UTF-8-compatibility-hack
 /**
  * Contains tests of sortFunctions.js
  *
@@ -44,7 +45,7 @@ SortFunctionsTest.prototype.testParseDatumCas = function() {
                parseDatumCas("11.01.2011 20:00"));
   assertEquals(new Date(2010, 11, 22, 17, 34, 22),
                parseDatumCas("22.11.2010 17:34:22"));
-  assertException(function() {parseDatumCas("wrong")}, Error());
+  assertException(function() {parseDatumCas("wrong")}, "Error");
 }
 
 
@@ -68,17 +69,17 @@ SortFunctionsTest.prototype.testSortPriezviskoMeno = function() {
       "doc. RNDr. Martin Mačaj, PhD.",
       "Bc. Peter Perešíni",
       "Mgr. Milan Plžík",
-      "RNDr. Ján Šturc, CSc.",
       "prof. RNDr. Branislav Rovan, PhD.",
-      "doc. RNDr. Eduard Toman, CSc.",
-      "doc. RNDr. Martin Stanek, PhD.",
       "prof. RNDr. Martin Škoviera, PhD.",
+      "doc. RNDr. Martin Stanek, PhD.",
+      "RNDr. Ján Šturc, CSc.",
+      "doc. RNDr. Eduard Toman, CSc.",
       ];
   for (var i = 0; i < testdata.length; i++) {
     for (var j = i+1; j < testdata.length; j++) {
       var a = normalizePriezviskoMenoForCmp(testdata[i]);
       var b = normalizePriezviskoMenoForCmp(testdata[j]);
-      assertTrue(testdata[i] + "ma byt menej ako " + testdata[j], a.localeCompare(b) < 0);
+      assertTrue(a + " ma byt menej ako " + b, a < b);
     }
   }
   

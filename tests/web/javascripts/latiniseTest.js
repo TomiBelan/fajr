@@ -1,3 +1,4 @@
+//JsTestDriver:use-UTF-8-compatibility-hack
 /**
  * Contains tests of latinise.js
  *
@@ -13,5 +14,5 @@
 LatiniseTest = TestCase("LatiniseTest");
 
 LatiniseTest.prototype.testLatinise = function() {
-  assertSame("aecl", "äéěľ");
+  assertSame("aeecl", "äéěčľ".latinise());
 }
