@@ -1,4 +1,5 @@
 // Downloaded from http://semplicewebsites.com/sites/default/files/latinise_compact.js_.txt
+//JsTestDriver:use-UTF-8-compatibility-hack
 var latin_map = {
 'Á': 'A',
 'Ă': 'A',
@@ -849,7 +850,7 @@ var latin_map = {
 'ᵣ': 'r',
 'ᵤ': 'u',
 'ᵥ': 'v',
-'ₓ': 'x',
+'ₓ': 'x' // ppershing: comma after last statement does not work in ie8
 };
 String.prototype.latinise = function() {
 	return this.replace(/[^A-Za-z0-9]/g, function(x) { return latin_map[x] || x; })
