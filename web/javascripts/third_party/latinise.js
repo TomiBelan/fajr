@@ -859,3 +859,5 @@ String.prototype.latinize = String.prototype.latinise;
 String.prototype.isLatin = function() {
 	return this == this.latinise();
 };
+
+var latiniseLoaded = true;

@@ -13,6 +13,12 @@
 
 LatiniseTest = TestCase("LatiniseTest");
 
+LatiniseTest.prototype.setUp = function() {
+  if (typeof(latiniseLoaded) == 'undefined') {
+    fail("latinise.js should be loaded");
+  }
+}
+
 LatiniseTest.prototype.testLatinise = function() {
   assertSame("aeecl", "äéěčľ".latinise());
 }

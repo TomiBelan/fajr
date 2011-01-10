@@ -2,6 +2,8 @@
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file in the project root directory.
 
+/** @require latinise.js */
+
 /**
  * Dopln nuly na zaciatok retazca, az do dlzky n
  */
@@ -118,3 +120,5 @@ function sortPriezviskoMeno(a, b)
 {
   return sortByPreparedPosition(a, b);
 }
+
+var sortFunctionsLoaded = true;

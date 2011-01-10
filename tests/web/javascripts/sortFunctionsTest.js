@@ -13,6 +13,14 @@
 
 SortFunctionsTest = TestCase("SortFunctionsTest");
 
+SortFunctionsTest.prototype.setUp = function() {
+  if (typeof(sortFunctionsLoaded) == 'undefined') {
+    fail("sortFunctions.js should be loaded");
+  }
+  if (typeof(latiniseLoaded) == 'undefined') {
+    fail("latinise.js should be loaded");
+  }
+}
 
 /**
  * Test basic padding.
@@ -73,7 +81,7 @@ SortFunctionsTest.prototype.testSortPriezviskoMeno = function() {
       "prof. RNDr. Martin Škoviera, PhD.",
       "doc. RNDr. Martin Stanek, PhD.",
       "RNDr. Ján Šturc, CSc.",
-      "doc. RNDr. Eduard Toman, CSc.",
+      "doc. RNDr. Eduard Toman, CSc." // ppershing: comma here breaks ie
       ];
   for (var i = 0; i < testdata.length; i++) {
     for (var j = i+1; j < testdata.length; j++) {
