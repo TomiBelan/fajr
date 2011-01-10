@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
+import java.util.HashSet;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -144,7 +145,9 @@ public class FileSetServlet extends HttpServlet implements Observer {
     Collection<FileInfo> clientFileSet =
       gson.fromJson(fileSet, new TypeToken<Collection<FileInfo>>() {}.getType());
     SlaveBrowser browser = capturedBrowsers.getBrowser(browserId);
-    Set<FileInfo> browserFileSet = browser.getFileSet();
+    // Hack by ppershing: always reload all files, as there might be dependencies
+    // between sources and tests which must be loaded in order!
+    Set<FileInfo> browserFileSet = new HashSet<FileInfo>(); //browser.getFileSet();
     Set<FileInfo> filesToRequest = strategy.createExpiredFileSet(clientFileSet, browserFileSet);
     if (!filesToRequest.isEmpty()) {
       if (browser.getBrowserInfo().getName().contains("Safari")
