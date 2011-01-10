@@ -311,3 +311,7 @@ pre.trace {
   font-weight: normal;
   font-style: normal;
 }
+
+div.linkbar {
+  margin: 1ex;
+}
