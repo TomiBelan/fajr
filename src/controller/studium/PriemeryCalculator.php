@@ -14,6 +14,7 @@ namespace fajr\controller\studium;
 
 use fajr\libfajr\base\DisableEvilCallsObject;
 use fajr\libfajr\base\Preconditions;
+use fajr\libfajr\pub\data_manipulation\Znamka;
 use InvalidArgumentException;
 
 /**
@@ -31,15 +32,6 @@ class PriemeryInternal
   protected $pocetPredmetovNeohodnotenych = 0;
   protected $pocetKreditovNeohodnotenych = 0;
 
-  protected static $numerickaHodnotaZnamky = array(
-      'A'=>1.0,
-      'B'=>1.5,
-      'C'=>2.0,
-      'D'=>2.5,
-      'E'=>3.0,
-      'Fx'=>4.0
-    );
-
   private function addOhodnotene($hodnota, $kredity)
   {
     $this->sucet += $hodnota;
@@ -54,21 +46,24 @@ class PriemeryInternal
     $this->pocetKreditovNeohodnotenych += $kredity;
   }
 
-  public function add($znamka, $kredity)
+  public function add($znamkaText, $kredity)
   {
     Preconditions::checkContainsInteger($kredity);
     Preconditions::check($kredity >= 0, "Kreditov musí byť nezáporný počet.");
-    Preconditions::checkIsString($znamka);
+    Preconditions::checkIsString($znamkaText);
 
-    if (isset(PriemeryInternal::$numerickaHodnotaZnamky[$znamka])) {
-      $hodnota = PriemeryInternal::$numerickaHodnotaZnamky[$znamka];
-      $this->addOhodnotene($hodnota, $kredity);
-    }
-    else if ($znamka === '') {
+    if ($znamkaText == '') {
       $this->addNeohodnotene($kredity);
-    } else {
-      throw new InvalidArgumentException("Známka '$znamka' nie je platná");
+      return;
     }
+
+    $znamka = Znamka::fromString($znamkaText);
+    
+    if ($znamka === null) {
+      throw new InvalidArgumentException("Známka '$znamkaText' nie je platná");
+    }
+
+    $this->addOhodnotene($znamka->getNumerickaHodnota(), $kredity);
   }
 
   public function studijnyPriemer($neohodnotene = true)
@@ -77,7 +72,8 @@ class PriemeryInternal
     $pocet = $this->pocetPredmetovOhodnotenych;
 
     if ($neohodnotene) {
-      $suma += $this->pocetPredmetovNeohodnotenych * self::$numerickaHodnotaZnamky['Fx'];
+      $hodnotaFx = Znamka::fromString('Fx')->getNumerickaHodnota();
+      $suma += $this->pocetPredmetovNeohodnotenych * $hodnotaFx;
       $pocet += $this->pocetPredmetovNeohodnotenych;
     }
 
@@ -92,7 +88,8 @@ class PriemeryInternal
     $suma = $this->sucetVah;
     $pocet = $this->pocetKreditovOhodnotenych;
     if ($neohodnotene) {
-      $suma += $this->pocetKreditovNeohodnotenych * self::$numerickaHodnotaZnamky['Fx'];
+      $hodnotaFx = Znamka::fromString('Fx')->getNumerickaHodnota();
+      $suma += $this->pocetKreditovNeohodnotenych * $hodnotaFx;
       $pocet += $this->pocetKreditovNeohodnotenych;
     }
     if ($pocet == 0) {

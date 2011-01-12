@@ -130,4 +130,15 @@ class PriemeryCalculatorTest extends PHPUnit_Framework_TestCase
     $this->assertEquals(20.0/11.0, $obdobia[PriemeryCalculator::AKADEMICKY_ROK]->vazenyPriemer(false));
     $this->assertEquals(36.0/15.0, $obdobia[PriemeryCalculator::AKADEMICKY_ROK]->vazenyPriemer(true));
   }
+
+  public function testRozneVelkostiPismenVZnamke()
+  {
+    $this->calculator->add(PriemeryCalculator::SEMESTER_LETNY, 'a', 1);
+    $this->calculator->add(PriemeryCalculator::SEMESTER_LETNY, 'A', 1);
+    $this->calculator->add(PriemeryCalculator::SEMESTER_LETNY, 'Fx', 1);
+    $this->calculator->add(PriemeryCalculator::SEMESTER_LETNY, 'FX', 1);
+    
+    $obdobia = $this->calculator->getObdobia();
+    $this->assertEquals(10.0/4.0, $obdobia[PriemeryCalculator::AKADEMICKY_ROK]->vazenyPriemer(true));
+  }
 }

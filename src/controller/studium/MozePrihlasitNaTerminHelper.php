@@ -14,6 +14,7 @@ namespace fajr\controller\studium;
 
 use fajr\libfajr\AIS2Utils;
 use fajr\libfajr\base\DisableEvilCallsObject;
+use fajr\libfajr\pub\data_manipulation\Znamka;
 
 include_once 'fields.php';
 
@@ -60,7 +61,7 @@ class MozePrihlasitNaTerminHelper extends DisableEvilCallsObject
       $mozePredmet = true;
     }
 
-    if ($znamka!="" && $znamka!="FX" && !$mozePredmet) {
+    if ($znamka!="" && !Znamka::isSame($znamka, 'Fx') && !$mozePredmet) {
       return self::PRIHLASIT_NEMOZE_ZNAMKA;
     }
 
@@ -79,7 +80,7 @@ class MozePrihlasitNaTerminHelper extends DisableEvilCallsObject
       return self::PRIHLASIT_NEMOZE_INE;
     }
 
-    if ($znamka!="" && $znamka!="FX" && $mozePredmet) {
+    if ($znamka!="" && !Znamka::isSame($znamka, 'Fx') && $mozePredmet) {
       return self::PRIHLASIT_MOZE_ZNAMKA;
     }
 

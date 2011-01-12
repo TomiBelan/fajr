@@ -46,7 +46,7 @@ class Preconditions
    * Checks that $variable is a string
    *
    * @param mixed  $variable variable to check
-   * @param string $name variable name to display in error
+   * @param string $message message to display in error
    *
    * @returns void
    * @throws InvalidArgumentException
@@ -54,6 +54,22 @@ class Preconditions
   public static function checkIsString($variable, $message = null)
   {
     if (!is_string($variable)) {
+      throw new InvalidArgumentException($message);
+    }
+  }
+
+  /**
+   * Checks that $variable is a number (integer, float or double)
+   *
+   * @param mixed  $variable variable to check
+   * @param string $message message to display
+   *
+   * @returns void
+   * @throws InvalidArgumentException
+   */
+  public static function checkIsNumber($variable, $message = null)
+  {
+    if (!(is_int($variable) || is_float($variable) || is_double($variable))) {
       throw new InvalidArgumentException($message);
     }
   }

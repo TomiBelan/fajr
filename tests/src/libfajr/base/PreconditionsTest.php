@@ -74,6 +74,26 @@ class PreconditionsTest extends PHPUnit_Framework_TestCase
     Preconditions::checkIsString($x, "not a string");
   }
 
+  public function testNumber()
+  {
+    Preconditions::checkIsNumber(1, "should be number");
+    Preconditions::checkIsNumber(doubleval(2.0), "should be number");
+    Preconditions::checkIsNumber(floatval(3.0), "should be number");
+    $x = 1;
+    $y = doubleval(2.0);
+    $z = floatval(3.0);
+    Preconditions::checkIsNumber($x, "x should be number");
+    Preconditions::checkIsNumber($y, "y should be number");
+    Preconditions::checkIsNumber($z, "z should be number");
+  }
+
+  public function testNumberFail()
+  {
+    $this->setExpectedException("InvalidArgumentException");
+    $x = '5';
+    Preconditions::checkIsNumber($x, "not a number");
+  }
+
   public function testMatchesPattern()
   {
     Preconditions::checkMatchesPattern("/^aa$/", "aa", "string");

@@ -19,6 +19,7 @@ use Exception;
 use fajr\libfajr\base\Preconditions;
 use fajr\libfajr\data_manipulation\DataTableImpl;
 use fajr\libfajr\pub\base\Trace;
+use fajr\libfajr\pub\data_manipulation\Znamka;
 use fajr\libfajr\pub\window\VSES017_administracia_studia\TerminyDialog;
 use fajr\libfajr\window\fake\FakeAbstractDialog;
 use fajr\libfajr\window\fake\FakeRequestExecutor;
@@ -62,7 +63,7 @@ class FakeTerminyDialogImpl extends FakeAbstractDialog
       $info = $this->executor->readTable(array('termin' => $index), 'prihlas');
       if (isset($info['jePrihlaseny']) && $info['jePrihlaseny']) {
         $znamka = $info['prihlasenyData'][self::MOJE_TERMINY_ZNAMKA];
-        if ($znamka != 'Fx') {
+        if (!Znamka::isSame($znamka, 'Fx')) {
           throw new Exception("Už si prihlásený na iný termín z tohoto predmetu!");
         }
       }
