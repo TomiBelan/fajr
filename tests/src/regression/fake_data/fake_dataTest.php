@@ -17,6 +17,7 @@ use RecursiveDirectoryIterator;
 use RegexIterator;
 use RecursiveIteratorIterator;
 use fajr\libfajr\storage\FileStorage;
+use fajr\libfajr\util\StrUtil;
 
 /**
  * @ignore
@@ -36,15 +37,18 @@ class FakeDataTest extends PHPUnit_Framework_TestCase
    */
   public function testAllData()
   {
-    $storage = new FileStorage(array("root_path" => "/"));
-
     $dir = fake_data::getDirectory();
+    $storage = new FileStorage(array("root_path" => $dir . '/'));
+    
     $it = new RecursiveDirectoryIterator($dir);
     $nonrecursiveIt = new RecursiveIteratorIterator($it);
     $regexIt = new RegexIterator($nonrecursiveIt, '@\.dat$@');
     foreach ($regexIt as $file) {
       $this->assertTrue($file->isFile());
       $key = $file->getPathname();
+      assert(StrUtil::startsWith($key, $dir));
+      // remove $dir from beginning of $key
+      $key = substr($key, strlen($dir));
       $key = preg_replace("@\.dat$@", "", $key);
 
       $data = $storage->read($key);
