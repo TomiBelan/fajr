@@ -1,6 +1,6 @@
 <?php
 /**
- *
+ * Obsahuje nastroje pre pocitanie zakladnych statistik so znamkami
  * @copyright  Copyright (c) 2010 The Fajr authors (see AUTHORS).
  *             Use of this source code is governed by a MIT license that can be
  *             found in the LICENSE file in the project root directory.
@@ -18,7 +18,7 @@ use fajr\libfajr\pub\data_manipulation\Znamka;
 use InvalidArgumentException;
 
 /**
- *
+ * Reprezentuje jednu jednotku pre ktoru sa da pocitat statistika (semester,rok)
  * @package    Fajr
  * @subpackage Controller__Studium
  * @author     Martin Sucha <anty.sk@gmail.com>
@@ -32,6 +32,11 @@ class PriemeryInternal
   protected $pocetPredmetovNeohodnotenych = 0;
   protected $pocetKreditovNeohodnotenych = 0;
 
+  /**
+   * Zarata znamku
+   * @param float $hodnota hodnota znamky, ktora ma byt zaratana
+   * @param float $kredity prislusna kreditova hodnota pre pocitanie vaz. priem.
+   */
   private function addOhodnotene($hodnota, $kredity)
   {
     $this->sucet += $hodnota;
@@ -40,12 +45,23 @@ class PriemeryInternal
     $this->pocetKreditovOhodnotenych += $kredity;
   }
 
+  /**
+   * Zarata predmet, pre ktory este nevieme znamku
+   * @param float $kredity kreditova hodnota daneho predmetu
+   */
   private function addNeohodnotene($kredity)
   {
     $this->pocetPredmetovNeohodnotenych += 1;
     $this->pocetKreditovNeohodnotenych += $kredity;
   }
 
+  /**
+   * Zarata predmet s danou znamkou
+   * @param string $znamkaText nazov znamky (A, B, ...), moze byt aj prazdny,
+   *                           vtedy sa zarata ako neohodnoteny predmet
+   * @param float $kredity pocet kreditov, ktore sa maju zaratat
+   * @throws InvalidArgumentException ak dana znamka nie je platna
+   */
   public function add($znamkaText, $kredity)
   {
     Preconditions::checkContainsInteger($kredity);
@@ -66,6 +82,12 @@ class PriemeryInternal
     $this->addOhodnotene($znamka->getNumerickaHodnota(), $kredity);
   }
 
+  /**
+   * Vypocita studijny priemer (t.j. priemer z danych znamok)
+   * @param boolean $neohodnotene true ak sa maju zaratat aj neohodnotene
+   *                              predmety so znamkou Fx
+   * @returns float hodnota studijneho priemeru
+   */
   public function studijnyPriemer($neohodnotene = true)
   {
     $suma = $this->sucet;
@@ -83,6 +105,12 @@ class PriemeryInternal
     return $suma / $pocet;
   }
 
+  /**
+   * Vypocita vazeny priemer, vaha sa berie z kreditov
+   * @param boolean $neohodnotene true ak sa maju zapocitat aj neohodnotene
+   *                              predmety so znamkou Fx
+   * @returns float hodnota vazeneho priemeru
+   */
   public function vazenyPriemer($neohodnotene=true)
   {
     $suma = $this->sucetVah;
@@ -98,16 +126,27 @@ class PriemeryInternal
     return $suma / $pocet;
   }
 
+  /**
+   * @returns boolean true ak tento objekt obsahuje nejake data
+   */
   public function hasPriemer()
   {
     return $this->pocetPredmetovOhodnotenych > 0;
   }
 
+  /**
+   * Vrati celkovy pocet zaratanych kreditov
+   * @returns int pocet kreditov celkom
+   */
   public function kreditovCelkom()
   {
     return $this->pocetKreditovOhodnotenych + $this->pocetKreditovNeohodnotenych;
   }
 
+  /**
+   * Vrati celkovy pocet predmetov
+   * @returns int pocet predmetov celkom
+   */
   public function predmetovCelkom()
   {
     return $this->pocetPredmetovOhodnotenych + $this->pocetPredmetovNeohodnotenych;
@@ -116,7 +155,7 @@ class PriemeryInternal
 }
 
 /**
- *
+ * Pocita statistiky so znamkami pre rozne obdobia
  * @package    Fajr
  * @subpackage Controller__Studium
  * @author     Martin Sucha <anty.sk@gmail.com>
@@ -138,6 +177,12 @@ class PriemeryCalculator
       );
   }
 
+  /**
+   * Prida predmet s danou znamkou
+   * @param string $castRoka do ktorej casti roka sa ma znamka zaratat
+   * @param string $znamka nazov znamky (A, B, ...)
+   * @param int $kredity pocet kreditov pre danu znamku
+   */
   public function add($castRoka, $znamka, $kredity)
   {
     Preconditions::check(in_array($castRoka,
@@ -146,14 +191,24 @@ class PriemeryCalculator
                                   self::AKADEMICKY_ROK)),
                          "Neplatná časť študijného roka.");
     $this->obdobia[$castRoka]->add($znamka, $kredity);
-    $this->obdobia[self::AKADEMICKY_ROK]->add($znamka, $kredity);
+    // Ak pridavame do akademickeho roka, tak hodnotu nechceme zaratat dvakrat
+    if ($castRoka !== self::AKADEMICKY_ROK) {
+      $this->obdobia[self::AKADEMICKY_ROK]->add($znamka, $kredity);
+    }
   }
 
+  /**
+   * @returns boolean true ak mame nejake data
+   */
   public function hasPriemer()
   {
     return $this->obdobia[self::AKADEMICKY_ROK]->hasPriemer();
   }
 
+  /**
+   * Vrati pole s jednotlivymi obdobiami (zima, leto, rok)
+   * @returns array(string=>PriemeryInternal)
+   */
   public function getObdobia() {
     return $this->obdobia;
   }

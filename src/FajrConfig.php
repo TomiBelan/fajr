@@ -1,6 +1,6 @@
 <?php
 /**
- *
+ * Loads configuration from file and provides means to access it
  * @copyright  Copyright (c) 2010 The Fajr authors (see AUTHORS).
  *             Use of this source code is governed by a MIT license that can be
  *             found in the LICENSE file in the project root directory.
@@ -21,7 +21,7 @@ use fajr\util\FajrUtils;
 use InvalidArgumentException;
 
 /**
- *
+ * Loads configuration from file and provides means to access it
  * @package    Fajr
  * @subpackage Fajr
  * @author     Martin Sucha <anty.sk@gmail.com>
@@ -176,11 +176,19 @@ class FajrConfig
     self::$config = $config;
   }
 
+  /**
+   * Check whether configuration is ready
+   * @returns boolean true iff configuration was successfully loaded
+   */
   public static function isConfigured()
   {
     return (self::$config !== null);
   }
 
+  /**
+   * Checks whether Fajr is configured and throws an exception if it isn't
+   * @throws IllegalStateException if Fajr
+   */
   public static function assertInitialized()
   {
     if (!self::isConfigured()) {
@@ -188,9 +196,16 @@ class FajrConfig
     }
   }
 
+  /**
+   * Get a value of a given key
+   * @param string $key
+   * @returns mixed value of a given key
+   * @throws InvalidArgumentException if the key does not exist
+   */
   public static function get($key)
   {
     self::assertInitialized();
+    Preconditions::checkIsString($key);
     // Note: isset() returns false if the item value is null
     if (!array_key_exists($key, self::$config)) {
       throw new InvalidArgumentException('Unknown configuration parameter: ' .
