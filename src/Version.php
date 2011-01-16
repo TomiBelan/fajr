@@ -23,7 +23,7 @@ namespace fajr;
 class Version
 {
   /** @var string current version number */
-  private static $version = '0.4.4';
+  private static $version = '0.4.5';
 
   /** @var array basic changelog information */
   private static $changelog = array (
@@ -40,7 +40,8 @@ class Version
       array('2010-12-01', '0.4.1', 'Konfiguračná voľba pre nastavenie viacerých serverov'),
       array('2010-12-13', '0.4.2', 'Prihlasovanie na skúšky znova funguje'),
       array('2010-12-20', '0.4.3', 'Opravené viaceré chyby'),
-      array('2011-01-06', '0.4.4', 'Ďaľšie drobné opravy, nové testy, demo režim')
+      array('2011-01-06', '0.4.4', 'Ďaľšie drobné opravy, nové testy, demo režim'),
+      array('2011-01-16', '0.4.5', 'Ďaľšie fixy, testy'),
     );
 
   /** @var int how many entries from changelog we want to show */
