@@ -5,6 +5,14 @@ pridavne php package
 Menovite tu mame:
   update_cscope.sh
     -- (potrebuje cscope), sluzi na vyhladavanie definicii tried, funkcii, ...
+  upgrade.sh <parametre>
+    - Updatne zdrojaky pomocou svn up <parametre>
+    - Potom spusti skripty make_version.sh a clear_cache.php
+  make_version.sh
+    - Vygeneruje version info, aby sme vedeli v aplikacii datum instalacie,
+      svn url a reviziu
+  clear_cache.php
+    - Vyprazdni twig template cache, ak je v konfiguracii zapnuta
 
 Tieto skripty generuju svoje reporty do adresara ../report:
   run_tests.sh
