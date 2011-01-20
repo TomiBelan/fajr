@@ -14,7 +14,7 @@
 
 namespace fajr\injection;
 
-use fajr\FajrConfig;
+use fajr\config\FajrConfig;
 use fajr\libfajr\base\Preconditions;
 use sfServiceContainerBuilder;
 

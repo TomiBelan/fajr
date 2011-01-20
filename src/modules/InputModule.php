@@ -14,7 +14,6 @@
 
 namespace fajr\modules;
 
-use fajr\FajrConfig;
 use fajr\injection\Module;
 use fajr\validators\IntegerValidator;
 use fajr\validators\StringValidator;

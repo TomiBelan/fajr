@@ -1,6 +1,6 @@
 #!/usr/bin/php
 <?php
-use fajr\FajrConfig;
+use fajr\config\FajrConfig;
 
 // register our autoloader
 require_once (__DIR__ . '/../src/libfajr/libfajr.php');

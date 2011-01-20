@@ -1,7 +1,7 @@
 <?php
 /**
  * Loads configuration from file and provides means to access it
- * @copyright  Copyright (c) 2010 The Fajr authors (see AUTHORS).
+ * @copyright  Copyright (c) 2010-2011 The Fajr authors (see AUTHORS).
  *             Use of this source code is governed by a MIT license that can be
  *             found in the LICENSE file in the project root directory.
  *
@@ -10,14 +10,14 @@
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */
-namespace fajr;
+namespace fajr\config;
 
 use Exception;
 use fajr\libfajr\base\IllegalStateException;
 use fajr\libfajr\base\Preconditions;
 use fajr\validators\StringValidator;
 use fajr\validators\ChoiceValidator;
-use fajr\util\ConfigUtils;
+use fajr\config\ConfigUtils;
 use fajr\util\FajrUtils;
 use InvalidArgumentException;
 
@@ -109,7 +109,7 @@ class FajrConfig
               'validator' => $stringValidator),
 
       'Template.Directory' =>
-        array('defaultValue' => './templates/fajr',
+        array('defaultValue' => './templates',
               'validator' => $pathValidator),
 
       'Template.Cache' =>
@@ -120,6 +120,26 @@ class FajrConfig
         array('defaultValue' => './twig_cache',
               'relativeTo' => 'Path.Temporary',
               'validator' => $pathValidator),
+
+      'Template.Skin.Skins' =>
+        array(
+            'defaultValue' => array(
+              'noskin' => new SkinConfig(
+                array(
+                  'name' => 'noskin',
+                  'internal' => true,
+                  'path' => '',
+                )),
+              'fajr' => new SkinConfig(
+                array(
+                  'name' => 'default',
+                  'path' => 'fajr',
+                  'parent' => 'noskin'))
+              )),
+
+      'Template.Skin.Default' =>
+        array('defaultValue' => 'fajr',
+              'validator' => $stringValidator),
     );
     return self::$parameterDescription;
   }
@@ -129,7 +149,7 @@ class FajrConfig
    */
   public static function getConfigurationFileName()
   {
-    return FajrUtils::joinPath(__DIR__, '../config/configuration.php');
+    return FajrUtils::joinPath(FajrUtils::getProjectRootDirectory(), '/config/configuration.php');
   }
 
   /**
@@ -241,7 +261,7 @@ class FajrConfig
       return $dir;
     }
     // default resolve relative
-    $relativeTo = FajrUtils::joinPath(dirname(__FILE__), '..');
+    $relativeTo = FajrUtils::getProjectRootDirectory();
 
     $parameters = self::getParameterDescription();
 

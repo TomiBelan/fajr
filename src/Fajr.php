@@ -36,6 +36,7 @@ use fajr\Response;
 use fajr\Statistics;
 use fajr\util\FajrUtils;
 use fajr\Version;
+use fajr\config\FajrConfig;
 use sfSessionStorage;
 
 /**

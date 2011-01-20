@@ -14,10 +14,9 @@
 
 namespace fajr\modules;
 
-use fajr\FajrConfig;
 use fajr\injection\Module;
 use fajr\libfajr\pub\connection\AIS2ServerConnection;
-use fajr\ServerConfig;
+use fajr\config\ServerConfig;
 use sfServiceContainerBuilder;
 use sfServiceReference;
 use sfStorage;

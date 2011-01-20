@@ -11,7 +11,7 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 
-namespace fajr\util;
+namespace fajr\config;
 
 use Exception;
 

@@ -13,7 +13,7 @@
 
 namespace fajr\util;
 
-use fajr\FajrConfig;
+use fajr\config\FajrConfig;
 use fajr\libfajr\AIS2Session;
 use fajr\libfajr\base\Preconditions;
 use fajr\libfajr\login\AIS2LoginImpl;
@@ -31,6 +31,9 @@ use Exception;
  */
 class FajrUtils
 {
+  public static function getProjectRootDirectory() {
+    return realpath(__DIR__ . "/../..");
+  }
 
   /**
    * Sends redirect header.

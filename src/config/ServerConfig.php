@@ -11,11 +11,11 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace fajr;
+namespace fajr\config;
 
 use fajr\validators\ChoiceValidator;
 use fajr\validators\StringValidator;
-use fajr\util\ConfigUtils;
+use fajr\config\ConfigUtils;
 /**
  * Contains all configurable options of AIS server in Fajr.
  *

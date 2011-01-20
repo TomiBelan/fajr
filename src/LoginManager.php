@@ -20,6 +20,7 @@ use fajr\libfajr\pub\login\LoginFactory;
 use fajr\exceptions\SecurityException;
 use fajr\libfajr\pub\login\CosignServiceCookie;
 use fajr\util\FajrUtils;
+use fajr\config\ServerConfig;
 
 class LoginManager
 {

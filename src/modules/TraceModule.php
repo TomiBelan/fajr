@@ -14,7 +14,7 @@
 
 namespace fajr\modules;
 
-use fajr\FajrConfig;
+use fajr\config\FajrConfig;
 use fajr\injection\Module;
 use sfServiceContainerBuilder;
 use sfServiceReference;

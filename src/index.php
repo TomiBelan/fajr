@@ -31,6 +31,7 @@ use sfStorageAutoloader;
 use Twig_Autoloader;
 use Exception;
 use fajr\util\FajrUtils;
+use fajr\config\FajrConfig;
 
 $startTime = microtime(true);
 
