@@ -2,7 +2,7 @@
 /**
  * Injector module for DisplayManager.class
  *
- * @copyright  Copyright (c) 2010 The Fajr authors (see AUTHORS).
+ * @copyright  Copyright (c) 2010-2011 The Fajr authors (see AUTHORS).
  *             Use of this source code is governed by a MIT license that can be
  *             found in the LICENSE file in the project root directory.
  *
@@ -14,15 +14,17 @@
 
 namespace fajr\modules;
 
-use fajr\FajrConfig;
+use fajr\config\FajrConfig;
 use fajr\injection\Module;
 use fajr\libfajr\base\Preconditions;
 use fajr\rendering\Extension;
+use fajr\rendering\TwigFactory;
 use sfServiceContainerBuilder;
 use sfServiceReference;
 use Twig_Environment;
 use Twig_Extension_Escaper;
 use Twig_Loader_Filesystem;
+use RuntimeException;
 
 /**
  * Injector module for DisplayManager.class
@@ -33,7 +35,6 @@ use Twig_Loader_Filesystem;
  */
 class DisplayManagerModule implements Module
 {
-  
   /**
    * Configure injection of DisplayManager.class
    *
@@ -41,22 +42,25 @@ class DisplayManagerModule implements Module
    */
   public function configure(sfServiceContainerBuilder $container)
   {
-    $container->register('DisplayManager.class', '\fajr\DisplayManager')
-              ->addArgument(new sfServiceReference('Twig_Environment.class'));
+    $container->register('DisplayManager.class', '\fajr\rendering\DisplayManager')
+              ->addArgument(new sfServiceReference('TwigFactory.class'))
+              ->addArgument('%Template.Skin.Default%');
 
-    $container->register('Twig_Loader_Filesystem.class',
-                         'Twig_Loader_Filesystem')
-              ->addArgument('%Twig.Template.Directory%');
+    $skins = FajrConfig::get('Template.Skin.Skins');
+    $skinName = FajrConfig::get('Template.Skin.Default');
 
-    $container->register('Twig_Environment.class',
-                         'Twig_Environment')
-              ->addArgument(new sfServiceReference(
-                                  'Twig_Loader_Filesystem.class'))
+    if (!isset($skins, $skinName)) {
+      throw new RuntimeException("Default skin is not present!");
+    }
+
+    $container->setParameter('Template.Skin.Default', $skins[$skinName]);
+
+    $container->register('TwigFactory.class', '\fajr\rendering\TwigFactory')
               ->addArgument('%Twig.Environment.options%')
-              ->addMethodCall('addExtension',
-                              array(new Twig_Extension_Escaper()))
-              ->addMethodCall('addExtension',
-                              array(new Extension()));
+              ->addArgument('%Twig.Environment.extensions%');
+
+    $container->setParameter('Twig.Environment.extensions',
+                              array(new Twig_Extension_Escaper(), new Extension()));
 
     $container->setParameter('Twig.Template.Directory',
                              FajrConfig::getDirectory('Template.Directory'));

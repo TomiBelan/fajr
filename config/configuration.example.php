@@ -11,7 +11,8 @@
  * @filesource
  */
 
-use fajr\ServerConfig;
+use fajr\config\ServerConfig;
+use fajr\config\SkinConfig;
 
 return array(
   /*
@@ -96,6 +97,30 @@ return array(
    * (absolútna, alebo relatívna k adresáru Path.Temporary)
    */
   //'Template.Cache.Path'=>'./twig_cache',
+
+  /*
+   * Defaultný skin pre Fajr.
+   */
+  //'Template.Skin.Default'=>'fajr',
+
+  /*
+   * Konfigurácia skinov
+   *
+    'Template.Skin.Skins' =>
+      array('noskin' => new SkinConfig(
+              array(
+                'name' => 'noskin',
+                'internal' => true,
+                'path' => '',
+              )),
+            'fajr' => new SkinConfig(
+              array(
+                'name' => 'default',
+                'path' => 'fajr',
+                'parent' => 'noskin',
+                ))
+            ),
+    */
 
   /*
    * Názov defaultného servera (viď zoznam serverov)
