@@ -53,4 +53,3 @@ class ZoznamPrihlasenychDialogImpl extends AIS2AbstractDialog
         'prihlaseniTable_dataView');
   }
 }
-?>

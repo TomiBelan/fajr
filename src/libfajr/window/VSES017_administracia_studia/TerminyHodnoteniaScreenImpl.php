@@ -97,6 +97,7 @@ class TerminyHodnoteniaScreenImpl extends AIS2AbstractScreen
 
     return new TerminyDialogImpl($trace, $this, $data);
   }
+
   public function getZoznamPrihlasenychDialog(Trace $trace, $terminIndex)
   {
     $data = new DialogData();
@@ -105,7 +106,7 @@ class TerminyHodnoteniaScreenImpl extends AIS2AbstractScreen
     $data->index = $terminIndex;
     return new ZoznamPrihlasenychDialogImpl($trace, $this, $data);
   }
-  
+
   public function odhlasZTerminu(Trace $trace, $terminIndex)
   {
     $this->openIfNotAlready($trace);
@@ -150,5 +151,3 @@ class TerminyHodnoteniaScreenImpl extends AIS2AbstractScreen
   }
 
 }
-
-?>
