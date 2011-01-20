@@ -13,7 +13,7 @@
 namespace fajr;
 
 use PHPUnit_Framework_TestCase;
-use fajr\util\ConfigUtils;
+use fajr\config\ConfigUtils;
 use fajr\validators\ChoiceValidator;
 /**
  * @ignore
