@@ -54,12 +54,9 @@ class MozePrihlasitNaTerminHelper extends DisableEvilCallsObject
       $znamka = "";
     }
 
-    if (isset($this->hodnoteniaData[$predmet][HodnoteniaFields::MOZE_PRIHLASIT]) &&
-        $this->hodnoteniaData[$predmet][HodnoteniaFields::MOZE_PRIHLASIT]=='N') {
-      $mozePredmet = false;
-    } else {
-      $mozePredmet = true;
-    }
+    // Note(PPershing): never use $this->hodnoteniaData[$predmet][HodnoteniaFields::MOZE_PRIHLASIT]
+    // AiS will incorrectly report that you can't sign up if you have FX!
+    $mozePredmet = ($prihlasTerminyRow[ZoznamTerminovFields::MOZE_PRIHLASIT] == 'A');
 
     if ($znamka!="" && !Znamka::isSame($znamka, 'Fx') && !$mozePredmet) {
       return self::PRIHLASIT_NEMOZE_ZNAMKA;

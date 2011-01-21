@@ -32,7 +32,7 @@ class MozePrihlasitNaTerminHelperTest extends PHPUnit_Framework_TestCase
     $hodnotenia = array (
         '1-INF-47' => array (
             HodnoteniaFields::ZNAMKA => '',
-            HodnoteniaFields::MOZE_PRIHLASIT => 'A',
+            HodnoteniaFields::MOZE_PRIHLASIT => 'A', // note - fajr should ignore this value
           ),
         '1-INF-47x' => array (
             HodnoteniaFields::ZNAMKA => '',
@@ -57,6 +57,7 @@ class MozePrihlasitNaTerminHelperTest extends PHPUnit_Framework_TestCase
         PrihlasTerminyFields::PREDMET_SKRATKA => '1-INF-47',
         PrihlasTerminyFields::MAX_POCET => '',
         PrihlasTerminyFields::POCET_PRIHLASENYCH => '',
+        PrihlasTerminyFields::MOZE_PRIHLASIT => 'A',
         );
     $this->assertEquals(MozePrihlasitNaTerminHelper::PRIHLASIT_MOZE,
                         $this->helper->mozeSaPrihlasit($row, strtotime("2010-02-02")));
@@ -66,6 +67,7 @@ class MozePrihlasitNaTerminHelperTest extends PHPUnit_Framework_TestCase
         PrihlasTerminyFields::PREDMET_SKRATKA => '1-INF-47',
         PrihlasTerminyFields::MAX_POCET => '',
         PrihlasTerminyFields::POCET_PRIHLASENYCH => '',
+        PrihlasTerminyFields::MOZE_PRIHLASIT => 'A',
         );
     $this->assertEquals(MozePrihlasitNaTerminHelper::PRIHLASIT_MOZE,
                         $this->helper->mozeSaPrihlasit($row, strtotime("2010-02-02")));
@@ -82,6 +84,7 @@ class MozePrihlasitNaTerminHelperTest extends PHPUnit_Framework_TestCase
         PrihlasTerminyFields::PREDMET_SKRATKA => '1-INF-48x',
         PrihlasTerminyFields::MAX_POCET => '',
         PrihlasTerminyFields::POCET_PRIHLASENYCH => '',
+        PrihlasTerminyFields::MOZE_PRIHLASIT => 'N',
         );
     $this->assertEquals(MozePrihlasitNaTerminHelper::PRIHLASIT_NEMOZE_ZNAMKA,
                         $this->helper->mozeSaPrihlasit($row, strtotime("2010-02-02")));
@@ -94,6 +97,7 @@ class MozePrihlasitNaTerminHelperTest extends PHPUnit_Framework_TestCase
         PrihlasTerminyFields::PREDMET_SKRATKA => '1-INF-48',
         PrihlasTerminyFields::MAX_POCET => '',
         PrihlasTerminyFields::POCET_PRIHLASENYCH => '',
+        PrihlasTerminyFields::MOZE_PRIHLASIT => 'A',
         );
     $this->assertEquals(MozePrihlasitNaTerminHelper::PRIHLASIT_MOZE_ZNAMKA,
                         $this->helper->mozeSaPrihlasit($row, strtotime("2010-02-02")));
@@ -106,6 +110,7 @@ class MozePrihlasitNaTerminHelperTest extends PHPUnit_Framework_TestCase
         PrihlasTerminyFields::PREDMET_SKRATKA => '1-INF-47',
         PrihlasTerminyFields::MAX_POCET => '4',
         PrihlasTerminyFields::POCET_PRIHLASENYCH => '',
+        PrihlasTerminyFields::MOZE_PRIHLASIT => 'A',
         );
     $this->assertEquals(MozePrihlasitNaTerminHelper::PRIHLASIT_MOZE,
                         $this->helper->mozeSaPrihlasit($row, strtotime("2010-02-02")));

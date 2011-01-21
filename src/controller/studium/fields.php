@@ -115,6 +115,7 @@ class ZoznamTerminovFields
   const DATUM = 'dat';
   const CAS = 'cas';
   const INDEX = 'index';
+  const MOZE_PRIHLASIT = "moznostPrihlasenia";
 }
 
 /**
