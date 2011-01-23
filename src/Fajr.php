@@ -253,6 +253,7 @@ class Fajr {
 
     $response->set('aisVersion', null);
     $response->set('aisVersionIncompatible', false);
+    $response->set('loggedIn', false);
   }
 
   public function runLogic(Trace $trace, HttpConnection $connection)
@@ -287,6 +288,7 @@ class Fajr {
     }
 
     if ($loggedIn) {
+      $response->set('loggedIn', true);
       $controllerInjector = new Injector(array(new
             ControllerInjectorModule($serverConnection, $server, $session)));
       $mainScreen = $controllerInjector->getInstance('AIS2MainScreen.class');

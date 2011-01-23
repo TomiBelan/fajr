@@ -8,11 +8,7 @@
       {% if base %}
         <base href="{{ base }}" />
       {% endif %}
-      {# javascripty #}
-      <script type="text/javascript" src="javascripts/third_party/prototype.js"></script>
-      <script type="text/javascript" src="javascripts/third_party/tablesort.min.js"></script>
-      <script type="text/javascript" src="javascripts/fajr.js"></script>
-      <script type="text/javascript" src="javascripts/toggleVisibility.js"></script>
+      {% include "layout/javascripts.xhtml" %}
       {% include "layout/css.xhtml" %}
 
       <link href="favicon.ico" rel="icon" type="image/x-icon" />

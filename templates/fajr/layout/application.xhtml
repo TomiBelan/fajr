@@ -7,12 +7,6 @@
 {% endblock %}
 
 {% block content %}
-  {% url logout for ['action': 'logout'] %}
-  <div class="logout">
-    Prihlásený ako "{{ aisUserName }}"
-    <a class="button negative" href="{{ logout }}">
-    <img src="images/third_party/silk/door_in.png" alt=""/>Odhlásiť</a>
-  </div>
   {% parent %}
   {% block application_content %}{% endblock %}
   <div>

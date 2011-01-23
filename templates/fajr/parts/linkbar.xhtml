@@ -1,8 +1,20 @@
 <div class='linkbar'>{# TODO: use <ul> #}
+  <div class='linkbarLeft'>
   <a href="http://code.google.com/p/fajr/"
     >Stránka projektu</a>&nbsp;|&nbsp;<a
     href="mailto:fajr-users@googlegroups.com"
     >Mailinglist</a>&nbsp;|&nbsp;<a
     href="http://code.google.com/p/fajr/issues/entry"
     >Nahlás problém</a>
+  </div>
+  {% if loggedIn %}
+  <div class='linkbarRight'>
+    {% url logoutUrl for ['action': 'logout'] %}
+    {% url settingsUrl for ['action': 'userSettings.Settings'] %}
+    <nobr>{{ aisUserName }}</nobr>{# &nbsp;|&nbsp;<a
+      href="{{ settingsUrl }}">Nastavenia</a>#}&nbsp;|&nbsp;<a
+      href="{{ logoutUrl }}">Odhlásiť</a>
+  </div>
+  {% endif %}
 </div>
+
