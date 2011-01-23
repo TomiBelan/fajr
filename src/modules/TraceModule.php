@@ -28,6 +28,12 @@ use sfServiceReference;
  */
 class TraceModule implements Module
 {
+  private $config;
+
+  public function __construct(FajrConfig $config) {
+    $this->config = $config;
+  }
+
   /**
    * Configures Trace.class for injection.
    *
@@ -35,8 +41,8 @@ class TraceModule implements Module
    */
   public function configure(sfServiceContainerBuilder $container)
   {
-    if (FajrConfig::get('Debug.Trace') === true) {
-      $debugFile = FajrConfig::getDirectory('Debug.Trace.File');
+    if ($this->config->get('Debug.Trace') === true) {
+      $debugFile = $this->config->getDirectory('Debug.Trace.File');
       if ($debugFile !== null) {
         $container->setParameter('Debug.Trace.File', $debugFile);
         $container->setParameter('Debug.Trace.File.Mode', 'a');

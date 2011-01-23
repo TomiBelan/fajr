@@ -27,6 +27,12 @@ use sfServiceContainerBuilder;
  */
 class CurlConnectionOptionsModule implements Module
 {
+  private $config;
+
+  public function __construct(FajrConfig $config) {
+    $this->config = $config;
+  }
+
   /**
    * Configure CurlConnection.options
    *
@@ -40,12 +46,12 @@ class CurlConnectionOptionsModule implements Module
         CURLOPT_VERBOSE => false,
         CURLOPT_SSL_VERIFYPEER => true,
         CURLOPT_SSL_VERIFYHOST => true,
-        CURLOPT_USERAGENT => FajrConfig::get('Connection.UserAgent'),
+        CURLOPT_USERAGENT => $this->config->get('Connection.UserAgent'),
         CURLOPT_ENCODING => 'gzip',
         );
     // overridnutie adresara pre certifikaty
-    if (FajrConfig::get('SSL.CertificatesDir')) {
-      $options[CURLOPT_CAPATH] = FajrConfig::get('SSL.CertificatesDir');
+    if ($this->config->get('SSL.CertificatesDir')) {
+      $options[CURLOPT_CAPATH] = $this->config->get('SSL.CertificatesDir');
     }
     $container->setParameter('CurlConnection.options', $options);
   }

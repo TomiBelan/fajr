@@ -39,6 +39,7 @@ class ControllerModule implements Module
     $parameters = 
         array('controller.dispatchMap' => array(
                   'studium' => 'studium.controller.class',
+                  'userSettings' => 'userSettings.controller.class',
                   ),
               );
     $container->addParameters($parameters);

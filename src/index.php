@@ -32,6 +32,7 @@ use Twig_Autoloader;
 use Exception;
 use fajr\util\FajrUtils;
 use fajr\config\FajrConfig;
+use fajr\config\FajrConfigLoader;
 
 $startTime = microtime(true);
 
@@ -111,7 +112,7 @@ Loader::searchForClasses(dirname(__FILE__), true);
 require_once 'libfajr/Assert.php';
 
 // is there configuration.php file present?
-if (!FajrConfig::isConfigured()) {
+if (!FajrConfigLoader::isConfigured()) {
   fajr_bootstrap_error('
     <p>
       Fajr nie je nakonfigurovaný, prosím skopírujte súbor
@@ -133,7 +134,8 @@ if (!FajrConfig::isConfigured()) {
   ');
 }
 
-if (FajrConfig::get('SSL.Require') && !FajrUtils::isHTTPS()) {
+$config = FajrConfigLoader::getConfiguration();
+if ($config->get('SSL.Require') && !FajrUtils::isHTTPS()) {
   fajr_bootstrap_error('
      <p>
        Pre túto inštanciu fajr-u je vyžadované HTTPS spojenie.
@@ -153,14 +155,14 @@ $modules = array(
     new StatisticsModule(),
     new ContextModule(),
     new ControllerModule(),
-    new DisplayManagerModule(),
-    new CurlConnectionOptionsModule(),
-    new SessionModule(),
-    new TraceModule(),
+    new DisplayManagerModule($config),
+    new CurlConnectionOptionsModule($config),
+    new SessionModule($config),
+    new TraceModule($config),
     new LoginFactoryModule(),
     new InputModule(),
   );
-$injector = new Injector($modules);
-$fajr = new Fajr($injector);
+$injector = new Injector($modules, $config->get('Debug.Exception.ShowStacktrace') != true);
+$fajr = new Fajr($injector, $config);
 $fajr->run();
 session_write_close();

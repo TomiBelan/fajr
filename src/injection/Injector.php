@@ -39,6 +39,9 @@ class Injector
   /** @var sfServiceContainerBuilder Underlying Symfony container builder */
   private $container;
 
+  /** @var bool */
+  private $suppressErrors;
+
   /**
    * Construct injector configured with passed modules.
    *
@@ -46,12 +49,13 @@ class Injector
    *    injector. Note that order of Modules is important, as they are
    *    configuring the injector in given order.
    */
-  public function __construct(array $modules)
+  public function __construct(array $modules, $suppressErrors = true)
   {
     $this->container = new sfServiceContainerBuilder();
     foreach ($modules as $module) {
       $module->configure($this->container);
     }
+    $this->suppressErrors = $suppressErrors;
   }
 
   /**
@@ -65,10 +69,10 @@ class Injector
   public function getInstance($name)
   {
     Preconditions::checkIsString($name, '$name should be string.');
-    if (FajrConfig::get('Debug.Exception.ShowStacktrace')) {
-      return $this->container->getService($name);
-    } else {
+    if ($this->suppressErrors) {
       return @$this->container->getService($name);
+    } else {
+      return $this->container->getService($name);
     }
   }
 

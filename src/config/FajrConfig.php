@@ -1,6 +1,5 @@
 <?php
 /**
- * Loads configuration from file and provides means to access it
  * @copyright  Copyright (c) 2010-2011 The Fajr authors (see AUTHORS).
  *             Use of this source code is governed by a MIT license that can be
  *             found in the LICENSE file in the project root directory.
@@ -22,14 +21,13 @@ use fajr\util\FajrUtils;
 use InvalidArgumentException;
 
 /**
- * Loads configuration from file and provides means to access it
  * @package    Fajr
  * @subpackage Fajr
  * @author     Martin Sucha <anty.sk@gmail.com>
  */
 class FajrConfig
 {
-  protected static $config = null;
+  protected $config = null;
 
   protected static $parameterDescription = null;
 
@@ -145,76 +143,21 @@ class FajrConfig
   }
 
   /**
-   * @returns string absolute path to configuration file
+   * Constructs FajrConfig
+   *
+   * @param array $configuration
    */
-  public static function getConfigurationFileName()
+  public function __construct($configuration)
   {
-    return FajrUtils::joinPath(FajrUtils::getProjectRootDirectory(), '/config/configuration.php');
-  }
-
-  /**
-   * Load configuration file, if it was not loaded previously.
-   *
-   * This means that second and subsequent calls attempt to load
-   * the configuration again only if previous attempts have failed.
-   *
-   * Otherwise, cached configuration data is used.
-   *
-   * If the loading fails, isConfigured() will return false.
-   *
-   * @return void
-   */
-  public static function load()
-  {
-    if (self::isConfigured()) {
-      return;
-    }
-
     $parameters = self::getParameterDescription();
 
-    $configurationFileName = self::getConfigurationFileName();
-
-    if (!file_exists($configurationFileName)) {
-      // Leave fajr unconfigured, index.php will then show nice error message
-      // to the user
-      return;
-    }
-
-    // Don't suppress errors so parse errors are reported
-    // TODO(anty): use yaml for configuration
-    $result = (include $configurationFileName);
-
-    if (!is_array($result)) {
-      throw new Exception('Konfiguračný súbor nevrátil pole');
-    }
-
-    $config = ConfigUtils::parseAndValidateConfiguration($parameters, $result);
+    $config = ConfigUtils::parseAndValidateConfiguration($parameters, $configuration);
     foreach ($config['AIS2.ServerList'] as $key => $server) {
       if ($key !== $server->getServerName()) {
         throw new Exception("Nesedí meno servera v konfiguracii AIS2.ServerList");
       }
     }
-    self::$config = $config;
-  }
-
-  /**
-   * Check whether configuration is ready
-   * @returns boolean true iff configuration was successfully loaded
-   */
-  public static function isConfigured()
-  {
-    return (self::$config !== null);
-  }
-
-  /**
-   * Checks whether Fajr is configured and throws an exception if it isn't
-   * @throws IllegalStateException if Fajr
-   */
-  public static function assertInitialized()
-  {
-    if (!self::isConfigured()) {
-      throw new IllegalStateException("You must initialize config first.");
-    }
+    $this->config = $config;
   }
 
   /**
@@ -223,16 +166,15 @@ class FajrConfig
    * @returns mixed value of a given key
    * @throws InvalidArgumentException if the key does not exist
    */
-  public static function get($key)
+  public function get($key)
   {
-    self::assertInitialized();
     Preconditions::checkIsString($key);
     // Note: isset() returns false if the item value is null
-    if (!array_key_exists($key, self::$config)) {
+    if (!array_key_exists($key, $this->config)) {
       throw new InvalidArgumentException('Unknown configuration parameter: ' .
                                          $key);
     }
-    return self::$config[$key];
+    return $this->config[$key];
   }
 
   /**
@@ -246,14 +188,12 @@ class FajrConfig
    * @returns string absolute path for the directory specified in configuration
    *                 or null if this option was not specified and does not have
    *                 a default value
-   * @see FajrConfig::$defaultOptions
-   * @see FajrConfig::$directoriesRelativeTo
+   * @see FajrConfig::getParameterDescription()
    * @see configuration.example.php
    */
-  public static function getDirectory($key)
+  public function getDirectory($key)
   {
-    self::assertInitialized();
-    $dir = self::get($key);
+    $dir = $this->get($key);
     if ($dir === null) {
       return null;
     }
@@ -263,17 +203,15 @@ class FajrConfig
     // default resolve relative
     $relativeTo = FajrUtils::getProjectRootDirectory();
 
-    $parameters = self::getParameterDescription();
+    $parameters = $this->getParameterDescription();
 
     assert(array_key_exists($key, $parameters));
 
     $param = $parameters[$key];
 
     if (array_key_exists('relativeTo', $param)) {
-      $relativeTo = self::getDirectory($param['relativeTo']);
+      $relativeTo = $this->getDirectory($param['relativeTo']);
     }
     return FajrUtils::joinPath($relativeTo, $dir);
   }
 }
-
-FajrConfig::load();

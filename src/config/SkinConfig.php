@@ -38,6 +38,9 @@ class SkinConfig
     return array(
         'name' =>
           array('validator' => $stringValidator),
+        'description' =>
+          array('validator' => $stringValidator,
+                'defaultValue' => ''),
         'internal' =>
           array('validator' => $booleanValidator,
                 'defaultValue' => false),
@@ -69,7 +72,9 @@ class SkinConfig
   public function getAllPaths() {
     $result = array($this->getPath());
     if ($this->getParentName() !== null) {
-      $skins = FajrConfig::get('Template.Skin.Skins');
+      // this is a bit tricky, as FajrConfig can't be passed at construct time.
+      $config = FajrConfigLoader::getConfiguration();
+      $skins = $config->get('Template.Skin.Skins');
       $parent = $this->getParentName();
       if (!isset($skins[$parent])) {
         throw new RuntimeException("Parent skin '" . $parent . "' for '" .
@@ -88,9 +93,15 @@ class SkinConfig
     }
 
     // default resolve relative to Template.Directory
-    $relativeTo = FajrConfig::getDirectory('Template.Directory');
+    $config = FajrConfigLoader::getConfiguration();
+    $relativeTo = $config->getDirectory('Template.Directory');
 
     return FajrUtils::joinPath($relativeTo, $dir);
+  }
+
+  public function isInternal()
+  {
+    return isset($this->config['internal']) && $this->config['internal'];
   }
 
 }

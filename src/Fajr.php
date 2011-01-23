@@ -69,15 +69,23 @@ class Fajr {
    *
    * @param Injector $injector dependency injector.
    */
-  public function __construct(Injector $injector)
+  public function __construct(Injector $injector, FajrConfig $config)
   {
     $this->injector = $injector;
+    $this->config = $config;
+  }
+
+  private function provideCookieFile()
+  {
+    return FajrUtils::joinPath($this->config->getDirectory('Path.Temporary.Cookies'),
+                               'cookie_'.session_id());
+
   }
 
   private function provideConnection()
   {
     $curlOptions = $this->injector->getParameter('CurlConnection.options');
-    $connection = new connection\CurlConnection($curlOptions, FajrUtils::getCookieFile());
+    $connection = new connection\CurlConnection($curlOptions, $this->provideCookieFile());
 
     $this->statistics->setRawStatistics($connection->getStats());
 
@@ -91,8 +99,8 @@ class Fajr {
     $request = $this->context->getRequest();
     $session = $this->context->getSessionStorage();
 
-    $serverList = FajrConfig::get('AIS2.ServerList');
-    $serverName = FajrConfig::get('AIS2.DefaultServer');
+    $serverList = $this->config->get('AIS2.ServerList');
+    $serverName = $this->config->get('AIS2.DefaultServer');
 
     if (($server = $session->read('server')) !== null) {
       if ($session->read('login/login.class') === null) {
@@ -134,7 +142,7 @@ class Fajr {
     $response->set('exception', $info);
 
     $response->set('showStackTrace',
-                   FajrConfig::get('Debug.Exception.ShowStacktrace'));
+                   $this->config->get('Debug.Exception.ShowStacktrace'));
     
     $response->setTemplate('exception');
   }
@@ -198,7 +206,7 @@ class Fajr {
       $this->setException($e);
     } catch (SecurityException $e) {
       $this->logSecurityException($e);
-      if (!FajrConfig::get('Debug.Exception.ShowStacktrace')) {
+      if (!$this->config->get('Debug.Exception.ShowStacktrace')) {
         die("Internal error");
       } else {
         die($e);
@@ -229,9 +237,9 @@ class Fajr {
   {
     $response = $this->context->getResponse();
     $response->set('version', new Version());
-    $response->set('banner_debug', FajrConfig::get('Debug.Banner'));
+    $response->set('banner_debug', $this->config->get('Debug.Banner'));
     $response->set('google_analytics',
-                   FajrConfig::get('GoogleAnalytics.Account'));
+                   $this->config->get('GoogleAnalytics.Account'));
     $response->set('base', FajrUtils::basePath());
     $response->set('language', 'sk');
 
@@ -239,7 +247,7 @@ class Fajr {
     $response->set('currentServer', array('isBeta'=>false, 'instanceName'=>'Chyba'));
 
     $server = $this->getServer();
-    $serverList = FajrConfig::get('AIS2.ServerList');
+    $serverList = $this->config->get('AIS2.ServerList');
     $response->set('availableServers', $serverList);
     $response->set('currentServer', $server);
 

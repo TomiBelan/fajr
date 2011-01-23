@@ -48,19 +48,6 @@ class FajrUtils
     // in this phase
   }
 
-  /**
-   * Returns a cookie file path for current session.
-   *
-   * Cookie file name is not the same as session_id() so that if one
-   * configures the same path for cookie and session directories,
-   * the filenames do not clash.
-   *
-   * @returns string file path to use to store cookies into.
-   */
-  public static function getCookieFile()
-  {
-    return self::joinPath(FajrConfig::getDirectory('Path.Temporary.Cookies'), 'cookie_'.session_id());
-  }
 
   public static function buildUrl($params, $file=null)
   {

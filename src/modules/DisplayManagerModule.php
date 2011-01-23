@@ -35,6 +35,12 @@ use RuntimeException;
  */
 class DisplayManagerModule implements Module
 {
+  private $config;
+
+  public function __construct(FajrConfig $config) {
+    $this->config = $config;
+  }
+
   /**
    * Configure injection of DisplayManager.class
    *
@@ -46,8 +52,8 @@ class DisplayManagerModule implements Module
               ->addArgument(new sfServiceReference('TwigFactory.class'))
               ->addArgument('%Template.Skin.Default%');
 
-    $skins = FajrConfig::get('Template.Skin.Skins');
-    $skinName = FajrConfig::get('Template.Skin.Default');
+    $skins = $this->config->get('Template.Skin.Skins');
+    $skinName = $this->config->get('Template.Skin.Default');
 
     if (!isset($skins, $skinName)) {
       throw new RuntimeException("Default skin is not present!");
@@ -63,10 +69,10 @@ class DisplayManagerModule implements Module
                               array(new Twig_Extension_Escaper(), new Extension()));
 
     $container->setParameter('Twig.Template.Directory',
-                             FajrConfig::getDirectory('Template.Directory'));
+                             $this->config->getDirectory('Template.Directory'));
 
-    if (FajrConfig::get('Template.Cache')) {
-      $cache = FajrConfig::getDirectory('Template.Cache.Path');
+    if ($this->config->get('Template.Cache')) {
+      $cache = $this->config->getDirectory('Template.Cache.Path');
     } else {
       $cache = false;
     }
