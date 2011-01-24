@@ -37,6 +37,7 @@ class FajrConfigOptions {
   const PATH_TO_TEMPLATE_CACHE = 'Template.Cache.Path';
   const TEMPLATE_SKINS = 'Template.Skin.Skins';
   const TEMPLATE_DEFAULT_SKIN = 'Template.Skin.Default';
+  const IS_DEVEL = 'Features.Devel';
 
   /**
    * Return description of configuration parameters
@@ -139,6 +140,10 @@ class FajrConfigOptions {
       self::TEMPLATE_DEFAULT_SKIN =>
         array('defaultValue' => 'fajr',
               'validator' => $stringValidator),
+
+      self::IS_DEVEL =>
+        array('defaultValue' => false,
+              'validator' => $booleanValidator),
     );
 
     return $parameterDescription;

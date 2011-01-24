@@ -163,4 +163,9 @@ return array(
         'Server.Beta' => true,
         )),
     ),
+
+  /*
+   * Je toto development verzia? (Obsahuje novú funkcionalitu, ktorá je zatiaľ v testovaní)
+   */
+  // 'Features.Devel' => false,
 );
