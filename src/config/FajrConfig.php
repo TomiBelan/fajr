@@ -14,8 +14,6 @@ namespace fajr\config;
 use Exception;
 use fajr\libfajr\base\IllegalStateException;
 use fajr\libfajr\base\Preconditions;
-use fajr\validators\StringValidator;
-use fajr\validators\ChoiceValidator;
 use fajr\config\ConfigUtils;
 use fajr\util\FajrUtils;
 use InvalidArgumentException;
@@ -46,99 +44,9 @@ class FajrConfig
    */
   protected static function getParameterDescription()
   {
-    if (self::$parameterDescription !== null) {
-      return self::$parameterDescription;
+    if (self::$parameterDescription === null) {
+      self::$parameterDescription = FajrConfigOptions::getParameterDescription();
     }
-
-    $booleanValidator = new ChoiceValidator(array(true, false));
-    $stringValidator = new StringValidator();
-    $pathValidator = new StringValidator();
-
-    self::$parameterDescription = array(
-      'GoogleAnalytics.Account' =>
-        array('defaultValue'=>null),
-
-      'Debug.Banner' =>
-        array('defaultValue' => false,
-              'validator' => $booleanValidator),
-
-      'Debug.Trace' =>
-        array('defaultValue' => false,
-              'validator' => $booleanValidator),
-
-      'Debug.Trace.File' =>
-        array('defaultValue' => null,
-              'relativeTo' => 'Path.Temporary',
-              'validator' => $pathValidator),
-
-      'Debug.Exception.ShowStacktrace' =>
-        array('defaultValue' => false,
-              'validator' => $booleanValidator),
-
-      'Path.Temporary' =>
-        array('defaultValue' => './temp',
-              'validator' => $pathValidator),
-
-      'Path.Temporary.Cookies' =>
-        array('defaultValue' => './cookies',
-              'relativeTo' => 'Path.Temporary',
-              'validator' => $pathValidator),
-
-      'Path.Temporary.Sessions' =>
-        array('defaultValue' => './sessions',
-              'relativeTo' => 'Path.Temporary',
-              'validator' => $pathValidator),
-
-      'AIS2.ServerList' =>
-        array(),
-
-      'AIS2.DefaultServer' =>
-        array('validator' => $stringValidator),
-
-      'SSL.CertificatesDir' =>
-        array('defaultValue' => null),
-
-      'SSL.Require' =>
-        array('defaultValue' => true,
-              'validator' => $booleanValidator),
-
-      'Connection.UserAgent' =>
-        array('defaultValue' => 'Mozilla/5.0 (Windows; U; Windows NT 5.1; sk; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7',
-              'validator' => $stringValidator),
-
-      'Template.Directory' =>
-        array('defaultValue' => './templates',
-              'validator' => $pathValidator),
-
-      'Template.Cache' =>
-        array('defaultValue' => false,
-              'validator' => $booleanValidator),
-
-      'Template.Cache.Path' =>
-        array('defaultValue' => './twig_cache',
-              'relativeTo' => 'Path.Temporary',
-              'validator' => $pathValidator),
-
-      'Template.Skin.Skins' =>
-        array(
-            'defaultValue' => array(
-              'noskin' => new SkinConfig(
-                array(
-                  'name' => 'noskin',
-                  'internal' => true,
-                  'path' => '',
-                )),
-              'fajr' => new SkinConfig(
-                array(
-                  'name' => 'default',
-                  'path' => 'fajr',
-                  'parent' => 'noskin'))
-              )),
-
-      'Template.Skin.Default' =>
-        array('defaultValue' => 'fajr',
-              'validator' => $stringValidator),
-    );
     return self::$parameterDescription;
   }
 
