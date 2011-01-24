@@ -7,14 +7,18 @@
     href="http://code.google.com/p/fajr/issues/entry"
     >Nahlás problém</a>
   </div>
-  {% if loggedIn %}
   <div class='linkbarRight'>
+  {% if loggedIn %}
     {% url logoutUrl for ['action': 'logout'] %}
     {% url settingsUrl for ['action': 'userSettings.Settings'] %}
-    <nobr>{{ aisUserName }}</nobr>{# &nbsp;|&nbsp;<a
-      href="{{ settingsUrl }}">Nastavenia</a>#}&nbsp;|&nbsp;<a
+    <nobr>{{ aisUserName }}</nobr>&nbsp;|&nbsp;<a 
+      {% if developmentVersion %}
+      href="{{ settingsUrl }}">Nastavenia</a>&nbsp;|&nbsp;<a
+      {% endif %}
       href="{{ logoutUrl }}">Odhlásiť</a>
-  </div>
+  {% else %}
+    Neprihlásený
   {% endif %}
+  </div>
 </div>
 

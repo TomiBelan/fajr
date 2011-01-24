@@ -255,6 +255,7 @@ class Fajr {
     $response->set('aisVersion', null);
     $response->set('aisVersionIncompatible', false);
     $response->set('loggedIn', false);
+    $response->set('developmentVersion', $this->config->get(FajrConfigOptions::IS_DEVEL));
   }
 
   public function runLogic(Trace $trace, HttpConnection $connection)
