@@ -37,6 +37,7 @@ use fajr\Statistics;
 use fajr\util\FajrUtils;
 use fajr\Version;
 use fajr\config\FajrConfig;
+use fajr\config\FajrConfigOptions;
 use sfSessionStorage;
 
 /**
@@ -237,9 +238,9 @@ class Fajr {
   {
     $response = $this->context->getResponse();
     $response->set('version', new Version());
-    $response->set('banner_debug', $this->config->get('Debug.Banner'));
+    $response->set('banner_debug', $this->config->get(FajrConfigOptions::DEBUG_BANNER));
     $response->set('google_analytics',
-                   $this->config->get('GoogleAnalytics.Account'));
+                   $this->config->get(FajrConfigOptions::GOOGLE_ANALYTICS_ACCOUNT));
     $response->set('base', FajrUtils::basePath());
     $response->set('language', 'sk');
 
@@ -247,7 +248,7 @@ class Fajr {
     $response->set('currentServer', array('isBeta'=>false, 'instanceName'=>'Chyba'));
 
     $server = $this->getServer();
-    $serverList = $this->config->get('AIS2.ServerList');
+    $serverList = $this->config->get(FajrConfigOptions::AIS_SERVERLIST);
     $response->set('availableServers', $serverList);
     $response->set('currentServer', $server);
 

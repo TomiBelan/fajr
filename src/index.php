@@ -32,6 +32,7 @@ use Twig_Autoloader;
 use Exception;
 use fajr\util\FajrUtils;
 use fajr\config\FajrConfig;
+use fajr\config\FajrConfigOptions;
 use fajr\config\FajrConfigLoader;
 
 $startTime = microtime(true);
@@ -135,7 +136,7 @@ if (!FajrConfigLoader::isConfigured()) {
 }
 
 $config = FajrConfigLoader::getConfiguration();
-if ($config->get('SSL.Require') && !FajrUtils::isHTTPS()) {
+if ($config->get(FajrConfigOptions::REQUIRE_SSL) && !FajrUtils::isHTTPS()) {
   fajr_bootstrap_error('
      <p>
        Pre túto inštanciu fajr-u je vyžadované HTTPS spojenie.
@@ -162,7 +163,7 @@ $modules = array(
     new LoginFactoryModule(),
     new InputModule(),
   );
-$injector = new Injector($modules, $config->get('Debug.Exception.ShowStacktrace') != true);
+$injector = new Injector($modules, $config->get(FajrConfigOptions::DEBUG_EXCEPTION_SHOWSTACKTRACE) != true);
 $fajr = new Fajr($injector, $config);
 $fajr->run();
 session_write_close();
