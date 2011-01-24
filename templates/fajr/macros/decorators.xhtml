@@ -1,5 +1,11 @@
 {# all macros in decorators take SAFE values and they are NOT escaped #}
 
+{#**
+  * Spravi content "rozklikavaci"
+  * @param string $title nazov
+  * @param string $content obsah rozklikavacieho elementu
+  * @param bool $collapsed ma byt defaultne skryty?
+  *#}
 {% macro collapsible(title, content, collapsed) %}
   {% unique collapsible id %}
   <div class="collapsible" id="{{ id }}">
@@ -17,6 +23,16 @@
   </div>
 {% endmacro %}
 
+{#**
+  * Zobrazi tabulku dat.
+  *
+  * @param string $class css trieda, pouzita ako colorstyle-sorting$class
+  * @param string $head content hlavicky tabulky (obsah v ramci prveho <tr>)
+  * @param string $body content riadkov z obsahom tabulky
+  * @param string $foot content footera
+  * @param bool $empty zobrazit informacie o neexistencii udajov namiesto tabulky?
+  * @param bool $collapsed ma byt defaultne skryty?
+  *#}
 {% macro table(class, head, body, foot, empty) %}
   {% if empty %}
     <font color="red"> Dáta pre túto tabuľku neboli nájdené.</font><hr class="space" />
@@ -48,6 +64,13 @@
   </table>
 {% endmacro %}
 
+{#**
+  * Zobrazi "taby".
+  *
+  * @param string $content obsah aktualneho tabu
+  * @param array(title,url) $definitions definicie tabov
+  * @param string $selectedTab nazov aktualneho tabu
+  *#}
 {% macro tabs(content, definitions, selectedTab) %}
 <div class="tab_header">
   {% for tabKey in definitions|keys %}{% set tab = definitions[tabKey] %}{#
@@ -56,28 +79,4 @@
   #}{% endfor %}
 </div>
 {{ content|safe }}
-{% endmacro %}
-
-{% macro studiumtabs(content, selectedTab, studium, zapisnyList) %}
-{% url terminyLink for     ['action': 'studium.MojeTerminyHodnotenia',
-                            'studium': studium,
-                            'list': zapisnyList] %}
-{% url zapisLink   for     ['action': 'studium.ZoznamTerminov',
-                            'studium': studium,
-                            'list': zapisnyList] %}
-{% url zapisnyListLink for ['action': 'studium.ZapisanePredmety',
-                            'studium': studium,
-                            'list': zapisnyList] %}
-{% url hodnoteniaLink for  ['action': 'studium.Hodnotenia',
-                            'studium': studium,
-                            'list': zapisnyList] %}
-{{ _self.tabs(content, ['TerminyHodnotenia': ['title': 'Moje skúšky',
-                                              'url': terminyLink],
-                        'ZapisSkusok':       ['title': 'Prihlásenie na skúšky',
-                                              'url': zapisLink],
-                        'ZapisnyList':       ['title': 'Zápisný list',
-                                              'url': zapisnyListLink],
-                        'Hodnotenia':        ['title': 'Hodnotenia/Priemery',
-                                              'url': hodnoteniaLink]
-                       ], selectedTab) }}
 {% endmacro %}

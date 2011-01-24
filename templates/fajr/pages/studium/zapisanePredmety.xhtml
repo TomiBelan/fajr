@@ -2,6 +2,7 @@
 {% block title %}Zápisný list{% endblock %}
 {% block application_content %}
 {% import "macros/decorators.xhtml" as decorators %}
+{% import "macros/studium.xhtml" as studiumMacros %}
 {% import "macros/table.xhtml" as table %}
 {% parent %}
 {% set tabContent %}
@@ -50,6 +51,6 @@
 
 {% endset %}
 
-{{ decorators.studiumtabs(tabContent, 'ZapisnyList', studium, zapisnyList) }}
+{{ studiumMacros.studiumTabs(tabContent, 'ZapisnyList', studium, zapisnyList) }}
 
 {% endblock %}

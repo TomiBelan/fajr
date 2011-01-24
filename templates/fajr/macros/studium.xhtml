@@ -1,6 +1,10 @@
+{#**
+  * Vypise tabulku so zoznamom prihlasenych na skusku
+  * @param DataTable(Prihlaseni) $prihlaseni
+  *#}
 {% macro zoznamPrihlasenych(prihlaseni) %}
-{% import "macros/decorators.xhtml" as decorators %}
-{% import "macros/table.xhtml" as table %}
+  {% import "macros/decorators.xhtml" as decorators %}
+  {% import "macros/table.xhtml" as table %}
 
   {% if prihlaseni %}
 
@@ -34,4 +38,37 @@
 
   {% endif %}
 
+{% endmacro %}
+
+{#**
+  * Vypise taby k casti o studiu
+  * @param string $content obsah aktualneho tabu
+  * @param string $selectedTab aktivny tab
+  * @param int $studium id studia
+  * @param int $zapisnyList id zapisneho listu
+  *#}
+{% macro studiumTabs(content, selectedTab, studium, zapisnyList) %}
+  {% import "macros/decorators.xhtml" as decorators %}
+  {% url terminyLink for     ['action': 'studium.MojeTerminyHodnotenia',
+                              'studium': studium,
+                              'list': zapisnyList] %}
+  {% url zapisLink   for     ['action': 'studium.ZoznamTerminov',
+                              'studium': studium,
+                              'list': zapisnyList] %}
+  {% url zapisnyListLink for ['action': 'studium.ZapisanePredmety',
+                              'studium': studium,
+                              'list': zapisnyList] %}
+  {% url hodnoteniaLink for  ['action': 'studium.Hodnotenia',
+                              'studium': studium,
+                              'list': zapisnyList] %}
+  {{ decorators.tabs(content, 
+      ['TerminyHodnotenia': ['title': 'Moje skúšky',
+                              'url': terminyLink],
+       'ZapisSkusok':       ['title': 'Prihlásenie na skúšky',
+                             'url': zapisLink],
+       'ZapisnyList':       ['title': 'Zápisný list',
+                             'url': zapisnyListLink],
+       'Hodnotenia':        ['title': 'Hodnotenia/Priemery',
+                             'url': hodnoteniaLink]
+      ], selectedTab) }}
 {% endmacro %}
