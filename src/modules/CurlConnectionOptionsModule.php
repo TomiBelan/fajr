@@ -15,6 +15,7 @@
 namespace fajr\modules;
 
 use fajr\config\FajrConfig;
+use fajr\config\FajrConfigOptions;
 use fajr\injection\Module;
 use sfServiceContainerBuilder;
 
@@ -46,12 +47,12 @@ class CurlConnectionOptionsModule implements Module
         CURLOPT_VERBOSE => false,
         CURLOPT_SSL_VERIFYPEER => true,
         CURLOPT_SSL_VERIFYHOST => true,
-        CURLOPT_USERAGENT => $this->config->get('Connection.UserAgent'),
+        CURLOPT_USERAGENT => $this->config->get(FajrConfigOptions::USER_AGENT),
         CURLOPT_ENCODING => 'gzip',
         );
     // overridnutie adresara pre certifikaty
-    if ($this->config->get('SSL.CertificatesDir')) {
-      $options[CURLOPT_CAPATH] = $this->config->get('SSL.CertificatesDir');
+    if ($this->config->get(FajrConfigOptions::PATH_TO_SSL_CERTIFICATES)) {
+      $options[CURLOPT_CAPATH] = $this->config->getDirectory(FajrConfigOptions::PATH_TO_SSL_CERTIFICATES);
     }
     $container->setParameter('CurlConnection.options', $options);
   }

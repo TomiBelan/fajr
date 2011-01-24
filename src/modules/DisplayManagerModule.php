@@ -15,6 +15,7 @@
 namespace fajr\modules;
 
 use fajr\config\FajrConfig;
+use fajr\config\FajrConfigOptions;
 use fajr\injection\Module;
 use fajr\libfajr\base\Preconditions;
 use fajr\rendering\Extension;
@@ -52,8 +53,8 @@ class DisplayManagerModule implements Module
               ->addArgument(new sfServiceReference('TwigFactory.class'))
               ->addArgument('%Template.Skin.Default%');
 
-    $skins = $this->config->get('Template.Skin.Skins');
-    $skinName = $this->config->get('Template.Skin.Default');
+    $skins = $this->config->get(FajrConfigOptions::TEMPLATE_SKINS);
+    $skinName = $this->config->get(FajrConfigOptions::TEMPLATE_DEFAULT_SKIN);
 
     if (!isset($skins, $skinName)) {
       throw new RuntimeException("Default skin is not present!");
@@ -69,10 +70,10 @@ class DisplayManagerModule implements Module
                               array(new Twig_Extension_Escaper(), new Extension()));
 
     $container->setParameter('Twig.Template.Directory',
-                             $this->config->getDirectory('Template.Directory'));
+                             $this->config->getDirectory(FajrConfigOptions::PATH_TO_TEMPLATES));
 
-    if ($this->config->get('Template.Cache')) {
-      $cache = $this->config->getDirectory('Template.Cache.Path');
+    if ($this->config->get(FajrConfigOptions::USE_TEMPLATE_CACHE)) {
+      $cache = $this->config->getDirectory(FajrConfigOptions::PATH_TO_TEMPLATE_CACHE);
     } else {
       $cache = false;
     }

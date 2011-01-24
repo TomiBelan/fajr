@@ -15,6 +15,7 @@
 namespace fajr\modules;
 
 use fajr\config\FajrConfig;
+use fajr\config\FajrConfigOptions;
 use fajr\injection\Module;
 use sfServiceContainerBuilder;
 use sfServiceReference;
@@ -41,8 +42,8 @@ class TraceModule implements Module
    */
   public function configure(sfServiceContainerBuilder $container)
   {
-    if ($this->config->get('Debug.Trace') === true) {
-      $debugFile = $this->config->getDirectory('Debug.Trace.File');
+    if ($this->config->get(FajrConfigOptions::DEBUG_TRACE) === true) {
+      $debugFile = $this->config->getDirectory(FajrConfigOptions::DEBUG_TRACE_FILE);
       if ($debugFile !== null) {
         $container->setParameter('Debug.Trace.File', $debugFile);
         $container->setParameter('Debug.Trace.File.Mode', 'a');

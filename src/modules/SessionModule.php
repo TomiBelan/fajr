@@ -15,6 +15,7 @@
 namespace fajr\modules;
 
 use fajr\config\FajrConfig;
+use fajr\config\FajrConfigOptions;
 use fajr\injection\Module;
 use sfServiceContainerBuilder;
 
@@ -45,7 +46,7 @@ class SessionModule implements Module
         array('session_cookie_lifetime' => $lifeTimeSec,
               'session_cookie_path' => '/',
               'session_cookie_domain' => '.' . $_SERVER['HTTP_HOST'],
-              'session_cookie_secure' => $this->config->get('SSL.Require'),
+              'session_cookie_secure' => $this->config->get(FajrConfigOptions::REQUIRE_SSL),
               'session_cookie_httponly' => true,
               'session_name' => 'fajr_session_id',
               );
@@ -53,7 +54,7 @@ class SessionModule implements Module
     ini_set("session.gc_maxlifetime", $lifeTimeSec);
     ini_set("session.cookie_lifetime", $lifeTimeSec);
     // custom cache expire is possible only for custom session directory
-    session_save_path($this->config->getDirectory('Path.Temporary.Sessions'));
+    session_save_path($this->config->getDirectory(FajrConfigOptions::PATH_TO_SESSIONS));
     // Note, we can't use setParameters as it will destroy previous values!
     $container->setParameter('session.options', $options);
 
