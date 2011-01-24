@@ -1,0 +1,28 @@
+{% extends "layout/settings.xhtml" %}
+{% block title %}Nastavenia{% endblock %}
+{% block application_content %}
+{% import "macros/settings.xhtml" as settingsMacros %}
+{% parent %}
+  {% set tabContent %}
+  <form method="post" action="">
+    <fieldset>
+      {% for key,item in availableSkins|items %}
+        {% if currentSkin == key %}
+          {% set selected %}CHECKED{% endset %}
+        {% else %}
+          {% set selected %}{% endset %}
+        {% endif %}
+        <div class="skinSelect">
+          <img class="skinSelect" src="images/skins/{{ key }}.png">
+          <input type="radio" name="skinSelect" value="{{ key }}" {{ selected }}>
+          <b>{{item.skinName}}</b> {{item.description}}
+        </div>
+      {% endfor %}
+        <button type="submit" class="saveSettings" name="submit">
+          Zmeň
+        </button>
+    </fieldset>
+  </form>
+  {% endset %}
+  {{ settingsMacros.settingsTabs(tabContent, '') }}
+{% endblock %}
