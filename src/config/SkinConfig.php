@@ -104,4 +104,9 @@ class SkinConfig
     return isset($this->config['internal']) && $this->config['internal'];
   }
 
+  public function getDescription()
+  {
+    return $this->config['description'];
+  }
+
 }
