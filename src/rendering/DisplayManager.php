@@ -28,28 +28,17 @@ class DisplayManager
   /** @var TwigFactory */
   private $twig;
   /** @var SkinConfig */
-  private $skin;
+  private $defaultSkin;
 
   /**
    * Construct a DisplayManager using Twig_Environment
    * @param Twig_Environment $twig
    * @param SkinConfig skin for which we are going to render templates.
    */
-  public function __construct(TwigFactory $twigFactory, SkinConfig $skin)
+  public function __construct(TwigFactory $twigFactory, SkinConfig $defaultSkin)
   {
     $this->twigFactory = $twigFactory;
-    $this->skin = $skin;
-  }
-
-  /**
-   * Set a skin used to render the templates.
-   *
-   * @param SkinConfig $skin
-   *
-   * @returns void
-   */
-  public function setSkin(SkinConfig $skin) {
-    $this->skin = $skin;
+    $this->defaultSkin = $defaultSkin;
   }
 
   /**
@@ -62,7 +51,12 @@ class DisplayManager
   public function display(Response $response)
   {
     Preconditions::checkNotNull($response->getTemplate(), "Template not set");
-    $twig = $this->twigFactory->provideTwigForSkin($this->skin);
+    if ($response->getSkin()) {
+      $skin = $response->getSkin();
+    } else {
+      $skin = $this->defaultSkin;
+    }
+    $twig = $this->twigFactory->provideTwigForSkin($skin);
 
     $templateName = 'pages/' . $response->getTemplate() . '.xhtml';
     $template = $twig->loadTemplate($templateName);

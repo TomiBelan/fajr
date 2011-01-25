@@ -14,6 +14,7 @@
 namespace fajr;
 
 use fajr\libfajr\base\Preconditions;
+use fajr\config\SkinConfig;
 
 /**
  * Class for holding response information
@@ -26,6 +27,9 @@ class Response
 
   /** @var string template name to be used */
   private $template = null;
+
+  /** SkinConfig skin configuration */
+  private $skin = null;
 
   protected $data = array('warnings' => array());
 
@@ -79,4 +83,13 @@ class Response
     $this->data['warnings'][] = $message;
   }
 
+  public function setSkin(SkinConfig $skin)
+  {
+    $this->skin = $skin;
+  }
+
+  public function getSkin()
+  {
+    return $this->skin;
+  }
 }
