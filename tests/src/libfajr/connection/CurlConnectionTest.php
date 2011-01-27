@@ -34,6 +34,7 @@ class CurlConnectionTest extends PHPUnit_Framework_TestCase
         CURLOPT_FOLLOWLOCATION => true,
         CURLOPT_VERBOSE => false,
         );
+    $this->markTestSkipped('This test uses unreliable resources and is flaky.');
   }
 
   public function tearDown()
