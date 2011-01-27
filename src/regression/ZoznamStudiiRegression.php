@@ -48,6 +48,8 @@ class ZoznamStudiiRegression
           16 => 'studijnyProgramSkratkaAkreditOJ',
           17 => 'rokStudia',
           18 => 'idEvi',
+          19 => 'modifikator',
+          20 => 'poslModif',
           );
   }
 }

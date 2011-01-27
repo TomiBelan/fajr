@@ -45,6 +45,8 @@ class ZoznamZapisnychListovRegression
           13 => 'studProgramSkratkaAkreditOJ',
           14 => 'typFinacovaniaPopis',
           15 => 'typFinacovaniaSkratPopis',
+          16 => 'modifikator',
+          17 => 'poslModif',
           );
   }
 }
