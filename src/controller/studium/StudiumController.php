@@ -192,10 +192,13 @@ class StudiumController extends BaseController
     $terminy = $this->terminyHodnoteniaScreen
         ->getTerminyHodnotenia($trace->addChild('get terminy hodnotenia '))
         ->getData();
+    FajrUtils::warnWrongTableStructure($response, 'moje terminy',
+        regression\MojeTerminyRegression::get(),
+        $terminy->getTableDefinition());
 
     $terminKey = -1;
     foreach ($terminy as $key=>$row) {
-      if ($row['index']==$terminIndex) $terminKey = $key;
+      if ($row['index'] == $terminIndex) $terminKey = $key;
     }
 
     if ($terminKey == -1) {
@@ -234,12 +237,16 @@ class StudiumController extends BaseController
 
     $terminyHodnotenia = $this->terminyHodnoteniaScreen->getTerminyHodnotenia(
         $trace->addChild("get terminy hodnotenia"));
+    FajrUtils::warnWrongTableStructure($response, 'moje terminy hodnotenia',
+        regression\MojeTerminyRegression::get(),
+        $terminyHodnotenia->getTableDefinition());
+
     $hodnotenia = $this->hodnoteniaScreen->getHodnotenia(
         $trace->addChild("get hodnotenia"));
-    FajrUtils::warnWrongTableStructure($response, 'priemery',
+    FajrUtils::warnWrongTableStructure($response, 'hodnotenia',
         regression\HodnoteniaRegression::get(),
         $hodnotenia->getTableDefinition());
-    
+
     $hodnoteniePredmetu = array();
     foreach($hodnotenia->getData() as $hodnoteniaRow) {
       $hodnoteniePredmetu[$hodnoteniaRow[HodnoteniaFields::PREDMET_SKRATKA]] =
@@ -281,6 +288,9 @@ class StudiumController extends BaseController
       $prihlaseni = $this->terminyHodnoteniaScreen->
             getZoznamPrihlasenychDialog($trace, $termin)->
               getZoznamPrihlasenych($trace);
+      FajrUtils::warnWrongTableStructure($response, 'prihlaseni na termin',
+          regression\PrihlaseniNaTerminRegression::get(),
+          $prihlaseni->getTableDefinition());
       $response->set('prihlaseni', $prihlaseni->getData());
     }
 
@@ -302,6 +312,9 @@ class StudiumController extends BaseController
     $response = $context->getResponse();
 
     $predmetyZapisnehoListu = $this->terminyHodnoteniaScreen->getPredmetyZapisnehoListu($trace);
+    FajrUtils::warnWrongTableStructure($response, 'terminy hodnotenia-predmety',
+        regression\ZapisanePredmetyRegression::get(),
+        $predmetyZapisnehoListu->getTableDefinition());
 
     $priemeryCalculator = new PriemeryCalculator();
 
@@ -333,11 +346,17 @@ class StudiumController extends BaseController
     $predmetIndex = $request->getParameter("prihlasPredmetIndex");
     $terminIndex = $request->getParameter("prihlasTerminIndex");
 
+
     $predmety = $this->terminyHodnoteniaScreen
-          ->getPredmetyZapisnehoListu($trace->addChild('Predmety zapisneho listu'))
-          ->getData();
+          ->getPredmetyZapisnehoListu($trace->addChild('Predmety zapisneho listu'));
+    FajrUtils::warnWrongTableStructure($response, 'terminy hodnotenia - predmety',
+        regression\ZapisanePredmetyRegression::get(),
+        $predmety->getTableDefinition());
+
+    $predmetyData = $predmety->getData();
+
     $predmetKey = -1;
-    foreach ($predmety as $key=>$row) {
+    foreach ($predmetyData as $key=>$row) {
       if ((string) $row[PredmetyFields::INDEX] === $predmetIndex) {
         $predmetKey = $key;
       }
@@ -347,9 +366,14 @@ class StudiumController extends BaseController
     $terminyDialog = $this->terminyHodnoteniaScreen
         ->getZoznamTerminovDialog($childTrace, $predmetIndex);
 
-    $terminy = $terminyDialog->getZoznamTerminov($childTrace)->getData();
+    $terminy = $terminyDialog->getZoznamTerminov($childTrace);
+    FajrUtils::warnWrongTableStructure($response, 'zoznam mojich terminov',
+        regression\MojeTerminyRegression::get(),
+        $terminy->getTableDefinition());
+
+    $terminyData = $terminy->getData();
     $terminKey = -1;
-    foreach($terminy as $key=>$terminyRow) {
+    foreach($terminyData as $key=>$terminyRow) {
       if ((string) $terminyRow[TerminyFields::INDEX] === $terminIndex) {
         $terminKey = $key;
       }
@@ -360,8 +384,8 @@ class StudiumController extends BaseController
           zmena dát v AISe.");
     }
 
-    $hash = StudiumUtils::hashNaPrihlasenie($predmety[$predmetKey][PredmetyFields::SKRATKA],
-                                     $terminy[$terminIndex]);
+    $hash = StudiumUtils::hashNaPrihlasenie($predmetyData[$predmetKey][PredmetyFields::SKRATKA],
+                                     $terminyData[$terminIndex]);
     if ($hash != $request->getParameter('hash')) {
       throw new Exception("Ooops, nesedia údaje o termíne. Pravdepodobne zmena
           dát v AISe spôsobila posunutie tabuliek.");
@@ -389,9 +413,17 @@ class StudiumController extends BaseController
     $response = $context->getResponse();
 
     $predmetyZapisnehoListu = $this->terminyHodnoteniaScreen->getPredmetyZapisnehoListu($trace);
+    FajrUtils::warnWrongTableStructure($response, 'terminy hodnotenia - predmety',
+        regression\ZapisanePredmetyRegression::get(),
+        $predmetyZapisnehoListu->getTableDefinition());
+
+    $hodnotenia = $this->hodnoteniaScreen->getHodnotenia($trace);
+    FajrUtils::warnWrongTableStructure($response, 'hodnotenia',
+        regression\HodnoteniaRegression::get(),
+        $hodnotenia->getTableDefinition());
     $hodnoteniaData = array();
 
-    foreach ($this->hodnoteniaScreen->getHodnotenia($trace)->getData() as $row) {
+    foreach ($hodnotenia->getData() as $row) {
       $hodnoteniaData[$row[HodnoteniaFields::PREDMET_SKRATKA]] = $row;
     }
 
@@ -408,6 +440,9 @@ class StudiumController extends BaseController
       $dialog = $this->terminyHodnoteniaScreen->getZoznamTerminovDialog(
           $childTrace, $predmetId);
       $terminy = $dialog->getZoznamTerminov($childTrace);
+      FajrUtils::warnWrongTableStructure($response, 'zoznam terminov k predmetu ' . $predmet,
+          regression\TerminyKPredmetuRegression::get(),
+          $terminy->getTableDefinition());
       // explicitly close this dialog otherwise we will be blocked for next iteration!
       $dialog->closeIfNeeded($childTrace);
 
@@ -435,6 +470,9 @@ class StudiumController extends BaseController
       $prihlaseni = $this->terminyHodnoteniaScreen->getZoznamTerminovDialog($trace, $request->getParameter('predmet'))
         ->getZoznamPrihlasenychDialog($trace, $request->getParameter('termin'))
         ->getZoznamPrihlasenych($trace);
+      FajrUtils::warnWrongTableStructure($response, 'zoznam prihlasenych k terminu',
+          regression\PrihlaseniNaTerminRegression::get(),
+          $prihlaseni->getTableDefinition());
       $response->set('prihlaseni', $prihlaseni->getData());
     }
 
