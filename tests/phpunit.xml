@@ -12,6 +12,7 @@
     <log type="coverage-html" target="../report/tests/coverage" charset="UTF-8"/>
     <log type="testdox-html" target="../report/tests/report.html"/>
     <log type="testdox-text" target="../report/tests/report.txt"/>
+    <log type="tap" target="../report/tests/report.tap"/>
   </logging>
 
   <!-- Konfiguraciu whitelistu pre code coverage -->
