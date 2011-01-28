@@ -42,8 +42,11 @@ class sfStorageAutoloader
       return false;
     }
 
-    require dirname(__FILE__).'/lib/'.$class.'.class.php';
-
-    return true;
+    $filename = dirname(__FILE__).'/lib/'.$class.'.class.php';
+    if (is_file($filename) ) {
+      require $filename;
+      return true;
+    }
+    return false;
   }
 }
