@@ -83,3 +83,26 @@ tr.rok {
 tr.rok:nth-child(even) {
   background-color: #304430;
 }
+
+.velkyDisclaimer em {
+  color: yellow;
+}
+
+.velkyDisclaimer strong {
+  color: yellow;
+}
+
+.velkyDisclaimer em a {
+  color: yellow;
+}
+
+.warningBanner {
+  border: solid 1px yellow;
+}
+
+div.error {
+  color: yellow;
+  background-color: #434023;
+  border-color: yellow;
+  margin: 1em;
+}
