@@ -2,7 +2,7 @@
 /**
  * Contains information about version of fajr.
  *
- * @copyright  Copyright (c) 2010 The Fajr authors (see AUTHORS).
+ * @copyright  Copyright (c) 2010-2011 The Fajr authors (see AUTHORS).
  *             Use of this source code is governed by a MIT license that can be
  *             found in the LICENSE file in the project root directory.
  *
@@ -23,7 +23,7 @@ namespace fajr;
 class Version
 {
   /** @var string current version number */
-  private static $version = '0.4.6';
+  private static $version = '0.4.7';
 
   /** @var array basic changelog information */
   private static $changelog = array (
@@ -43,6 +43,7 @@ class Version
       array('2011-01-06', '0.4.4', 'Ďaľšie drobné opravy, nové testy, demo režim'),
       array('2011-01-16', '0.4.5', 'Ďaľšie fixy, testy'),
       array('2011-01-21', '0.4.6', 'Opravy (povolenie prihlasovania na skúšky pri Fx a triedenie mien v zozname prihlásených na skúšku). Základ pre podporu viac vzhľadov'),
+      array('2011-02-02', '0.4.7', 'Podpora pre AIS verzie 2.3.21.23'),
     );
 
   /** @var int how many entries from changelog we want to show */
