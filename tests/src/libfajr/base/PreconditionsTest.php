@@ -10,6 +10,7 @@
  * @subpackage Libfajr__Base
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @author     Martin Sucha <anty.sk@gmail.com>
+ * @filesource
  */
 namespace fajr\libfajr\base;
 

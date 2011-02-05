@@ -8,6 +8,7 @@
  * @package    Fajr
  * @subpackage Regression__Fake_data
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
+ * @filesource
  */
 
 namespace fajr\regression\fake_data;

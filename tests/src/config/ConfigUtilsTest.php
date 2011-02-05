@@ -9,6 +9,7 @@
  * @package    Fajr
  * @subpackage Util
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
+ * @filesource
  */
 namespace fajr;
 

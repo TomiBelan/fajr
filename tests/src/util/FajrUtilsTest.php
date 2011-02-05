@@ -9,6 +9,7 @@
  * @package    Fajr
  * @subpackage Utils
  * @author     Martin Sucha <anty.sk@gmail.com>
+ * @filesource
  */
 namespace fajr\util;
 

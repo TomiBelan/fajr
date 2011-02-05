@@ -18,6 +18,7 @@
  * @subpackage Fajr__Lib__Math
  * @author     org.apache.commons
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
+ * @filesource
  */
 
 namespace fajr\lib\math;

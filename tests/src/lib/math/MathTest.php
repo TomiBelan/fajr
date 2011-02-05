@@ -9,6 +9,7 @@
  * @package    Fajr
  * @subpackage Fajr__Lib__Math
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
+ * @filesource
  */
 namespace fajr;
 

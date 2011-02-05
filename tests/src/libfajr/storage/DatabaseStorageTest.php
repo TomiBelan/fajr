@@ -8,6 +8,7 @@
  * @package    Fajr
  * @subpackage Libfajr__Storage
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
+ * @filesource
  */
 
 namespace fajr\libfajr\storage;

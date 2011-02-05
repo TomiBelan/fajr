@@ -8,6 +8,7 @@
  * @package Fajr
  * @subpackage Libfajr__Connection
  * @author Peter Perešíni <ppershing+fajr@gmail.com>
+ * @filesource
  */
 namespace fajr\libfajr\connection;
 /**
