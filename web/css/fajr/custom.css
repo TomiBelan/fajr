@@ -71,3 +71,7 @@ div.linkbarRight {
   text-align: right;
   margin-right: 2em;
 }
+
+div.infoFooter {
+  border-top: 1px solid #AAAAAA;
+}
