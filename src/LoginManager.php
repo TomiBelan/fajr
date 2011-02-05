@@ -26,11 +26,13 @@ class LoginManager
 {
   private $request;
   private $session;
+  private $response;
 
-  public function __construct(sfStorage $session, Request $request)
+  public function __construct(sfStorage $session, Request $request, Response $response)
   {
     $this->session = $session;
     $this->request = $request;
+    $this->response = $response;
   }
 
   /**
@@ -82,10 +84,8 @@ class LoginManager
         // location header set in CosignProxyLogin
         // do nothing.
     } else {
-      FajrUtils::redirect(array(), 'index.php');
+      $this->response->redirect(array(), 'index.php');
     }
-    // it should be safe to end script execution here.
-    exit();
   }
 
   public function login(Trace $trace, ServerConfig $serverConfig, LoginFactory $factory, AIS2ServerConnection $connection)
@@ -100,9 +100,7 @@ class LoginManager
     $this->session->write('login/login.class', $login);
     $this->session->write('server', $serverConfig);
 
-    FajrUtils::redirect();
-    // it should be safe to end script execution here.
-    exit();
+    $this->response->redirect();
   }
 
   private function assertSecurity($condition, $message)

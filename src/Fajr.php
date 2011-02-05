@@ -36,6 +36,7 @@ use fajr\Response;
 use fajr\Statistics;
 use fajr\util\FajrUtils;
 use fajr\Version;
+use fajr\config\ServerConfig;
 use fajr\config\FajrConfig;
 use fajr\config\FajrConfigOptions;
 use sfSessionStorage;
@@ -183,28 +184,8 @@ class Fajr {
       $this->statistics = $this->injector->getInstance('Statistics.class');
       $this->context = $this->injector->getInstance('Context.class');
 
-      $session = $this->context->getSessionStorage();
-      $response = $this->context->getResponse();
-      $loginManager = new LoginManager($session, $this->context->getRequest());
-
-      // we are going to log in, so we get a clean session
-      // this needs to be done before a connection
-      // is created, because we pass cookie file name
-      // that contains session_id into AIS2CurlConnection
-      if ($loginManager->shouldLogin()) {
-        $session->regenerate(true);
-      }
-
-
-      $connection = $this->provideConnection();
-      $this->setResponseFields($response);
-      $this->runLogic($trace, $connection);
-    } catch (LoginException $e) {
-      if ($connection) {
-        FajrUtils::logout($connection);
-      }
-
-      $this->setException($e);
+      $this->setResponseFields($this->context->getResponse());
+      $this->runLogic($trace);
     } catch (SecurityException $e) {
       $this->logSecurityException($e);
       if (!$this->config->get('Debug.Exception.ShowStacktrace')) {
@@ -225,15 +206,18 @@ class Fajr {
       $trace->tlog("everything done, rendering template");
 
       if ($trace instanceof \fajr\ArrayTrace) {
-        $response->set('trace', $trace);
+        $this->context->getResponse()->set('trace', $trace);
       } else {
-        $response->set('trace', null);
+        $this->context->getResponse()->set('trace', null);
       }
     }
 
     $this->render($this->context->getResponse());
   }
 
+  /**
+   * Sets common template fields.
+   */
   private function setResponseFields(Response $response)
   {
     $response = $this->context->getResponse();
@@ -258,41 +242,55 @@ class Fajr {
     $response->set('developmentVersion', $this->config->get(FajrConfigOptions::IS_DEVEL));
   }
 
-  public function runLogic(Trace $trace, HttpConnection $connection)
+  public function runLogic(Trace $trace)
   {
     $session = $this->context->getSessionStorage();
-    $loginManager = new LoginManager($session, $this->context->getRequest());
+    $loginManager = new LoginManager($session, $this->context->getRequest(),
+        $this->context->getResponse());
+    // we are going to log in and  we need a clean session.
+    // This needs to be done before a connection
+    // is created, because we pass cookie file name
+    // that contains session_id into AIS2CurlConnection
+    if ($loginManager->shouldLogin()) {
+      $session->regenerate(true);
+    }
+
+    $connection = $this->provideConnection();
     $server = $this->getServer();
     $serverConnection = new AIS2ServerConnection($connection,
         new AIS2ServerUrlMap($server->getServerName()));
-      
+
     $action = $this->context->getRequest()->getParameter('action',
                                            'studium.MojeTerminyHodnotenia');
     $response = $this->context->getResponse();
 
     if ($action == 'logout') {
-      $loginManager->logout($serverConnection);
-      FajrUtils::redirect(array(), 'index.php');
-      exit();
+      try {
+        $loginManager->logout($serverConnection);
+      } catch (LoginException $e) {
+        $this->setException($e);
+      }
     } else if ($action == 'termsOfUse') {
       // TODO(anty): refactor this
       $response->setTemplate('termsOfUse');
       return;
-    }
-
-    if ($loginManager->shouldLogin()) {
+    } else if ($loginManager->shouldLogin()) {
       $factory = $this->injector->getInstance('LoginFactory.class');
-      $loginManager->login($trace->addChild("Logging in..."),
-          $server, $factory, $serverConnection);
-      $loggedIn = false; // login makes redirect on success
-    } else {
-      $loggedIn = $loginManager->isLoggedIn($serverConnection);
-    }
-
-    if ($loggedIn) {
+      try {
+        $loginManager->login($trace->addChild("Logging in..."),
+            $server, $factory, $serverConnection);
+      } catch (LoginException $e) {
+        $this->setException($e);
+        try {
+          $loginManager->logout($trace, $serverConnection);
+        } catch (LoginException $e) {
+          // do nothing
+        }
+      }
+    } else if ($loginManager->isLoggedIn($serverConnection)) {
       $response->set('loggedIn', true);
       $controllerInjector = new Injector(array(new
-            ControllerInjectorModule($serverConnection, $server, $session)));
+            ControllerInjectorModule($serverConnection, $server, $session, $this->config)));
       $mainScreen = $controllerInjector->getInstance('AIS2MainScreen.class');
 
       if (($aisVersion = $session->read('ais/aisVersion')) == null) {

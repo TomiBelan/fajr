@@ -214,9 +214,7 @@ class StudiumController extends BaseController
       throw new Exception('Z termínu sa nepodarilo odhlásiť.');
     }
 
-    $response->setTemplate('redirect');
-
-    FajrUtils::redirect(array('action' => 'studium.MojeTerminyHodnotenia',
+    $response->redirect(array('action' => 'studium.MojeTerminyHodnotenia',
                               'studium' => $this->studium,
                               'list' => $this->zapisnyList));
   }
@@ -394,9 +392,7 @@ class StudiumController extends BaseController
       throw new Exception('Na skúšku sa nepodarilo prihlásiť.');
     }
 
-    $response->setTemplate('redirect');
-    
-    FajrUtils::redirect(array('action' => 'studium.MojeTerminyHodnotenia',
+    $response->redirect(array('action' => 'studium.MojeTerminyHodnotenia',
                               'studium' => $this->studium,
                               'list' => $this->zapisnyList));
   }

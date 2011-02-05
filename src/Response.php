@@ -15,6 +15,7 @@ namespace fajr;
 
 use fajr\libfajr\base\Preconditions;
 use fajr\config\SkinConfig;
+use fajr\util\FajrUtils;
 
 /**
  * Class for holding response information
@@ -91,5 +92,29 @@ class Response
   public function getSkin()
   {
     return $this->skin;
+  }
+
+  /**
+   * Sends redirect headers.
+   *
+   * Note that this will not end script execution!
+   *
+   * @param array $parameters query params
+   * @param string $file file to which redirect
+   * @todo set http response code to 302/303.
+   *
+   * @returns void
+   */
+  public function redirect($parameters = array(), $file = 'fajr.php')
+  {
+    $url = FajrUtils::buildUrl($parameters, $file);
+    // Note: It is tempting to end script execution here.
+    // However, it is not wise. Calling exit() will start
+    // php shutdown phase and according to manual
+    // there is unpredictable object destruction order
+    // in this phase
+    header('Location: ' . $url);
+    $this->set('redirectUrl', $url);
+    $this->setTemplate('redirect');
   }
 }
