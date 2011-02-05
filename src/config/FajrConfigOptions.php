@@ -6,7 +6,7 @@
  *             found in the LICENSE file in the project root directory.
  *
  * @package    Fajr
- * @subpackage Fajr
+ * @subpackage Config
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
@@ -17,6 +17,10 @@ use fajr\validators\ChoiceValidator;
 
 /**
  * Holds info about all configurable options of FajrConfig
+ *
+ * @package    Fajr
+ * @subpackage Config
+ * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 class FajrConfigOptions {
   const GOOGLE_ANALYTICS_ACCOUNT = 'GoogleAnalytics.Account';

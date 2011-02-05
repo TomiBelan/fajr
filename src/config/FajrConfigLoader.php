@@ -6,7 +6,7 @@
  *             found in the LICENSE file in the project root directory.
  *
  * @package    Fajr
- * @subpackage Fajr
+ * @subpackage Config
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */
@@ -24,7 +24,7 @@ use InvalidArgumentException;
 /**
  * Loads configuration from file and provides means to access it
  * @package    Fajr
- * @subpackage Fajr
+ * @subpackage Config
  * @author     Martin Sucha <anty.sk@gmail.com>
  */
 class FajrConfigLoader

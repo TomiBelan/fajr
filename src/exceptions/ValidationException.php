@@ -6,7 +6,7 @@
  *             found in the LICENSE file in the project root directory.
  *
  * @package    Fajr
- * @subpackage Fajr
+ * @subpackage Exceptions
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
@@ -18,7 +18,7 @@ use Exception;
 /**
  *
  * @package    Fajr
- * @subpackage Fajr
+ * @subpackage Exceptions
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */

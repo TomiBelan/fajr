@@ -8,7 +8,7 @@
  *             found in the LICENSE file in the project root directory.
  *
  * @package    Fajr
- * @subpackage Fajr
+ * @subpackage Exceptions
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
@@ -23,7 +23,7 @@ use Exception;
  * POST data, cookies, ...
  *
  * @package    Fajr
- * @subpackage Fajr
+ * @subpackage Exceptions
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */

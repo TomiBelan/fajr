@@ -7,7 +7,7 @@
  *             found in the LICENSE file in the project root directory.
  *
  * @package    Fajr
- * @subpackage Fajr
+ * @subpackage Config
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
@@ -21,7 +21,7 @@ use fajr\util\FajrUtils;
  * Contains all configurable options of Fajr skin.
  *
  * @package    Fajr
- * @subpackage Fajr
+ * @subpackage Config
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 class SkinConfig

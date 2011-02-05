@@ -7,7 +7,7 @@
  *             found in the LICENSE file in the project root directory.
  *
  * @package    Fajr
- * @subpackage Fajr
+ * @subpackage Config
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
@@ -20,7 +20,7 @@ use fajr\config\ConfigUtils;
  * Contains all configurable options of AIS server in Fajr.
  *
  * @package    Fajr
- * @subpackage Fajr
+ * @subpackage Config
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 class ServerConfig

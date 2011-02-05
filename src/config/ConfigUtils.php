@@ -7,8 +7,9 @@
  *             found in the LICENSE file in the project root directory.
  *
  * @package    Fajr
- * @subpackage Util
+ * @subpackage Config
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
+ * @filesource
  */
 
 namespace fajr\config;
@@ -19,7 +20,7 @@ use Exception;
  * Utility function for classes holding configurations.
  *
  * @package    Fajr
- * @subpackage Util
+ * @subpackage Config
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 class ConfigUtils
