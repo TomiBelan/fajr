@@ -23,7 +23,7 @@ namespace fajr;
 class Version
 {
   /** @var string current version number */
-  private static $version = '0.4.6';
+  private static $version = '0.5.0alpha0';
 
   /** @var array basic changelog information */
   private static $changelog = array (
