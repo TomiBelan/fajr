@@ -60,7 +60,6 @@ button.tableButton
 
 div.linkbar {
   margin: 1ex;
-  width: 100%;
 }
 
 div.linkbarLeft {
@@ -69,7 +68,6 @@ div.linkbarLeft {
 
 div.linkbarRight {
   text-align: right;
-  margin-right: 2em;
 }
 
 div.infoFooter {
