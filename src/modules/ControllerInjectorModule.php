@@ -53,9 +53,12 @@ class ControllerInjectorModule implements Module
    */
   public function configure(sfServiceContainerBuilder $container)
   {
-    $container->register('studium.controller.class', '\fajr\controller\studium\StudiumController')
+    $container->register('studium.controller.class',
+                         '\fajr\controller\studium\StudiumController')
               ->addArgument(new sfServiceReference('administracia_studia_screen.factory.class'))
+              ->addArgument('%serverTime%')
               ->setShared(false);
+
 
     switch ($this->server->getBackendType()) {
       case ServerConfig::BACKEND_FAKE:
@@ -80,6 +83,12 @@ class ControllerInjectorModule implements Module
         $container->register('AIS2MainScreen.class', '\fajr\libfajr\window\fake\FakeMainScreen')
                   ->setShared(false);
 
+        /**
+         * Somewhat arbitrary fixed as 10.1.2011 12:17:53
+         **/
+        $FAKE_TIME = mktime(12, 17, 53, 1, 10, 2011);
+
+        $container->setParameter('serverTime', $FAKE_TIME);
         break;
       case ServerConfig::BACKEND_LIBFAJR:
         $container->register('administracia_studia_screen.factory.class',
@@ -92,6 +101,8 @@ class ControllerInjectorModule implements Module
                   ->setShared(false);
 
         $container->setService('serverConnection.class', $this->connection);
+
+        $container->setParameter('serverTime', time());
         break;
       default:
         assert(false);

@@ -50,10 +50,12 @@ class StudiumController extends BaseController
   private $hodnoteniaScreen;
 
   private $factory;
+  private $serverTime;
 
-  public function __construct(VSES017\VSES017_Factory $factory)
+  public function __construct(VSES017\VSES017_Factory $factory, $serverTime)
   {
     $this->factory = $factory;
+    $this->serverTime = $serverTime;
   }
 
   /**
@@ -190,14 +192,15 @@ class StudiumController extends BaseController
     $terminIndex = $request->getParameter("odhlasIndex");
 
     $terminy = $this->terminyHodnoteniaScreen
-        ->getTerminyHodnotenia($trace->addChild('get terminy hodnotenia '))
-        ->getData();
+        ->getTerminyHodnotenia($trace->addChild('get terminy hodnotenia '));
     FajrUtils::warnWrongTableStructure($response, 'moje terminy',
         regression\MojeTerminyRegression::get(),
         $terminy->getTableDefinition());
 
+    $terminyData = $terminy->getData();
+
     $terminKey = -1;
-    foreach ($terminy as $key=>$row) {
+    foreach ($terminyData as $key=>$row) {
       if ($row['index'] == $terminIndex) $terminKey = $key;
     }
 
@@ -205,7 +208,7 @@ class StudiumController extends BaseController
       throw new Exception("Ooops, predmet/termín nenájdený. Pravdepodobne
           zmena dát v AISe.");
     }
-    if ($request->getParameter("hash") !== StudiumUtils::hashNaOdhlasenie($terminy[$terminKey])) {
+    if ($request->getParameter("hash") !== StudiumUtils::hashNaOdhlasenie($terminyData[$terminKey])) {
       throw new Exception("Ooops, nesedia údaje o termíne. Pravdepodobne zmena
           dát v AISe spôsobila posunutie tabuliek.");
     }
@@ -268,7 +271,7 @@ class StudiumController extends BaseController
       }
 
       $datum = AIS2Utils::parseAISDateTime($terminyRow[TerminyFields::DATUM]." ".$terminyRow[TerminyFields::CAS]);
-      if ($datum < $request->getRequestTime()) {
+      if ($datum < $this->serverTime) {
         if ($terminyRow[TerminyFields::JE_PRIHLASENY]=='TRUE') {
           $terminyHodnoteniaOld[] = $mojeTerminyRow;
         }
@@ -454,7 +457,7 @@ class StudiumController extends BaseController
 
         // PrihlasTerminyFields::ZNAMKA, PREDMET_SKRATKA must be set before!
         $prihlasTerminyRow[PrihlasTerminyFields::FAJR_MOZE_PRIHLASIT] =
-          $mozePrihlasitHelper->mozeSaPrihlasit($prihlasTerminyRow, $request->getRequestTime());
+          $mozePrihlasitHelper->mozeSaPrihlasit($prihlasTerminyRow, $this->serverTime);
 
         $terminyData[] = $prihlasTerminyRow;
       }

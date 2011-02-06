@@ -129,7 +129,7 @@ class FakeTerminyHodnoteniaScreenImpl extends FakeAbstractScreen
         'prihlas');
 
     if (!$info['mozeOdhlasit']) {
-      throw new Exception("Z termínu nie je možné sa odhlásiť!");
+      throw new Exception("Ais by povedal: Z termínu nie je možné sa odhlásiť!");
     }
 
     $info['jePrihlaseny'] = false;
