@@ -1,8 +1,22 @@
+{##
+ # Displays login box div for cosign password/cookie login.
+ #
+ # @copyright  Copyright (c) 2010-2011 The Fajr authors (see AUTHORS).
+ #             Use of this source code is governed by a MIT license that can be
+ #             found in the LICENSE file in the project root directory.
+ # @author     TODO
+ #}
+
+{##
+ # disclaimer
+ #}
 <div class="velkyDisclaimer span-21 prepend-1 last">
 {% include "parts/disclaimer.xhtml" %}
 </div>
 <hr class="space" />
-
+{##
+ # password login box
+ #}
 <div class="span-7 prepend-1">
   <form method="post" action="">
     <fieldset class="login-box">
@@ -26,6 +40,9 @@
     </fieldset>
   </form>
 </div>
+{##
+ # cookie login box
+ #}
 <div class="span-7 last">
   <form method="post" action="">
     <fieldset class="login-box">

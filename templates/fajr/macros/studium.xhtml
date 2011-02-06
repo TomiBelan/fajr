@@ -1,7 +1,16 @@
-{#**
-  * Vypise tabulku so zoznamom prihlasenych na skusku
-  * @param DataTable(Prihlaseni) $prihlaseni
-  *#}
+{##
+ # Contains macros for 'studium' pages.
+ #
+ # @copyright  Copyright (c) 2010-2011 The Fajr authors (see AUTHORS).
+ #             Use of this source code is governed by a MIT license that can be
+ #             found in the LICENSE file in the project root directory.
+ # @author     TODO
+ #}
+
+{##
+ # Vypise tabulku so zoznamom prihlasenych na skusku
+ # @param DataTable(Prihlaseni) $prihlaseni
+ #}
 {% macro zoznamPrihlasenych(prihlaseni) %}
   {% import "macros/decorators.xhtml" as decorators %}
   {% import "macros/table.xhtml" as table %}
@@ -40,13 +49,13 @@
 
 {% endmacro %}
 
-{#**
-  * Vypise taby k casti o studiu
-  * @param string $content obsah aktualneho tabu
-  * @param string $selectedTab aktivny tab
-  * @param int $studium id studia
-  * @param int $zapisnyList id zapisneho listu
-  *#}
+{##
+ # Vypise taby k casti o studiu
+ # @param safeHtml $content obsah aktualneho tabu
+ # @param (TODO: safe?)string $selectedTab aktivny tab
+ # @param int $studium id studia
+ # @param int $zapisnyList id zapisneho listu
+ #}
 {% macro studiumTabs(content, selectedTab, studium, zapisnyList) %}
   {% import "macros/decorators.xhtml" as decorators %}
   {% url terminyLink for     ['action': 'studium.MojeTerminyHodnotenia',

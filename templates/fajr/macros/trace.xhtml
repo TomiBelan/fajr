@@ -1,3 +1,15 @@
+{##
+ # Contains macros for trace.
+ #
+ # @copyright  Copyright (c) 2010-2011 The Fajr authors (see AUTHORS).
+ #             Use of this source code is governed by a MIT license that can be
+ #             found in the LICENSE file in the project root directory.
+ # @author     TODO
+ #}
+
+{##
+ # TODO: document
+ #}
 {% macro tooltip(info) %}
   <div class="trace_s">{{ "%+0.2f" |format(info.elapsedTime) }}s
     <div class="trace_tooltip">Function {{ info.class }}::{{ info.function }}()<br />
@@ -10,6 +22,9 @@
   </div>
 {% endmacro %}
 
+{##
+ # TODO: document
+ #}
 {% macro traceItem(item, content) %}
 <div class="trace">
   {{ _self.tooltip(item.info) }}
@@ -17,14 +32,23 @@
 </div>
 {% endmacro %}
 
+{##
+ # TODO: document
+ #}
 {% macro traceDataContent(value) %}
   <pre>{{ value }}</pre>
 {% endmacro%}
 
+{##
+ # TODO: document
+ #}
 {% macro traceVariableContent(name, value) %}
   ${{ name }}:= <pre class="trace">{{ value }}</pre>
 {% endmacro %}
 
+{##
+ # TODO: document
+ #}
 {% macro trace(trace) %}
   {% set content %}
     <div>
