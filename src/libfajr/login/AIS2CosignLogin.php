@@ -9,6 +9,7 @@
  * @subpackage Libfajr__Login
  * @author     Martin Králik <majak47@gmail.com>
  * @author     Martin Sucha <anty.sk@gmail.com>
+ * @filesource
  */
 
 namespace fajr\libfajr\login;
