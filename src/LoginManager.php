@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * @copyright  Copyright (c) 2010 The Fajr authors (see AUTHORS).
+ * @copyright  Copyright (c) 2010, 2011 The Fajr authors (see AUTHORS).
  *             Use of this source code is governed by a MIT license that can be
  *             found in the LICENSE file in the project root directory.
  *
@@ -10,17 +10,17 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-
 namespace fajr;
-use fajr\Request;
-use sfStorage;
-use fajr\libfajr\pub\connection\AIS2ServerConnection;
-use fajr\libfajr\pub\base\Trace;
-use fajr\libfajr\pub\login\LoginFactory;
-use fajr\exceptions\SecurityException;
-use fajr\libfajr\pub\login\CosignServiceCookie;
-use fajr\util\FajrUtils;
+
 use fajr\config\ServerConfig;
+use fajr\exceptions\SecurityException;
+use fajr\libfajr\pub\base\Trace;
+use fajr\libfajr\pub\connection\AIS2ServerConnection;
+use fajr\libfajr\pub\login\CosignServiceCookie;
+use fajr\libfajr\pub\login\LoginFactory;
+use fajr\Request;
+use fajr\util\FajrUtils;
+use sfStorage;
 
 class LoginManager
 {
