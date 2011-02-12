@@ -95,7 +95,7 @@ wait_and_create_lock $LOCK_FILE
 
 # now start intergation - update to latest point
 # (currently we ignore revision info sent by request)
-svn up
+svn up $SCRIPT_PATH/..
 SVN_REVISION=`svn info | grep Revision | sed 's/.* //'`
 
 echo "-------------------Running tests---------------------";
