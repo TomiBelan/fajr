@@ -83,7 +83,7 @@ return array(
   /*
    * Použitý template
    */
-  //'Template.Directory'=>'./templates/fajr',
+  //'Template.Directory'=>'./templates',
 
   /*
    * Má sa použiť cache na skompilované templaty?
@@ -161,6 +161,14 @@ return array(
         'Login.Type' => 'cosign',
         'Login.Cosign.CookieName' => 'cosign-filter-ais2-beta.uniba.sk',
         'Server.Beta' => true,
+        )),
+    'fajr.demo' => new ServerConfig(
+      array(
+        'Server.InstanceName' => 'Fajr Demo',
+        'Server.Name' => 'fajr.demo',
+        'Login.Type' => 'nologin',
+        'Server.Beta' => false,
+        'Backend' => ServerConfig::BACKEND_FAKE
         )),
     ),
 
