@@ -62,7 +62,7 @@ class StudiumControllerTest extends PHPUnit_Framework_TestCase
     $this->context->setSessionStorage($this->storage);
     $factory = new VSES017_FakeFactoryImpl($this->storage);
 
-    $this->controller = new StudiumController($factory);
+    $this->controller = new StudiumController($factory, $time);
 
     $this->storage->write('ais/aisApps', array(AIS2ApplicationEnum::ADMINISTRACIA_STUDIA));
   }
