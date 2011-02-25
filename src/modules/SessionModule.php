@@ -42,10 +42,12 @@ class SessionModule implements Module
   public function configure(sfServiceContainerBuilder $container)
   {
     $lifeTimeSec = 36000;
+    
     $options = 
         array('session_cookie_lifetime' => $lifeTimeSec,
               'session_cookie_path' => '/',
-              'session_cookie_domain' => '.' . $_SERVER['HTTP_HOST'],
+              //'session_cookie_domain' => '.' . $_SERVER['HTTP_HOST'],	      
+	      //'session_cookie_domain' => '.127.0.0.1',
               'session_cookie_secure' => $this->config->get(FajrConfigOptions::REQUIRE_SSL),
               'session_cookie_httponly' => true,
               'session_name' => 'fajr_session_id',

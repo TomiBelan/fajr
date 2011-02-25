@@ -11,36 +11,37 @@
  # Vypise tabulku so zoznamom prihlasenych na skusku
  # @param DataTable(Prihlaseni) $prihlaseni
  #}
+
 {% macro zoznamPrihlasenych(prihlaseni) %}
   {% import "macros/decorators.xhtml" as decorators %}
   {% import "macros/table.xhtml" as table %}
 
-  {% if prihlaseni %}
+  {% if prihlaseni %}    
+    {%set body %}
+      {% for row in prihlaseni %}        
+        {% set title %}     
+          {{decorators.span(row.plneMeno,"table_box_title")}}
+        {% endset %}
 
-    {% set head %}
-      {{ table.column("Dátum prihlásenia", "sortable-sortDatumCas") }}
-      {{ table.column("Plné meno", "sortable-sortPriezviskoMeno") }}
-      {{ table.column("Skratka študijného programu", "sortable-text") }}
-      {{ table.column("Ročník", "sortable-numeric") }}
-    {% endset %}
-
-    {% set body %}
-      {% for row in prihlaseni %}
-        {{ table.row(none, false) }}
-          <td>{{ row.datumPrihlas }}</td>
-          <td>{{ row.plneMeno }}</td>
-          <td>{{ row.skratka }}</td>
-          <td>{{ row.rocnik }}</td>
-        {{ table.endrow() }}
+        {% set content %}
+          <div class="table_box">
+            <ul class="table_box">
+              {{ decorators.riadok("Dátum prihlásenia:",row.datumPrihlas) }}
+              {{ decorators.riadok("Skratka študijného programu:",row.skratka) }}
+              {{ decorators.riadok("Ročník:",row.rocnik) }}
+            </ul>      
+          </div>        
+        {% endset %}
+        {{ decorators.collapsible(title, content, true) }}
       {% endfor %}
-    {% endset %}
+    {%endset %}
 
     {% set title %}
       <h2>Zoznam prihlásených na vybratý termín</h2>
     {% endset %}
 
     {% set tableHTML %}
-    {{ decorators.table(none, head, body, none, prihlaseni|length == 0) }}
+    {{ decorators.printbox(body, prihlaseni|length == 0) }}
     {% endset %}
 
     {{ decorators.collapsible(title, tableHTML, false) }}
@@ -50,12 +51,12 @@
 {% endmacro %}
 
 {##
- # Vypise taby k casti o studiu
- # @param safeHtml $content obsah aktualneho tabu
- # @param (TODO: safe?)string $selectedTab aktivny tab
- # @param int $studium id studia
- # @param int $zapisnyList id zapisneho listu
- #}
+  # Vypise taby k casti o studiu
+  # @param string $content obsah aktualneho tabu
+  # @param string $selectedTab aktivny tab
+  # @param int $studium id studia
+  # @param int $zapisnyList id zapisneho listu
+  ##}
 {% macro studiumTabs(content, selectedTab, studium, zapisnyList) %}
   {% import "macros/decorators.xhtml" as decorators %}
   {% url terminyLink for     ['action': 'studium.MojeTerminyHodnotenia',
@@ -79,5 +80,5 @@
                              'url': zapisnyListLink],
        'Hodnotenia':        ['title': 'Hodnotenia/Priemery',
                              'url': hodnoteniaLink]
-      ], selectedTab) }}
+      ], selectedTab,"menu") }}
 {% endmacro %}

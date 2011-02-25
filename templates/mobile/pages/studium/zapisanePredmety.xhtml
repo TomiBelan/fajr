@@ -6,6 +6,7 @@
  #             found in the LICENSE file in the project root directory.
  # @author     TODO
  #}
+
 {% extends "layout/studium.xhtml" %}
 {% block title %}Zápisný list{% endblock %}
 {% block application_content %}
@@ -13,51 +14,88 @@
 {% import "macros/studium.xhtml" as studiumMacros %}
 {% import "macros/table.xhtml" as table %}
 {% parent %}
-{% set tabContent %}
-  {% set head %}
-    {{ table.column("semester", "sortable-text favour-reverse") }}
-    {{ table.column("názov predmetu", "sortable-text") }}
-    {{ table.column("kredit", "sortable-numeric") }}
-    {{ table.column("kód typu výučby", "sortable-text") }}
-    {{ table.column("skratka", "sortable-text") }}
-  {% endset %}
 
+{% macro tabulkaPredmety(row) %}    
+    {% import "macros/decorators.xhtml" as decorators %} 
+    {% set title %}
+      {{decorators.span(row.nazov,"table_box_title")}}
+    {% endset %}
+    {% set content %}
+    <div class="table_box">
+      <ul class="table_box">
+        {{ decorators.riadok("Semester:",row.kodSemester) }}
+        {{ decorators.riadok("Kredit:",row.kredit) }}
+        {{ decorators.riadok("Kód typu výučby:",row.kodTypVyucby) }}
+        {{ decorators.riadok("Skratka:",row.skratka) }}
+      </ul>      
+    </div>
+    {% endset %}      
+    {{ decorators.collapsible(title, content, true) }}
+  {% endmacro %}
+
+
+{% set tabContent %}
+  
+  {% set body %}
+    {% for row in predmetyZapisnehoListu %}
+      {% if row.kodSemester == 'Z' %}
+        {{_self.tabulkaPredmety(row)}}
+      {% endif %}
+    {% endfor %}
+  {% endset %}
+ 
+  {% set content %}
+  
+    {{ decorators.printbox(body, predmetyZapisnehoListu|length == 0) }}
+  {% endset %}
+  {{ decorators.collapsible("<h2>Zima:</h2>", content, false) }}
+  
+ 
   {% set body %}
     {% for row in predmetyZapisnehoListu %}
       {% if row.kodSemester == 'L' %}
-        {% set rowClass = 'leto' %}
-      {% elseif row.kodSemester == 'Z' %}
-        {% set rowClass = 'zima' %}
-      {% else %}
-        {% set rowClass = 'rok' %}
+        {{_self.tabulkaPredmety(row)}}
       {% endif %}
-      {{ table.row(rowClass) }}
-        <td>{{ row.kodSemester }}</td>
-        <td>{{ row.nazov }}</td>
-        <td>{{ row.kredit }}</td>
-        <td>{{ row.kodTypVyucby }}</td>
-        <td>{{ row.skratka }}</td>
-      {{ table.endrow() }}
     {% endfor %}
+  {% endset %}  
+  
+  {% set content %}
+  
+    {{ decorators.printbox(body, predmetyZapisnehoListu|length == 0) }}
   {% endset %}
+  {{ decorators.collapsible("<h2>Leto:</h2>", content, false) }}
 
-  {% set foot %}
-    {{ table.row(none, false) }}
-      <td></td>
-      <td>Celkom {{ predmetyStatistika.obdobia.rok.predmetovCelkom() }} predmetov
+  {% set body %}{#
+    #}{% for row in predmetyZapisnehoListu %}{#
+      #}{% if row.kodSemester != 'Z' and row.kodSemester != 'L' %}{#
+        #}{{_self.tabulkaPredmety(row)}}{#
+      #}{% endif %}{#
+    #}{% endfor %}{#
+  #}{% endset %}  
+
+  {% set content %}  
+    {{ decorators.printbox(body, predmetyZapisnehoListu|length == 0) }}
+  {% endset %}  
+  
+  {% if body %}
+    {{ decorators.collapsible("<h2>Rok:</h2>", content, false) }}  
+  {% endif %}
+  
+  
+
+  {% set foot %}    
+      Celkom {{ predmetyStatistika.obdobia.rok.predmetovCelkom() }} predmetov
         ({{ predmetyStatistika.obdobia.zima.predmetovCelkom() }} v zime,
-         {{ predmetyStatistika.obdobia.leto.predmetovCelkom() }} v lete)</td>
-      <td>{{ predmetyStatistika.obdobia.rok.kreditovCelkom() }}
+         {{ predmetyStatistika.obdobia.leto.predmetovCelkom() }} v lete)
+      {{ predmetyStatistika.obdobia.rok.kreditovCelkom() }}
         ({{ predmetyStatistika.obdobia.zima.kreditovCelkom() }}+{{
-            predmetyStatistika.obdobia.leto.kreditovCelkom() }})</td>
-      <td></td>
-      <td></td>
-    {{ table.endrow() }}
-  {% endset %}
+            predmetyStatistika.obdobia.leto.kreditovCelkom() }}) kreditov.   
+  {% endset %}  
 
-  {{ decorators.table(none, head, body, foot, predmetyZapisnehoListu|length == 0) }}
+  {{ decorators.span(foot,"foot") }}
 
 {% endset %}
+
 
 {{ studiumMacros.studiumTabs(tabContent, 'ZapisnyList', studium, zapisnyList) }}
 

@@ -1,0 +1,70 @@
+div.collapsible {
+   border: 1px solid black;
+   margin: 2px;  
+}
+
+div.table_box
+{
+ border:solid 1px; 
+}
+
+span.head
+{
+  font-weight:bold;
+  width:120px;
+  display:block;
+  float:left;
+  clear:both;
+}
+
+span.body
+{  
+  
+}
+
+li.table_box
+{  
+  clear:both;
+}
+
+ul.table_box
+{
+  list-style-type:none;
+}
+
+span.table_box_title
+{
+  line-height:1.5em;
+  font-size:1.4em;
+}
+
+/*Specialny posledny riadok v zozname - napr. linka na zobrazenie prihlasenych studentov*/
+li.last
+{
+  display:block; 
+  clear:both; 
+}
+
+.menu
+{
+    color:blue;
+}
+
+div.menu
+{
+  font-size:2em;  
+}
+
+select.menu
+{
+  font-size:1em;  
+}
+
+div.linkbarLeft
+{
+  display:none;  
+}
+div.linkbarRight
+{
+  text-align:left;
+}
