@@ -145,6 +145,7 @@ class Loader
     // PHPunit sometimes try to unserialize() mock objects,
     // ignore this in autoloader
     if (preg_match("@^Mock_@", $className)) return;
+    if (preg_match("@^PHPUnit@", $className)) return;
 
     $path = self::getClassPath($className);
     if ($path === false) {
