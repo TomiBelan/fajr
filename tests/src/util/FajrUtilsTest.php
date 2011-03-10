@@ -124,6 +124,37 @@ class FajrUtilsTest extends PHPUnit_Framework_TestCase
     }
   }
 
+  public function testCompareArrays()
+  {
+    $old = array();
+    $new = array('jedna');
+    list($del, $both, $ins) = FajrUtils::compareArrays($old, $new);
+    $this->assertEquals(array(), $del);
+    $this->assertEquals(array(), $both);
+    $this->assertEquals(array('jedna'), $ins);
+
+    $old = array('jedna');
+    $new = array();
+    list($del, $both, $ins) = FajrUtils::compareArrays($old, $new);
+    $this->assertEquals(array('jedna'), $del);
+    $this->assertEquals(array(), $both);
+    $this->assertEquals(array(), $ins);
+
+    $old = array('jedna');
+    $new = array('jedna');
+    list($del, $both, $ins) = FajrUtils::compareArrays($old, $new);
+    $this->assertEquals(array(), $del);
+    $this->assertEquals(array('jedna'), $both);
+    $this->assertEquals(array(), $ins);
+
+    $old = array('jedna', 'dva', 'styri');
+    $new = array('jedna', 'tri', 'styri');
+    list($del, $both, $ins) = FajrUtils::compareArrays($old, $new);
+    $this->assertEquals(array('dva'), $del);
+    $this->assertEquals(array('jedna', 'styri'), $both);
+    $this->assertEquals(array('tri'), $ins);
+  }
+
 }
 
 ?>

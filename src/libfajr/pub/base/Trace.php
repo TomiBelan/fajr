@@ -76,4 +76,11 @@ interface Trace
    * @returns Trace Newly created child node.
    */
   public function addChild($header = "");
+
+  /**
+   * Determine whether the trace is active or not.
+   *
+   * @returns true if the log functions would actually do something
+   */
+  //public function isActive();
 }

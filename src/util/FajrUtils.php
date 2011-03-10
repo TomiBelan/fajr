@@ -236,14 +236,56 @@ class FajrUtils
     }
   }
 
-  public static function warnWrongTableStructure($response, $tableName,
+  public static function warnWrongTableStructure(Trace $trace, $response, $tableName,
       array $expectedDefinition, array $definition) {
     Preconditions::checkIsString($tableName);
     if ($expectedDefinition != $definition) {
       $message = array('type' => 'unexpectedTableStructure',
                        'tableName' => $tableName);
       $response->addWarning($message);
+      
+      $child = $trace->addChild("Differences in data table " . $tableName);
+      list($del, $both, $ins) =
+        self::compareArrays($expectedDefinition, $definition);
+      $child->tlogVariable('deleted', $del);
+      $child->tlogVariable('unchanged', $both);
+      $child->tlogVariable('inserted', $ins);
+      
     }
+  }
+
+  /**
+   * Compare values of old and new array of strings and return an array
+   * containing three subarrays for:
+   *  deleted - items present in $old but not in $new
+   *  both - items present in both $old and $new
+   *  inserted - items present in $new but not in $old
+   *
+   * The function takes only item values into account and does not preserve
+   * keys.
+   *
+   * When an input array contains one string multiple times,
+   * it is undefined whether it will appear in output arrays once or
+   * multiple times.
+   *
+   * @param array $old Old array of strings
+   * @param array $new New array of strings
+   * @returns array(array $deleted, array $both, array $inserted)
+   */
+  public static function compareArrays(array $old, array $new) {
+    foreach ($old as $item) {
+      Preconditions::checkIsString($item, 'Element in $old is not string');
+    }
+    foreach ($new as $item) {
+      Preconditions::checkIsString($item, 'Element in $new is not string');
+    }
+    // outer array merges are so that the keys are continuous
+    // inner array merges are to copy the array because array_diff
+    // works in-place on the first array
+    $deleted = array_merge(array_diff(array_merge($old), $new));
+    $inserted = array_merge(array_diff(array_merge($new), $old));
+    $both = array_merge(array_intersect($old, $new));
+    return array($deleted, $both, $inserted);
   }
 
   /** @var array fields of exception that to be preserved for template */
