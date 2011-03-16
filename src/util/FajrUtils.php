@@ -250,6 +250,8 @@ class FajrUtils
       $child->tlogVariable('deleted', $del);
       $child->tlogVariable('unchanged', $both);
       $child->tlogVariable('inserted', $ins);
+      $child->tlogVariable('expectedDefinition', $expectedDefinition);
+      $child->tlogVariable('definition', $definition);
       
     }
   }
