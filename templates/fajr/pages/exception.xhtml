@@ -38,7 +38,7 @@
 {% endmacro %}
 
 {% block content %}
-  {% url logout for ['action': 'logout'] %}
+  {% url logout for ['action': 'logout', '_file': 'index.php'] %}
   <div class="logout">
     <a class="button negative" href="{{ logout }}">
     <img src="images/third_party/silk/door_in.png" alt=""/>Odhlásiť</a>
