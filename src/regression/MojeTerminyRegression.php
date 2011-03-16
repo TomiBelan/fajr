@@ -49,7 +49,8 @@ class MojeTerminyRegression
           17 => 'mozeOdhlasit',
           18 => 'predmetSkratka',
           19 => 'predmetNazov',
-          20 => 'moznostPrihlasenia',
+          20 => 'hodnPredmetu',
+          21 => 'moznostPrihlasenia',
           );
   }
 }
