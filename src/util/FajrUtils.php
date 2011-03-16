@@ -35,20 +35,6 @@ class FajrUtils
     return realpath(__DIR__ . "/../..");
   }
 
-  /**
-   * Sends redirect header.
-   */
-  public static function redirect($newParams = array(), $file='fajr.php')
-  {
-    header('Location: ' . self::buildUrl($newParams, $file));
-    // Note: It is tempting to end script execution here.
-    // However, it is not wise. Calling exit() will start
-    // php shutdown phase and according to manual
-    // there is unpredictable object destruction order
-    // in this phase
-  }
-
-
   public static function buildUrl($params, $file=null)
   {
     if ($file === null) {
