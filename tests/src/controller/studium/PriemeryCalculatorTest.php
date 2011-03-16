@@ -57,8 +57,14 @@ class PriemeryCalculatorTest extends PHPUnit_Framework_TestCase
 
   public function testInvalidZnamka()
   {
-    $this->setExpectedException('InvalidArgumentException');
     $this->calculator->add(PriemeryCalculator::SEMESTER_LETNY, 'Invalid', 1);
+    $this->assertEquals(false, $this->calculator->hasPriemer());
+    $obdobia = $this->calculator->getObdobia();
+    $this->assertEquals(false, $obdobia[PriemeryCalculator::SEMESTER_LETNY]->hasPriemer());
+    $this->assertEquals(1, $obdobia[PriemeryCalculator::SEMESTER_LETNY]->kreditovCelkom());
+    $this->assertEquals(1, $obdobia[PriemeryCalculator::SEMESTER_LETNY]->predmetovCelkom());
+    $this->assertEquals(4, $obdobia[PriemeryCalculator::SEMESTER_LETNY]->vazenyPriemer());
+    $this->assertEquals(4, $obdobia[PriemeryCalculator::SEMESTER_LETNY]->studijnyPriemer());
   }
 
   public function testInvalidKredit()

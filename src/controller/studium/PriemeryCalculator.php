@@ -57,26 +57,19 @@ class PriemeryInternal
 
   /**
    * Zarata predmet s danou znamkou
-   * @param string $znamkaText nazov znamky (A, B, ...), moze byt aj prazdny,
-   *                           vtedy sa zarata ako neohodnoteny predmet
    * @param float $kredity pocet kreditov, ktore sa maju zaratat
+   * @param Znamka $znamka znamka, ktora sa ma zarat, NULL sa rata ako
+   *                       neohodnoteny predmet
    * @throws InvalidArgumentException ak dana znamka nie je platna
    */
-  public function add($znamkaText, $kredity)
+  public function add($kredity, Znamka $znamka = null)
   {
     Preconditions::checkContainsInteger($kredity);
     Preconditions::check($kredity >= 0, "Kreditov musí byť nezáporný počet.");
-    Preconditions::checkIsString($znamkaText);
 
-    if ($znamkaText == '') {
+    if ($znamka == null) {
       $this->addNeohodnotene($kredity);
       return;
-    }
-
-    $znamka = Znamka::fromString($znamkaText);
-    
-    if ($znamka === null) {
-      throw new InvalidArgumentException("Známka '$znamkaText' nie je platná");
     }
 
     $this->addOhodnotene($znamka->getNumerickaHodnota(), $kredity);
@@ -178,22 +171,28 @@ class PriemeryCalculator
   }
 
   /**
-   * Prida predmet s danou znamkou
+   * Prida predmet s danou znamkou, zarata do neohodnotenych ak
+   * sa znamku nepodarilo rozpoznat alebo nie je vyplnena
    * @param string $castRoka do ktorej casti roka sa ma znamka zaratat
-   * @param string $znamka nazov znamky (A, B, ...)
+   * @param string $znamkaText nazov znamky (A, B, ...)
    * @param int $kredity pocet kreditov pre danu znamku
    */
-  public function add($castRoka, $znamka, $kredity)
+  public function add($castRoka, $znamkaText, $kredity)
   {
     Preconditions::check(in_array($castRoka,
                             array(self::SEMESTER_LETNY,
                                   self::SEMESTER_ZIMNY,
                                   self::AKADEMICKY_ROK)),
                          "Neplatná časť študijného roka.");
-    $this->obdobia[$castRoka]->add($znamka, $kredity);
+    $znamka = null;
+    if ($znamkaText !== '') {
+      $znamka = Znamka::fromString($znamkaText);
+    }
+    
+    $this->obdobia[$castRoka]->add($kredity, $znamka);
     // Ak pridavame do akademickeho roka, tak hodnotu nechceme zaratat dvakrat
     if ($castRoka !== self::AKADEMICKY_ROK) {
-      $this->obdobia[self::AKADEMICKY_ROK]->add($znamka, $kredity);
+      $this->obdobia[self::AKADEMICKY_ROK]->add($kredity, $znamka);
     }
   }
 
