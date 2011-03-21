@@ -9,9 +9,6 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-require_once 'PHPUnit/Autoload.php';
-
-
 require_once '../third_party/symfony_di/lib/sfServiceContainerAutoloader.php';
 sfServiceContainerAutoloader::register();
 
