@@ -20,7 +20,7 @@ h1 {
   font-size: 300%;
 }
 
-.logo {
+a.logo {
   padding-left: 64px;
   background: transparent url("../../images/logo.png") 16px 50% no-repeat;
   min-height: 32px;

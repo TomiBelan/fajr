@@ -27,7 +27,7 @@
     <div class="container">
       {% include "parts/linkbar.xhtml" %}
       {% url mainPage for ['_file': 'index.php'] %}
-      <h1><a class="logo" href="{{ mainPage }}">FAJR</a>: {% display title %}</h1>
+      <h1 class="logo"><a class="logo" href="{{ mainPage }}">FAJR</a>: {% display title %}</h1>
       {% block warnings %}
         {% include "parts/warnings.xhtml" %}
       {% endblock %}

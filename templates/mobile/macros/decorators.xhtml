@@ -165,7 +165,7 @@
 
 {% macro printbox(content,empty) %}
   {% if empty %}
-    <font color="red"> Dáta pre túto tabuľku neboli nájdené.</font><hr class="space" />
+    <span class="empty_content"> Dáta pre túto tabuľku neboli nájdené.</span><hr class="space" />
   {% else %}
     {{ content | safe}}
   {% endif%}
