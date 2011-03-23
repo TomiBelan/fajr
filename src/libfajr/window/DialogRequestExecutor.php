@@ -66,18 +66,22 @@ class DialogRequestExecutor extends DisableEvilCallsObject
 
   public function requestOpen($trace)
   {
+    $options = array('dlgName' => $this->parentFormName,
+                     'compName' => $this->data->compName,
+                    );
+    
+    if ($this->data->embObjName !== null) {
+      $options['embObj'] = array(
+        'objName' => $this->data->embObjName,
+        'dataView' => array(
+          'activeIndex' =>  $this->data->index,
+          'selectedIndexes' => $this->data->index,
+        ),
+      );
+    }
+    
     $data = $this->requestBuilder->buildRequestData(
-        $this->parentFormName,
-        array('dlgName' => $this->parentFormName,
-              'compName' => $this->data->compName,
-              'embObj' => array(
-                'objName' => $this->data->embObjName,
-                'dataView' => array(
-                  'activeIndex' =>  $this->data->index,
-                  'selectedIndexes' => $this->data->index,
-                ),
-              ),
-            ));
+        $this->parentFormName, $options);
     $response = $this->connection->request($trace->addChild("dialog opening request"),
         $this->getRequestUrl($this->parentAppId), $data);
 
