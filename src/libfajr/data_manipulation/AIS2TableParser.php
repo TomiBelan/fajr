@@ -1,5 +1,5 @@
 <?php
-// Copyright (c) 2010 The Fajr authors (see AUTHORS).
+// Copyright (c) 2010-2011 The Fajr authors (see AUTHORS).
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file in the project root directory.
 
@@ -246,8 +246,8 @@ class AIS2TableParser
 
   public function getTableDefinition(Trace $trace, DOMDocument $dom)
   {
-    $trace->tlog("finding table definition element");
-    $trace->tlogVariable("", $dom->saveXML());
+    $child = $trace->addChild("finding table definition element");
+    $child->tlogVariable("dom", $dom->saveXML());
     $element = $dom->getElementById('dataTabColGroup');
     if ($element == null) {
       throw new ParseException("Can't find table headers");
@@ -258,7 +258,8 @@ class AIS2TableParser
       assert($node->hasAttribute('shortname'));
       $columns[] = $node->getAttribute('shortname');
     }
-    $trace->tlogVariable("Parsed columns:", $columns);
+    $child = $trace->addChild("Parsed columns");
+    $child->tlogVariable("Parsed columns:", $columns);
     return $columns;
   }
 
