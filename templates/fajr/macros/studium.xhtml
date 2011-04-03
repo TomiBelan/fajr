@@ -70,6 +70,9 @@
   {% url hodnoteniaLink for  ['action': 'studium.Hodnotenia',
                               'studium': studium,
                               'list': zapisnyList] %}
+  {% url prehladKreditovLink for  ['action': 'studium.PrehladKreditov',
+                                   'studium': studium,
+                                   'list': zapisnyList] %}
   {{ decorators.tabs(content, 
       ['TerminyHodnotenia': ['title': 'Moje skúšky',
                               'url': terminyLink],
@@ -78,6 +81,8 @@
        'ZapisnyList':       ['title': 'Zápisný list',
                              'url': zapisnyListLink],
        'Hodnotenia':        ['title': 'Hodnotenia/Priemery',
-                             'url': hodnoteniaLink]
+                             'url': hodnoteniaLink],
+       'PrehladKreditov':   ['title': 'Prehľad kreditov',
+                             'url': prehladKreditovLink]
       ], selectedTab) }}
 {% endmacro %}
