@@ -85,7 +85,10 @@ class FileStorage extends sfStorage
     }
     $value = @eval($content);
     if ($value === false) {
-      throw new sfStorageException("Parse error while reading data for key '$key'");
+      $err = error_get_last();
+      throw new sfStorageException("Parse error while reading data for key '$key': " .
+        htmlspecialchars('at line ' . $err['line'] . ': ' .
+                         $err['message'], null, 'UTF-8'));
     }
     if ($value === null) {
       throw new sfStorageException("No returned value while reading data for key '$key'");
