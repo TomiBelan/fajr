@@ -34,7 +34,7 @@ class FakeMainScreen implements AIS2MainScreen
   public function getAisVersion(Trace $trace)
   {
     $trace->tlog('retrieving ais version');
-    return new AIS2Version(2, 3, 21, 26);
+    return new AIS2Version(2, 3, 22, 52);
   }
 
   /**

@@ -24,6 +24,7 @@ return array(
           17 => '1',
           18 => 'FMFI.KI/2-INF-113/00',
           19 => 'Kombinatorická matalýza (2)',
-          20 => 'N',
+          20 => 'A',
+          21 => 'N',
           ),
 );
