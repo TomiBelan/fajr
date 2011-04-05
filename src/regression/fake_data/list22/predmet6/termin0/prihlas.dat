@@ -24,6 +24,7 @@ return array(
           17 => '1',
           18 => 'FMFI.KI/1-INF-511/10',
           19 => 'UNIX pre hackerov',
-          20 => 'N',
+          20 => 'A',
+          21 => 'N',
         ),
 );
