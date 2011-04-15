@@ -135,7 +135,7 @@ class AdministraciaStudiaScreenImpl extends AIS2AbstractScreen
   {
     $data = new DialogData();
     $data->compName = 'ziskaneKredityAction';
-    $data->embObjName = studiaTable;
+    $data->embObjName = 'studiaTable';
     $data->index = $studiumIndex;
     return new PrehladKreditovDialogImpl($trace, $this, $data);
   }
