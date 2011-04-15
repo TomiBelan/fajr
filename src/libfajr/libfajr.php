@@ -10,5 +10,4 @@
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */
-  require_once 'supporting_functions.php';
   require_once 'Loader.php';

@@ -17,6 +17,7 @@ use fajr\libfajr\window\DialogData;
 use fajr\libfajr\window\DialogParent;
 use fajr\libfajr\base\DisableEvilCallsObject;
 use fajr\libfajr\pub\window\LazyDialog;
+use fajr\libfajr\util\MiscUtil;
 
 /**
  * Abstraktná trieda reprezentujúca jednu obrazovku v AISe.
@@ -52,7 +53,7 @@ class AIS2AbstractDialog extends DisableEvilCallsObject
     $this->trace = $trace;
     $this->parent = $parent;
     $this->data = $data;
-    $this->uid = random();
+    $this->uid = MiscUtil::random();
   }
 
   /**

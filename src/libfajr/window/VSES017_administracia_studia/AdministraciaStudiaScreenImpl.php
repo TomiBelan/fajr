@@ -25,6 +25,7 @@ use fajr\libfajr\window\DialogData;
 use fajr\libfajr\window\ScreenData;
 use fajr\libfajr\data_manipulation\AIS2TableParser;
 use fajr\libfajr\util\StrUtil;
+use fajr\libfajr\util\MiscUtil;
 use fajr\libfajr\pub\exceptions\ParseException;
 
 /**
@@ -127,7 +128,7 @@ class AdministraciaStudiaScreenImpl extends AIS2AbstractScreen
       if ($data === false) {
         throw new ParseException("Parsing of ids from zapisnyListIndex failed.");
       }
-      return removeIntegerIndexesFromArray($data);
+      return MiscUtil::removeIntegerIndexesFromArray($data);
   }
   
   public function getPrehladKreditovDialog(Trace $trace, $studiumIndex)

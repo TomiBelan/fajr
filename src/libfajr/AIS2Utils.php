@@ -13,6 +13,7 @@
 namespace fajr\libfajr;
 use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\pub\connection\SimpleConnection;
+use fajr\libfajr\util\StrUtil;
 use Exception;
 
 /**
@@ -32,7 +33,7 @@ class AIS2Utils
     $pattern =
       '@(?P<tm_mday>[0-3][0-9])\.(?P<tm_mon>[0-1][0-9])\.(?P<tm_year>20[0-9][0-9])'.
       ' (?P<tm_hour>[0-2][0-9]):(?P<tm_min>[0-5][0-9]*)@';
-    $datum = matchAll($str, $pattern);
+    $datum = StrUtil::matchAll($pattern, $str);
     if (!$datum) {
       throw new Exception("Chyba pri parsovaní dátumu a času");
     }
@@ -53,7 +54,7 @@ class AIS2Utils
   public static function parseAISDateTimeRange($str)
   {
     $pattern = '@(?P<od>[0-9:. ]*)do (?P<do>[0-9:. ]*)@';
-    $data = matchAll($str, $pattern);
+    $data = StrUtil::matchAll($pattern, $str);
     $data = $data[0];
     $result = array();
     if ($data['od'] == '') {

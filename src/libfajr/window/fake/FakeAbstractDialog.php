@@ -15,6 +15,7 @@ namespace fajr\libfajr\window\fake;
 use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\base\DisableEvilCallsObject;
 use fajr\libfajr\pub\window\LazyDialog;
+use fajr\libfajr\util\MiscUtil;
 
 /**
  * Abstraktná trieda reprezentujúca jednu obrazovku v AISe.
@@ -48,7 +49,7 @@ class FakeAbstractDialog extends DisableEvilCallsObject
     $this->trace = $trace;
     $this->parent = $parent;
     $this->data = $data;
-    $this->uid = random();
+    $this->uid = MiscUtil::random();
   }
 
   /**

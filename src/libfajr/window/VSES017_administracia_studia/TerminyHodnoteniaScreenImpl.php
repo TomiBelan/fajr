@@ -22,6 +22,7 @@ use fajr\libfajr\window\RequestBuilderImpl;
 use fajr\libfajr\window\ScreenRequestExecutor;
 use fajr\libfajr\window\AIS2AbstractScreen;
 use fajr\libfajr\data_manipulation\AIS2TableParser;
+use fajr\libfajr\util\StrUtil;
 use Exception;
 
 /**
@@ -136,7 +137,7 @@ class TerminyHodnoteniaScreenImpl extends AIS2AbstractScreen
       ),
     ));
     
-    $message = match($data, '@webui\.messageBox\("([^"]*)"@');
+    $message = StrUtil::match('@webui\.messageBox\("([^"]*)"@', $data);
     if (($message !== false) && ($message != 'Činnosť úspešne dokončená.')) {
       throw new Exception("Z termínu sa (pravdepodobne) nepodarilo odhlásiť." .
                           "Dôvod:<br/><b>".$message.'</b>');

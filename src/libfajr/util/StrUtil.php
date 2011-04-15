@@ -113,5 +113,38 @@ class StrUtil {
     }
     return substr_compare($haystack, $needle, -$needle_length, $needle_length) === 0;
   }
+
+  /**
+   * Filters-out invalid UTF-8 strings.
+   *
+   * Currently detects invalid UTF-8 strings and replaces them
+   * with an error message.
+   *
+   * @param string $string
+   * 
+   * @returns string
+   */
+  public static function utf8Sanitize($string)
+  {
+    Preconditions::checkIsString($string, '$string must be string');
+    $out = @iconv("UTF-8", "UTF-8//IGNORE", $string);
+    if ($string != $out) {
+      $out = "Warning: String not shown for security reasons: " .
+             "String contains invalid utf-8 charactes.";
+    }
+    return $out;
+  }
+
+  /**
+   * Escapes string to be safely used in HTML.
+   *
+   * @param string $string arbitrary user data
+   *
+   * @returns string escaped string safe to use as HTML element content
+   */
+  public static function hescape($string)
+  {
+    return htmlspecialchars(utf8Sanitize($string), ENT_QUOTES, 'UTF-8');
+  }
 }
 ?>

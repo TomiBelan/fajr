@@ -21,6 +21,7 @@ use fajr\libfajr\data_manipulation\DataTableImpl;
 use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\base\Preconditions;
 use fajr\libfajr\pub\exceptions\ParseException;
+use fajr\libfajr\util\StrUtil;
 
 /**
  * Parses AIS2 html response and retrieve data for specific table.
@@ -230,7 +231,7 @@ class AIS2TableParser
       // TODO: asserty prerobit na exceptiony
       $row = array();
       $rowId = $aisRow->getAttribute("id");
-      $index = match($rowId, '@^row_([0-9]+)$@');
+      $index = StrUtil::match('@^row_([0-9]+)$@', $rowId);
       if ($index === false) {
         throw new ParseException("Unexpected row id format");
       }

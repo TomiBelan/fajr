@@ -21,6 +21,7 @@ use Exception;
 use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\pub\connection\HttpConnection;
 use fajr\libfajr\pub\exceptions\LoginException;
+use fajr\libfajr\util\StrUtil;
 
 /**
  * HttpConnection which checks for generic
@@ -89,8 +90,8 @@ class AIS2ErrorCheckingConnection implements HttpConnection
   private function newException($reason, $url)
   {
     return new Exception('<b>Nastala chyba pri requeste.</b><br/>Zdôvodnenie od AISu:' .
-                         nl2br(hescape($reason)) .
-                         '<br/>Požadovaná url: ' . hescape($url));
+                         nl2br(StrUtil::hescape($reason)) .
+                         '<br/>Požadovaná url: ' . StrUtil::hescape($url));
 
   }
 
