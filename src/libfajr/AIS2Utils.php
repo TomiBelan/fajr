@@ -37,7 +37,6 @@ class AIS2Utils
     if (!$datum) {
       throw new Exception("Chyba pri parsovaní dátumu a času");
     }
-    $datum=$datum[0];
     
     return mktime($datum["tm_hour"],$datum["tm_min"],0,
         $datum["tm_mon"],$datum["tm_mday"],$datum["tm_year"]);
@@ -55,7 +54,6 @@ class AIS2Utils
   {
     $pattern = '@(?P<od>[0-9:. ]*)do (?P<do>[0-9:. ]*)@';
     $data = StrUtil::matchAll($pattern, $str);
-    $data = $data[0];
     $result = array();
     if ($data['od'] == '') {
       $result['od'] = null;

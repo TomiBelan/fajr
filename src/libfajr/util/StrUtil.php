@@ -144,7 +144,7 @@ class StrUtil {
    */
   public static function hescape($string)
   {
-    return htmlspecialchars(utf8Sanitize($string), ENT_QUOTES, 'UTF-8');
+    return htmlspecialchars(self::utf8Sanitize($string), ENT_QUOTES, 'UTF-8');
   }
 }
 ?>
