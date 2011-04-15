@@ -22,8 +22,8 @@ use fajr\libfajr\pub\window\VSES017_administracia_studia\AdministraciaStudiaScre
 use fajr\libfajr\util\StrUtil;
 use fajr\libfajr\window\fake\FakeAbstractScreen;
 use fajr\libfajr\window\VSES017_administracia_studia\fake\FakePrehladKreditovDialogImpl;
-use fajr\regression\ZoznamStudiiRegression;
-use fajr\regression\ZoznamZapisnychListovRegression;
+use fajr\libfajr\pub\regression\ZoznamStudiiRegression;
+use fajr\libfajr\pub\regression\ZoznamZapisnychListovRegression;
 
 /**
  * Trieda reprezentujúca jednu obrazovku so zoznamom štúdií a zápisných listov.

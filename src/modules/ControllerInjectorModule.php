@@ -78,7 +78,7 @@ class ControllerInjectorModule implements Module
                   ->addArgument('%Fake.FileStorage.options%');
 
         $container->setParameter('Fake.FileStorage.options',
-                    array('root_path' => \fajr\regression\fake_data\fake_data::getDirectory()));
+                    array('root_path' => \fajr\libfajr\pub\regression\fake_data\FakeData::getDirectory()));
 
         $container->register('AIS2MainScreen.class', '\fajr\libfajr\window\fake\FakeMainScreen')
                   ->setShared(false);

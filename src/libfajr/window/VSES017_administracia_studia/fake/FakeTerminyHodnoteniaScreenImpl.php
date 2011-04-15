@@ -21,8 +21,8 @@ use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\pub\window\VSES017_administracia_studia\TerminyHodnoteniaScreen;
 use fajr\libfajr\window\fake\FakeAbstractScreen;
 use fajr\libfajr\window\fake\FakeRequestExecutor;
-use fajr\regression\MojeTerminyRegression;
-use fajr\regression\ZapisanePredmetyRegression;
+use fajr\libfajr\pub\regression\MojeTerminyRegression;
+use fajr\libfajr\pub\regression\ZapisanePredmetyRegression;
 
 /**
  * Trieda reprezentujúca jednu obrazovku so zoznamom predmetov zápisného listu

@@ -11,13 +11,13 @@
  * @filesource
  */
 
-namespace fajr\regression;
+namespace fajr\libfajr\pub\regression;
 
 /**
  * Contains AIS2 table description.
  *
  * @package    Fajr
- * @subpackage Regression
+ * @subpackage Libfajr__Pub__Regression
  * @author     Martin Sucha <anty.sk+fajr@gmail.com>
  */
 class PrehladKreditovRegression

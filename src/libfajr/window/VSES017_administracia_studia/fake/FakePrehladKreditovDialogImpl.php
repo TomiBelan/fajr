@@ -20,8 +20,7 @@ use fajr\libfajr\pub\window\VSES017_administracia_studia\PrehladKreditovDialog;
 use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\window\fake\FakeAbstractDialog;
 use fajr\libfajr\data_manipulation\DataTableImpl;
-// TODO: odstranit zavislost libfajr na fajr / presunut do libfajr
-use fajr\regression\PrehladKreditovRegression;
+use fajr\libfajr\pub\regression\PrehladKreditovRegression;
 
 /**
  * Trieda pre dialóg s prehľadom kreditov

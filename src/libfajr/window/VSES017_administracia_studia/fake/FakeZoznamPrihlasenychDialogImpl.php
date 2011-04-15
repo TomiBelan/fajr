@@ -19,7 +19,7 @@ use fajr\libfajr\data_manipulation\DataTableImpl;
 use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\pub\window\VSES017_administracia_studia\ZoznamPrihlasenychDialog;
 use fajr\libfajr\window\fake\FakeAbstractDialog;
-use fajr\regression\PrihlaseniNaTerminRegression;
+use fajr\libfajr\pub\regression\PrihlaseniNaTerminRegression;
 
 /**
  * Trieda pre dialóg so zoznamom prihlásených študentov na termín.

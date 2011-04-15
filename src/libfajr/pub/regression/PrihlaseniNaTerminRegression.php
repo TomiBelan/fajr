@@ -6,41 +6,36 @@
  * Contains AIS2 table description for regression checking.
  *
  * @package    Fajr
- * @subpackage Regression
+ * @subpackage Libfajr__Pub__Regression
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
 
-namespace fajr\regression;
+namespace fajr\libfajr\pub\regression;
 
 /**
  * Contains AIS2 table description.
  *
  * @package    Fajr
- * @subpackage Regression
+ * @subpackage Libfajr__Pub__Regression
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
-class TerminyKPredmetuRegression
+class PrihlaseniNaTerminRegression
 {
   /**
    * @returns array(string) description of the table
    */
-  public static function get() {
+  public static function get()
+  {
     return
       array (
-        0 => 'kodFaza',
-        1 => 'dat',
-        2 => 'cas',
-        3 => 'miestnosti',
-        4 => 'pocetPrihlasenych',
-        5 => 'maxPocet',
-        6 => 'pocetHodn',
-        7 => 'hodnotiaci',
-        8 => 'prihlasovanie',
-        9 => 'odhlasovanie',
-        10 => 'poznamka',
-        11 => 'zaevidoval',
-        12 => 'moznostPrihlasenia',
-      );
+          0 => 'meno',
+          1 => 'priezvisko',
+          2 => 'skratka',
+          3 => 'datumPrihlas',
+          4 => 'plneMeno',
+          5 => 'rocnik',
+          6 => 'kruzok',
+          );
   }
 }

@@ -21,8 +21,8 @@ use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\pub\window\VSES017_administracia_studia\HodnoteniaPriemeryScreen;
 use fajr\libfajr\window\fake\FakeAbstractScreen;
 use fajr\libfajr\window\fake\FakeRequestExecutor;
-use fajr\regression\HodnoteniaRegression;
-use fajr\regression\PriemeryRegression;
+use fajr\libfajr\pub\regression\HodnoteniaRegression;
+use fajr\libfajr\pub\regression\PriemeryRegression;
 
 /**
  * Trieda reprezentujúca jednu obrazovku s hodnoteniami a priemermi za jeden rok.

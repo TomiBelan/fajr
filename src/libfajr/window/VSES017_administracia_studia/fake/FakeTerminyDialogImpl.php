@@ -23,7 +23,7 @@ use fajr\libfajr\pub\data_manipulation\Znamka;
 use fajr\libfajr\pub\window\VSES017_administracia_studia\TerminyDialog;
 use fajr\libfajr\window\fake\FakeAbstractDialog;
 use fajr\libfajr\window\fake\FakeRequestExecutor;
-use fajr\regression\TerminyKPredmetuRegression;
+use fajr\libfajr\pub\regression\TerminyKPredmetuRegression;
 
 /**
  * Trieda pre dialóg s termínmi skúšok k jednému predmetu.

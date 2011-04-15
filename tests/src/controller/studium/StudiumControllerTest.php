@@ -22,7 +22,7 @@ use fajr\MockInvocationParameters;
 use fajr\libfajr\storage\TemporarilyModifiableStorage;
 use fajr\libfajr\storage\MemoryStorage;
 use fajr\libfajr\storage\FileStorage;
-use fajr\regression\fake_data\fake_data;
+use fajr\libfajr\pub\regression\fake_data\FakeData;
 use fajr\libfajr\pub\window\VSES017_administracia_studia\VSES017_FakeFactoryImpl;
 use fajr\libfajr\pub\base\NullTrace;
 use fajr\libfajr\pub\window\AIS2ApplicationEnum;
@@ -55,7 +55,7 @@ class StudiumControllerTest extends PHPUnit_Framework_TestCase
     $this->context->setResponse($this->response);
     $temporary_storage = new MemoryStorage();
     $permanent_storage = new FileStorage(
-        array('root_path' => fake_data::getDirectory()));
+        array('root_path' => FakeData::getDirectory()));
     $this->storage = new TemporarilyModifiableStorage(
         array('permanent_storage' => $permanent_storage,
               'temporary_storage' => $temporary_storage));

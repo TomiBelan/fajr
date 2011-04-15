@@ -6,12 +6,12 @@
  * Contains information about compatible version of AIS.
  *
  * @package    Fajr
- * @subpackage Regression
+ * @subpackage Libfajr__Pub__Regression
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
 
-namespace fajr\regression;
+namespace fajr\libfajr\pub\regression;
 
 use fajr\libfajr\data_manipulation\AIS2Version;
 
@@ -19,7 +19,7 @@ use fajr\libfajr\data_manipulation\AIS2Version;
  * Contains information about compatible version of AIS.
  *
  * @package    Fajr
- * @subpackage Regression
+ * @subpackage Libfajr__Pub__Regression
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */

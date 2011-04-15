@@ -6,18 +6,18 @@
  * Contains AIS2 table description for regression checking.
  *
  * @package    Fajr
- * @subpackage Regression
+ * @subpackage Libfajr__Pub__Regression
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
 
-namespace fajr\regression;
+namespace fajr\libfajr\pub\regression;
 
 /**
  * Contains AIS2 table description.
  *
  * @package    Fajr
- * @subpackage Regression
+ * @subpackage Libfajr__Pub__Regression
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 class ZoznamStudiiRegression

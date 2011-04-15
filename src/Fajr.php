@@ -29,6 +29,7 @@ use fajr\libfajr\pub\connection\AIS2ServerConnection;
 use fajr\libfajr\pub\connection\AIS2ServerUrlMap;
 use fajr\libfajr\pub\connection\HttpConnection;
 use fajr\libfajr\pub\login\Login;
+use fajr\libfajr\pub\regression;
 use fajr\libfajr\window\AIS2MainScreenImpl;
 use fajr\modules\ControllerInjectorModule;
 use fajr\Request;

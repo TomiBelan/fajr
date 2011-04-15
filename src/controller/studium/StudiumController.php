@@ -22,7 +22,7 @@ use fajr\libfajr\base\Preconditions;
 use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\pub\window\AIS2ApplicationEnum;
 use fajr\libfajr\pub\window\VSES017_administracia_studia as VSES017;
-use fajr\regression;
+use fajr\libfajr\pub\regression;
 use fajr\Request;
 use fajr\Response;
 use fajr\Sorter;

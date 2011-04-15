@@ -11,17 +11,17 @@
  * @filesource
  */
 
-namespace fajr\regression\fake_data;
+namespace fajr\libfajr\pub\regression\fake_data;
 
 /**
  * It is here just to know the location of fake data.
  *
  * @package    Fajr
- * @subpackage Regression
+ * @subpackage Libfajr__Pub__Regression
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-class fake_data
+class FakeData
 {
   /**
    * @returns string this directory

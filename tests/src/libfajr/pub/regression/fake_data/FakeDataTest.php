@@ -11,7 +11,7 @@
  * @filesource
  */
 
-namespace fajr\regression\fake_data;
+namespace fajr\libfajr\pub\regression\fake_data;
 
 use PHPUnit_Framework_TestCase;
 use RecursiveDirectoryIterator;
@@ -38,7 +38,7 @@ class FakeDataTest extends PHPUnit_Framework_TestCase
    */
   public function testAllData()
   {
-    $dir = fake_data::getDirectory();
+    $dir = FakeData::getDirectory();
     $storage = new FileStorage(array("root_path" => $dir . '/'));
     
     $it = new RecursiveDirectoryIterator($dir);
