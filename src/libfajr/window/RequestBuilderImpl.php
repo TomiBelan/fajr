@@ -125,32 +125,33 @@ class RequestBuilderImpl implements RequestBuilder
 
       if ($embObj !== null) {
         $xml_spec .= '<changedProperties><objName>' . $embObj['objName'] .
-            '</objName><propertyValues><nameValue><name>dataView</name>' .
-            '<isXml>true</isXml><value><![CDATA[<root><selection>';
-        if (isset($embObj['dataView']) && is_array($embObj['dataView'])) {
-          foreach ($embObj['dataView'] as $name => $value) {
-            $xml_spec .= '<'.$name.'>'.$value.'</'.$name.'>';
+            '</objName><propertyValues>';
+        foreach ($embObj as $name => $value) {
+          if ($name == 'dataView') {
+            $xml_spec .= '<nameValue><name>dataView</name><isXml>true</isXml>' .
+                '<value><![CDATA[<root><selection>';
+            if (is_array($value)) {
+              foreach ($value as $dataViewName => $dataViewValue) {
+                $xml_spec .= '<'.$dataViewName.'>'.$dataViewValue.'</'.$dataViewName.'>';
+              }
+            }
+            $xml_spec .= '</selection>';
+            if (isset($embObj['visibleBuffers'])) {
+              $xml_spec .= '<visibleBuffers>' . $embObj['visibleBuffers'] . '</visibleBuffers>';
+            }
+            if (isset($embObj['loadedBuffers'])) {
+              $xml_spec .= '<loadedBuffers>'.$embObj['loadedBuffers'].'</loadedBuffers>';
+            }
+            $xml_spec .= '</root>]]></value></nameValue>';
+            $xml_spec .= '<nameValue><name>editMode</name>' .
+                '<isXml>false</isXml><value>false</value></nameValue>';
+          }
+          else if ($name != 'visibleBuffers' && $name != 'loadedBuffers' && $name != 'objName') {
+            $xml_spec .= '<nameValue><name>' . $name . '</name>' .
+                '<value><![CDATA[' . $value . ']]></value></nameValue>';
           }
         }
-        $xml_spec .= '</selection>';
-        if (isset($embObj['visibleBuffers'])) {
-          $xml_spec .= '<visibleBuffers>' . $embObj['visibleBuffers'] . '</visibleBuffers>';
-        }
-        if (isset($embObj['loadedBuffers'])) {
-          $xml_spec .= '<loadedBuffers>'.$embObj['loadedBuffers'].'</loadedBuffers>';
-        }
-        $xml_spec .= '
-                </root>
-              ]]></value>
-            </nameValue>
-            <nameValue>
-              <name>editMode</name>
-              <isXml>false</isXml>
-              <value>false</value>
-            </nameValue>
-          </propertyValues>
-          <embObjChProps isNull=\'true\'/>
-        </changedProperties>';
+        $xml_spec .= '</propertyValues><embObjChProps isNull=\'true\'/></changedProperties>';
       }
       $xml_spec .= '</embObjChProps></changedProperties>';
     }
