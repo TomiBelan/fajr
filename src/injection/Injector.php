@@ -40,7 +40,7 @@ class Injector
   private $container;
 
   /** @var bool */
-  private $suppressErrors;
+  private $showErrors;
 
   /**
    * Construct injector configured with passed modules.
@@ -49,13 +49,13 @@ class Injector
    *    injector. Note that order of Modules is important, as they are
    *    configuring the injector in given order.
    */
-  public function __construct(array $modules, $suppressErrors = true)
+  public function __construct(array $modules, $showErrors = false)
   {
     $this->container = new sfServiceContainerBuilder();
     foreach ($modules as $module) {
       $module->configure($this->container);
     }
-    $this->suppressErrors = $suppressErrors;
+    $this->showErrors = $showErrors;
   }
 
   /**
@@ -69,10 +69,10 @@ class Injector
   public function getInstance($name)
   {
     Preconditions::checkIsString($name, '$name should be string.');
-    if ($this->suppressErrors) {
-      return @$this->container->getService($name);
-    } else {
+    if ($this->showErrors) {
       return $this->container->getService($name);
+    } else {
+      return @$this->container->getService($name);
     }
   }
 

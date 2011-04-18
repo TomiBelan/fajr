@@ -163,7 +163,7 @@ $modules = array(
     new LoginFactoryModule(),
     new InputModule(),
   );
-$injector = new Injector($modules, $config->get(FajrConfigOptions::DEBUG_EXCEPTION_SHOWSTACKTRACE) != true);
+$injector = new Injector($modules, $config->get(FajrConfigOptions::DEBUG_EXCEPTION_SHOWSTACKTRACE));
 $fajr = new Fajr($injector, $config);
 $fajr->run();
 session_write_close();

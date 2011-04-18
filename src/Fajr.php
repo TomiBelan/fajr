@@ -291,7 +291,8 @@ class Fajr {
     } else if ($loginManager->isLoggedIn($serverConnection)) {
       $response->set('loggedIn', true);
       $controllerInjector = new Injector(array(new
-            ControllerInjectorModule($serverConnection, $server, $session, $this->config)));
+            ControllerInjectorModule($serverConnection, $server, $session, $this->config)),
+            $this->config->get(FajrConfigOptions::DEBUG_EXCEPTION_SHOWSTACKTRACE));
       $mainScreen = $controllerInjector->getInstance('AIS2MainScreen.class');
 
       if (($aisVersion = $session->read('ais/aisVersion')) == null) {
