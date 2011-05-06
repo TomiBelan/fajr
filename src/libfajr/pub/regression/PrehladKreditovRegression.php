@@ -49,7 +49,8 @@ class PrehladKreditovRegression
         17 => 'znamkaPopis',
         18 => 'dovezene',
         19 => 'mozePrihlasit',
-        20 => 'priebHodn',
+        20 => 'popisSposUkon',
+        21 => 'priebHodn',
       );
   }
 }

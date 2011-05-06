@@ -22,7 +22,8 @@ array (
     17 => 'výborne',
     18 => 'N',
     19 => 'N',
-    20 => 'N',
+    20 => 'Hodnotenie',
+    21 => 'N',
     ),
   1 => 
   array (
@@ -46,7 +47,8 @@ array (
     17 => 'výborne',
     18 => 'N',
     19 => 'N',
-    20 => 'N',
+    20 => 'Hodnotenie',
+    21 => 'N',
   ),
   2 => 
   array (
@@ -70,7 +72,8 @@ array (
     17 => 'výborne',
     18 => 'N',
     19 => 'N',
-    20 => 'N',
+    20 => 'Hodnotenie',
+    21 => 'N',
   ),
   3 => 
   array (
@@ -94,7 +97,8 @@ array (
     17 => 'výborne',
     18 => 'N',
     19 => 'N',
-    20 => 'N',
+    20 => 'Hodnotenie',
+    21 => 'N',
   ),
   4 => 
   array (
@@ -118,7 +122,8 @@ array (
     17 => 'výborne',
     18 => 'N',
     19 => 'N',
-    20 => 'N',
+    20 => 'Hodnotenie',
+    21 => 'N',
   ),
   5 => 
   array (
@@ -142,7 +147,8 @@ array (
     17 => 'výborne',
     18 => 'N',
     19 => 'N',
-    20 => 'N',
+    20 => 'Hodnotenie',
+    21 => 'N',
   ),
   6 => 
   array (
@@ -166,7 +172,8 @@ array (
     17 => 'výborne',
     18 => 'N',
     19 => 'N',
-    20 => 'N',    
+    20 => 'Hodnotenie',
+    21 => 'N',    
   ),
   7 => 
   array (
@@ -190,7 +197,8 @@ array (
     17 => 'veľmi dobre',
     18 => 'N',
     19 => 'N',
-    20 => 'N',    
+    20 => 'Hodnotenie',
+    21 => 'N',    
   ),
   8 => 
   array (
@@ -214,7 +222,8 @@ array (
     17 => 'výborne',
     18 => 'N',
     19 => 'N',
-    20 => 'N',
+    20 => 'Hodnotenie',
+    21 => 'N',
   ),
   9 => 
   array (
@@ -238,7 +247,8 @@ array (
     17 => 'výborne',
     18 => 'N',
     19 => 'N',
-    20 => 'N',
+    20 => 'Hodnotenie',
+    21 => 'N',
   ),
   10 => 
   array (
@@ -262,7 +272,8 @@ array (
     17 => 'výborne',
     18 => 'N',
     19 => 'N',
-    20 => 'N',
+    20 => 'Hodnotenie',
+    21 => 'N',
   ),
   11 => 
   array (
@@ -286,7 +297,8 @@ array (
     17 => 'výborne',
     18 => 'N',
     19 => 'N',
-    20 => 'N',
+    20 => 'Hodnotenie',
+    21 => 'N',
   ),
   12 => 
   array (
@@ -310,7 +322,8 @@ array (
     17 => 'výborne',
     18 => 'N',
     19 => 'N',
-    20 => 'N',
+    20 => 'Hodnotenie',
+    21 => 'N',
   ),
   
 );
