@@ -45,8 +45,12 @@ class ZoznamZapisnychListovRegression
           13 => 'studProgramSkratkaAkreditOJ',
           14 => 'typFinacovaniaPopis',
           15 => 'typFinacovaniaSkratPopis',
-          16 => 'modifikator',
-          17 => 'poslModif',
+          16 => 'uzatvorenyLS',
+          17 => 'datumUzamknutia',
+          18 => 'modifikator',
+          19 => 'poslModif',
+          20 => 'uzatvorenyZS',
+          21 => 'nespoplatneRoky',
           );
   }
 }

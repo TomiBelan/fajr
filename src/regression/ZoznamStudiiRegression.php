@@ -50,6 +50,7 @@ class ZoznamStudiiRegression
           18 => 'idEvi',
           19 => 'modifikator',
           20 => 'poslModif',
+          21 => 'nespoplatneRoky',
           );
   }
 }
