@@ -23,7 +23,7 @@ namespace fajr;
 class Version
 {
   /** @var string current version number */
-  private static $version = '0.4.9';
+  private static $version = '0.4.10';
 
   /** @var array basic changelog information */
   private static $changelog = array (
@@ -46,6 +46,7 @@ class Version
       array('2011-02-02', '0.4.7', 'Podpora pre AIS verzie 2.3.21.23'),
       array('2011-02-05', '0.4.8', 'Podpora pre AIS verzie 2.3.21.26'),
       array('2011-04-05', '0.4.9', 'Podpora pre AIS verzie 2.3.22.52'),
+      array('2011-05-07', '0.4.10', 'Podpora pre AIS verzie 2.3.24.54'),
     );
 
   /** @var int how many entries from changelog we want to show */
