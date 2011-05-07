@@ -300,7 +300,10 @@ class Fajr {
         $session->write('ais/aisVersion', $aisVersion);
       }
       if (($aisApps = $session->read('ais/aisApps')) == null) {
-        $aisApps = $mainScreen->getAllAvailableApplications($trace->addChild('Get all applications'));
+        $aisModules = array('SP', 'LZ', 'ES', 'ST', 'RH', 'UB', 'AS', 'RP');
+        $aisApps = $mainScreen->
+            getAllAvailableApplications($trace->addChild('Get all applications'),
+                                        $aisModules);
         $session->write('ais/aisApps', $aisApps);
       }
       if (($userName = $session->read('ais/aisUserName')) == null) {

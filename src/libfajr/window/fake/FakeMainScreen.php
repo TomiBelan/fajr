@@ -18,6 +18,7 @@ use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\pub\window\AIS2MainScreen;
 use fajr\libfajr\pub\window\AIS2ApplicationEnum;
 use fajr\libfajr\data_manipulation\AIS2Version;
+use fajr\libfajr\base\Preconditions;
 
 /**
  * Represents main page of AIS.
@@ -41,14 +42,32 @@ class FakeMainScreen implements AIS2MainScreen
    * Get the names of all available ais applications
    * from ais menu.
    *
+   * @param Trace $trace
+   * @param array(string) $modules module names to check
+   *
    * @returns array(string) names of applications
    */
-  public function getAllAvailableApplications(Trace $trace)
+  public function getAllAvailableApplications(Trace $trace, array $modules)
   {
+    foreach ($modules as $module) {
+      Preconditions::checkIsString($module, '$modules must be an array of strings');
+    }
     $trace->tlog('getting available applications');
-    return array(
-          AIS2ApplicationEnum::ADMINISTRACIA_STUDIA,
-        );
+    $moduleApps = array(
+      'ES' => array(
+        AIS2ApplicationEnum::ADMINISTRACIA_STUDIA,
+      ),
+    );
+
+    $apps = array();
+    foreach ($modules as $module) {
+      if (array_key_exists($module, $moduleApps)) {
+        $apps = array_merge($apps, $moduleApps[$module]);
+      }
+    }
+
+    // remove duplicates
+    return array_values($apps);
   }
 
   /**

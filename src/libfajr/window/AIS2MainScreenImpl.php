@@ -61,18 +61,22 @@ class AIS2MainScreenImpl extends DisableEvilCallsObject implements AIS2MainScree
    * Get all applications which user can see in
    * AIS menu.
    *
+   * @param Trace $trace
+   * @param array(string) $modules module names to check
+   *
    * @returns array(string)
    */
-  public function getAllAvailableApplications(Trace $trace)
+  public function getAllAvailableApplications(Trace $trace, array $modules)
   {
+    foreach ($modules as $module) {
+      Preconditions::checkIsString($module, '$modules must be an array of strings');
+    }
     $appParser = new AIS2ApplicationAvailabilityParser();
     $simpleConn = $this->connection->getSimpleConnection();
     $urlMap = $this->connection->getUrlMap();
 
-    // TODO(ppershing): make this more configurable
-    $aisModules = array('SP', 'LZ', 'ES', 'ST', 'RH', 'UB', 'AS', 'RP');
     $applications = array();
-    foreach ($aisModules as $module) {
+    foreach ($modules as $module) {
       $childTrace = $trace->addChild('Listing applications for module '.$module);
       $html = $simpleConn->request($childTrace->addChild('Requesting page'),
                                    $urlMap->getChangeModulePage($module));

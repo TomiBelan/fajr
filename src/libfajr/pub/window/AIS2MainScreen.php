@@ -34,9 +34,12 @@ interface AIS2MainScreen
    * Get the names of all available ais applications
    * from ais menu.
    *
+   * @param Trace $trace
+   * @param array(string) $modules module names to check
+   *
    * @returns array(string) names of applications
    */
-  public function getAllAvailableApplications(Trace $trace);
+  public function getAllAvailableApplications(Trace $trace, array $modules);
 
   /**
    * Get full name of the user.
