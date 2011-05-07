@@ -83,11 +83,6 @@ class CosignProxyLogin extends CosignAbstractLogin
   {
     $connection = $serverConnection->getHttpConnection();
     $connection->clearCookies();
-    // UNIX timestamp 1 should be far enough in past to trigger cookie
-    // removal
-    setCookie( $_SERVER[ 'COSIGN_SERVICE' ], "null", 1, '/', "", 1 );
-    // Redirect na hlavnu odhlasovaciu stranku cosignu
-    header('Location: '.self::COSIGN_LOGOUT);
     
     return true;
   }

@@ -21,6 +21,7 @@ use fajr\libfajr\pub\login\LoginFactory;
 use fajr\Request;
 use fajr\util\FajrUtils;
 use sfStorage;
+use fajr\libfajr\login\CosignProxyLogin;
 
 class LoginManager
 {
@@ -81,8 +82,9 @@ class LoginManager
     }
 
     if ($server->getLoginType() == 'cosignproxy') {
-        // location header set in CosignProxyLogin
-        // do nothing.
+      // Redirect na hlavnu odhlasovaciu stranku univerzity
+      $this->response->redirect(CosignProxyLogin::COSIGN_LOGOUT);
+      $this->response->clearCookie($_SERVER[ 'COSIGN_SERVICE' ], '/', '');
     } else {
       $this->response->redirect(array(), 'index.php');
     }
