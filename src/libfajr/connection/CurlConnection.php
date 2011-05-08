@@ -21,6 +21,7 @@ use fajr\libfajr\base\Preconditions;
 use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\pub\connection\HttpConnection;
 use Exception;
+use fajr\libfajr\base\IllegalStateException;
 
 /**
  * Provides HttpConnection wrapper for Curl library.
@@ -60,7 +61,14 @@ class CurlConnection implements HttpConnection
 
   public function __destruct()
   {
-    curl_close($this->curl);
+    $this->close();
+  }
+
+  private function checkNotClosed()
+  {
+    if ($this->curl === null) {
+      throw new IllegalStateException("CURL connection already closed");
+    }
   }
 
   private function _curlSetOption($option, $value)
@@ -94,6 +102,9 @@ class CurlConnection implements HttpConnection
   {
     $trace->tlog("Http GET");
     $trace->tlogVariable("URL", $url);
+
+    $this->checkNotClosed();
+
     $this->_curlSetOption(CURLOPT_URL, $url);
     $this->_curlSetOption(CURLOPT_HTTPGET, true);
     return $this->exec($trace);
@@ -103,6 +114,9 @@ class CurlConnection implements HttpConnection
   {
     $trace->tlog("Http POST");
     $trace->tlogVariable("URL", $url);
+
+    $this->checkNotClosed();
+
     $child=$trace->addChild("POST data");
     $child->tlogVariable("post_data", $data);
     $this->_curlSetOption(CURLOPT_URL, $url);
@@ -122,10 +136,12 @@ class CurlConnection implements HttpConnection
   public function addCookie($name, $value, $expire, $path, $domain,
       $secure = true, $tailmatch = false)
   {
+    $this->checkNotClosed();
+    
     // Closing+reopening handle seems to be the only way how to force save/reload
     // of cookies. We lose reusable connection though.
     $closureRunner = new ClosureRunner(array($this, '_curlInit'));
-    curl_close($this->curl);
+    $this->close();
 
     $fh = fopen($this->cookieFile, 'a');
     if (!$fh) {
@@ -147,9 +163,10 @@ class CurlConnection implements HttpConnection
 
   public function clearCookies()
   {
+    $this->checkNotClosed();
     // Closing+reopening handle seems to be the only way how to force save/reload
     // of cookies. We lose reusable connection though.
-    curl_close($this->curl);
+    $this->close();
     @unlink($this->cookieFile);
     $this->_curlInit();
   }
@@ -188,6 +205,13 @@ class CurlConnection implements HttpConnection
     $this->_curlSetOption(CURLOPT_COOKIEJAR, $this->cookieFile);
 
     return $output;
+  }
+
+  public function close()
+  {
+    if ($this->curl === null) return;
+    curl_close($this->curl);
+    $this->curl = null;
   }
 
   /**

@@ -60,4 +60,10 @@ interface HttpConnection
    */
   public function clearCookies();
 
+  /**
+   * Zavrie spojenie.
+   * Raz uzavreté spojenie už nemôže byť použité.
+   */
+  public function close();
+
 }

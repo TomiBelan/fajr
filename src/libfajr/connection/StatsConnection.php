@@ -93,6 +93,11 @@ class StatsConnection implements HttpConnection
     return $this->delegate->clearCookies();
   }
 
+  public function close()
+  {
+    $this->delegate->close();
+  }
+
   public function getStats()
   {
     return $this->stats;

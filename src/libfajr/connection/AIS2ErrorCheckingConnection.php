@@ -87,6 +87,11 @@ class AIS2ErrorCheckingConnection implements HttpConnection
     return $this->delegate->clearCookies();
   }
 
+  public function close()
+  {
+    $this->delegate->close();
+  }
+
   private function newException($reason, $url)
   {
     return new Exception('<b>Nastala chyba pri requeste.</b><br/>Zdôvodnenie od AISu:' .
