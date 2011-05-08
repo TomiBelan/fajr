@@ -27,7 +27,7 @@ class AIS2ErrorCheckingConnectionTest extends PHPUnit_Framework_TestCase
 {
   private function newHttpConnection() {
     return $this->getMock('fajr\libfajr\pub\connection\HttpConnection',
-                          array('get', 'post', 'addCookie', 'clearCookies'));
+                          array('get', 'post', 'addCookie', 'clearCookies', 'close'));
   }
 
   public function testUiError()
