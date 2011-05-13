@@ -190,14 +190,15 @@ class StudiumController extends BaseController
     $terminIndex = $request->getParameter("odhlasIndex");
 
     $terminy = $this->terminyHodnoteniaScreen
-        ->getTerminyHodnotenia($trace->addChild('get terminy hodnotenia '))
-        ->getData();
+        ->getTerminyHodnotenia($trace->addChild('get terminy hodnotenia '));
     FajrUtils::warnWrongTableStructure($response, 'moje terminy',
         regression\MojeTerminyRegression::get(),
         $terminy->getTableDefinition());
 
+    $terminyData = $terminy->getData();
+    
     $terminKey = -1;
-    foreach ($terminy as $key=>$row) {
+    foreach ($terminyData as $key=>$row) {
       if ($row['index'] == $terminIndex) $terminKey = $key;
     }
 
@@ -205,7 +206,7 @@ class StudiumController extends BaseController
       throw new Exception("Ooops, predmet/termín nenájdený. Pravdepodobne
           zmena dát v AISe.");
     }
-    if ($request->getParameter("hash") !== StudiumUtils::hashNaOdhlasenie($terminy[$terminKey])) {
+    if ($request->getParameter("hash") !== StudiumUtils::hashNaOdhlasenie($terminyData[$terminKey])) {
       throw new Exception("Ooops, nesedia údaje o termíne. Pravdepodobne zmena
           dát v AISe spôsobila posunutie tabuliek.");
     }
