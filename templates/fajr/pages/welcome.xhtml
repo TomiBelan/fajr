@@ -8,6 +8,14 @@
  #}
 {% extends "layout/main.xhtml" %}
 {% block title %}Vitajte{% endblock %}
+
+{% block head %}
+  {% parent %}
+  <meta name="Description" content="Fajr je alternatívny frontend pre AIS2 &mdash; 
+        webová aplikácia poskytujúca jeho najčastejšie funkcie a to jednoducho, rýchlo, 
+        bez zbytočných klikaní a na všetkých browseroch." />
+{% endblock %}
+
 {% block content %}
 {% import "macros/utils.xhtml" as utils %}
 {% block loginBox %}
