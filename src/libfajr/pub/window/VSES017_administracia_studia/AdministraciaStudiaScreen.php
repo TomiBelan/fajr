@@ -17,6 +17,9 @@ use fajr\libfajr\pub\base\Trace;
 
 interface AdministraciaStudiaScreen extends LazyDialog
 {
+  const ACTION_HODNOTENIA_PRIEMERY = 'hodnoteniaPriemeryAction';
+  const ACTION_TERMINY_HODNOTENIA = 'terminyHodnoteniaAction';
+  
   /**
    * @returns SimpleDataTable
    */
@@ -27,9 +30,9 @@ interface AdministraciaStudiaScreen extends LazyDialog
    */
   public function getZapisneListy(Trace $trace, $studiumIndex);
 
-  public function getZapisnyListIdFromZapisnyListIndex(Trace $trace, $zapisnyListIndex);
+  public function getZapisnyListIdFromZapisnyListIndex(Trace $trace, $zapisnyListIndex, $action);
 
-  public function getStudiumIdFromZapisnyListIndex(Trace $trace, $zapisnyListIndex);
+  public function getStudiumIdFromZapisnyListIndex(Trace $trace, $zapisnyListIndex, $action);
   
   public function getPrehladKreditovDialog(Trace $trace, $studiumIndex);
 }

@@ -63,7 +63,7 @@ class FakeAdministraciaStudiaScreenImpl extends FakeAbstractScreen
     return $data[$this->studiumIndex];
   }
 
-  public function getStudiumIdFromZapisnyListIndex(Trace $trace, $zapisnyListIndex)
+  public function getStudiumIdFromZapisnyListIndex(Trace $trace, $zapisnyListIndex, $action)
   {
     return $this->getStudiumIdFromIndex($this->studiumIndex);
   }
@@ -77,7 +77,7 @@ class FakeAdministraciaStudiaScreenImpl extends FakeAbstractScreen
     return new DataTableImpl(ZoznamZapisnychListovRegression::get(), $data);
   }
 
-  public function getZapisnyListIdFromZapisnyListIndex(Trace $trace, $zapisnyListIndex)
+  public function getZapisnyListIdFromZapisnyListIndex(Trace $trace, $zapisnyListIndex, $action)
   {
     $data =
       $this->executor->readTable(

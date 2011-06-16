@@ -122,14 +122,17 @@ class StudiumController extends BaseController
 
     $this->terminyHodnoteniaScreen = $screenFactory->newTerminyHodnoteniaScreen(
               $trace,
-              $adminStudia->getZapisnyListIdFromZapisnyListIndex($trace, $this->zapisnyList),
-              $adminStudia->getStudiumIdFromZapisnyListIndex($trace, $this->zapisnyList));
+              $adminStudia->getZapisnyListIdFromZapisnyListIndex($trace, $this->zapisnyList,
+                  VSES017\AdministraciaStudiaScreen::ACTION_TERMINY_HODNOTENIA),
+              $adminStudia->getStudiumIdFromZapisnyListIndex($trace, $this->zapisnyList,
+                  VSES017\AdministraciaStudiaScreen::ACTION_TERMINY_HODNOTENIA));
 
     // FIXME: chceme to nejak refaktorovat, aby sme nevytvarali zbytocne
     // objekty, ktore v konstruktore robia requesty
     $this->hodnoteniaScreen = $screenFactory->newHodnoteniaPriemeryScreen(
           $trace,
-          $adminStudia->getZapisnyListIdFromZapisnyListIndex($trace, $this->zapisnyList));
+          $adminStudia->getZapisnyListIdFromZapisnyListIndex($trace, $this->zapisnyList,
+              VSES017\AdministraciaStudiaScreen::ACTION_HODNOTENIA_PRIEMERY));
 
     $response->set('zoznamStudii', $this->zoznamStudii);
     $response->set('studium', $this->studium);

@@ -40,8 +40,8 @@ class AdministraciaStudiaScreenImpl extends AIS2AbstractScreen
 {
   // TODO(ppershing): use named pattern here
   const APP_LOCATION_PATTERN = '@webui\(\)\.startApp\("([^"]+)","([^"]+)"\);@';
-  const ID_PATTERN = '@&idZapisnyList\=(?P<idZapisnyList>[0-9]*)&idStudium\=(?P<idStudium>[0-9]*)@';
-
+  const ID_PATTERN = '@(?:&idZapisnyList\=(?P<idZapisnyList>[0-9]*))(?:&idStudium\=(?P<idStudium>[0-9]*))?@';
+  
   protected $idCache = array();
 
   /**
@@ -83,24 +83,24 @@ class AdministraciaStudiaScreenImpl extends AIS2AbstractScreen
         $data, 'VSES017_StudentZapisneListyDlg0_zapisneListyTable_dataView');
   }
 
-  public function getZapisnyListIdFromZapisnyListIndex(Trace $trace, $zapisnyListIndex)
+  public function getZapisnyListIdFromZapisnyListIndex(Trace $trace, $zapisnyListIndex, $action)
   {
-    return $this->getIdFromZapisnyListIndex($trace, $zapisnyListIndex, 'idZapisnyList');
+    return $this->getIdFromZapisnyListIndex($trace, $zapisnyListIndex, 'idZapisnyList', $action);
   }
 
-  public function getStudiumIdFromZapisnyListIndex(Trace $trace, $zapisnyListIndex)
+  public function getStudiumIdFromZapisnyListIndex(Trace $trace, $zapisnyListIndex, $action)
   {
-    return $this->getIdFromZapisnyListIndex($trace, $zapisnyListIndex, 'idStudium');
+    return $this->getIdFromZapisnyListIndex($trace, $zapisnyListIndex, 'idStudium', $action);
   }
 
-  protected function getIdFromZapisnyListIndex(Trace $trace, $zapisnyListIndex, $idType)
+  protected function getIdFromZapisnyListIndex(Trace $trace, $zapisnyListIndex, $idType, $action)
   {
     $this->openIfNotAlready($trace);
-    if (empty($this->idCache[$zapisnyListIndex]))
+    if (empty($this->idCache[$zapisnyListIndex]) || empty($this->idCache[$zapisnyListIndex][$idType]))
     {
       $response = $this->executor->doRequest(
           $trace->addChild("Requesting data:"),
-          array('compName' => 'terminyHodnoteniaAction',
+          array('compName' => $action,
                 'embObj' => array(
                   'objName' => 'zapisneListyTable',
                   'dataView' => array(
@@ -111,7 +111,10 @@ class AdministraciaStudiaScreenImpl extends AIS2AbstractScreen
               ));
 
       $data = $this->parseIdFromZapisnyListIndexFromResponse($response);
-      $this->idCache[$zapisnyListIndex] = $data;
+      if (empty($this->idCache[$zapisnyListIndex])) {
+        $this->idCache[$zapisnyListIndex] = array();
+      }
+      $this->idCache[$zapisnyListIndex] = array_merge($this->idCache[$zapisnyListIndex], $data);
     } else {
       $trace->tlogVariable("data from cache", $this->idCache[$zapisnyListIndex][$idType]);
     }
