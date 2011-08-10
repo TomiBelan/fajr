@@ -32,7 +32,7 @@ class ScreenRequestExecutorTest extends PHPUnit_Framework_TestCase
   {
     $builder = $this->getMock('\fajr\libfajr\window\RequestBuilder',
         array('buildRequestData', 'getRequestUrl', 'newSerial',
-              'getAppInitializationUrl'));
+              'getAppInitializationUrl', 'getFilesRequestUrl'));
     $connection = $this->getMock('\fajr\libfajr\pub\connection\SimpleConnection');
     $this->executor = new ScreenRequestExecutorImpl($builder, $connection);
   }
