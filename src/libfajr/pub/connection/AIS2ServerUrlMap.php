@@ -37,6 +37,7 @@ class AIS2ServerUrlMap extends DisableEvilCallsObject
    */
   private $paths = array(
       'webui' => 'ais/servlets/WebUIServlet',
+      'files' => 'ais/files/',
       'login' => 'ais/login.do',
       'logout' => 'ais/logout.do',
       'start' => 'ais/start.do',
@@ -77,6 +78,14 @@ class AIS2ServerUrlMap extends DisableEvilCallsObject
   public function getWebUiServletUrl()
   {
     return $this->_getUrl($this->paths['webui']);
+  }
+
+  /**
+   * @returns string url to files page
+   */
+  public function getFilesUrl()
+  {
+    return $this->_getUrl($this->paths['files']);
   }
 
   /**

@@ -32,6 +32,14 @@ interface RequestBuilder
   public function getRequestUrl($appId, $formName = null);
 
   /**
+   * Vytvorí url pre prenos súborov vygenerovaných AISom.
+   *
+   * @param array(string=>string) $query obsah query stringu.
+   * @returns string Url.
+   */
+  public function getFilesRequestUrl($query);
+
+  /**
    * Vygeneruje url na ktorú treba robiť request pri inicializovaní
    * novej AIS aplikácie
    *

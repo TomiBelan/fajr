@@ -59,11 +59,21 @@ class ControllerInjectorModule implements Module
               ->addArgument('%serverTime%')
               ->setShared(false);
 
+    $container->register('predmety.controller.class',
+                         '\fajr\controller\predmety\PredmetyController')
+              ->addArgument(new sfServiceReference('register_predmetov_screen.factory.class'))
+              ->addArgument('%serverTime%')
+              ->setShared(false);
 
     switch ($this->server->getBackendType()) {
       case ServerConfig::BACKEND_FAKE:
         $container->register('administracia_studia_screen.factory.class',
                              '\fajr\libfajr\pub\window\VSES017_administracia_studia\VSES017_FakeFactoryImpl')
+                  ->addArgument(new sfServiceReference('fake.storage.class'))
+                  ->setShared(false);
+
+        $container->register('register_predmetov_screen.factory.class',
+                             '\fajr\libfajr\pub\window\VSST060_register_predmetov\VSST060_FakeFactoryImpl')
                   ->addArgument(new sfServiceReference('fake.storage.class'))
                   ->setShared(false);
 
@@ -93,6 +103,11 @@ class ControllerInjectorModule implements Module
       case ServerConfig::BACKEND_LIBFAJR:
         $container->register('administracia_studia_screen.factory.class',
                              '\fajr\libfajr\pub\window\VSES017_administracia_studia\VSES017_FactoryImpl')
+                  ->addArgument(new sfServiceReference('serverConnection.class'))
+                  ->setShared(false);
+
+        $container->register('register_predmetov_screen.factory.class',
+                             '\fajr\libfajr\pub\window\VSST060_register_predmetov\VSST060_FactoryImpl')
                   ->addArgument(new sfServiceReference('serverConnection.class'))
                   ->setShared(false);
 

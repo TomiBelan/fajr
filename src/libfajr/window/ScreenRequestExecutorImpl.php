@@ -122,6 +122,12 @@ class ScreenRequestExecutorImpl extends DisableEvilCallsObject
     return $this->connection->request($trace, $this->getRequestUrl(), $data);
   }
 
+  public function doFilesRequest(Trace $trace, $query)
+  {
+    $query['appId'] = $this->appId;
+    return $this->connection->request($trace, $this->requestBuilder->getFilesRequestUrl($query));
+  }
+
   public function spawnDialogExecutor(DialogData $data)
   {
     return new DialogRequestExecutor($this->requestBuilder, $this->connection,

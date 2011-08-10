@@ -52,6 +52,21 @@ class RequestBuilderImpl implements RequestBuilder
     return $url;
   }
 
+  /**
+   * Vytvorí url pre prenos súborov vygenerovaných AISom.
+   *
+   * @param array(string=>string) $query obsah query stringu.
+   * @returns string Url.
+   */
+  public function getFilesRequestUrl($query)
+  {
+    $url = $this->server->getFilesUrl();
+    if (!empty($query['file'])) {
+      $url .= $query['file'];
+    }
+    $url .= '?' . http_build_query($query);
+    return $url;
+  }
 
   public function getAppInitializationUrl(ScreenData $data)
   {

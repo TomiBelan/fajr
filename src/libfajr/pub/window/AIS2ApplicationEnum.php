@@ -25,4 +25,7 @@ class AIS2ApplicationEnum
 {
   /** Štúdium, zápisné listy, záverečné práce, štátne skúšky */
   const ADMINISTRACIA_STUDIA = 'VSES017';
+
+  /** register predmetov */
+  const REGISTER_PREDMETOV = 'VSST060';
 }

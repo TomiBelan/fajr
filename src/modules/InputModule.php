@@ -49,6 +49,7 @@ class InputModule implements Module
         'predmet' => new IntegerValidator(false),
         'termin' => new IntegerValidator(false),
         'action' => new StringValidator(),
+        'code' => new StringValidator(),
         // We need loginType in GET due to cosign proxy login!
         'loginType' => new StringValidator(),
         'serverName' => new StringValidator(),
