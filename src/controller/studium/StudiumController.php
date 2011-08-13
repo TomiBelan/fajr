@@ -52,11 +52,18 @@ class StudiumController extends BaseController
 
   private $factory;
   private $serverTime;
+  private $actionInfo;
 
   public function __construct(VSES017\VSES017_Factory $factory, $serverTime)
   {
     $this->factory = $factory;
     $this->serverTime = $serverTime;
+    $this->actionInfo = array('MojeTerminyHodnotenia' => array('tabName' => 'TerminyHodnotenia', 'requiresZapisnyList' => true),
+                              'ZoznamTerminov' => array('tabName' => 'ZapisSkusok', 'requiresZapisnyList' => true),
+                              'ZapisanePredmety' => array('tabName' => 'ZapisnyList', 'requiresZapisnyList' => true),
+                              'Hodnotenia' => array('tabName' => 'Hodnotenia', 'requiresZapisnyList' => true),
+                              'PrehladKreditov' => array('tabName' => 'PrehladKreditov', 'requiresZapisnyList' => false),
+                              );
   }
 
   /**
@@ -112,32 +119,48 @@ class StudiumController extends BaseController
         regression\ZoznamZapisnychListovRegression::get(),
         $this->zapisneListy->getTableDefinition());
 
-    $this->zapisnyList = $request->getParameter('list');
-
-    if ($this->zapisnyList === '') {
-      $tmp = $this->zapisneListy->getData();
-      $lastList = end($tmp);
-      $this->zapisnyList = $lastList['index'];
+    $zapisneListyData = $this->zapisneListy->getData();
+    if (count($zapisneListyData) == 0) {
+      $this->zapisnyList = null;
+      $this->terminyHodnoteniaScreen = null;
+      $this->hodnoteniaScreen = null;
     }
+    else {
+      $this->zapisnyList = $request->getParameter('list');
 
-    $this->terminyHodnoteniaScreen = $screenFactory->newTerminyHodnoteniaScreen(
-              $trace,
-              $adminStudia->getZapisnyListIdFromZapisnyListIndex($trace, $this->zapisnyList,
-                  VSES017\AdministraciaStudiaScreen::ACTION_TERMINY_HODNOTENIA),
-              $adminStudia->getStudiumIdFromZapisnyListIndex($trace, $this->zapisnyList,
-                  VSES017\AdministraciaStudiaScreen::ACTION_TERMINY_HODNOTENIA));
+      if ($this->zapisnyList === '') {
+        $lastList = end($zapisneListyData);
+        $this->zapisnyList = $lastList['index'];
+      }
 
-    // FIXME: chceme to nejak refaktorovat, aby sme nevytvarali zbytocne
-    // objekty, ktore v konstruktore robia requesty
-    $this->hodnoteniaScreen = $screenFactory->newHodnoteniaPriemeryScreen(
-          $trace,
-          $adminStudia->getZapisnyListIdFromZapisnyListIndex($trace, $this->zapisnyList,
-              VSES017\AdministraciaStudiaScreen::ACTION_HODNOTENIA_PRIEMERY));
+      $this->terminyHodnoteniaScreen = $screenFactory->newTerminyHodnoteniaScreen(
+                $trace,
+                $adminStudia->getZapisnyListIdFromZapisnyListIndex($trace, $this->zapisnyList,
+                    VSES017\AdministraciaStudiaScreen::ACTION_TERMINY_HODNOTENIA),
+                $adminStudia->getStudiumIdFromZapisnyListIndex($trace, $this->zapisnyList,
+                    VSES017\AdministraciaStudiaScreen::ACTION_TERMINY_HODNOTENIA));
+
+      // FIXME: chceme to nejak refaktorovat, aby sme nevytvarali zbytocne
+      // objekty, ktore v konstruktore robia requesty
+      $this->hodnoteniaScreen = $screenFactory->newHodnoteniaPriemeryScreen(
+            $trace,
+            $adminStudia->getZapisnyListIdFromZapisnyListIndex($trace, $this->zapisnyList,
+                VSES017\AdministraciaStudiaScreen::ACTION_HODNOTENIA_PRIEMERY));
+    }
 
     $response->set('zoznamStudii', $this->zoznamStudii);
     $response->set('studium', $this->studium);
     $response->set('zapisneListy', $this->zapisneListy);
     $response->set('zapisnyList', $this->zapisnyList);
+
+    if (array_key_exists($action, $this->actionInfo)) {
+      $info = $this->actionInfo[$action];
+      if ($info['requiresZapisnyList'] && $this->zapisnyList == null) {
+        $response->set('activeTab', $info['tabName']);
+        $response->setTemplate('studium/chybaZapisnyList');
+        return;
+      }
+    }
 
     parent::invokeAction($trace, $action, $context);
   }
