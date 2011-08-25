@@ -110,7 +110,12 @@ class AdministraciaStudiaScreenImpl extends AIS2AbstractScreen
                 ),
               ));
 
-      $data = $this->parseIdFromZapisnyListIndexFromResponse($response);
+      try {
+        $data = $this->parseIdFromZapisnyListIndexFromResponse($response);
+      }
+      catch (ParseException $ex) {
+        throw new ParseException("Nepodarilo sa zistiť $idType pre akciu $action: " . $ex->getMessage(), null, $ex);
+      }
       if (empty($this->idCache[$zapisnyListIndex])) {
         $this->idCache[$zapisnyListIndex] = array();
       }
