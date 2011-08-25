@@ -24,7 +24,8 @@ abstract class CosignAbstractLogin extends DisableEvilCallsObject implements Log
   const COSIGN_LOGIN = 'https://login.uniba.sk/cosign.cgi';
   const COSIGN_LOGOUT = 'https://login.uniba.sk/logout.cgi';
 
-  const LOGGED_ALREADY_PATTERN = '@Moja Univerzita Komenského@';
+  /* TODO(anty): check actual redirected URL instead of content */
+  const LOGGED_ALREADY_PATTERN = '@Portál centrálnych služieb IT na UK@';
   const IIKS_LOGIN_PATTERN = '@\<title\>IIKS \- Prihlásenie\</title\>@';
   const LOGOUT_PATTERN = '@Portál moja.uniba.sk@';
 
