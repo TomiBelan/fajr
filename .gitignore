@@ -1,0 +1,29 @@
+
+# /
+/.htaccess
+/report
+/version_info.php
+
+# /config/
+/config/configuration.php
+
+# /javascripts/out/
+/javascripts/out/*
+
+# /nbproject/
+/nbproject/private
+
+# /scripts/gcl/
+/scripts/gcl/*.pyc
+
+# /scripts/gcl/third_party/
+/scripts/gcl/third_party/*.pyc
+
+# /temp/cookies/
+/temp/cookies/*
+
+# /temp/sessions/
+/temp/sessions/*
+
+# /web/
+/web/.htaccess
