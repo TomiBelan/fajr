@@ -84,7 +84,9 @@ class LoginManager
     if ($server->getLoginType() == 'cosignproxy') {
       // Redirect na hlavnu odhlasovaciu stranku univerzity
       $this->response->redirect(CosignProxyLogin::COSIGN_LOGOUT);
-      $this->response->clearCookie($_SERVER[ 'COSIGN_SERVICE' ], '/', '');
+      if (isset($_SERVER[ 'COSIGN_SERVICE' ])) {
+        $this->response->clearCookie($_SERVER[ 'COSIGN_SERVICE' ], '/', '');
+      }
     } else {
       $this->response->redirect(array(), 'index.php');
     }
