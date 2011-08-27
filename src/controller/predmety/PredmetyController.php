@@ -26,6 +26,7 @@ use fajr\Request;
 use fajr\Response;
 use fajr\Sorter;
 use fajr\util\FajrUtils;
+use fajr\libfajr\data_manipulation\InformacnyListParser;
 
 /**
  * Controller, ktory sa stara o register predmetov
@@ -96,9 +97,12 @@ class PredmetyController extends BaseController
     Preconditions::check(!empty($code), "Nezadaný kód predmetu!");
 
     $content = $this->registerPredmetovScreen->getInformacnyList($trace, $code);
-    $content = iconv("Windows-1250", "UTF-8", $content);
+    
+    $ip = new InformacnyListParser();
+    $list = $ip->parse($trace, $content);
 
     $response->setTemplate('predmety/informacnyList');
-    $response->set('content', $content);
+    $response->set('list', $list->getAllAttributes());
+    $response->set('code', $code);
   }
 }
