@@ -38,7 +38,7 @@
 {##
  # Demo backend warning
  #}
-{% if currentServer.backendType == 'fake' %}
+{% if backendType == 'fake' %}
   {{ _self.addWarning('Používa sa fake backend (demo režim).
       Informácie v tejto inštancii sú vymyslené a fajr nekomunikuje so
       žiadnou inštanciou AISu!

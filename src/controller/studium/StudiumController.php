@@ -27,6 +27,8 @@ use fajr\Request;
 use fajr\Response;
 use fajr\Sorter;
 use fajr\util\FajrUtils;
+use fajr\LoginManager;
+use fajr\exceptions\AuthenticationRequiredException;
 
 fields::autoload();
 
@@ -53,8 +55,10 @@ class StudiumController extends BaseController
   private $factory;
   private $serverTime;
   private $actionInfo;
+  
+  private $loginManager;
 
-  public function __construct(VSES017\VSES017_Factory $factory, $serverTime)
+  public function __construct(VSES017\VSES017_Factory $factory, $serverTime, LoginManager $loginManager)
   {
     $this->factory = $factory;
     $this->serverTime = $serverTime;
@@ -64,6 +68,7 @@ class StudiumController extends BaseController
                               'Hodnotenia' => array('tabName' => 'Hodnotenia', 'requiresZapisnyList' => true),
                               'PrehladKreditov' => array('tabName' => 'PrehladKreditov', 'requiresZapisnyList' => false),
                               );
+    $this->loginManager = $loginManager;
   }
 
   /**
@@ -79,6 +84,10 @@ class StudiumController extends BaseController
   public function invokeAction(Trace $trace, $action, Context $context)
   {
     Preconditions::checkIsString($action);
+    
+    if (!$this->loginManager->isLoggedIn()) {
+      throw new AuthenticationRequiredException();
+    }
 
     $request = $context->getRequest();
     $response = $context->getResponse();

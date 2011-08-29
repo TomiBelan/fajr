@@ -25,6 +25,9 @@ use fajr\modules\StatisticsModule;
 use fajr\modules\DisplayManagerModule;
 use fajr\modules\LoginFactoryModule;
 use fajr\modules\InputModule;
+use fajr\modules\ConfigModule;
+use fajr\modules\ServerManagerModule;
+use fajr\modules\LoginManagerModule;
 use Loader;
 use sfServiceContainerAutoloader;
 use sfStorageAutoloader;
@@ -34,6 +37,7 @@ use fajr\util\FajrUtils;
 use fajr\config\FajrConfig;
 use fajr\config\FajrConfigOptions;
 use fajr\config\FajrConfigLoader;
+use fajr\modules\ControllerInjectorModule;
 
 $startTime = microtime(true);
 
@@ -153,6 +157,7 @@ if ($config->get(FajrConfigOptions::REQUIRE_SSL) && !FajrUtils::isHTTPS()) {
 // bootstrapping whole application
 $modules = array(
     new TimerModule($startTime),
+    new ConfigModule($config),
     new StatisticsModule(),
     new ContextModule(),
     new ControllerModule(),
@@ -162,6 +167,9 @@ $modules = array(
     new TraceModule($config),
     new LoginFactoryModule(),
     new InputModule(),
+    new ServerManagerModule(),
+    new LoginManagerModule(),
+    new ControllerInjectorModule($config),
   );
 $injector = new Injector($modules, $config->get(FajrConfigOptions::DEBUG_EXCEPTION_SHOWSTACKTRACE));
 $fajr = new Fajr($injector, $config);

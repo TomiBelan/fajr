@@ -168,7 +168,6 @@ return array(
         'Server.Name' => 'fajr.demo',
         'Login.Type' => 'nologin',
         'Server.Beta' => false,
-        'Backend' => ServerConfig::BACKEND_FAKE
         )),
     ),
 
@@ -176,4 +175,6 @@ return array(
    * Je toto development verzia? (Obsahuje novú funkcionalitu, ktorá je zatiaľ v testovaní)
    */
   // 'Features.Devel' => false,
+  
+  // 'Backend' => 'libfajr',
 );

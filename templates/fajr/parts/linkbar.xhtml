@@ -23,7 +23,7 @@
    #}
   <div class='linkbarRight'>
     {% if loggedIn %}
-      {% url logoutUrl for ['action': 'logout', '_file': 'index.php'] %}
+      {% url logoutUrl for ['action': 'login.Logout', '_file': 'index.php'] %}
       {% url settingsUrl for ['action': 'userSettings.Settings'] %}
       <nobr>{{ aisUserName }}</nobr>&nbsp;|&nbsp;<a 
         {% if developmentVersion %}

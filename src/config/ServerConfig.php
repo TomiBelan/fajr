@@ -28,11 +28,6 @@ class ServerConfig
   /** @var array(string=>mixed) */
   private $config;
 
-  /** use libfajr backend */
-  const BACKEND_LIBFAJR = 'libfajr';
-  /** use fake backend with virtual data */
-  const BACKEND_FAKE = 'fake';
-
   protected static function getParameterDescription()
   {
     $booleanValidator = new ChoiceValidator(array(true, false));
@@ -56,10 +51,6 @@ class ServerConfig
         'Login.Type' =>
           array('validator' => new ChoiceValidator(
                   array('password', 'cosign', 'cosignproxy', 'nologin'))),
-        'Backend' =>
-          array('defaultValue' => self::BACKEND_LIBFAJR,
-                'validator' => new ChoiceValidator(
-                  array(self::BACKEND_LIBFAJR, self::BACKEND_FAKE))),
         );
   }
 
@@ -126,17 +117,6 @@ class ServerConfig
   public function getInstanceName()
   {
     return $this->config['Server.InstanceName'];
-  }
-
-  /**
-   * Returns type of backend used to connect to this server.
-   * @see BACKEND_LIBFAJR, BACKEND_FAKE
-   *
-   * @returns string
-   */
-  public function getBackendType()
-  {
-    return $this->config['Backend'];
   }
 
 }

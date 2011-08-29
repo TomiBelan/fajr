@@ -69,17 +69,6 @@ class PredmetyController extends BaseController
     Preconditions::checkNotNull($request);
     Preconditions::checkNotNull($response);
     Preconditions::checkNotNull($session);
-    // check access to application
-    $apps = $session->read('ais/aisApps');
-    if (!is_array($apps)) {
-      throw new Exception("Interná chyba - zoznam AIS aplikácii je nekorektný.");
-    }
-    if (!in_array(AIS2ApplicationEnum::REGISTER_PREDMETOV,
-                  $apps)) {
-      $response->setTemplate('predmety/notAvailable');
-      return;
-    }
-
     $screenFactory = $this->factory;
     $register = $screenFactory->newRegisterPredmetovScreen($trace);
     

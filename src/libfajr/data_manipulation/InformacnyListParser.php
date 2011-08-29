@@ -74,12 +74,7 @@ class InformacnyListParser {
     public function parse(Trace $trace, $html) {
         $trace->tlog("Called method parse(), creating table with parsed elements");
         $trace = $trace->addChild("Parsing informacny list");
-        $table = $this->parseHtml($trace, $html);
-
-        $trace->tlog("Created new instance of InformacnyListDataImpl object");
-        foreach ($info as $attribute => $value) {
-            $this->setAttribute($trace, $attribute, $value);
-        }
+        $this->parseHtml($trace, $html);
         $trace->tlogVariable("parsed list", $this->list);
         return new InformacnyListDataImpl($this->list);
     }
@@ -96,8 +91,12 @@ class InformacnyListParser {
         if (StrUtil::endsWith($attribute, ':')) {
           $attribute = substr($attribute, 0, strlen($attribute) - 1);
         }
+        $id = null;
+        if (isset($this->attr_def[$attribute])) {
+          $id = $this->attr_def[$attribute];
+        }
         $this->list[] = array(
-          'id' => $this->attr_def[$attribute],
+          'id' => $id,
           'name' => $attribute, 
           'value' => self::trimDeleteNewline($value));
     }
@@ -141,31 +140,33 @@ class InformacnyListParser {
             $child->tlogVariable("Parsed attribute:", $sused->nodeValue);
             $this->setAttribute($trace, $attributeName,
                 ParserUtils::fixNbsp($sused->nodeValue));
+            return;
         }
-        $text_sused = $sused->nextSibling;
-        if ($text_sused->nodeType != \XML_ELEMENT_NODE) {
+        $textSused = $sused->nextSibling;
+        if ($textSused->nodeType != \XML_ELEMENT_NODE) {
             $child->tlog("Nothing to parse here");
             return;
         }
-        if ($text_sused->tagName == 'p') {
+        if ($textSused->tagName == 'p') {
             $child->tlog("Parsing <p> tags");
-            while ($text_sused != NULL) {
-                if ($text_sused->nodeType != \XML_ELEMENT_NODE) {
-                    $text_sused = $text_sused->nextSibling;
+            while ($textSused != NULL) {
+                if ($textSused->nodeType != \XML_ELEMENT_NODE) {
+                    $textSused = $textSused->nextSibling;
                     continue;
                 }
-                if ($text_sused->tagName == 'p') {
-                    $child->tlogVariable("Parsed attribute:", $sused->nodeValue);
-                    $pole[0][] = ParserUtils::fixNbsp($text_sused->nodeValue);
+                if ($textSused->tagName == 'p') {
+                    $child->tlogVariable("Parsed attribute:", $textSused->nodeValue);
+                    $this->setAttribute($trace, $attributeName,
+                        ParserUtils::fixNbsp($textSused->nodeValue));
                 }
-                $text_sused = $text_sused->nextSibling;
+                $textSused = $textSused->nextSibling;
             }
         } else {
             $child->tlog("Parsing other tags");
             $child->tlogVariable("Parsed attribute:", $sused->nodeValue);
-            $pole[] = ParserUtils::fixNbsp($sused->nodeValue);
+            $this->setAttribute($trace, $attributeName,
+                ParserUtils::fixNbsp($sused->nodeValue));
         }
-        return $pole;
     }
 
     /**
@@ -234,7 +235,6 @@ class InformacnyListParser {
                 }
             }
         }
-        return $parsedData;
     }
 
     /**
