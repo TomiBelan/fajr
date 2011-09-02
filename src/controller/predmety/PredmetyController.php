@@ -25,6 +25,7 @@ use fajr\libfajr\pub\regression;
 use fajr\Request;
 use fajr\Response;
 use fajr\Sorter;
+use fajr\BackendProvider;
 use fajr\util\FajrUtils;
 use fajr\libfajr\data_manipulation\InformacnyListParser;
 
@@ -37,6 +38,12 @@ use fajr\libfajr\data_manipulation\InformacnyListParser;
  */
 class PredmetyController extends BaseController
 {
+  public static function getInstance()
+  {
+    $backendFactory = BackendProvider::getInstance();
+    return new PredmetyController($backendFactory->newVSST060Factory(), $backendFactory->getServerTime());
+  }
+
   // @private
   private $registerPredmetovScreen;
 

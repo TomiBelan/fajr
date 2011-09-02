@@ -25,6 +25,18 @@ use fajr\libfajr\pub\login\CosignServiceCookie;
 
 class LoginFactoryImpl implements LoginFactory
 {
+  /** @var LoginFactoryImpl $instance */
+  private static $instance;
+
+  /* TODO document */
+  public static function getInstance()
+  {
+    if (!isset(self::$instance)) {
+      self::$instance = new LoginFactoryImpl();
+    }
+    return self::$instance;
+  }
+
   /**
    * @param CosignServiceCookie $cookie
    * @returns AIS2Login

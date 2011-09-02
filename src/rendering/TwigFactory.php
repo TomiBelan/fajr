@@ -15,9 +15,13 @@
 namespace fajr\rendering;
 
 use Twig_Environment;
+use Twig_Extension_Escaper;
 use Twig_Loader_Filesystem;
+use fajr\rendering\Extension;
 use fajr\config\SkinConfig;
 use fajr\config\FajrConfig;
+use fajr\config\FajrConfigLoader;
+use fajr\config\FajrConfigOptions;
 
 /**
  * Provides Twig_Environment which can be used to render
@@ -28,6 +32,27 @@ use fajr\config\FajrConfig;
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 class TwigFactory {
+  /** @var TwigFactory $instance */
+  private static $instance;
+
+  /* TODO document */
+  public static function getInstance()
+  {
+    if (!isset(self::$instance)) {
+      $config = FajrConfigLoader::getConfiguration();
+      $options = array(
+        'base_template_class' => '\fajr\rendering\Template',
+        'cache' => ($config->get(FajrConfigOptions::USE_TEMPLATE_CACHE) ?
+          $config->getDirectory(FajrConfigOptions::PATH_TO_TEMPLATE_CACHE) :
+          false),
+        'strict_variables' => true
+      );
+      $extensions = array(new Twig_Extension_Escaper(), new Extension());
+      self::$instance = new TwigFactory($options, $extensions);
+    }
+    return self::$instance;
+  }
+
   /** @var array options for Twig_Environment */
   private $twigOptions;
   /** @var array twig extensions */

@@ -13,21 +13,7 @@
  */
 namespace fajr;
 
-use fajr\injection\Injector;
-use fajr\injection\Module;
-use fajr\modules\ContextModule;
-use fajr\modules\ControllerModule;
-use fajr\modules\CurlConnectionOptionsModule;
-use fajr\modules\SessionModule;
-use fajr\modules\TraceModule;
-use fajr\modules\TimerModule;
-use fajr\modules\StatisticsModule;
-use fajr\modules\DisplayManagerModule;
-use fajr\modules\LoginFactoryModule;
-use fajr\modules\InputModule;
-use fajr\modules\ConfigModule;
-use fajr\modules\ServerManagerModule;
-use fajr\modules\LoginManagerModule;
+use fajr\libfajr\base\SystemTimer;
 use Loader;
 use sfServiceContainerAutoloader;
 use sfStorageAutoloader;
@@ -37,7 +23,6 @@ use fajr\util\FajrUtils;
 use fajr\config\FajrConfig;
 use fajr\config\FajrConfigOptions;
 use fajr\config\FajrConfigLoader;
-use fajr\modules\ControllerInjectorModule;
 
 $startTime = microtime(true);
 
@@ -155,23 +140,8 @@ if ($config->get(FajrConfigOptions::REQUIRE_SSL) && !FajrUtils::isHTTPS()) {
 }
 
 // bootstrapping whole application
-$modules = array(
-    new TimerModule($startTime),
-    new ConfigModule($config),
-    new StatisticsModule(),
-    new ContextModule(),
-    new ControllerModule(),
-    new DisplayManagerModule($config),
-    new CurlConnectionOptionsModule($config),
-    new SessionModule($config),
-    new TraceModule($config),
-    new LoginFactoryModule(),
-    new InputModule(),
-    new ServerManagerModule(),
-    new LoginManagerModule(),
-    new ControllerInjectorModule($config),
-  );
-$injector = new Injector($modules, $config->get(FajrConfigOptions::DEBUG_EXCEPTION_SHOWSTACKTRACE));
-$fajr = new Fajr($injector, $config);
+// TODO: DEBUG_EXCEPTION_SHOWSTACKTRACE sa nejako vytratilo...
+SystemTimer::setInitialTime($startTime);
+$fajr = new Fajr($config);
 $fajr->run();
 session_write_close();

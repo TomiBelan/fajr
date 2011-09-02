@@ -30,6 +30,10 @@ use fajr\Response;
  */
 class WelcomeController extends BaseController
 {
+  public static function getInstance()
+  {
+    return new WelcomeController();
+  }
   
   public function runTermsOfUse(Trace $trace, Context $context)
   {

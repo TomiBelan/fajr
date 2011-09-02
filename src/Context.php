@@ -26,6 +26,21 @@ use sfStorage;
  */
 class Context
 {
+  /** @var Context $instance */
+  private static $instance;
+
+  /* TODO document */
+  public static function getInstance()
+  {
+    if (!isset(self::$instance)) {
+      self::$instance = new Context();
+      self::$instance->setRequest(Request::getInstance());
+      self::$instance->setResponse(Response::getInstance());
+      self::$instance->setSessionStorage(SessionStorageProvider::getInstance());
+    }
+    return self::$instance;
+  }
+
   /** var Request */
   private $request;
 

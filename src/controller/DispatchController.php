@@ -16,7 +16,6 @@ namespace fajr\controller;
 use Exception;
 use fajr\Context;
 use fajr\controller\Controller;
-use fajr\injection\Injector;
 use fajr\libfajr\base\DisableEvilCallsObject;
 use fajr\libfajr\base\Preconditions;
 use fajr\libfajr\pub\base\Trace;
@@ -30,22 +29,30 @@ use fajr\libfajr\pub\base\Trace;
  */
 class DispatchController extends DisableEvilCallsObject implements Controller
 {
+  /* TODO document */
+  public static function getInstance()
+  {
+    $dispatchMap = array(
+      'studium' => '\fajr\controller\studium\StudiumController',
+      'predmety' => '\fajr\controller\predmety\PredmetyController',
+      'userSettings' => '\fajr\controller\user\UserSettingsController',
+      'login' => '\fajr\controller\user\LoginController',
+      'welcome' => '\fajr\controller\welcome\WelcomeController',
+    );
+    return new DispatchController($dispatchMap);
+  }
 
   /** @var array(string=>string) lookup table for class names */
   private $classNameTable;
-
-  /** @var Injector injector to be used for creating controllers */
-  private $injector;
 
   /**
    * Construct a new DispatchController
    *
    * @param array(string=>string) $classNameTable mapping from names to classes
    */
-  public function __construct(Injector $injector, array $classNameTable)
+  public function __construct(array $classNameTable)
   {
     $this->classNameTable = $classNameTable;
-    $this->injector = $injector;
   }
 
   /**
@@ -76,7 +83,7 @@ class DispatchController extends DisableEvilCallsObject implements Controller
 
     $class = $this->classNameTable[$controllerName];
 
-    $instance = $this->injector->getInstance($class);
+    $instance = call_user_func(array($class, 'getInstance'));
 
     if (!($instance instanceof Controller)) {
       throw new Exception('Class "' . $controllerName . '" mapped to action "' . 

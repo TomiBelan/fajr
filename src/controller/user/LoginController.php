@@ -20,11 +20,13 @@ use fajr\libfajr\AIS2Utils;
 use fajr\libfajr\base\Preconditions;
 use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\pub\login\LoginFactory;
+use fajr\libfajr\pub\login\LoginFactoryImpl;
 use fajr\Request;
 use fajr\Response;
 use fajr\util\FajrUtils;
 use sfStorage;
 use fajr\config\FajrConfig;
+use fajr\config\FajrConfigLoader;
 use fajr\settings\SkinSettings;
 use fajr\LoginManager;
 use fajr\ServerManager;
@@ -38,6 +40,12 @@ use fajr\ServerManager;
  */
 class LoginController extends BaseController
 {
+  /* TODO document */
+  public static function getInstance()
+  {
+    return new LoginController(FajrConfigLoader::getConfiguration(), LoginManager::getInstance(), LoginFactoryImpl::getInstance(), ServerManager::getInstance());
+  }
+
   /** @var FajrConfig */
   private $config;
   

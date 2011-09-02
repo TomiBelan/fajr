@@ -28,6 +28,7 @@ use fajr\Response;
 use fajr\Sorter;
 use fajr\util\FajrUtils;
 use fajr\LoginManager;
+use fajr\BackendProvider;
 use fajr\exceptions\AuthenticationRequiredException;
 
 fields::autoload();
@@ -41,6 +42,12 @@ fields::autoload();
  */
 class StudiumController extends BaseController
 {
+  public static function getInstance()
+  {
+    $backendFactory = BackendProvider::getInstance();
+    return new StudiumController($backendFactory->newVSES017Factory(), $backendFactory->getServerTime(), LoginManager::getInstance());
+  }
+
   // @input
   private $studium;
   private $zapisnyList;

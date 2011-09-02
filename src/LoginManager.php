@@ -25,6 +25,19 @@ use fajr\libfajr\login\CosignProxyLogin;
 
 class LoginManager
 {
+  /** @var LoginManager $instance */
+  private static $instance;
+
+  /* TODO document */
+  public static function getInstance()
+  {
+    if (!isset(self::$instance)) {
+      self::$instance = new LoginManager(SessionStorageProvider::getInstance(),
+          Request::getInstance(), Response::getInstance(), LazyServerConnection::getInstance());
+    }
+    return self::$instance;
+  }
+
   private $request;
   private $session;
   private $response;

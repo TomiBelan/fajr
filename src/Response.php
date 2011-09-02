@@ -25,6 +25,17 @@ use fajr\util\FajrUtils;
  */
 class Response
 {
+  /** @var Response $instance */
+  private static $instance;
+
+  /* TODO document */
+  public static function getInstance()
+  {
+    if (!isset(self::$instance)) {
+      self::$instance = new Response();
+    }
+    return self::$instance;
+  }
 
   /** @var string template name to be used */
   private $template = null;

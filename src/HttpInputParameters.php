@@ -28,6 +28,42 @@ use InvalidArgumentException;
  */
 class HttpInputParameters implements InvocationParameters
 {
+  /** @var HttpInputParameters $instance */
+  private static $instance;
+
+  /* TODO document */
+  public static function getInstance()
+  {
+    if (!isset(self::$instance)) {
+      $allowed_get = array(
+        'studium' => new IntegerValidator(false),
+        'list' => new IntegerValidator(false),
+        'predmet' => new IntegerValidator(false),
+        'termin' => new IntegerValidator(false),
+        'action' => new StringValidator(),
+        'code' => new StringValidator(),
+        // We need loginType in GET due to cosign proxy login!
+        'loginType' => new StringValidator(),
+        'serverName' => new StringValidator(),
+      );
+      $allowed_post = array(
+        'prihlasPredmetIndex' => new IntegerValidator(false),
+        'prihlasTerminIndex' => new IntegerValidator(false),
+        'odhlasIndex' => new IntegerValidator(false),
+        'hash' => new StringValidator(),
+        'action' => new StringValidator(),
+        'login' => new StringValidator(),
+        'password' => new StringValidator(),
+        'cosignCookie' => new StringValidator(),
+        'loginType' => new StringValidator(),
+        'serverName' => new StringValidator(),
+      );
+      self::$instance = new HttpInputParameters($allowed_get, $allowed_post);
+      self::$instance->prepare();
+    }
+    return self::$instance;
+  }
+
   /** @var array parsed values */
   private $inputParameters = array();
 
