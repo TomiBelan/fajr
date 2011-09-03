@@ -9,8 +9,6 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-require_once '../third_party/symfony_di/lib/sfServiceContainerAutoloader.php';
-sfServiceContainerAutoloader::register();
 
 require_once '../third_party/symfony_storage/sfStorageAutoloader.php';
 sfStorageAutoloader::register();

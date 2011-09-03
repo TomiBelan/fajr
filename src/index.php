@@ -15,7 +15,6 @@ namespace fajr;
 
 use fajr\libfajr\base\SystemTimer;
 use Loader;
-use sfServiceContainerAutoloader;
 use sfStorageAutoloader;
 use Twig_Autoloader;
 use Exception;
@@ -81,10 +80,6 @@ if (!defined('_FAJR')) {
 error_reporting(E_ALL | E_STRICT);
 date_default_timezone_set('Europe/Bratislava');
 mb_internal_encoding("UTF-8");
-
-// register Symfony DI autoloader
-require_once '../third_party/symfony_di/lib/sfServiceContainerAutoloader.php';
-sfServiceContainerAutoloader::register();
 
 // register Symfony Storage autoloader
 require_once '../third_party/symfony_storage/sfStorageAutoloader.php';
