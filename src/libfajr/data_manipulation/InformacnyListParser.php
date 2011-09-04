@@ -89,7 +89,11 @@ class InformacnyListParser {
      *
      */
     public function setAttribute(Trace $trace, $attribute, $value) {
-        $trace->tlog("Setting value: '$value' as attribute: '$attribute' into list");
+        $value = trim($value);
+        if (trim($value) == '') {
+          $trace->tlog("Ignoring empty attribute '" . $attribute . "'");
+          return;
+        }
         if (StrUtil::endsWith($attribute, ':')) {
           $attribute = substr($attribute, 0, strlen($attribute) - 1);
         }
@@ -101,6 +105,7 @@ class InformacnyListParser {
           $trace->tlog("Ignoring attribute '" . $attribute . "'");
           return;
         }
+        $trace->tlog("Setting value: '$value' as attribute: '$attribute' into list");
         $this->list[] = array(
           'id' => $id,
           'name' => $attribute, 
