@@ -36,6 +36,8 @@ use fajr\libfajr\util\StrUtil;
  */
 class InformacnyListParser {
 
+    const IGNORE_ATTRIBUTE = '_ignore';
+  
     private $list;
     private $attr_def = array(
       'Názov vysokej školy, názov fakulty' => InformacnyListAttributeEnum::SKOLA_FAKULTA,
@@ -46,7 +48,7 @@ class InformacnyListParser {
       'Zabezpečuje' => InformacnyListAttributeEnum::ZABEZPECUJE,
       'Obdobie štúdia predmetu' => InformacnyListAttributeEnum::OBDOBIE_STUDIA_PREDMETU,
       'Forma výučby' => InformacnyListAttributeEnum::FORMA_VYUCBY,
-      //'Odporúčaný rozsah výučby ( v hodinách ):' => ,
+      'Odporúčaný rozsah výučby ( v hodinách )' => self::IGNORE_ATTRIBUTE,
       'Týždenný' => InformacnyListAttributeEnum::VYUCBA_TYZDENNE,
       'Za obdobie štúdia' => InformacnyListAttributeEnum::VYUCBA_SPOLU,
       'Počet kreditov' => InformacnyListAttributeEnum::POCET_KREDITOV,
@@ -94,6 +96,10 @@ class InformacnyListParser {
         $id = null;
         if (isset($this->attr_def[$attribute])) {
           $id = $this->attr_def[$attribute];
+        }
+        if ($id == self::IGNORE_ATTRIBUTE) {
+          $trace->tlog("Ignoring attribute '" . $attribute . "'");
+          return;
         }
         $this->list[] = array(
           'id' => $id,
