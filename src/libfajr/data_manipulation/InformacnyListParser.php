@@ -86,13 +86,17 @@ class InformacnyListParser
    * Sets value for attribute in associative array $list.
    *
    * @param string $attribute
-   * @param string|array $value
+   * @param array $values
    *
    */
-  public function setAttribute(Trace $trace, $attribute, $value)
+  private function setAttribute(Trace $trace, $attribute, $values)
   {
-    $value = trim($value);
-    if (trim($value) == '') {
+    $new_values = array();
+    foreach ($values as $value) {
+      if ($value != '') $new_values[] = $value;
+    }
+    $values = $new_values;
+    if (count($values) == 0) {
       $trace->tlog("Ignoring empty attribute '" . $attribute . "'");
       return;
     }
@@ -107,24 +111,24 @@ class InformacnyListParser
       $trace->tlog("Ignoring attribute '" . $attribute . "'");
       return;
     }
-    $trace->tlog("Setting value: '$value' as attribute: '$attribute' into list");
     $this->list[] = array(
       'id' => $id,
       'name' => $attribute,
-      'value' => self::trimDeleteNewline($value));
+      'values' => $values);
   }
 
   /**
-   * Deletes breaklines and trims string.
+   * Fixes nbsp, deletes breaklines and trims string.
    *
    * @param string $string
    *
-   * @return trimmed string without brakelines
+   * @return fixed attribute value
    *
    */
-  static function trimDeleteNewline($string)
+  static function fixAttributeValue($string)
   {
     Preconditions::checkIsString($string);
+    $string = ParserUtils::fixNbsp($string);
     return trim(str_replace(array("\r", "\r\n", "\n"), '', $string));
   }
 
@@ -153,7 +157,8 @@ class InformacnyListParser
       // je textNode
       $child->tlog("Attribute is text node");
       $child->tlogVariable("Parsed attribute:", $sused->nodeValue);
-      $this->setAttribute($trace, $attributeName, ParserUtils::fixNbsp($sused->nodeValue));
+      $values = array(self::fixAttributeValue($sused->nodeValue));
+      $this->setAttribute($trace, $attributeName, $values);
       return;
     }
     $textSused = $sused->nextSibling;
@@ -163,21 +168,21 @@ class InformacnyListParser
     }
     if ($textSused->tagName == 'p') {
       $child->tlog("Parsing <p> tags");
-      while ($textSused != NULL) {
-        if ($textSused->nodeType != \XML_ELEMENT_NODE) {
-          $textSused = $textSused->nextSibling;
+      $values = array();
+      for (; $textSused != null; $textSused = $textSused->nextSibling) {
+        if ($textSused->nodeType != \XML_ELEMENT_NODE ||
+            $textSused->tagName != 'p') {
           continue;
         }
-        if ($textSused->tagName == 'p') {
-          $child->tlogVariable("Parsed attribute:", $textSused->nodeValue);
-          $this->setAttribute($trace, $attributeName, ParserUtils::fixNbsp($textSused->nodeValue));
-        }
-        $textSused = $textSused->nextSibling;
+        $values[] = self::fixAttributeValue($textSused->nodeValue);
       }
+      $child->tlogVariable("Parsed attribute:", $values);
+      $this->setAttribute($trace, $attributeName, $values);
     } else {
       $child->tlog("Parsing other tags");
       $child->tlogVariable("Parsed attribute:", $sused->nodeValue);
-      $this->setAttribute($trace, $attributeName, ParserUtils::fixNbsp($sused->nodeValue));
+      $values = array(self::fixAttributeValue($sused->nodeValue));
+      $this->setAttribute($trace, $attributeName, $values);
     }
   }
 

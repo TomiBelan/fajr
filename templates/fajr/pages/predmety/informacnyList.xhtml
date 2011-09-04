@@ -20,7 +20,15 @@
     {% for item in list %}
       <tr>
         <td>{{ item.name }}</td>
-        <td>{{ item.value }}</td>
+        {% if item.values|length == 1 %}
+          <td>{{ item.values[0] }}</td>
+        {% else %}
+          <td><ul>
+            {% for value in item.values %}
+              <li>{{ value }}</li>
+            {% endfor %}
+          </ul></td>
+        {% endif %}
       </tr>
     {% endfor %}  
   </table>
