@@ -104,8 +104,10 @@ class InformacnyListParser
       $attribute = substr($attribute, 0, strlen($attribute) - 1);
     }
     $id = null;
+    $name = $attribute;
     if (isset($this->attr_def[$attribute])) {
       $id = $this->attr_def[$attribute];
+      $name = InformacnyListAttributeEnum::getUnicodeName($id);
     }
     if ($id == self::IGNORE_ATTRIBUTE) {
       $trace->tlog("Ignoring attribute '" . $attribute . "'");
@@ -113,7 +115,8 @@ class InformacnyListParser
     }
     $this->list[] = array(
       'id' => $id,
-      'name' => $attribute,
+      'name' => $name,
+      'rawLabel' => $attribute,
       'values' => $values);
   }
 
