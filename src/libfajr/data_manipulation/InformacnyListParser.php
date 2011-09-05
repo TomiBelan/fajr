@@ -200,7 +200,7 @@ class InformacnyListParser
   public static function fixBr(Trace $trace, $html)
   {
     Preconditions::checkIsString($html);
-    $html = str_replace("<br>", "", $html);
+    $html = str_replace("<br>", " ", $html);
     return $html;
   }
 
