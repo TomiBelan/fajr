@@ -42,7 +42,7 @@ class ControllerModule implements Module
                   'predmety' => 'predmety.controller.class',
                   'userSettings' => 'userSettings.controller.class',
                   'login' => 'login.controller.class',
-                  'welcome' => 'welcome.controller.class',
+                  'static' => 'static.controller.class',
                   ),
               );
     $container->addParameters($parameters);

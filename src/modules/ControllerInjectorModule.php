@@ -67,8 +67,8 @@ class ControllerInjectorModule implements Module
               ->addArgument(new sfServiceReference('ServerManager.class'))
               ->setShared(false);
     
-    $container->register('welcome.controller.class',
-                         '\fajr\controller\welcome\WelcomeController')
+    $container->register('static.controller.class',
+                         '\fajr\controller\StaticController')
               ->setShared(false);
     
     $container->register('serverConnection.class', '\fajr\LazyServerConnection')
