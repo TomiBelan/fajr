@@ -28,6 +28,12 @@ class LoginManager
   private $request;
   private $session;
   private $response;
+  
+  /**
+   * Pretoze sa mozme pytat na isLoggedIn() viackrat, cachujeme tuto hodnotu
+   * TODO(anty): invalidovat stav pri zmene, prip. uplne refaktorovat LoginManager
+   * @var boolean 
+   */
   private $cachedLoggedIn;
   private $connection;
 
