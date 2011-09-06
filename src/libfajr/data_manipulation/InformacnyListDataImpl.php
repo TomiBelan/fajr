@@ -26,45 +26,57 @@ use fajr\libfajr\pub\exceptions\NotImplementedException;
  * @author     Martin Králik <majak47@gmail.com>
  * @author     Jakub Marek <jakub.marek@gmail.com>
  */
-class InformacnyListDataImpl implements InformacnyListData {
+class InformacnyListDataImpl implements InformacnyListData
+{
 
-    private $list;
+  private $list;
 
-    public function __construct($list = null) {
-        $this->list = $list;
+  public function __construct($list = null)
+  {
+    $this->list = $list;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getAttribute($id)
+  {
+    foreach ($this->list as $attribute) {
+      if ($attribute['id'] == $id) {
+        return $attribute;
+      }
     }
+    return false;
+  }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function hasAttribute($id)
+  {
+    return $this->getAttribute($id) !== false;
+  }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getAttribute($attribute) {
-        if (!array_key_exists($attribute, $this->list)) {
-            return false;
-        } else {
-            return $this->list[$attribute];
-        }
+  /**
+   * {@inheritdoc}
+   */
+  public function getAllAttributes()
+  {
+    return $this->list;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getListOfAttributes()
+  {
+    $ids = array();
+    foreach ($this->list as $attribute) {
+      if ($attribute['id'] !== null) {
+        $ids[] = $attribute['id'];
+      }
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasAttribute($attribute) {
-        return array_key_exists($attribute, $this->list);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAllAttributes() {
-        return $this->list;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getListOfAttributes() {
-        return array_keys($this->list);
-    }
+    return $ids;
+  }
 
 }

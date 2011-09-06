@@ -100,6 +100,7 @@ class InformacnyListParser
       $trace->tlog("Ignoring empty attribute '" . $attribute . "'");
       return;
     }
+    $attribute = trim($attribute);
     if (StrUtil::endsWith($attribute, ':')) {
       $attribute = substr($attribute, 0, strlen($attribute) - 1);
     }

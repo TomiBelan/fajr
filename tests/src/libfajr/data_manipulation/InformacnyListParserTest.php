@@ -18,7 +18,7 @@ namespace fajr\libfajr\data_manipulation;
 use \PHPUnit_Framework_TestCase;
 use fajr\libfajr\data_manipulation\DataTable;
 use fajr\libfajr\data_manipulation\InformacnyListParser;
-use fajr\libfajr\data_manipulation\InformacnyListAttributeEnum;
+use fajr\libfajr\data_manipulation\InformacnyListAttributeEnum as Attr;
 use fajr\libfajr\pub\base\NullTrace;
 
 /**
@@ -39,64 +39,47 @@ class InformacnyListParserTest extends PHPUnit_Framework_TestCase
     $this->html = file_get_contents(__DIR__ . '/testdata/rozsirenyInformacnyListSGarantomPredmetu.dat');
     $this->parser = new InformacnyListParser();
   }
+  
+  private static function getValue($infoList, $id, $index=0) {
+    $attr = $infoList->getAttribute($id);
+    if ($attr === false) return false;
+    return $attr['values'][$index];
+  }
 
   public function testInformacneListyParsing()
   {
-    $table = $this->parser->parse(new NullTrace(), $this->html);
-    $pomocna_premenna_pre_literaturu = $table->getAttribute(InformacnyListAttributeEnum::LITERATURA);
-    $this->assertEquals(
-      array(
-        'Univerzita Komenského v Bratislave - Fakulta matematiky, fyziky a informatiky',
-        'FMFI.KI/2-INF-235/00',
-        'Kryptológia (2)',
-        'mINF, mINF/k',
-        '',
-        '',
-        '4',
-        'Kurz',
-        '4',
-        '56',
-        '6',
-        '',
-        '1-INF-640 Kryptológia (1)',
-        'Hodnotenie',
-        '',
-        'skúška',
-        'Prezentovať zložitejšie kryptografické konštrukcie s použitím základných prvkov ako aj prístupy k formálnemu zdôvodneniu ich bezpečnosti.',
-        'Schémy na zdieľanie tajomstva, podpisové schémy s dodatočnými vlastnosťami, formálna analýza autentizačných protokolov, bezznalostné dokazovacie systémy, primitíva protokolov s viacerými účastníkmi (oblivious transfer, bit commitment), digitálne peniaze, elektronické voľby, dokázateľná bezpečnosť schém pre asymetrické šifrovanie a digitálne podpisy.',
-        'Stinson D.: Cryptography: Theory and Practice, 3rd Edition, CRC Press, 2005.',
-        'Menezes A.J., Van Oorschot P.C.: Handbook of Applied Cryptography, CRC Press, 1996.',
-        'Koblitz N.: A Course in Number Theory and Cryptography, Springer-Verlag, 1987.',
-        'Mao W.: Modern Cryptography: Theory and Practice, Hewlett-Packard, 2003.',
-        'anglický, slovenský',
-        '14.08.2009'
-      ), array(
-        $table->getAttribute(InformacnyListAttributeEnum::SKOLA_FAKULTA),
-        $table->getAttribute(InformacnyListAttributeEnum::KOD),
-        $table->getAttribute(InformacnyListAttributeEnum::NAZOV),
-        $table->getAttribute(InformacnyListAttributeEnum::STUDIJNY_PROGRAM),
-        $table->getAttribute(InformacnyListAttributeEnum::GARANTUJE),
-        $table->getAttribute(InformacnyListAttributeEnum::ZABEZPECUJE),
-        $table->getAttribute(InformacnyListAttributeEnum::OBDOBIE_STUDIA_PREDMETU),
-        $table->getAttribute(InformacnyListAttributeEnum::FORMA_VYUCBY),
-        $table->getAttribute(InformacnyListAttributeEnum::VYUCBA_TYZDENNE),
-        $table->getAttribute(InformacnyListAttributeEnum::VYUCBA_SPOLU),
-        $table->getAttribute(InformacnyListAttributeEnum::POCET_KREDITOV),
-        $table->getAttribute(InformacnyListAttributeEnum::PODMIENUJUCE_PREDMETY),
-        $table->getAttribute(InformacnyListAttributeEnum::OBSAHOVA_PREREKVIZITA),
-        $table->getAttribute(InformacnyListAttributeEnum::SPOSOB_HODNOTENIA_A_SKONCENIA),
-        $table->getAttribute(InformacnyListAttributeEnum::PRIEBEZNE_HODNOTENIE),
-        $table->getAttribute(InformacnyListAttributeEnum::ZAVERECNE_HODNOTENIE),
-        $table->getAttribute(InformacnyListAttributeEnum::CIEL_PREDMETU),
-        $table->getAttribute(InformacnyListAttributeEnum::OSNOVA_PREDMETU),
-        $pomocna_premenna_pre_literaturu[0],
-        $pomocna_premenna_pre_literaturu[1],
-        $pomocna_premenna_pre_literaturu[2],
-        $pomocna_premenna_pre_literaturu[3],
-        $table->getAttribute(InformacnyListAttributeEnum::VYUCOVACI_JAZYK),
-        $table->getAttribute(InformacnyListAttributeEnum::DATUM_POSLEDNEJ_UPRAVY)
-      )
-    );
+    $infoList = $this->parser->parse(new NullTrace(), $this->html);
+    $this->assertEquals('Univerzita Komenského v Bratislave - Fakulta matematiky, fyziky a informatiky',
+        self::getValue($infoList, Attr::SKOLA_FAKULTA));
+    $this->assertEquals('FMFI.KI/2-INF-235/00', self::getValue($infoList, Attr::KOD));
+    $this->assertEquals('Kryptológia (2)', self::getValue($infoList, Attr::NAZOV));
+    $this->assertEquals('mINF, mINF/k', self::getValue($infoList, Attr::STUDIJNY_PROGRAM));
+    $this->assertEquals(false, self::getValue($infoList, Attr::GARANTUJE));
+    $this->assertEquals(false, self::getValue($infoList, Attr::ZABEZPECUJE));
+    $this->assertEquals('4', self::getValue($infoList, Attr::OBDOBIE_STUDIA_PREDMETU));
+    $this->assertEquals('Kurz', self::getValue($infoList, Attr::FORMA_VYUCBY));
+    $this->assertEquals('4', self::getValue($infoList, Attr::VYUCBA_TYZDENNE));
+    $this->assertEquals('56', self::getValue($infoList, Attr::VYUCBA_SPOLU));
+    $this->assertEquals('6', self::getValue($infoList, Attr::POCET_KREDITOV));
+    $this->assertEquals(false, self::getValue($infoList, Attr::PODMIENUJUCE_PREDMETY));
+    $this->assertEquals('1-INF-640 Kryptológia (1)', self::getValue($infoList, Attr::OBSAHOVA_PREREKVIZITA));
+    $this->assertEquals('Hodnotenie', self::getValue($infoList, Attr::SPOSOB_HODNOTENIA_A_SKONCENIA));
+    $this->assertEquals(false, self::getValue($infoList, Attr::PRIEBEZNE_HODNOTENIE));
+    $this->assertEquals('skúška', self::getValue($infoList, Attr::ZAVERECNE_HODNOTENIE));
+    $this->assertEquals('Prezentovať zložitejšie kryptografické konštrukcie s použitím základných prvkov ako aj prístupy k formálnemu zdôvodneniu ich bezpečnosti.',
+        self::getValue($infoList, Attr::CIEL_PREDMETU));
+    $this->assertEquals('Schémy na zdieľanie tajomstva, podpisové schémy s dodatočnými vlastnosťami, formálna analýza autentizačných protokolov, bezznalostné dokazovacie systémy, primitíva protokolov s viacerými účastníkmi (oblivious transfer, bit commitment), digitálne peniaze, elektronické voľby, dokázateľná bezpečnosť schém pre asymetrické šifrovanie a digitálne podpisy.',
+        self::getValue($infoList, Attr::OSNOVA_PREDMETU));
+    $this->assertEquals('Stinson D.: Cryptography: Theory and Practice, 3rd Edition, CRC Press, 2005.',
+        self::getValue($infoList, Attr::LITERATURA, 0));
+    $this->assertEquals('Menezes A.J., Van Oorschot P.C.: Handbook of Applied Cryptography, CRC Press, 1996.',
+        self::getValue($infoList, Attr::LITERATURA, 1));
+    $this->assertEquals('Koblitz N.: A Course in Number Theory and Cryptography, Springer-Verlag, 1987.',
+        self::getValue($infoList, Attr::LITERATURA, 2));
+    $this->assertEquals('Mao W.: Modern Cryptography: Theory and Practice, Hewlett-Packard, 2003.',
+        self::getValue($infoList, Attr::LITERATURA, 3));
+    $this->assertEquals('anglický, slovenský', self::getValue($infoList, Attr::VYUCOVACI_JAZYK));
+    $this->assertEquals('14.08.2009', self::getValue($infoList, Attr::DATUM_POSLEDNEJ_UPRAVY));
   }
 
 }
