@@ -33,4 +33,10 @@ class VSST060_FakeFactoryImpl implements VSST060_Factory
     return new VSST060fake\FakeRegisterPredmetovScreenImpl($trace,
         new FakeRequestExecutor($this->storage, array()));
   }
+
+  public function newRegisterPredmetovScreen(Trace $trace)
+  {
+    return new fake\FakeRegisterPredmetovScreenImpl($trace, 
+        new FakeRequestExecutor($this->storage, array()));
+  }
 }

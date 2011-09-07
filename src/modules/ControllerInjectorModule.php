@@ -2,7 +2,7 @@
 /**
  * Injector module for arguments passed to controllers.
  *
- * @copyright  Copyright (c) 2010 The Fajr authors (see AUTHORS).
+ * @copyright  Copyright (c) 2010, 2011 The Fajr authors (see AUTHORS).
  *             Use of this source code is governed by a MIT license that can be
  *             found in the LICENSE file in the project root directory.
  *
@@ -20,6 +20,8 @@ use fajr\config\ServerConfig;
 use sfServiceContainerBuilder;
 use sfServiceReference;
 use sfStorage;
+use fajr\config\FajrConfigOptions;
+use fajr\config\FajrConfig;
 
 /**
  * Injector module for arguments passed to controllers.
@@ -30,20 +32,11 @@ use sfStorage;
  */
 class ControllerInjectorModule implements Module
 {
-  /** @var AIS2ServerConnection */
-  private $connection;
+  /** @var FajrConfig */
+  private $config;
 
-  /** @var ServerConfig */
-  private $server;
-
-  /** @var sfStorage */
-  private $storage;
-
-  public function __construct(AIS2ServerConnection $connection,
-      ServerConfig $server, sfStorage $storage) {
-    $this->connection = $connection;
-    $this->server = $server;
-    $this->storage = $storage;
+  public function __construct(FajrConfig $config) {
+    $this->config = $config;
   }
 
   /**
@@ -57,6 +50,7 @@ class ControllerInjectorModule implements Module
                          '\fajr\controller\studium\StudiumController')
               ->addArgument(new sfServiceReference('administracia_studia_screen.factory.class'))
               ->addArgument('%serverTime%')
+              ->addArgument(new sfServiceReference('LoginManager.class'))
               ->setShared(false);
 
     $container->register('predmety.controller.class',
@@ -64,9 +58,24 @@ class ControllerInjectorModule implements Module
               ->addArgument(new sfServiceReference('register_predmetov_screen.factory.class'))
               ->addArgument('%serverTime%')
               ->setShared(false);
+    
+    $container->register('login.controller.class',
+                         '\fajr\controller\user\LoginController')
+              ->addArgument(new sfServiceReference('FajrConfig.class'))
+              ->addArgument(new sfServiceReference('LoginManager.class'))
+              ->addArgument(new sfServiceReference('LoginFactory.class'))
+              ->addArgument(new sfServiceReference('ServerManager.class'))
+              ->setShared(false);
+    
+    $container->register('static.controller.class',
+                         '\fajr\controller\StaticController')
+              ->setShared(false);
+    
+    $container->register('serverConnection.class', '\fajr\LazyServerConnection')
+              ->setShared(true);
 
-    switch ($this->server->getBackendType()) {
-      case ServerConfig::BACKEND_FAKE:
+    switch ($this->config->get(FajrConfigOptions::BACKEND)) {
+      case FajrConfigOptions::BACKEND_FAKE:
         $container->register('administracia_studia_screen.factory.class',
                              '\fajr\libfajr\pub\window\VSES017_administracia_studia\VSES017_FakeFactoryImpl')
                   ->addArgument(new sfServiceReference('fake.storage.class'))
@@ -82,7 +91,7 @@ class ControllerInjectorModule implements Module
 
         $container->setParameter('TempStorage.options',
                     array('permanent_storage' => new sfServiceReference('fake.file.storage.class'),
-                          'temporary_storage' => $this->storage));
+                          'temporary_storage' => new sfServiceReference('Session.Storage.class')));
 
         $container->register('fake.file.storage.class', '\fajr\libfajr\storage\FileStorage')
                   ->addArgument('%Fake.FileStorage.options%');
@@ -100,7 +109,7 @@ class ControllerInjectorModule implements Module
 
         $container->setParameter('serverTime', $FAKE_TIME);
         break;
-      case ServerConfig::BACKEND_LIBFAJR:
+      case FajrConfigOptions::BACKEND_LIBFAJR:
         $container->register('administracia_studia_screen.factory.class',
                              '\fajr\libfajr\pub\window\VSES017_administracia_studia\VSES017_FactoryImpl')
                   ->addArgument(new sfServiceReference('serverConnection.class'))
@@ -114,8 +123,6 @@ class ControllerInjectorModule implements Module
         $container->register('AIS2MainScreen.class', '\fajr\libfajr\window\AIS2MainScreenImpl')
                   ->addArgument(new sfServiceReference('serverConnection.class'))
                   ->setShared(false);
-
-        $container->setService('serverConnection.class', $this->connection);
 
         $container->setParameter('serverTime', time());
         break;

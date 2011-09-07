@@ -17,6 +17,7 @@ use Exception;
 use fajr\ArrayTrace;
 use fajr\Context;
 use fajr\controller\DispatchController;
+use fajr\exceptions\AuthenticationRequiredException;
 use fajr\exceptions\SecurityException;
 use fajr\exceptions\ValidationException;
 use fajr\injection\Injector;
@@ -66,6 +67,11 @@ class Fajr {
    * @var Statistics $statistics
    */
   private $statistics;
+  
+  /**
+   * @var ServerManager
+   */
+  private $serverManager;
 
   /**
    * Constructor.
@@ -76,6 +82,7 @@ class Fajr {
   {
     $this->injector = $injector;
     $this->config = $config;
+    $this->serverManager = $injector->getInstance('ServerManager.class');
   }
 
   private function provideCookieFile()
@@ -95,32 +102,6 @@ class Fajr {
     $connection = new connection\AIS2ErrorCheckingConnection($connection);
 
     return $this->statistics->hookFinalConnection($connection);
-  }
-
-  public function getServer()
-  {
-    $request = $this->context->getRequest();
-    $session = $this->context->getSessionStorage();
-
-    $serverList = $this->config->get('AIS2.ServerList');
-    $serverName = $this->config->get('AIS2.DefaultServer');
-
-    if (($server = $session->read('server')) !== null) {
-      if ($session->read('login/login.class') === null) {
-        throw new Exception('Fajr is in invalid state. Delete cookies and try again.');
-      }
-      return $server;
-    }
-
-    if ($request->getParameter("serverName")) {
-      $serverName = $request->getParameter("serverName");
-      if (!isset($serverList[$serverName])) {
-        throw new SecurityException("Invalid serverName!");
-      }
-    }
-    
-    assert(isset($serverList[$serverName]));
-    return $serverList[$serverName];
   }
 
   /**
@@ -232,10 +213,11 @@ class Fajr {
     $response->set('availableServers', array());
     $response->set('currentServer', array('isBeta'=>false, 'instanceName'=>'Chyba'));
 
-    $server = $this->getServer();
+    $server = $this->serverManager->getActiveServer();
     $serverList = $this->config->get(FajrConfigOptions::AIS_SERVERLIST);
     $response->set('availableServers', $serverList);
     $response->set('currentServer', $server);
+    $response->set('backendType', $this->config->get(FajrConfigOptions::BACKEND));
 
     $response->set('aisVersion', null);
     $response->set('aisVersionIncompatible', false);
@@ -246,8 +228,7 @@ class Fajr {
   public function runLogic(Trace $trace)
   {
     $session = $this->context->getSessionStorage();
-    $loginManager = new LoginManager($session, $this->context->getRequest(),
-        $this->context->getResponse());
+    $loginManager = $this->injector->getInstance('LoginManager.class');
     // we are going to log in and  we need a clean session.
     // This needs to be done before a connection
     // is created, because we pass cookie file name
@@ -257,48 +238,31 @@ class Fajr {
     }
 
     $connection = $this->provideConnection();
-    $server = $this->getServer();
+    $server = $this->serverManager->getActiveServer();
     $serverConnection = new AIS2ServerConnection($connection,
         new AIS2ServerUrlMap($server->getServerName()));
+    $connService = $this->injector->getInstance('serverConnection.class');
+    $connService->setReal($serverConnection);
 
     $action = $this->context->getRequest()->getParameter('action',
                                            'studium.MojeTerminyHodnotenia');
     $response = $this->context->getResponse();
+    
+    $loggedIn = $loginManager->isLoggedIn($serverConnection);
+    $response->set('loggedIn', $loggedIn);
+    
+    $mainScreen = $this->injector->getInstance('AIS2MainScreen.class');
 
-    if ($action == 'logout') {
-      try {
-        $loginManager->logout($serverConnection);
-      } catch (LoginException $e) {
-        $this->setException($e);
-      }
-    } else if ($action == 'termsOfUse') {
-      // TODO(anty): refactor this
-      $response->setTemplate('termsOfUse');
-      return;
-    } else if ($loginManager->shouldLogin()) {
-      $factory = $this->injector->getInstance('LoginFactory.class');
-      try {
-        $loginManager->login($trace->addChild("Logging in..."),
-            $server, $factory, $serverConnection);
-      } catch (LoginException $e) {
-        $this->setException($e);
-        try {
-          $loginManager->logout($trace, $serverConnection);
-        } catch (LoginException $e) {
-          // do nothing
-        }
-      }
-    } else if ($loginManager->isLoggedIn($serverConnection)) {
-      $response->set('loggedIn', true);
-      $controllerInjector = new Injector(array(new
-            ControllerInjectorModule($serverConnection, $server, $session, $this->config)),
-            $this->config->get(FajrConfigOptions::DEBUG_EXCEPTION_SHOWSTACKTRACE));
-      $mainScreen = $controllerInjector->getInstance('AIS2MainScreen.class');
-
-      if (($aisVersion = $session->read('ais/aisVersion')) == null) {
-        $aisVersion = $mainScreen->getAisVersion($trace->addChild('Get AIS version'));
-        $session->write('ais/aisVersion', $aisVersion);
-      }
+    if (($aisVersion = $session->read('ais/aisVersion')) == null) {
+      $aisVersion = $mainScreen->getAisVersion($trace->addChild('Get AIS version'));
+      $session->write('ais/aisVersion', $aisVersion);
+    }
+    $response->set('aisVersion', $aisVersion);
+    $response->set('aisVersionIncompatible', 
+      !($aisVersion >= regression\VersionRange::getMinVersion() &&
+        $aisVersion <= regression\VersionRange::getMaxVersion()));
+    
+    if ($loggedIn) {
       if (($aisApps = $session->read('ais/aisApps')) == null) {
         $aisModules = array('SP', 'LZ', 'ES', 'ST', 'RH', 'UB', 'AS', 'RP');
         $aisApps = $mainScreen->
@@ -310,38 +274,19 @@ class Fajr {
         $userName = $mainScreen->getFullUserName($trace->addChild('Get user name'));
         $session->write('ais/aisUserName', $userName);
       }
-      $response->set('aisVersion', $aisVersion);
-      $response->set('aisVersionIncompatible', 
-        !($aisVersion >= regression\VersionRange::getMinVersion() &&
-          $aisVersion <= regression\VersionRange::getMaxVersion()));
       $response->set('aisUserName', $userName);
+    }
 
-      $controller = new DispatchController($controllerInjector,
-          $this->injector->getParameter('controller.dispatchMap'));
+    $controller = new DispatchController($this->injector,
+        $this->injector->getParameter('controller.dispatchMap'));
 
-      $response->set("action", $action);
+    $response->set("action", $action);
+    try {
       $controller->invokeAction($trace, $action, $this->context);
-      $response->set('statistics', $this->statistics);
     }
-    else
-    {
-      $server = $this->getServer();
-      switch ($server->getLoginType()) {
-        case 'password':
-          $response->setTemplate('welcome');
-          break;
-        case 'cosign':
-          $response->setTemplate('welcomeCosign');
-          break;
-        case 'cosignproxy':
-          $response->setTemplate('welcomeCosignProxy');
-          break;
-        case 'nologin':
-          $response->setTemplate('welcomeDemo');
-          break;
-        default:
-          throw new Exception("Invalid type of login");
-      }
+    catch (AuthenticationRequiredException $ex) {
+      $response->redirect(array('action' => 'login.LoginScreen'), 'index.php');
     }
+    $response->set('statistics', $this->statistics);
   }
 }

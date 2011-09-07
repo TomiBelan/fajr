@@ -28,12 +28,22 @@ class LoginManager
   private $request;
   private $session;
   private $response;
+  
+  /**
+   * Pretoze sa mozme pytat na isLoggedIn() viackrat, cachujeme tuto hodnotu
+   * TODO(anty): uplne refaktorovat LoginManager
+   * @var boolean 
+   */
+  private $cachedLoggedIn;
+  private $connection;
 
-  public function __construct(sfStorage $session, Request $request, Response $response)
+  public function __construct(sfStorage $session, Request $request, Response $response,
+      AIS2ServerConnection $connection)
   {
     $this->session = $session;
     $this->request = $request;
     $this->response = $response;
+    $this->connection = $connection;
   }
 
   /**
@@ -46,20 +56,23 @@ class LoginManager
     return $this->request->hasParameter('loginType');
   }
 
-  public function isLoggedIn(AIS2ServerConnection $connection)
+  public function isLoggedIn()
   {
     $login = $this->session->read('login/login.class');
     if ($login === null) return false;
+    if ($this->cachedLoggedIn != null) return $this->cachedLoggedIn;
 
-    return $login->isLoggedIn($connection) ||
-           $login->ais2Relogin($connection);
+    $this->cachedLoggedIn =  $login->isLoggedIn($this->connection) ||
+           $login->ais2Relogin($this->connection);
+    return $this->cachedLoggedIn;
   }
 
   /**
    * Odhlási z Cosignu a zmaže lokálne cookies.
    */
-  public function logout(AIS2ServerConnection $connection)
+  public function logout()
   {
+    $this->cachedLoggedIn = null;
     $login = $this->session->read('login/login.class');
     $server = $this->session->read('server');
 
@@ -76,8 +89,8 @@ class LoginManager
     session_destroy();
 
 
-    if ($login === null) return false;
-    if (!$login->logout($connection)) {
+    if ($login === null || !$login->logout($this->connection)) {
+      $this->response->redirect(array(), 'index.php');
       return false;
     }
 
@@ -92,12 +105,13 @@ class LoginManager
     }
   }
 
-  public function login(Trace $trace, ServerConfig $serverConfig, LoginFactory $factory, AIS2ServerConnection $connection)
+  public function login(Trace $trace, ServerConfig $serverConfig, LoginFactory $factory)
   {
+    $this->cachedLoggedIn = null;
     $login = $this->provideLogin($serverConfig, $factory, $this->request);
     if ($login === null) return false;
     $trace->tlog("logging in");
-    if (!$login->login($connection)) {
+    if (!$login->login($this->connection)) {
       return false;
     }
     $trace->tlog("logged in correctly.");

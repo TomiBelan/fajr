@@ -18,10 +18,11 @@
  # password login box
  #}
 <div class="span-7 prepend-1">
-  <form method="post" action="">
+  <form method="post" action="index.php">
     <fieldset class="login-box">
-      <input type="hidden" name="serverName" value="{{ currentServer.serverName }}">
+      <input type="hidden" name="serverName" value="{{ currentServer.serverName }}" />
       <input type="hidden" name="loginType" value="cosignpassword" />
+      <input type="hidden" name="action" value="login.Login" />
       <legend>Prihlásenie heslom do <br/>{{ currentServer.serverName }} </legend>
       <div>
         <label for="login">Prihlasovacie meno</label>
@@ -44,10 +45,11 @@
  # cookie login box
  #}
 <div class="span-7 last">
-  <form method="post" action="">
+  <form method="post" action="index.php">
     <fieldset class="login-box">
       <input type="hidden" name="serverName" value="{{ currentServer.serverName }}" />
       <input type="hidden" name="loginType" value="cosigncookie" />
+      <input type="hidden" name="action" value="login.Login" />
       <legend>Prihlásenie cez cookie do <br/>{{ currentServer.serverName }} </legend>
       <div>
       bezpečne sa

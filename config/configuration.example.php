@@ -1,5 +1,5 @@
 <?php
-// Copyright (c) 2010 The Fajr authors (see AUTHORS).
+// Copyright (c) 2010, 2011 The Fajr authors (see AUTHORS).
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file in the project root directory.
 
@@ -142,8 +142,6 @@ return array(
    *   'Login.Cosign.CookieName'=>'cosign-filter-ais2.uniba.sk',
    * - Je daná inštancia ostrá verzia AISu?
    *   'Server.Beta'=>false
-   * - Typ serveru
-   *   'Backend'=>ServerConfig::BACKEND_LIBFAJR
    */
   'AIS2.ServerList' => array(
     'ais2.uniba.sk' => new ServerConfig(
@@ -168,7 +166,6 @@ return array(
         'Server.Name' => 'fajr.demo',
         'Login.Type' => 'nologin',
         'Server.Beta' => false,
-        'Backend' => ServerConfig::BACKEND_FAKE
         )),
     ),
 
@@ -176,4 +173,14 @@ return array(
    * Je toto development verzia? (Obsahuje novú funkcionalitu, ktorá je zatiaľ v testovaní)
    */
   // 'Features.Devel' => false,
+  
+  /*
+   * Aky backend sa ma pouzit.
+   * 
+   * Mozne hodnoty:
+   *  libfajr - pouzije sa skutocne pripojenie na AIS
+   *  fake - data sa budu nacitavat zo suborov
+   * 
+   */
+  // 'Backend' => 'libfajr',
 );

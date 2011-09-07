@@ -7,11 +7,11 @@
  *             found in the LICENSE file in the project root directory.
  *
  * @package    Fajr
- * @subpackage Controller__Settings
+ * @subpackage Controller__User
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace fajr\controller\settings;
+namespace fajr\controller\user;
 
 use Exception;
 use fajr\Context;
