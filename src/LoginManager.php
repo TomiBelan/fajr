@@ -31,7 +31,7 @@ class LoginManager
   
   /**
    * Pretoze sa mozme pytat na isLoggedIn() viackrat, cachujeme tuto hodnotu
-   * TODO(anty): invalidovat stav pri zmene, prip. uplne refaktorovat LoginManager
+   * TODO(anty): uplne refaktorovat LoginManager
    * @var boolean 
    */
   private $cachedLoggedIn;
@@ -72,6 +72,7 @@ class LoginManager
    */
   public function logout()
   {
+    $this->cachedLoggedIn = null;
     $login = $this->session->read('login/login.class');
     $server = $this->session->read('server');
 
@@ -106,6 +107,7 @@ class LoginManager
 
   public function login(Trace $trace, ServerConfig $serverConfig, LoginFactory $factory)
   {
+    $this->cachedLoggedIn = null;
     $login = $this->provideLogin($serverConfig, $factory, $this->request);
     if ($login === null) return false;
     $trace->tlog("logging in");
