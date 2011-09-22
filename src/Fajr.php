@@ -21,13 +21,9 @@ use fajr\exceptions\AuthenticationRequiredException;
 use fajr\exceptions\SecurityException;
 use fajr\exceptions\ValidationException;
 use fajr\libfajr\AIS2Session;
-use fajr\libfajr\base\SystemTimer;
-use fajr\libfajr\connection;
-use fajr\libfajr\pub\base\NullTrace;
 use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\pub\connection\AIS2ServerConnection;
 use fajr\libfajr\pub\connection\AIS2ServerUrlMap;
-use fajr\libfajr\pub\connection\HttpConnection;
 use fajr\libfajr\pub\login\Login;
 use fajr\libfajr\pub\regression;
 use fajr\libfajr\window\AIS2MainScreenImpl;
@@ -39,10 +35,8 @@ use fajr\Version;
 use fajr\config\ServerConfig;
 use fajr\config\FajrConfig;
 use fajr\config\FajrConfigOptions;
-use fajr\config\CurlConnectionOptions;
 use fajr\ServerManager;
 use fajr\rendering\DisplayManager;
-use sfSessionStorage;
 
 /**
  * This is "main()" of the fajr. It instantiates all neccessary
@@ -60,11 +54,6 @@ class Fajr {
   private $context;
 
   /**
-   * @var Statistics $statistics
-   */
-  private $statistics;
-  
-  /**
    * @var ServerManager
    */
   private $serverManager;
@@ -76,25 +65,6 @@ class Fajr {
   {
     $this->config = $config;
     $this->serverManager = ServerManager::getInstance();
-  }
-
-  private function provideCookieFile()
-  {
-    return FajrUtils::joinPath($this->config->getDirectory('Path.Temporary.Cookies'),
-                               'cookie_'.session_id());
-
-  }
-
-  private function provideConnection()
-  {
-    $curlOptions = CurlConnectionOptions::getOptions();
-    $connection = new connection\CurlConnection($curlOptions, $this->provideCookieFile());
-
-    $this->statistics->setRawStatistics($connection->getStats());
-
-    $connection = new connection\AIS2ErrorCheckingConnection($connection);
-
-    return $this->statistics->hookFinalConnection($connection);
   }
 
   /**
@@ -156,7 +126,6 @@ class Fajr {
   {
     try {
       $trace = TraceProvider::getInstance();
-      $this->statistics = Statistics::getInstance();
       $this->context = Context::getInstance();
 
       $this->setResponseFields($this->context->getResponse());
@@ -230,7 +199,7 @@ class Fajr {
       $session->regenerate(true);
     }
 
-    $connection = $this->provideConnection();
+    $connection = ConnectionProvider::getInstance();
     $server = $this->serverManager->getActiveServer();
     $serverConnection = new AIS2ServerConnection($connection,
         new AIS2ServerUrlMap($server->getServerName()));
@@ -280,6 +249,6 @@ class Fajr {
     catch (AuthenticationRequiredException $ex) {
       $response->redirect(array('action' => 'login.LoginScreen'), 'index.php');
     }
-    $response->set('statistics', $this->statistics);
+    $response->set('statistics', Statistics::getInstance());
   }
 }

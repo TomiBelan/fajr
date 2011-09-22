@@ -12,20 +12,24 @@
  * @filesource
  */
 
-namespace fajr\config;
+namespace fajr;
 
 use fajr\config\FajrConfig;
 use fajr\config\FajrConfigOptions;
 use fajr\config\FajrConfigLoader;
+use fajr\util\FajrUtils;
+use fajr\Statistics;
+use fajr\libfajr\connection\CurlConnection;
+use fajr\libfajr\connection\AIS2ErrorCheckingConnection;
 
 /**
- * Curl connection options
+ * Curl connection provider
  *
  * @package    Fajr
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @author     Tomi Belan <tomi.belan@gmail.com>
  */
-class CurlConnectionOptions
+class ConnectionProvider
 {
   public static function getOptions()
   {
@@ -44,6 +48,27 @@ class CurlConnectionOptions
       $options[CURLOPT_CAPATH] = $config->getDirectory(FajrConfigOptions::PATH_TO_SSL_CERTIFICATES);
     }
     return $options;
+  }
+
+  private static function provideCookieFile()
+  {
+    $config = FajrConfigLoader::getConfiguration();
+    return FajrUtils::joinPath($config->getDirectory('Path.Temporary.Cookies'),
+                               'cookie_'.session_id());
+
+  }
+
+  public static function getInstance()
+  {
+    $statistics = Statistics::getInstance();
+    $curlOptions = self::getOptions();
+    $connection = new CurlConnection($curlOptions, self::provideCookieFile());
+
+    $statistics->setRawStatistics($connection->getStats());
+
+    $connection = new AIS2ErrorCheckingConnection($connection);
+
+    return $statistics->hookFinalConnection($connection);
   }
 }
 
