@@ -34,228 +34,251 @@ use fajr\libfajr\util\StrUtil;
  * @author     Jakub Marek <jakub.marek@gmail.com>
  *
  */
-class InformacnyListParser {
+class InformacnyListParser
+{
+  const IGNORE_ATTRIBUTE = '_ignore';
 
-    private $list;
-    private $attr_def = array(
-      'Názov vysokej školy, názov fakulty' => InformacnyListAttributeEnum::SKOLA_FAKULTA,
-      'Kód' => InformacnyListAttributeEnum::KOD,
-      'Názov' => InformacnyListAttributeEnum::NAZOV,
-      'Študijný program' => InformacnyListAttributeEnum::STUDIJNY_PROGRAM,
-      'Garantuje' => InformacnyListAttributeEnum::GARANTUJE,
-      'Zabezpečuje' => InformacnyListAttributeEnum::ZABEZPECUJE,
-      'Obdobie štúdia predmetu' => InformacnyListAttributeEnum::OBDOBIE_STUDIA_PREDMETU,
-      'Forma výučby' => InformacnyListAttributeEnum::FORMA_VYUCBY,
-      //'Odporúčaný rozsah výučby ( v hodinách ):' => ,
-      'Týždenný' => InformacnyListAttributeEnum::VYUCBA_TYZDENNE,
-      'Za obdobie štúdia' => InformacnyListAttributeEnum::VYUCBA_SPOLU,
-      'Počet kreditov' => InformacnyListAttributeEnum::POCET_KREDITOV,
-      'Podmieňujúce predmety' => InformacnyListAttributeEnum::PODMIENUJUCE_PREDMETY,
-      'Obsahová prerekvizita' => InformacnyListAttributeEnum::OBSAHOVA_PREREKVIZITA,
-      'Spôsob hodnotenia a skončenia štúdia predmetu' => InformacnyListAttributeEnum::SPOSOB_HODNOTENIA_A_SKONCENIA,
-      'Priebežné hodnotenie (napr. test, samostatná práca...)' => InformacnyListAttributeEnum::PRIEBEZNE_HODNOTENIE,
-      'Záverečné hodnotenie (napr. skúška, záverečná práca...)' => InformacnyListAttributeEnum::ZAVERECNE_HODNOTENIE,
-      'Cieľ predmetu' => InformacnyListAttributeEnum::CIEL_PREDMETU,
-      'Stručná osnova predmetu' => InformacnyListAttributeEnum::OSNOVA_PREDMETU,
-      'Literatúra' => InformacnyListAttributeEnum::LITERATURA,
-      'Jazyk, v ktorom sa predmet vyučuje' => InformacnyListAttributeEnum::VYUCOVACI_JAZYK,
-      'Podpis garanta a dátum poslednej úpravy listu' => InformacnyListAttributeEnum::DATUM_POSLEDNEJ_UPRAVY
-    );
+  private $list;
+  private $attr_def = array(
+    'Názov vysokej školy, názov fakulty' => InformacnyListAttributeEnum::SKOLA_FAKULTA,
+    'Kód' => InformacnyListAttributeEnum::KOD,
+    'Názov' => InformacnyListAttributeEnum::NAZOV,
+    'Študijný program' => InformacnyListAttributeEnum::STUDIJNY_PROGRAM,
+    'Garantuje' => InformacnyListAttributeEnum::GARANTUJE,
+    'Zabezpečuje' => InformacnyListAttributeEnum::ZABEZPECUJE,
+    'Obdobie štúdia predmetu' => InformacnyListAttributeEnum::OBDOBIE_STUDIA_PREDMETU,
+    'Forma výučby' => InformacnyListAttributeEnum::FORMA_VYUCBY,
+    'Odporúčaný rozsah výučby ( v hodinách )' => self::IGNORE_ATTRIBUTE,
+    'Týždenný' => InformacnyListAttributeEnum::VYUCBA_TYZDENNE,
+    'Za obdobie štúdia' => InformacnyListAttributeEnum::VYUCBA_SPOLU,
+    'Počet kreditov' => InformacnyListAttributeEnum::POCET_KREDITOV,
+    'Podmieňujúce predmety' => InformacnyListAttributeEnum::PODMIENUJUCE_PREDMETY,
+    'Obsahová prerekvizita' => InformacnyListAttributeEnum::OBSAHOVA_PREREKVIZITA,
+    'Spôsob hodnotenia a skončenia štúdia predmetu' => InformacnyListAttributeEnum::SPOSOB_HODNOTENIA_A_SKONCENIA,
+    'Priebežné hodnotenie (napr. test, samostatná práca...)' => InformacnyListAttributeEnum::PRIEBEZNE_HODNOTENIE,
+    'Záverečné hodnotenie (napr. skúška, záverečná práca...)' => InformacnyListAttributeEnum::ZAVERECNE_HODNOTENIE,
+    'Cieľ predmetu' => InformacnyListAttributeEnum::CIEL_PREDMETU,
+    'Stručná osnova predmetu' => InformacnyListAttributeEnum::OSNOVA_PREDMETU,
+    'Literatúra' => InformacnyListAttributeEnum::LITERATURA,
+    'Jazyk, v ktorom sa predmet vyučuje' => InformacnyListAttributeEnum::VYUCOVACI_JAZYK,
+    'Podpis garanta a dátum poslednej úpravy listu' => InformacnyListAttributeEnum::DATUM_POSLEDNEJ_UPRAVY
+  );
 
-    /**
-     * Parses html document into object InformationListDataImpl which
-     * handles all further manipulation with information list.
-     *
-     * @param string $html
-     *
-     * @return new instance of class InformacnyListDataImpl
-     *
-     */
-    public function parse(Trace $trace, $html) {
-        $trace->tlog("Called method parse(), creating table with parsed elements");
-        $trace = $trace->addChild("Parsing informacny list");
-        $this->parseHtml($trace, $html);
-        $trace->tlogVariable("parsed list", $this->list);
-        return new InformacnyListDataImpl($this->list);
+  /**
+   * Parses html document into object InformationListDataImpl which
+   * handles all further manipulation with information list.
+   *
+   * @param string $html
+   *
+   * @return new instance of class InformacnyListDataImpl
+   *
+   */
+  public function parse(Trace $trace, $html)
+  {
+    $trace->tlog("Called method parse(), creating table with parsed elements");
+    $trace = $trace->addChild("Parsing informacny list");
+    $this->parseHtml($trace, $html);
+    $trace->tlogVariable("parsed list", $this->list);
+    return new InformacnyListDataImpl($this->list);
+  }
+
+  /**
+   * Sets value for attribute in associative array $list.
+   *
+   * @param string $attribute
+   * @param array $values
+   *
+   */
+  private function setAttribute(Trace $trace, $attribute, $values)
+  {
+    $new_values = array();
+    foreach ($values as $value) {
+      if ($value != '') $new_values[] = $value;
     }
-
-    /**
-     * Sets value for attribute in associative array $list.
-     *
-     * @param string $attribute
-     * @param string|array $value
-     *
-     */
-    public function setAttribute(Trace $trace, $attribute, $value) {
-        $trace->tlog("Setting value: '$value' as attribute: '$attribute' into list");
-        if (StrUtil::endsWith($attribute, ':')) {
-          $attribute = substr($attribute, 0, strlen($attribute) - 1);
-        }
-        $id = null;
-        if (isset($this->attr_def[$attribute])) {
-          $id = $this->attr_def[$attribute];
-        }
-        $this->list[] = array(
-          'id' => $id,
-          'name' => $attribute, 
-          'value' => self::trimDeleteNewline($value));
+    $values = $new_values;
+    if (count($values) == 0) {
+      $trace->tlog("Ignoring empty attribute '" . $attribute . "'");
+      return;
     }
-
-    /**
-     * Deletes breaklines and trims string.
-     *
-     * @param string $string
-     *
-     * @return trimmed string without brakelines
-     *
-     */
-    static function trimDeleteNewline($string) {
-        Preconditions::checkIsString($string);
-        return trim(str_replace(array("\r", "\r\n", "\n"), '', $string));
+    $attribute = trim($attribute);
+    if (StrUtil::endsWith($attribute, ':')) {
+      $attribute = substr($attribute, 0, strlen($attribute) - 1);
     }
-
-    /**
-     * Parses <b> element, as after <b> elements occur data, that needs to
-     * be extracted.
-     *
-     * @param DOMElement $final
-     * @param array $pole
-     *
-     * @returns array with parsed data
-     */
-    private function spracujB(Trace $trace, DOMElement $final) {
-        //do attribue_names pridam element, podla ktoreho parsujem
-        $attributeName = ParserUtils::fixNbsp($final->nodeValue);
-        $this->attribute_names[] = $attributeName;
-        $child = $trace->addChild("Parsing attribute '$attributeName'");
-               
-        $sused = $final->nextSibling;
-        if ($sused == NULL) {
-            $child->tlog("No value to parse");
-            return;
-        }
-        if ($sused->nextSibling == NULL) {
-            // je textNode
-            $child->tlog("Attribute is text node");
-            $child->tlogVariable("Parsed attribute:", $sused->nodeValue);
-            $this->setAttribute($trace, $attributeName,
-                ParserUtils::fixNbsp($sused->nodeValue));
-            return;
-        }
-        $textSused = $sused->nextSibling;
-        if ($textSused->nodeType != \XML_ELEMENT_NODE) {
-            $child->tlog("Nothing to parse here");
-            return;
-        }
-        if ($textSused->tagName == 'p') {
-            $child->tlog("Parsing <p> tags");
-            while ($textSused != NULL) {
-                if ($textSused->nodeType != \XML_ELEMENT_NODE) {
-                    $textSused = $textSused->nextSibling;
-                    continue;
-                }
-                if ($textSused->tagName == 'p') {
-                    $child->tlogVariable("Parsed attribute:", $textSused->nodeValue);
-                    $this->setAttribute($trace, $attributeName,
-                        ParserUtils::fixNbsp($textSused->nodeValue));
-                }
-                $textSused = $textSused->nextSibling;
-            }
-        } else {
-            $child->tlog("Parsing other tags");
-            $child->tlogVariable("Parsed attribute:", $sused->nodeValue);
-            $this->setAttribute($trace, $attributeName,
-                ParserUtils::fixNbsp($sused->nodeValue));
-        }
+    $id = null;
+    $name = $attribute;
+    if (isset($this->attr_def[$attribute])) {
+      $id = $this->attr_def[$attribute];
+      $name = InformacnyListAttributeEnum::getUnicodeName($id);
     }
-
-    /**
-     * Replaces <br> tags in html document, so they wont complicate
-     * further parsing.
-     *
-     * @param string $html html code to fix
-     *
-     * @returns string fixed html code ready for DOM parsing.
-     */
-    public static function fixBr(Trace $trace, $html) {
-        Preconditions::checkIsString($html);
-        $html = str_replace("<br>", "", $html);
-        return $html;
+    if ($id == self::IGNORE_ATTRIBUTE) {
+      $trace->tlog("Ignoring attribute '" . $attribute . "'");
+      return;
     }
+    $this->list[] = array(
+      'id' => $id,
+      'name' => $name,
+      'rawLabel' => $attribute,
+      'values' => $values);
+  }
 
-    /**
-     * Creates array with elements parsed from html containing information list.
-     *
-     * @param string $aisResponseHtml
-     *
-     * @returns complete array with parsed data from html
-     * @throws ParseException on failure of creating DOM from html
-     */
-    public function parseHtml(Trace $trace, $aisResponseHtml) {
-        Preconditions::checkIsString($aisResponseHtml);
-        $html = self::fixBr($trace, $aisResponseHtml);
-        $domWholeHtml = ParserUtils::createDomFromHtml($trace, $html);
-        $domWholeHtml->preserveWhiteSpace = false;
+  /**
+   * Fixes nbsp, deletes breaklines and trims string.
+   *
+   * @param string $string
+   *
+   * @return fixed attribute value
+   *
+   */
+  static function fixAttributeValue($string)
+  {
+    Preconditions::checkIsString($string);
+    $string = ParserUtils::fixNbsp($string);
+    return trim(str_replace(array("\r", "\r\n", "\n"), '', $string));
+  }
 
-        //ziskanie nazvu skoly, jedina vec co chcem ziskat co sa nenachadza v tabulke
-        $b = $domWholeHtml->getElementsByTagName("b");
-        $trace->tlog("Finding first element with tag name 'b'");
-        $this->spracujB($trace, $b->item(0));
+  /**
+   * Parses <b> element, as after <b> elements occur data, that needs to
+   * be extracted.
+   *
+   * @param DOMElement $final
+   * @param array $pole
+   *
+   * @returns array with parsed data
+   */
+  private function spracujB(Trace $trace, DOMElement $final)
+  {
+    //do attribue_names pridam element, podla ktoreho parsujem
+    $attributeName = ParserUtils::fixNbsp($final->nodeValue);
+    $this->attribute_names[] = $attributeName;
+    $child = $trace->addChild("Parsing attribute '$attributeName'");
 
-        $trNodes = $domWholeHtml->getElementsByTagName("tr");
-        $trace->tlog("Getting all elements with tag name 'tr'");
-        // prechadzam vsetkymi <tr> tagmi
-        $firstTr = true;
-        foreach ($trNodes as $tr) {
-            // nechcem uplne prvy tag co je v tr, za <b> je iba nazov: informacny list
-            if ($firstTr) {
-                $firstTr = false;
-                continue;
-            }
-            $trace->tlog("Getting all elements with tag name 'td'");
-            $tdNodes = $tr->getElementsByTagName("td");
-            // prechadzam <td> tagmi
-            foreach ($tdNodes as $td) {
-                if (!$td->hasChildNodes()) {
-                    continue;
-                }
-                $trace->tlog("Getting all child nodes of element 'td'");
-                foreach ($td->childNodes as $final) {
-                    if ($final->nodeType != \XML_ELEMENT_NODE) {
-                        continue;
-                    }
-                    if ($final->tagName == 'b') {
-                        $trace->tlog("Parsing node with tag name 'b'");
-                        $this->spracujB($trace, $final);
-                    }
-                    else if ($final->tagName == 'div') {
-                        $trace->tlog("Parsing node with tag name 'div'");
-                        $this->parseDiv($trace, $final);
-                    }
-                }
-            }
+    $sused = $final->nextSibling;
+    if ($sused == NULL) {
+      $child->tlog("No value to parse");
+      return;
+    }
+    if ($sused->nextSibling == NULL) {
+      // je textNode
+      $child->tlog("Attribute is text node");
+      $child->tlogVariable("Parsed attribute:", $sused->nodeValue);
+      $values = array(self::fixAttributeValue($sused->nodeValue));
+      $this->setAttribute($trace, $attributeName, $values);
+      return;
+    }
+    $textSused = $sused->nextSibling;
+    if ($textSused->nodeType != \XML_ELEMENT_NODE) {
+      $child->tlog("Nothing to parse here");
+      return;
+    }
+    if ($textSused->tagName == 'p') {
+      $child->tlog("Parsing <p> tags");
+      $values = array();
+      for (; $textSused != null; $textSused = $textSused->nextSibling) {
+        if ($textSused->nodeType != \XML_ELEMENT_NODE ||
+            $textSused->tagName != 'p') {
+          continue;
         }
+        $values[] = self::fixAttributeValue($textSused->nodeValue);
+      }
+      $child->tlogVariable("Parsed attribute:", $values);
+      $this->setAttribute($trace, $attributeName, $values);
+    } else {
+      $child->tlog("Parsing other tags");
+      $child->tlogVariable("Parsed attribute:", $sused->nodeValue);
+      $values = array(self::fixAttributeValue($sused->nodeValue));
+      $this->setAttribute($trace, $attributeName, $values);
     }
+  }
 
-    /**
-     * Parses div tag. If it contains <b> element, it calls method spracujB,
-     * which parses element <b>.
-     *
-     * @param domNode $final
-     *
-     * @returns array
-     */
-    public function parseDiv(Trace $trace, $final) {
-        $final2 = $final->childNodes;
-        foreach ($final2 as $key) {
-            if ($key->nodeType != \XML_ELEMENT_NODE) {
-                continue;
-            }
-            if ($key->tagName == 'b') {
-                $trace->tlog("Parsing node with tag name 'b' inside 'div' tag");
-                $this->spracujB($trace, $key);
-            }
+  /**
+   * Replaces <br> tags in html document, so they wont complicate
+   * further parsing.
+   *
+   * @param string $html html code to fix
+   *
+   * @returns string fixed html code ready for DOM parsing.
+   */
+  public static function fixBr(Trace $trace, $html)
+  {
+    Preconditions::checkIsString($html);
+    $html = str_replace("<br>", " ", $html);
+    return $html;
+  }
+
+  /**
+   * Creates array with elements parsed from html containing information list.
+   *
+   * @param string $aisResponseHtml
+   *
+   * @returns complete array with parsed data from html
+   * @throws ParseException on failure of creating DOM from html
+   */
+  public function parseHtml(Trace $trace, $aisResponseHtml)
+  {
+    Preconditions::checkIsString($aisResponseHtml);
+    $html = self::fixBr($trace, $aisResponseHtml);
+    $domWholeHtml = ParserUtils::createDomFromHtml($trace, $html);
+    $domWholeHtml->preserveWhiteSpace = false;
+
+    //ziskanie nazvu skoly, jedina vec co chcem ziskat co sa nenachadza v tabulke
+    $b = $domWholeHtml->getElementsByTagName("b");
+    $trace->tlog("Finding first element with tag name 'b'");
+    $this->spracujB($trace, $b->item(0));
+
+    $trNodes = $domWholeHtml->getElementsByTagName("tr");
+    $trace->tlog("Getting all elements with tag name 'tr'");
+    // prechadzam vsetkymi <tr> tagmi
+    $firstTr = true;
+    foreach ($trNodes as $tr) {
+      // nechcem uplne prvy tag co je v tr, za <b> je iba nazov: informacny list
+      if ($firstTr) {
+        $firstTr = false;
+        continue;
+      }
+      $trace->tlog("Getting all elements with tag name 'td'");
+      $tdNodes = $tr->getElementsByTagName("td");
+      // prechadzam <td> tagmi
+      foreach ($tdNodes as $td) {
+        if (!$td->hasChildNodes()) {
+          continue;
         }
+        $trace->tlog("Getting all child nodes of element 'td'");
+        foreach ($td->childNodes as $final) {
+          if ($final->nodeType != \XML_ELEMENT_NODE) {
+            continue;
+          }
+          if ($final->tagName == 'b') {
+            $trace->tlog("Parsing node with tag name 'b'");
+            $this->spracujB($trace, $final);
+          } else if ($final->tagName == 'div') {
+            $trace->tlog("Parsing node with tag name 'div'");
+            $this->parseDiv($trace, $final);
+          }
+        }
+      }
     }
+  }
+
+  /**
+   * Parses div tag. If it contains <b> element, it calls method spracujB,
+   * which parses element <b>.
+   *
+   * @param domNode $final
+   *
+   * @returns array
+   */
+  public function parseDiv(Trace $trace, $final)
+  {
+    $final2 = $final->childNodes;
+    foreach ($final2 as $key) {
+      if ($key->nodeType != \XML_ELEMENT_NODE) {
+        continue;
+      }
+      if ($key->tagName == 'b') {
+        $trace->tlog("Parsing node with tag name 'b' inside 'div' tag");
+        $this->spracujB($trace, $key);
+      }
+    }
+  }
 
 }

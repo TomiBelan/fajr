@@ -72,7 +72,7 @@ class ParserUtils {
         // xml decoder decodes &nbsp; into special utf-8 character
         // TODO(ppershing): nehodili by sa tie &nbsp; niekedy dalej v aplikacii niekedy?
         $nbsp = chr(0xC2) . chr(0xA0);
-        return str_replace($nbsp, '', $str);
+        return str_replace($nbsp, ' ', $str);
     }
 
     /**

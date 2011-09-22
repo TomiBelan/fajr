@@ -18,7 +18,7 @@ namespace fajr\libfajr\data_manipulation;
 
 use PHPUnit_Framework_TestCase;
 use fajr\libfajr\data_manipulation\InformacnyListDataImpl;
-use fajr\libfajr\data_manipulation\InformacnyListAttributeEnum;
+use fajr\libfajr\data_manipulation\InformacnyListAttributeEnum as Attr;
 
 /**
  * @ignore
@@ -35,17 +35,26 @@ class InformacnyListDataImplTest extends PHPUnit_Framework_TestCase {
     public function setUp() {
 
         $list = array(
-            InformacnyListAttributeEnum::NAZOV => "Kryptologia (2)",
-            InformacnyListAttributeEnum::STUDIJNY_PROGRAM => "mINF, mINF/k",
-            InformacnyListAttributeEnum::POCET_KREDITOV => "6"
+            array(
+              'id' => Attr::NAZOV,
+              'values' => array("Kryptologia (2)"),
+              ),
+            array(
+              'id' => Attr::STUDIJNY_PROGRAM,
+              'values' => array("mINF, mINF/k"),
+              ),
+            array(
+              'id' => Attr::POCET_KREDITOV,
+              'values' => array("6"),
+              ),
             );
         $this->informacnyList = new InformacnyListDataImpl($list);
 
     }
 
     public function testExistenciaAtributov() {
-        $this->assertTrue($this->informacnyList->hasAttribute(InformacnyListAttributeEnum::NAZOV));
-        $this->assertTrue($this->informacnyList->hasAttribute(InformacnyListAttributeEnum::STUDIJNY_PROGRAM));
+        $this->assertTrue($this->informacnyList->hasAttribute(Attr::NAZOV));
+        $this->assertTrue($this->informacnyList->hasAttribute(Attr::STUDIJNY_PROGRAM));
         $this->assertFalse($this->informacnyList->hasAttribute('b34gh'));
     }
 
@@ -56,15 +65,19 @@ class InformacnyListDataImplTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testHodnotyAtributov() {
-        $this->assertEquals('mINF, mINF/k', $this->informacnyList->getAttribute(InformacnyListAttributeEnum::STUDIJNY_PROGRAM));
-        $this->assertEquals('6', $this->informacnyList->getAttribute(InformacnyListAttributeEnum::POCET_KREDITOV));
+        $studProgram = $this->informacnyList->getAttribute(Attr::STUDIJNY_PROGRAM);
+        $this->assertEquals('mINF, mINF/k', $studProgram['values'][0]);
+        
+        $pocetKreditov = $this->informacnyList->getAttribute(Attr::POCET_KREDITOV);
+        $this->assertEquals('6', $pocetKreditov['values'][0]);
+        
         $this->assertFalse($this->informacnyList->getAttribute('b34gh'));
     }
 
     public function testKonzistenciaGetAllAttributes() {
         $attributes = $this->informacnyList->getAllAttributes();
-        foreach ($attributes as $key => $value) {
-            $this->assertEquals($value, $this->informacnyList->getAttribute($key));
+        foreach ($attributes as $attr) {
+            $this->assertEquals($attr, $this->informacnyList->getAttribute($attr['id']));
         }
     }
 

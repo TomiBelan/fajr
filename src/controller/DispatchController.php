@@ -37,7 +37,7 @@ class DispatchController extends DisableEvilCallsObject implements Controller
       'predmety' => '\fajr\controller\predmety\PredmetyController',
       'userSettings' => '\fajr\controller\user\UserSettingsController',
       'login' => '\fajr\controller\user\LoginController',
-      'welcome' => '\fajr\controller\welcome\WelcomeController',
+      'static' => '\fajr\controller\StaticController',
     );
     return new DispatchController($dispatchMap);
   }

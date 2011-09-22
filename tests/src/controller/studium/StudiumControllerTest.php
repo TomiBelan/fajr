@@ -61,8 +61,13 @@ class StudiumControllerTest extends PHPUnit_Framework_TestCase
               'temporary_storage' => $temporary_storage));
     $this->context->setSessionStorage($this->storage);
     $factory = new VSES017_FakeFactoryImpl($this->storage);
+    $this->loginManager = $this->getMock('\fajr\LoginManager', array(), 
+        array(), '', false);
+    $this->loginManager->expects($this->any())
+                       ->method('isLoggedIn')
+                       ->will($this->returnValue(true));
 
-    $this->controller = new StudiumController($factory, $time);
+    $this->controller = new StudiumController($factory, $time, $this->loginManager);
 
     $this->storage->write('ais/aisApps', array(AIS2ApplicationEnum::ADMINISTRACIA_STUDIA));
   }
