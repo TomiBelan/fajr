@@ -19,7 +19,6 @@ use fajr\exceptions\SecurityException;
 use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\pub\connection\AIS2ServerConnection;
 use fajr\libfajr\pub\login\CosignServiceCookie;
-use fajr\libfajr\pub\login\LoginFactory;
 use fajr\Request;
 use fajr\util\FajrUtils;
 use sfStorage;

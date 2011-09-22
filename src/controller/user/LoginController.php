@@ -19,8 +19,6 @@ use fajr\controller\BaseController;
 use fajr\libfajr\AIS2Utils;
 use fajr\libfajr\base\Preconditions;
 use fajr\libfajr\pub\base\Trace;
-use fajr\libfajr\pub\login\LoginFactory;
-use fajr\libfajr\pub\login\LoginFactoryImpl;
 use fajr\Request;
 use fajr\Response;
 use fajr\util\FajrUtils;
@@ -43,7 +41,7 @@ class LoginController extends BaseController
   /* TODO document */
   public static function getInstance()
   {
-    return new LoginController(FajrConfigLoader::getConfiguration(), LoginManager::getInstance(), LoginFactoryImpl::getInstance(), ServerManager::getInstance());
+    return new LoginController(FajrConfigLoader::getConfiguration(), LoginManager::getInstance(), ServerManager::getInstance());
   }
 
   /** @var FajrConfig */
@@ -52,18 +50,14 @@ class LoginController extends BaseController
   /** @var LoginManager */
   private $loginManager;
   
-  /** @var LoginFactory */
-  private $loginFactory;
-  
   /** @var ServerManager */
   private $serverManager;
 
   public function __construct(FajrConfig $config, LoginManager $loginManager,
-      LoginFactory $loginFactory, ServerManager $serverManager)
+      ServerManager $serverManager)
   {
     $this->config = $config;
     $this->loginManager = $loginManager;
-    $this->loginFactory = $loginFactory;
     $this->serverManager = $serverManager;
   }
 
@@ -74,8 +68,7 @@ class LoginController extends BaseController
     $server = $this->serverManager->getActiveServer();
 
     try {
-      $this->loginManager->login($trace->addChild("Logging in..."),
-          $server, $this->loginFactory);
+      $this->loginManager->login($trace->addChild("Logging in..."), $server);
     } catch (LoginException $e) {
       $this->setException($e);
       try {

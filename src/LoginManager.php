@@ -17,11 +17,15 @@ use fajr\exceptions\SecurityException;
 use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\pub\connection\AIS2ServerConnection;
 use fajr\libfajr\pub\login\CosignServiceCookie;
-use fajr\libfajr\pub\login\LoginFactory;
+use fajr\libfajr\login\CosignPasswordLogin;
+use fajr\libfajr\login\CosignProxyLogin;
+use fajr\libfajr\login\CosignCookieLogin;
+use fajr\libfajr\login\AIS2PasswordLogin;
+use fajr\libfajr\login\AIS2CosignLogin;
+use fajr\libfajr\login\NoLogin;
 use fajr\Request;
 use fajr\util\FajrUtils;
 use sfStorage;
-use fajr\libfajr\login\CosignProxyLogin;
 
 class LoginManager
 {
@@ -118,10 +122,10 @@ class LoginManager
     }
   }
 
-  public function login(Trace $trace, ServerConfig $serverConfig, LoginFactory $factory)
+  public function login(Trace $trace, ServerConfig $serverConfig)
   {
     $this->cachedLoggedIn = null;
-    $login = $this->provideLogin($serverConfig, $factory, $this->request);
+    $login = $this->provideLogin($serverConfig, $this->request);
     if ($login === null) return false;
     $trace->tlog("logging in");
     if (!$login->login($this->connection)) {
@@ -150,7 +154,7 @@ class LoginManager
    *
    * @returns Login login instance recognized
    */
-  private function provideLogin(ServerConfig $serverConfig, LoginFactory $factory, Request $request)
+  private function provideLogin(ServerConfig $serverConfig, Request $request)
   {
     $loginType = $request->getParameter("loginType");
     $login = $request->getParameter('login');
@@ -174,7 +178,7 @@ class LoginManager
         if ($login === '' || $password === '') {
           return null;
         }
-        return $factory->newLoginUsingPassword($login, $password);
+        return new AIS2PasswordLogin($login, $password);
         break;
       case 'cosign':
         if ($loginType === 'cosigncookie') {
@@ -182,14 +186,14 @@ class LoginManager
             return null;
           }
           $cosignCookie = CosignServiceCookie::fixCookieValue($cosignCookie);
-          return $factory->newLoginUsingCosignCookie(
+          return new AIS2CosignLogin(new CosignCookieLogin(
               new CosignServiceCookie($serverConfig->getCosignCookieName(),
-                $cosignCookie, $serverConfig->getServerName()));
+                $cosignCookie, $serverConfig->getServerName())));
         } else if ($loginType == 'cosignpassword') {
           if ($login === null || $password === null) {
             return null;
           }
-          return $factory->newLoginUsingCosignPassword($login, $password);
+          return new AIS2CosignLogin(new CosignPasswordLogin($login, $password));
         } else {
           $this->assertSecurity(false, "Wrong loginType $loginType");
         }
@@ -197,13 +201,13 @@ class LoginManager
       case 'cosignproxy':
         $this->assertSecurity($loginType === 'cosignproxy',
                               "Wrong loginType $loginType");
-        return $factory->newLoginUsingCosignProxy(
+        return new AIS2CosignLogin(new CosignProxyLogin(
             $serverConfig->getCosignProxyDB(),
-            $serverConfig->getCosignCookieName());
+            $serverConfig->getCosignCookieName()));
       case 'nologin':
         $this->assertSecurity($loginType === 'nologin',
                               "Wrong loginType $loginType");
-        return $factory->newNoLogin();
+        return new NoLogin();
       default:
         // TODO(ppershing): throw ConfigError
         assert(false);
