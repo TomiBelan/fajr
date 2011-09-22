@@ -24,7 +24,9 @@ use fajr\Response;
 use fajr\util\FajrUtils;
 use sfStorage;
 use fajr\config\FajrConfig;
+use fajr\config\FajrConfigLoader;
 use fajr\settings\SkinSettings;
+use fajr\SessionStorageProvider;
 
 /**
  * Controller, which manages user settings.
@@ -37,6 +39,12 @@ class UserSettingsController extends BaseController
 {
   private $settingsStorage;
   private $config;
+  
+  public static function getInstance()
+  {
+    return new UserSettingsController(SessionStorageProvider::getInstance(),
+        FajrConfigLoader::getConfiguration());
+  }
 
   public function __construct(sfStorage $settingsStorage, FajrConfig $config)
   {
