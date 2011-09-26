@@ -29,6 +29,17 @@ use libfajr\base\IllegalStateException;
  */
 class Statistics
 {
+  /** @var Statistics $instance */
+  private static $instance = null;
+
+  /* TODO document */
+  public static function getInstance()
+  {
+    if (!isset(self::$instance)) {
+      self::$instance = new Statistics(SystemTimer::getInstance());
+    }
+    return self::$instance;
+  }
 
   /** @var Timer $timer */
   private $timer = null;

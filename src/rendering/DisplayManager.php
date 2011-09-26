@@ -16,6 +16,8 @@ use Twig_Environment;
 use fajr\libfajr\base\Preconditions;
 use fajr\config\SkinConfig;
 use fajr\Response;
+use fajr\config\FajrConfigLoader;
+use fajr\config\FajrConfigOptions;
 
 /**
  * Display manager provides a way to render a Response
@@ -25,6 +27,24 @@ use fajr\Response;
  */
 class DisplayManager
 {
+  /** @var DisplayManager $instance */
+  private static $instance;
+
+  /* TODO document */
+  public static function getInstance()
+  {
+    if (!isset(self::$instance)) {
+      $config = FajrConfigLoader::getConfiguration();
+      $skins = $config->get(FajrConfigOptions::TEMPLATE_SKINS);
+      $skinName = $config->get(FajrConfigOptions::TEMPLATE_DEFAULT_SKIN);
+      if (!isset($skins, $skinName)) {
+        throw new RuntimeException("Default skin is not present!");
+      }
+      self::$instance = new DisplayManager(TwigFactory::getInstance(), $skins[$skinName]);
+    }
+    return self::$instance;
+  }
+
   /** @var TwigFactory */
   private $twig;
   /** @var SkinConfig */

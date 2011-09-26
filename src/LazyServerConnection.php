@@ -17,6 +17,18 @@ use fajr\libfajr\base\IllegalStateException;
 
 class LazyServerConnection extends AIS2ServerConnection
 {
+  /** @var LazyServerConnection $instance */
+  private static $instance;
+
+  /* TODO document */
+  public static function getInstance()
+  {
+    if (!isset(self::$instance)) {
+      self::$instance = new LazyServerConnection();
+    }
+    return self::$instance;
+  }
+
   private $real;
   
   public function setReal(AIS2ServerConnection $real)

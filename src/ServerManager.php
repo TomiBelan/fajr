@@ -14,11 +14,11 @@ namespace fajr;
 
 use fajr\config\ServerConfig;
 use fajr\config\FajrConfig;
+use fajr\config\FajrConfigLoader;
 use fajr\exceptions\SecurityException;
 use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\pub\connection\AIS2ServerConnection;
 use fajr\libfajr\pub\login\CosignServiceCookie;
-use fajr\libfajr\pub\login\LoginFactory;
 use fajr\Request;
 use fajr\util\FajrUtils;
 use sfStorage;
@@ -26,6 +26,19 @@ use fajr\libfajr\login\CosignProxyLogin;
 
 class ServerManager
 {
+  /** @var ServerManager $instance */
+  private static $instance;
+
+  /* TODO document */
+  public static function getInstance()
+  {
+    if (!isset(self::$instance)) {
+      self::$instance = new ServerManager(SessionStorageProvider::getInstance(),
+          Context::getInstance(), FajrConfigLoader::getConfiguration());
+    }
+    return self::$instance;
+  }
+
   private $request;
   private $session;
   private $response;

@@ -20,19 +20,13 @@ use fajr\controller\DispatchController;
 use fajr\exceptions\AuthenticationRequiredException;
 use fajr\exceptions\SecurityException;
 use fajr\exceptions\ValidationException;
-use fajr\injection\Injector;
 use fajr\libfajr\AIS2Session;
-use fajr\libfajr\base\SystemTimer;
-use fajr\libfajr\connection;
-use fajr\libfajr\pub\base\NullTrace;
 use fajr\libfajr\pub\base\Trace;
 use fajr\libfajr\pub\connection\AIS2ServerConnection;
 use fajr\libfajr\pub\connection\AIS2ServerUrlMap;
-use fajr\libfajr\pub\connection\HttpConnection;
 use fajr\libfajr\pub\login\Login;
 use fajr\libfajr\pub\regression;
 use fajr\libfajr\window\AIS2MainScreenImpl;
-use fajr\modules\ControllerInjectorModule;
 use fajr\Request;
 use fajr\Response;
 use fajr\Statistics;
@@ -41,7 +35,8 @@ use fajr\Version;
 use fajr\config\ServerConfig;
 use fajr\config\FajrConfig;
 use fajr\config\FajrConfigOptions;
-use sfSessionStorage;
+use fajr\ServerManager;
+use fajr\rendering\DisplayManager;
 
 /**
  * This is "main()" of the fajr. It instantiates all neccessary
@@ -54,20 +49,10 @@ use sfSessionStorage;
 class Fajr {
 
   /**
-   * @var Injector $injector dependency injector.
-   */
-  private $injector;
-
-  /**
    * @var Context $context application context
    */
   private $context;
 
-  /**
-   * @var Statistics $statistics
-   */
-  private $statistics;
-  
   /**
    * @var ServerManager
    */
@@ -75,33 +60,11 @@ class Fajr {
 
   /**
    * Constructor.
-   *
-   * @param Injector $injector dependency injector.
    */
-  public function __construct(Injector $injector, FajrConfig $config)
+  public function __construct(FajrConfig $config)
   {
-    $this->injector = $injector;
     $this->config = $config;
-    $this->serverManager = $injector->getInstance('ServerManager.class');
-  }
-
-  private function provideCookieFile()
-  {
-    return FajrUtils::joinPath($this->config->getDirectory('Path.Temporary.Cookies'),
-                               'cookie_'.session_id());
-
-  }
-
-  private function provideConnection()
-  {
-    $curlOptions = $this->injector->getParameter('CurlConnection.options');
-    $connection = new connection\CurlConnection($curlOptions, $this->provideCookieFile());
-
-    $this->statistics->setRawStatistics($connection->getStats());
-
-    $connection = new connection\AIS2ErrorCheckingConnection($connection);
-
-    return $this->statistics->hookFinalConnection($connection);
+    $this->serverManager = ServerManager::getInstance();
   }
 
   /**
@@ -144,7 +107,7 @@ class Fajr {
   public function render(Response $response)
   {
     try {
-      $displayManager = $this->injector->getInstance('DisplayManager.class');
+      $displayManager = DisplayManager::getInstance();
       echo $displayManager->display($response);
     } catch (Exception $e) {
       throw new Exception('Chyba pri renderovaní template '.
@@ -162,9 +125,8 @@ class Fajr {
   public function run()
   {
     try {
-      $trace = $this->injector->getInstance('Trace.class');
-      $this->statistics = $this->injector->getInstance('Statistics.class');
-      $this->context = $this->injector->getInstance('Context.class');
+      $trace = TraceProvider::getInstance();
+      $this->context = Context::getInstance();
 
       $this->setResponseFields($this->context->getResponse());
       $this->runLogic($trace);
@@ -228,7 +190,7 @@ class Fajr {
   public function runLogic(Trace $trace)
   {
     $session = $this->context->getSessionStorage();
-    $loginManager = $this->injector->getInstance('LoginManager.class');
+    $loginManager = LoginManager::getInstance();
     // we are going to log in and  we need a clean session.
     // This needs to be done before a connection
     // is created, because we pass cookie file name
@@ -237,11 +199,11 @@ class Fajr {
       $session->regenerate(true);
     }
 
-    $connection = $this->provideConnection();
+    $connection = ConnectionProvider::getInstance();
     $server = $this->serverManager->getActiveServer();
     $serverConnection = new AIS2ServerConnection($connection,
         new AIS2ServerUrlMap($server->getServerName()));
-    $connService = $this->injector->getInstance('serverConnection.class');
+    $connService = LazyServerConnection::getInstance();
     $connService->setReal($serverConnection);
 
     $action = $this->context->getRequest()->getParameter('action',
@@ -251,7 +213,8 @@ class Fajr {
     $loggedIn = $loginManager->isLoggedIn($serverConnection);
     $response->set('loggedIn', $loggedIn);
     
-    $mainScreen = $this->injector->getInstance('AIS2MainScreen.class');
+    $backendFactory = BackendProvider::getInstance();
+    $mainScreen = $backendFactory->newAIS2MainScreen();
 
     if (($aisVersion = $session->read('ais/aisVersion')) == null) {
       $aisVersion = $mainScreen->getAisVersion($trace->addChild('Get AIS version'));
@@ -277,8 +240,7 @@ class Fajr {
       $response->set('aisUserName', $userName);
     }
 
-    $controller = new DispatchController($this->injector,
-        $this->injector->getParameter('controller.dispatchMap'));
+    $controller = DispatchController::getInstance();
 
     $response->set("action", $action);
     try {
@@ -287,6 +249,6 @@ class Fajr {
     catch (AuthenticationRequiredException $ex) {
       $response->redirect(array('action' => 'login.LoginScreen'), 'index.php');
     }
-    $response->set('statistics', $this->statistics);
+    $response->set('statistics', Statistics::getInstance());
   }
 }

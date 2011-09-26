@@ -1,5 +1,5 @@
 <?php
-// Copyright (c) 2010 The Fajr authors (see AUTHORS).
+// Copyright (c) 2010, 2011 The Fajr authors (see AUTHORS).
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file in the project root directory.
 
@@ -22,6 +22,27 @@ use fajr\libfajr\base\MutableTimer;
  */
 class SystemTimer implements MutableTimer
 {
+  /** @var double default initial time used in getInstance */
+  private static $initialTime;
+
+  /* TODO document */
+  public static function setInitialTime($initialTime)
+  {
+    self::$initialTime = $initialTime;
+  }
+
+  /** @var SystemTimer $instance */
+  private static $instance;
+
+  /* TODO document */
+  public static function getInstance()
+  {
+    if (!isset(self::$instance)) {
+      self::$instance = new SystemTimer(self::$initialTime);
+    }
+    return self::$instance;
+  }
+
   /**
    * @var double time of the last reset() event
    */

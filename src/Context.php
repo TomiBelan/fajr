@@ -2,7 +2,7 @@
 /**
  * Tento súbor obsahuje objekt reprezentujúci kontext aplikácie
  *
- * @copyright  Copyright (c) 2010 The Fajr authors (see AUTHORS).
+ * @copyright  Copyright (c) 2010, 2011 The Fajr authors (see AUTHORS).
  *             Use of this source code is governed by a MIT license that can be
  *             found in the LICENSE file in the project root directory.
  *
@@ -26,6 +26,21 @@ use sfStorage;
  */
 class Context
 {
+  /** @var Context $instance */
+  private static $instance;
+
+  /* TODO document */
+  public static function getInstance()
+  {
+    if (!isset(self::$instance)) {
+      self::$instance = new Context();
+      self::$instance->setRequest(Request::getInstance());
+      self::$instance->setResponse(Response::getInstance());
+      self::$instance->setSessionStorage(SessionStorageProvider::getInstance());
+    }
+    return self::$instance;
+  }
+
   /** var Request */
   private $request;
 

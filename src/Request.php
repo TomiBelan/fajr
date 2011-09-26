@@ -24,6 +24,18 @@ use fajr\libfajr\pub\connection\AIS2ServerConnection;
  */
 class Request
 {
+  /** @var Request $instance */
+  private static $instance;
+
+  /* TODO document */
+  public static function getInstance()
+  {
+    if (!isset(self::$instance)) {
+      self::$instance = new Request(HttpInputParameters::getInstance(), $_SERVER['REQUEST_TIME']);
+    }
+    return self::$instance;
+  }
+
   private $input;
   private $time;
 
