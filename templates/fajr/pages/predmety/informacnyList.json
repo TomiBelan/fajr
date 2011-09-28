@@ -1,0 +1,26 @@
+{##
+ # Show informacny list.
+ #
+ # @copyright  Copyright (c) 2010-2011 The Fajr authors (see AUTHORS).
+ #             Use of this source code is governed by a MIT license that can be
+ #             found in the LICENSE file in the project root directory.
+ # @author     Martin Sucha <anty.sk@gmail.com>
+ # 
+ - #}
+{%- block application_content -%}
+{ 'attributes': [
+    {%- for item in list -%}
+      {%- if not loop.first %},{% endif -%}
+      {
+      'name': {{ item.name|json_encode|raw }},
+      'id': {% if item.id is defined %}{{ item.id|json_encode|raw }}{% else %}null{% endif %},
+      'values': [
+        {%- for value in item.values -%}
+          {%- if not loop.first %},{% endif -%}
+          {{ value|json_encode|raw }}
+        {%- endfor %}]
+    }
+    {%- endfor -%}
+  ]
+}
+{% endblock %}

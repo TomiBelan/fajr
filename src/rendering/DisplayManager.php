@@ -77,8 +77,14 @@ class DisplayManager
       $skin = $this->defaultSkin;
     }
     $twig = $this->twigFactory->provideTwigForSkin($skin);
+    
+    $format = $response->getFormat();
+    
+    if ($format == 'json') {
+      header('Content-type: application/json');
+    }
 
-    $templateName = 'pages/' . $response->getTemplate() . '.xhtml';
+    $templateName = 'pages/' . $response->getTemplate() . '.' . $format;
     $template = $twig->loadTemplate($templateName);
 
     $output = $template->render($response->getData());

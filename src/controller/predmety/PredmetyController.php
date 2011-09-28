@@ -89,6 +89,7 @@ class PredmetyController extends BaseController
     $response = $context->getResponse();
 
     $code = $request->getParameter('code');
+    $format = $request->getParameter('format');
 
     Preconditions::check(!empty($code), "Nezadaný kód predmetu!");
 
@@ -98,6 +99,7 @@ class PredmetyController extends BaseController
     $list = $ip->parse($trace, $content);
 
     $response->setTemplate('predmety/informacnyList');
+    if ($format == 'json') $response->setFormat('json');
     $response->set('list', $list->getAllAttributes());
     $response->set('code', $code);
   }

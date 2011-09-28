@@ -39,6 +39,9 @@ class Response
 
   /** @var string template name to be used */
   private $template = null;
+  
+  /** @var string output format name*/
+  private $format = 'xhtml';
 
   /** SkinConfig skin configuration */
   private $skin = null;
@@ -88,6 +91,21 @@ class Response
   {
     Preconditions::checkIsString($template, '$template should be string.');
     $this->template = $template;
+  }
+  
+  public function getFormat()
+  {
+    return $this->format;
+  }
+
+  /**
+   * Format of the response, will be used when choosing appropriate template
+   * @param type $format 
+   */
+  public function setFormat($format)
+  {
+    Preconditions::checkIsString($format, 'Format must be string');
+    $this->format = $format;
   }
 
   public function addWarning($message)
