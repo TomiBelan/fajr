@@ -25,12 +25,12 @@ class Twig_Tests_Node_IfTest extends Twig_Tests_Node_TestCase
         $else = null;
         $node = new Twig_Node_If($t, $else, 0);
 
-        $this->assertEquals($t, $node->tests);
-        $this->assertEquals(null, $node->else);
+        $this->assertEquals($t, $node->getNode('tests'));
+        $this->assertEquals(null, $node->getNode('else'));
 
         $else = new Twig_Node_Print(new Twig_Node_Expression_Name('bar', 0), 0);
         $node = new Twig_Node_If($t, $else, 0);
-        $this->assertEquals($else, $node->else);
+        $this->assertEquals($else, $node->getNode('else'));
     }
 
     /**
@@ -55,7 +55,7 @@ class Twig_Tests_Node_IfTest extends Twig_Tests_Node_TestCase
 
         $tests[] = array($node, <<<EOF
 if (true) {
-    echo (isset(\$context['foo']) ? \$context['foo'] : null);
+    echo \$this->getContext(\$context, 'foo');
 }
 EOF
         );
@@ -71,9 +71,9 @@ EOF
 
         $tests[] = array($node, <<<EOF
 if (true) {
-    echo (isset(\$context['foo']) ? \$context['foo'] : null);
+    echo \$this->getContext(\$context, 'foo');
 } elseif (false) {
-    echo (isset(\$context['bar']) ? \$context['bar'] : null);
+    echo \$this->getContext(\$context, 'bar');
 }
 EOF
         );
@@ -87,9 +87,9 @@ EOF
 
         $tests[] = array($node, <<<EOF
 if (true) {
-    echo (isset(\$context['foo']) ? \$context['foo'] : null);
+    echo \$this->getContext(\$context, 'foo');
 } else {
-    echo (isset(\$context['bar']) ? \$context['bar'] : null);
+    echo \$this->getContext(\$context, 'bar');
 }
 EOF
         );

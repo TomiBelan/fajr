@@ -21,8 +21,8 @@ class Twig_Tests_Node_BlockTest extends Twig_Tests_Node_TestCase
         $body = new Twig_Node_Text('foo', 0);
         $node = new Twig_Node_Block('foo', $body, 0);
 
-        $this->assertEquals($body, $node->body);
-        $this->assertEquals('foo', $node['name']);
+        $this->assertEquals($body, $node->getNode('body'));
+        $this->assertEquals('foo', $node->getAttribute('name'));
     }
 
     /**
@@ -41,7 +41,7 @@ class Twig_Tests_Node_BlockTest extends Twig_Tests_Node_TestCase
 
         return array(
             array($node, <<<EOF
-public function block_foo(\$context, \$parents)
+public function block_foo(\$context, array \$blocks = array())
 {
     echo "foo";
 }

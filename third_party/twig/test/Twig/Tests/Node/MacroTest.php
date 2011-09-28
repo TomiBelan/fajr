@@ -22,9 +22,9 @@ class Twig_Tests_Node_MacroTest extends Twig_Tests_Node_TestCase
         $arguments = new Twig_Node(array(new Twig_Node_Expression_Name('foo', 0)), array(), 0);
         $node = new Twig_Node_Macro('foo', $body, $arguments, 0);
 
-        $this->assertEquals($body, $node->body);
-        $this->assertEquals($arguments, $node->arguments);
-        $this->assertEquals('foo', $node['name']);
+        $this->assertEquals($body, $node->getNode('body'));
+        $this->assertEquals($arguments, $node->getNode('arguments'));
+        $this->assertEquals('foo', $node->getAttribute('name'));
     }
 
     /**
@@ -46,11 +46,20 @@ class Twig_Tests_Node_MacroTest extends Twig_Tests_Node_TestCase
             array($node, <<<EOF
 public function getfoo(\$foo = null)
 {
-    \$context = array(
+    \$context = array_merge(\$this->env->getGlobals(), array(
         "foo" => \$foo,
-    );
+    ));
 
-    echo "foo";
+    ob_start();
+    try {
+        echo "foo";
+    } catch(Exception \$e) {
+        ob_end_clean();
+
+        throw \$e;
+    }
+
+    return ob_get_clean();
 }
 EOF
             ),

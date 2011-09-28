@@ -22,8 +22,8 @@ class Twig_Tests_Node_Expression_Binary_FloorDivTest extends Twig_Tests_Node_Tes
         $right = new Twig_Node_Expression_Constant(2, 0);
         $node = new Twig_Node_Expression_Binary_FloorDiv($left, $right, 0);
 
-        $this->assertEquals($left, $node->left);
-        $this->assertEquals($right, $node->right);
+        $this->assertEquals($left, $node->getNode('left'));
+        $this->assertEquals($right, $node->getNode('right'));
     }
 
     /**
@@ -43,7 +43,7 @@ class Twig_Tests_Node_Expression_Binary_FloorDivTest extends Twig_Tests_Node_Tes
         $node = new Twig_Node_Expression_Binary_FloorDiv($left, $right, 0);
 
         return array(
-            array($node, 'floor((1) / (2))'),
+            array($node, 'floor((1 / 2))'),
         );
     }
 }

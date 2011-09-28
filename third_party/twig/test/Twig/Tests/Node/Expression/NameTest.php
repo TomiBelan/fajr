@@ -20,7 +20,7 @@ class Twig_Tests_Node_Expression_NameTest extends Twig_Tests_Node_TestCase
     {
         $node = new Twig_Node_Expression_Name('foo', 0);
 
-        $this->assertEquals('foo', $node['name']);
+        $this->assertEquals('foo', $node->getAttribute('name'));
     }
 
     /**
@@ -41,8 +41,8 @@ class Twig_Tests_Node_Expression_NameTest extends Twig_Tests_Node_TestCase
         $env = new Twig_Environment(null, array('strict_variables' => true));
 
         return array(
-            array($node, '$this->getContext($context, \'foo\', \'line 0\')', $env),
-            array($node, '(isset($context[\'foo\']) ? $context[\'foo\'] : null)'),
+            array($node, '$this->getContext($context, \'foo\')', $env),
+            array($node, '$this->getContext($context, \'foo\')'),
             array($self, '$this'),
             array($context, '$context'),
         );

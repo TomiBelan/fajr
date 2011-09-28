@@ -21,22 +21,23 @@ class Twig_Tests_Node_ForTest extends Twig_Tests_Node_TestCase
         $keyTarget = new Twig_Node_Expression_AssignName('key', 0);
         $valueTarget = new Twig_Node_Expression_AssignName('item', 0);
         $seq = new Twig_Node_Expression_Name('items', 0);
+        $ifexpr = new Twig_Node_Expression_Constant(true, 0);
         $body = new Twig_Node_Print(new Twig_Node_Expression_Name('foo', 0), 0);
         $else = null;
-        $withLoop = false;
-        $node = new Twig_Node_For($keyTarget, $valueTarget, $seq, $body, $else, $withLoop, 0);
+        $node = new Twig_Node_For($keyTarget, $valueTarget, $seq, $ifexpr, $body, $else, 0);
+        $node->setAttribute('with_loop', false);
 
-        $this->assertEquals($keyTarget, $node->key_target);
-        $this->assertEquals($valueTarget, $node->value_target);
-        $this->assertEquals($seq, $node->seq);
-        $this->assertEquals($body, $node->body);
-        $this->assertEquals(null, $node->else);
-
-        $this->assertEquals($withLoop, $node['with_loop']);
+        $this->assertEquals($keyTarget, $node->getNode('key_target'));
+        $this->assertEquals($valueTarget, $node->getNode('value_target'));
+        $this->assertEquals($seq, $node->getNode('seq'));
+        $this->assertEquals($ifexpr, $node->getNode('ifexpr'));
+        $this->assertEquals($body, $node->getNode('body'));
+        $this->assertEquals(null, $node->getNode('else'));
 
         $else = new Twig_Node_Print(new Twig_Node_Expression_Name('foo', 0), 0);
-        $node = new Twig_Node_For($keyTarget, $valueTarget, $seq, $body, $else, $withLoop, 0);
-        $this->assertEquals($else, $node->else);
+        $node = new Twig_Node_For($keyTarget, $valueTarget, $seq, $ifexpr, $body, $else, 0);
+        $node->setAttribute('with_loop', false);
+        $this->assertEquals($else, $node->getNode('else'));
     }
 
     /**
@@ -55,16 +56,17 @@ class Twig_Tests_Node_ForTest extends Twig_Tests_Node_TestCase
         $keyTarget = new Twig_Node_Expression_AssignName('key', 0);
         $valueTarget = new Twig_Node_Expression_AssignName('item', 0);
         $seq = new Twig_Node_Expression_Name('items', 0);
+        $ifexpr = null;
         $body = new Twig_Node_Print(new Twig_Node_Expression_Name('foo', 0), 0);
         $else = null;
-        $withLoop = false;
-        $node = new Twig_Node_For($keyTarget, $valueTarget, $seq, $body, $else, $withLoop, 0);
+        $node = new Twig_Node_For($keyTarget, $valueTarget, $seq, $ifexpr, $body, $else, 0);
+        $node->setAttribute('with_loop', false);
 
         $tests[] = array($node, <<<EOF
 \$context['_parent'] = (array) \$context;
-\$context['_seq'] = twig_iterator_to_array((isset(\$context['items']) ? \$context['items'] : null));
+\$context['_seq'] = twig_ensure_traversable(\$this->getContext(\$context, 'items'));
 foreach (\$context['_seq'] as \$context['key'] => \$context['item']) {
-    echo (isset(\$context['foo']) ? \$context['foo'] : null);
+    echo \$this->getContext(\$context, 'foo');
 }
 \$_parent = \$context['_parent'];
 unset(\$context['_seq'], \$context['_iterated'], \$context['key'], \$context['item'], \$context['_parent'], \$context['loop']);
@@ -75,34 +77,34 @@ EOF
         $keyTarget = new Twig_Node_Expression_AssignName('k', 0);
         $valueTarget = new Twig_Node_Expression_AssignName('v', 0);
         $seq = new Twig_Node_Expression_Name('values', 0);
+        $ifexpr = null;
         $body = new Twig_Node_Print(new Twig_Node_Expression_Name('foo', 0), 0);
         $else = null;
-        $withLoop = true;
-        $node = new Twig_Node_For($keyTarget, $valueTarget, $seq, $body, $else, $withLoop, 0);
+        $node = new Twig_Node_For($keyTarget, $valueTarget, $seq, $ifexpr, $body, $else, 0);
+        $node->setAttribute('with_loop', true);
 
         $tests[] = array($node, <<<EOF
 \$context['_parent'] = (array) \$context;
-\$context['_seq'] = twig_iterator_to_array((isset(\$context['values']) ? \$context['values'] : null));
-\$countable = is_array(\$context['_seq']) || (is_object(\$context['_seq']) && \$context['_seq'] instanceof Countable);
-\$length = \$countable ? count(\$context['_seq']) : null;
+\$context['_seq'] = twig_ensure_traversable(\$this->getContext(\$context, 'values'));
 \$context['loop'] = array(
   'parent' => \$context['_parent'],
   'index0' => 0,
   'index'  => 1,
   'first'  => true,
 );
-if (\$countable) {
+if (is_array(\$context['_seq']) || (is_object(\$context['_seq']) && \$context['_seq'] instanceof Countable)) {
+    \$length = count(\$context['_seq']);
     \$context['loop']['revindex0'] = \$length - 1;
     \$context['loop']['revindex'] = \$length;
     \$context['loop']['length'] = \$length;
     \$context['loop']['last'] = 1 === \$length;
 }
 foreach (\$context['_seq'] as \$context['k'] => \$context['v']) {
-    echo (isset(\$context['foo']) ? \$context['foo'] : null);
+    echo \$this->getContext(\$context, 'foo');
     ++\$context['loop']['index0'];
     ++\$context['loop']['index'];
     \$context['loop']['first'] = false;
-    if (\$countable) {
+    if (isset(\$context['loop']['length'])) {
         --\$context['loop']['revindex0'];
         --\$context['loop']['revindex'];
         \$context['loop']['last'] = 0 === \$context['loop']['revindex0'];
@@ -117,43 +119,77 @@ EOF
         $keyTarget = new Twig_Node_Expression_AssignName('k', 0);
         $valueTarget = new Twig_Node_Expression_AssignName('v', 0);
         $seq = new Twig_Node_Expression_Name('values', 0);
+        $ifexpr = new Twig_Node_Expression_Constant(true, 0);
         $body = new Twig_Node_Print(new Twig_Node_Expression_Name('foo', 0), 0);
-        $else = new Twig_Node_Print(new Twig_Node_Expression_Name('foo', 0), 0);
-        $withLoop = true;
-        $node = new Twig_Node_For($keyTarget, $valueTarget, $seq, $body, $else, $withLoop, 0);
+        $else = null;
+        $node = new Twig_Node_For($keyTarget, $valueTarget, $seq, $ifexpr, $body, $else, 0);
+        $node->setAttribute('with_loop', true);
 
         $tests[] = array($node, <<<EOF
 \$context['_parent'] = (array) \$context;
-\$context['_iterated'] = false;
-\$context['_seq'] = twig_iterator_to_array((isset(\$context['values']) ? \$context['values'] : null));
-\$countable = is_array(\$context['_seq']) || (is_object(\$context['_seq']) && \$context['_seq'] instanceof Countable);
-\$length = \$countable ? count(\$context['_seq']) : null;
+\$context['_seq'] = twig_ensure_traversable(\$this->getContext(\$context, 'values'));
 \$context['loop'] = array(
   'parent' => \$context['_parent'],
   'index0' => 0,
   'index'  => 1,
   'first'  => true,
 );
-if (\$countable) {
+foreach (\$context['_seq'] as \$context['k'] => \$context['v']) {
+    if (!(true)) {
+        continue;
+    }
+
+    echo \$this->getContext(\$context, 'foo');
+    ++\$context['loop']['index0'];
+    ++\$context['loop']['index'];
+    \$context['loop']['first'] = false;
+}
+\$_parent = \$context['_parent'];
+unset(\$context['_seq'], \$context['_iterated'], \$context['k'], \$context['v'], \$context['_parent'], \$context['loop']);
+\$context = array_merge(\$_parent, array_intersect_key(\$context, \$_parent));
+EOF
+        );
+
+        $keyTarget = new Twig_Node_Expression_AssignName('k', 0);
+        $valueTarget = new Twig_Node_Expression_AssignName('v', 0);
+        $seq = new Twig_Node_Expression_Name('values', 0);
+        $ifexpr = null;
+        $body = new Twig_Node_Print(new Twig_Node_Expression_Name('foo', 0), 0);
+        $else = new Twig_Node_Print(new Twig_Node_Expression_Name('foo', 0), 0);
+        $node = new Twig_Node_For($keyTarget, $valueTarget, $seq, $ifexpr, $body, $else, 0);
+        $node->setAttribute('with_loop', true);
+
+        $tests[] = array($node, <<<EOF
+\$context['_parent'] = (array) \$context;
+\$context['_seq'] = twig_ensure_traversable(\$this->getContext(\$context, 'values'));
+\$context['_iterated'] = false;
+\$context['loop'] = array(
+  'parent' => \$context['_parent'],
+  'index0' => 0,
+  'index'  => 1,
+  'first'  => true,
+);
+if (is_array(\$context['_seq']) || (is_object(\$context['_seq']) && \$context['_seq'] instanceof Countable)) {
+    \$length = count(\$context['_seq']);
     \$context['loop']['revindex0'] = \$length - 1;
     \$context['loop']['revindex'] = \$length;
     \$context['loop']['length'] = \$length;
     \$context['loop']['last'] = 1 === \$length;
 }
 foreach (\$context['_seq'] as \$context['k'] => \$context['v']) {
+    echo \$this->getContext(\$context, 'foo');
     \$context['_iterated'] = true;
-    echo (isset(\$context['foo']) ? \$context['foo'] : null);
     ++\$context['loop']['index0'];
     ++\$context['loop']['index'];
     \$context['loop']['first'] = false;
-    if (\$countable) {
+    if (isset(\$context['loop']['length'])) {
         --\$context['loop']['revindex0'];
         --\$context['loop']['revindex'];
         \$context['loop']['last'] = 0 === \$context['loop']['revindex0'];
     }
 }
 if (!\$context['_iterated']) {
-    echo (isset(\$context['foo']) ? \$context['foo'] : null);
+    echo \$this->getContext(\$context, 'foo');
 }
 \$_parent = \$context['_parent'];
 unset(\$context['_seq'], \$context['_iterated'], \$context['k'], \$context['v'], \$context['_parent'], \$context['loop']);
