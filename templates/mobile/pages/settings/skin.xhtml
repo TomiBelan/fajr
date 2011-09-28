@@ -10,11 +10,11 @@
 {% block title %}Nastavenia{% endblock %}
 {% block application_content %}
 {% import "macros/settings.xhtml" as settingsMacros %}
-{% parent %}
+{{ parent() }}
   {% set tabContent %}
   <form method="post" action="">
     <fieldset>
-      {% for key,item in availableSkins|items %}
+      {% for key,item in availableSkins %}
         {% if currentSkin == key %}
           {% set selected %}CHECKED{% endset %}
         {% else %}

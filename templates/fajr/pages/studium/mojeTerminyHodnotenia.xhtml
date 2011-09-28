@@ -12,7 +12,7 @@
 {% import "macros/decorators.xhtml" as decorators %}
 {% import "macros/table.xhtml" as table %}
 {% import "macros/studium.xhtml" as studiumMacros %}
-{% parent %}
+{{ parent() }}
 {% set tabContent %}
   {% set head %}
     {{ table.column("predmet", "sortable-text") }}
@@ -31,10 +31,10 @@
   {% endset %}
 
   {% macro riadok(row, odhlas, studium, zapisnyList, action) %}
-    {% url link for ['action': action,
+    {% url link for {'action': action,
                      'studium': studium,
                      'list': zapisnyList,
-                     'termin': row.index] %}
+                     'termin': row.index} %}
     <td><a href="{{ link }}">{{ row.predmetNazov }}</a></td>
     <td>{{ row.cas }}</td>
     <td>{{ row.dat }}</td>
@@ -45,7 +45,7 @@
     <td>{{ row.poznamka }}</td>
     <td>{{ row.prihlasovanie }}</td>
     <td>{{ row.odhlasovanie }}</td>
-    <td>{{ odhlas|safe }}</td>
+    <td>{{ odhlas|raw }}</td>
     <td>{{ row.znamka }}</td>
   {% endmacro %}
 
@@ -54,9 +54,9 @@
       {{ table.row(none, (termin != none) and (row.index == termin)) }}
         {% if row.mozeOdhlasit %}
           {% set class="terminmozeodhlasit" %}
-          {% url formAction for ['action': 'studium.OdhlasZoSkusky',
+          {% url formAction for {'action': 'studium.OdhlasZoSkusky',
                                  'studium': studium,
-                                 'list': zapisnyList] %}
+                                 'list': zapisnyList} %}
           {% set odhlas %}
             <form method="post" action="{{ formAction }}">
               <div>

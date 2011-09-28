@@ -8,10 +8,10 @@
  #}
 {% extends "layout/application.xhtml" %}
 {% block head %}
-  {% parent %}
+  {{ parent() }}
   <link rel="stylesheet" href="css/fajr/settings.css" type="text/css" media="screen, projection" />
 {% endblock %}
 {% block application_content %}
   <a href="{{ mainPage }}">&lt;&lt; späť do fajru &lt;&lt</a>
-{% parent %}
+{{ parent() }}
 {% endblock %}

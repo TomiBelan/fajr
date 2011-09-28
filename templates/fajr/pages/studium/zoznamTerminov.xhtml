@@ -12,7 +12,7 @@
 {% import "macros/decorators.xhtml" as decorators %}
 {% import "macros/table.xhtml" as table %}
 {% import "macros/studium.xhtml" as studiumMacros %}
-{% parent %}
+{{ parent() }}
 {% set tabContent %}
   {% set head %}
     {{ table.column("Predmet", "sortable-text") }}
@@ -31,11 +31,11 @@
   {% endset %}
 
   {% macro riadok(row, prihlas, studium, zapisnyList, action) %}
-    {% url link for ['action': action,
+    {% url link for {'action': action,
                      'studium': studium,
                      'list': zapisnyList,
                      'predmet': row.predmetIndex,
-                     'termin': row.index] %}
+                     'termin': row.index} %}
     <td><a href="{{ link }}">{{ row.predmet }}</a></td>
     <td>{{ row.cas }}</td>
     <td>{{ row.dat }}</td>
@@ -46,20 +46,20 @@
     <td>{{ row.poznamka }}</td>
     <td>{{ row.prihlasovanie }}</td>
     <td>{{ row.odhlasovanie }}</td>
-    <td>{{ prihlas|safe }}</td>
+    <td>{{ prihlas|raw }}</td>
   {% endmacro %}
 
   {% set body %}
     {% for row in terminy %}
-      {{ table.row(none, (termin != none) and (predmet != none) and
-                         (row.index == termin) and (row.predmetIndex == predmet)) }}
+      {{ table.row(none, (termin != none) and (row.index == termin)
+                          and (row.index == termin) and (row.predmetIndex == predmet)) }}
         {% if row.mozeSaPrihlasit <= 0 %} {# moze sa prihlasit #}
-          {% url form_action for ['action': 'studium.PrihlasNaSkusku',
+          {% url form_action for {'action': 'studium.PrihlasNaSkusku',
                              'studium': studium,
-                             'list': zapisnyList] %}
+                             'list': zapisnyList} %}
           {% set prihlas %}
             {# TODO(anty): update after those checks are moved to the model #}
-            {% if row.mozeSaPrihlasit == "fajr\\controller\\studium\\MozePrihlasitNaTerminHelper::PRIHLASIT_MOZE_ZNAMKA"|constant %}
+            {% if row.mozeSaPrihlasit == constant("fajr\\controller\\studium\\MozePrihlasitNaTerminHelper::PRIHLASIT_MOZE_ZNAMKA") %}
               Už máš zapísané "{{ row.znamka }}"
             {% endif %}
             <form method='post' action='{{ form_action }}'>
@@ -75,11 +75,11 @@
               </div>
             </form>
           {% endset %}
-        {% elseif row.mozeSaPrihlasit == "fajr\\controller\\studium\\MozePrihlasitNaTerminHelper::PRIHLASIT_NEMOZE_CAS"|constant %}
+        {% elseif row.mozeSaPrihlasit == constant("fajr\\controller\\studium\\MozePrihlasitNaTerminHelper::PRIHLASIT_NEMOZE_CAS") %}
           {% set prihlas="Nedá sa (mimo termínu prihlasovania)" %}
-        {% elseif row.mozeSaPrihlasit == "fajr\\controller\\studium\\MozePrihlasitNaTerminHelper::PRIHLASIT_NEMOZE_POCET"|constant %}
+        {% elseif row.mozeSaPrihlasit == constant("fajr\\controller\\studium\\MozePrihlasitNaTerminHelper::PRIHLASIT_NEMOZE_POCET") %}
           {% set prihlas="Termín je plný" %}
-        {% elseif row.mozeSaPrihlasit == "fajr\\controller\\studium\\MozePrihlasitNaTerminHelper::PRIHLASIT_NEMOZE_ZNAMKA"|constant %}
+        {% elseif row.mozeSaPrihlasit == constant("fajr\\controller\\studium\\MozePrihlasitNaTerminHelper::PRIHLASIT_NEMOZE_ZNAMKA") %}
           {% set prihlas %}Už máš zapísané "{{ row.znamka }}"{% endset %}
         {% else %}
           {% set prihlas="Nedá sa, dôvod neznámy" %}

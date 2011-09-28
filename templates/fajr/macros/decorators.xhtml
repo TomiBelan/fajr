@@ -19,10 +19,10 @@
   {% unique collapsible id %}
   <div class="collapsible" id="{{ id }}">
     <div class="collapsibleheader togglevisibility" onclick="toggleVisibility('{{ id }}')">
-      {{ title|safe }}
+      {{ title|raw }}
     </div>
     <div class="collapsiblecontent">
-      {{ content|safe }}
+      {{ content|raw }}
     </div>
     {% if collapsed %}
       <script type="text/javascript">
@@ -53,7 +53,7 @@
     <table id="{{ id }}" class="colstyle-sorting{{ class }}">
       <thead>
         <tr>
-          {{ head|safe }}
+          {{ head|raw }}
         </tr>
       </thead>
       {# tu by mal byt po spravnosti tfoot, aby bol vystup validny
@@ -62,11 +62,11 @@
          jedna moznost je nepouzit tfoot, ale tbody s nejakym classom
       #}
       <tbody>
-        {{ body|safe }}
+        {{ body|raw }}
       </tbody>
       {% if foot %}
         <tfoot>
-          {{ foot|safe }}
+          {{ foot|raw }}
         </tfoot>
       {% endif %}
    {% endif %}
@@ -87,5 +87,5 @@
           ><a href="{{ tab.url }}">{{ tab.title }}</a></span>{#
   #}{% endfor %}
 </div>
-{{ content|safe }}
+{{ content|raw }}
 {% endmacro %}

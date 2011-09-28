@@ -11,5 +11,5 @@
  # TODO: document
  #}
 {% macro instanceLink(instanceName, serverName) %}{#
-  #}<a href="https://{{ serverName|urlencode }}/">{{ instanceName }}</a>{#
+  #}<a href="https://{{ serverName|url_encode }}/">{{ instanceName }}</a>{#
 #}{% endmacro %}

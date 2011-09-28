@@ -14,7 +14,7 @@
 {% macro addWarning(message) %}
   <div class="warningBanner">
     <strong>
-    {{ message|safe }}
+    {{ message|raw }}
     </strong>
   </div>
 {% endmacro %}

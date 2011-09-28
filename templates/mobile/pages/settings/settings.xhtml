@@ -10,7 +10,7 @@
 {% block title %}Nastavenia{% endblock %}
 {% block application_content %}
 {% import "macros/settings.xhtml" as settingsMacros %}
-{% parent %}
+{{ parent() }}
   {% set tabContent %}
   <h2>
   Vyberte si prosím nastavenia, ktoré chcete modifikovať.

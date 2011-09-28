@@ -53,7 +53,7 @@
       <legend>Prihlásenie cez cookie do <br/>{{ currentServer.serverName }} </legend>
       <div>
       bezpečne sa
-      <a href="https://login.uniba.sk/?{{ currentServer.cosignCookieName|urlencode }}&amp;https://{{ currentServer.serverName|urlencode }}/ais/login.do?"
+      <a href="https://login.uniba.sk/?{{ currentServer.cosignCookieName|url_encode }}&amp;https://{{ currentServer.serverName|url_encode }}/ais/login.do?"
          >prihlás</a>
       do {{ currentServer.instanceName }} a skopíruj si cookie.
       <hr/>

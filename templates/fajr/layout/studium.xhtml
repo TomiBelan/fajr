@@ -10,7 +10,7 @@
 {% block application_content %}
 {% import "macros/decorators.xhtml" as decorators %}
 {% import "macros/table.xhtml" as table %}
-{% parent %}
+{{ parent() }}
 
 {# --------------------- ZOZNAM STUDII -------------------------------#}
 
@@ -30,7 +30,7 @@
 {% set body %}
   {% for row in zoznamStudii.data %}
     {{ table.row(none, row.index == studium) }}
-      {% url link for ['action': action, 'studium': row.index] %}
+      {% url link for {'action': action, 'studium': row.index} %}
       <td><a href="{{ link }}">{{ row.rokDoporuceny }}</a></td>
       <td>{{ row.rokStudia }}</td>
       <td>{{ row.studijnyProgramSkratka }}</td>
@@ -71,7 +71,7 @@
 {% set body %}
   {% for row in zapisneListy.data %}
     {{ table.row(none, row.index == zapisnyList) }}
-      {% url link for ['action': action, 'studium': studium, 'list': row.index] %}
+      {% url link for {'action': action, 'studium': studium, 'list': row.index} %}
       <td><a href="{{ link }}">{{ row.popisAkadRok }}</a></td>
       <td>{{ row.rokRocnik }}</td>
       <td>{{ row.studProgramSkratka }}</td>

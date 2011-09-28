@@ -42,13 +42,13 @@ class URLNode extends Twig_Node
    * Compile this node
    * @param Twig_Compiler $compiler
    */
-  public function compile($compiler)
+  public function compile(Twig_Compiler $compiler)
   {
     $compiler
       ->addDebugInfo($this)
-      ->write('$context[\''.$this['name'].'\'] = ')
+      ->write('$context[\''.$this->attributes['name'].'\'] = ')
       ->raw('\\fajr\\util\\FajrUtils::buildUrl(')
-      ->subcompile($this->parameters)
+      ->subcompile($this->getNode('parameters'))
       ->raw(");\n");
   }
 

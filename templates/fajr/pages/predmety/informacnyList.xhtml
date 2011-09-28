@@ -11,7 +11,7 @@
 {% extends "layout/application.xhtml" %}
 {% block title %}Predmet {{ code }}{% endblock %}
 {% block application_content %}
-  {% parent %}
+  {{ parent() }}
   <table>
     <tr>
       <th>Názov</th>

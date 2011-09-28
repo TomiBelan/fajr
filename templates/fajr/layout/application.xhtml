@@ -9,13 +9,13 @@
 {% extends "layout/main.xhtml" %}
 
 {% block head %}
-{% parent %}
+{{ parent() }}
 <script type="text/javascript" src="javascripts/third_party/latinise.js"></script>
 <script type="text/javascript" src="javascripts/sortFunctions.js"></script>
 {% endblock %}
 
 {% block content %}
-  {% parent %}
+  {{ parent() }}
   {% block application_content %}{% endblock %}
   <div class="infoFooter">
     <div>

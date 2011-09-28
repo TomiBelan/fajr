@@ -42,11 +42,11 @@ class UniqueNode extends Twig_Node
    * Compile this node
    * @param Twig_Compiler $compiler
    */
-  public function compile($compiler)
+  public function compile(Twig_Compiler $compiler)
   {
     $compiler
       ->addDebugInfo($this)
-      ->write('$context[\''.$this['name'].'\'] = \''.$this['type'].'\'.$this->getNextUniqueId()')
+      ->write('$context[\''.$this->attributes['name'].'\'] = \''.$this->attributes['type'].'\'.$this->getNextUniqueId()')
       ->raw(";\n");
   }
 

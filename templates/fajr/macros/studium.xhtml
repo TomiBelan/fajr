@@ -58,31 +58,31 @@
  #}
 {% macro studiumTabs(content, selectedTab, studium, zapisnyList) %}
   {% import "macros/decorators.xhtml" as decorators %}
-  {% url terminyLink for     ['action': 'studium.MojeTerminyHodnotenia',
+  {% url terminyLink for     {'action': 'studium.MojeTerminyHodnotenia',
                               'studium': studium,
-                              'list': zapisnyList] %}
-  {% url zapisLink   for     ['action': 'studium.ZoznamTerminov',
+                              'list': zapisnyList} %}
+  {% url zapisLink   for     {'action': 'studium.ZoznamTerminov',
                               'studium': studium,
-                              'list': zapisnyList] %}
-  {% url zapisnyListLink for ['action': 'studium.ZapisanePredmety',
+                              'list': zapisnyList} %}
+  {% url zapisnyListLink for {'action': 'studium.ZapisanePredmety',
                               'studium': studium,
-                              'list': zapisnyList] %}
-  {% url hodnoteniaLink for  ['action': 'studium.Hodnotenia',
+                              'list': zapisnyList} %}
+  {% url hodnoteniaLink for  {'action': 'studium.Hodnotenia',
                               'studium': studium,
-                              'list': zapisnyList] %}
-  {% url prehladKreditovLink for  ['action': 'studium.PrehladKreditov',
+                              'list': zapisnyList} %}
+  {% url prehladKreditovLink for  {'action': 'studium.PrehladKreditov',
                                    'studium': studium,
-                                   'list': zapisnyList] %}
+                                   'list': zapisnyList} %}
   {{ decorators.tabs(content, 
-      ['TerminyHodnotenia': ['title': 'Moje skúšky',
-                              'url': terminyLink],
-       'ZapisSkusok':       ['title': 'Prihlásenie na skúšky',
-                             'url': zapisLink],
-       'ZapisnyList':       ['title': 'Zápisný list',
-                             'url': zapisnyListLink],
-       'Hodnotenia':        ['title': 'Hodnotenia/Priemery',
-                             'url': hodnoteniaLink],
-       'PrehladKreditov':   ['title': 'Prehľad kreditov',
-                             'url': prehladKreditovLink]
-      ], selectedTab) }}
+      {'TerminyHodnotenia': {'title': 'Moje skúšky',
+                              'url': terminyLink},
+       'ZapisSkusok':       {'title': 'Prihlásenie na skúšky',
+                             'url': zapisLink},
+       'ZapisnyList':       {'title': 'Zápisný list',
+                             'url': zapisnyListLink},
+       'Hodnotenia':        {'title': 'Hodnotenia/Priemery',
+                             'url': hodnoteniaLink},
+       'PrehladKreditov':   {'title': 'Prehľad kreditov',
+                             'url': prehladKreditovLink}
+      }, selectedTab) }}
 {% endmacro %}

@@ -14,7 +14,7 @@
       <input type="hidden" name="action" value="login.LoginScreen" />
       <select name="serverName"
         onChange="$('serverSelectForm').submit();">
-        {% for key,item in availableServers|items  %}
+        {% for key,item in availableServers  %}
           {% if item == currentServer %}
             {% set selected='selected="true"' %}
           {% else %}

@@ -12,14 +12,14 @@
 {% import "macros/decorators.xhtml" as decorators %}
 {% import "macros/table.xhtml" as table %}
 {% import "macros/studium.xhtml" as studiumMacros %}
-{% parent %}
+{{ parent() }}
 {% set tabContent %} 
 
   {% macro tabulkaSkuska(row, odhlas, studium, zapisnyList, action) %}
-    {% url link for ['action': action,
+    {% url link for {'action': action,
                      'studium': studium,
                      'list': zapisnyList,
-                     'termin': row.index] %}
+                     'termin': row.index} %}
     {% import "macros/decorators.xhtml" as decorators %} 
     {% set title %}
       {{decorators.span(row.predmetNazov~" - "~row.dat,"table_box_title")}}
@@ -51,9 +51,9 @@
     {% for row in terminyActive %}      
         {% if row.mozeOdhlasit %}
           {% set class="terminmozeodhlasit" %}
-          {% url formAction for ['action': 'studium.OdhlasZoSkusky',
+          {% url formAction for {'action': 'studium.OdhlasZoSkusky',
                                  'studium': studium,
-                                 'list': zapisnyList] %}
+                                 'list': zapisnyList} %}
           {% set odhlas %}
             <form method="post" action="{{ formAction }}">
               <div>
