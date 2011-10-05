@@ -16,12 +16,12 @@
  * @filesource
  */
 
-namespace fajr\libfajr\pub;
+namespace libfajr\pub;
 
-use fajr\libfajr\pub\base\Trace;
-use fajr\libfajr\pub\window\VSES017_administracia_studia\VSES017_Factory;
-use fajr\libfajr\pub\window\VSST060_register_predmetov\VSST060_Factory;
-use fajr\libfajr\pub\window\AIS2MainScreen;
+use libfajr\pub\base\Trace;
+use libfajr\pub\window\VSES017_administracia_studia\VSES017_Factory;
+use libfajr\pub\window\VSST060_register_predmetov\VSST060_Factory;
+use libfajr\pub\window\AIS2MainScreen;
 
 interface BackendFactory
 {

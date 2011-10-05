@@ -11,11 +11,11 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\data_manipulation;
+namespace libfajr\data_manipulation;
 
 use PHPUnit_Framework_TestCase;
-use fajr\libfajr\data_manipulation\AIS2Version;
-use fajr\libfajr\data_manipulation\AIS2VersionParser;
+use libfajr\data_manipulation\AIS2Version;
+use libfajr\data_manipulation\AIS2VersionParser;
 
 /**
  * @ignore

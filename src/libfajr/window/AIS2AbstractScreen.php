@@ -10,14 +10,14 @@
  * @author     Martin Králik <majak47@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\window;
+namespace libfajr\window;
 
-use fajr\libfajr\pub\base\Trace;
-use fajr\libfajr\base\IllegalStateException;
-use fajr\libfajr\login\AIS2LoginException;
+use libfajr\pub\base\Trace;
+use libfajr\base\IllegalStateException;
+use libfajr\login\AIS2LoginException;
 use AIS2Utils;
-use fajr\libfajr\base\DisableEvilCallsObject;
-use fajr\libfajr\pub\window\LazyDialog;
+use libfajr\base\DisableEvilCallsObject;
+use libfajr\pub\window\LazyDialog;
 
 /**
  * Abstraktná trieda reprezentujúca jednu obrazovku v AISe.

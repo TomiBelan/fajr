@@ -13,13 +13,13 @@
  * @filesource
  */
 
-namespace fajr\libfajr\data_manipulation;
+namespace libfajr\data_manipulation;
 
 use \PHPUnit_Framework_TestCase;
-use fajr\libfajr\data_manipulation\DataTable;
-use fajr\libfajr\data_manipulation\InformacnyListParser;
-use fajr\libfajr\data_manipulation\InformacnyListAttributeEnum as Attr;
-use fajr\libfajr\pub\base\NullTrace;
+use libfajr\data_manipulation\DataTable;
+use libfajr\data_manipulation\InformacnyListParser;
+use libfajr\data_manipulation\InformacnyListAttributeEnum as Attr;
+use libfajr\pub\base\NullTrace;
 
 /**
  * @ignore

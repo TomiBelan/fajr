@@ -15,13 +15,13 @@
  * @author     Martin Kralik <majak47@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\connection;
+namespace libfajr\connection;
 
 use Exception;
-use fajr\libfajr\pub\base\Trace;
-use fajr\libfajr\pub\connection\HttpConnection;
-use fajr\libfajr\pub\exceptions\LoginException;
-use fajr\libfajr\util\StrUtil;
+use libfajr\pub\base\Trace;
+use libfajr\pub\connection\HttpConnection;
+use libfajr\pub\exceptions\LoginException;
+use libfajr\util\StrUtil;
 
 /**
  * HttpConnection which checks for generic

@@ -12,13 +12,13 @@
  * @filesource
  */
 
-namespace fajr\libfajr\storage;
+namespace libfajr\storage;
 
 use sfStorage;
 use sfInitializationException;
 use sfStorageException;
-use fajr\libfajr\base\Preconditions;
-use fajr\libfajr\pub\exceptions\NotImplementedException;
+use libfajr\base\Preconditions;
+use libfajr\pub\exceptions\NotImplementedException;
 use InvalidArgumentException;
 use PDO;
 

@@ -11,10 +11,10 @@
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\pub\data_manipulation;
+namespace libfajr\pub\data_manipulation;
 
 use PHPUnit_Framework_TestCase;
-use fajr\libfajr\pub\data_manipulation\Znamka;
+use libfajr\pub\data_manipulation\Znamka;
 /**
  * @ignore
  */

@@ -11,7 +11,7 @@
  * @filesource
  */
 
-namespace fajr\libfajr\pub\regression;
+namespace libfajr\pub\regression;
 
 /**
  * Contains AIS2 table description.

@@ -14,11 +14,11 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\connection;
+namespace libfajr\connection;
 
-use fajr\libfajr\pub\connection\HttpConnection;
-use fajr\libfajr\pub\connection\SimpleConnection;
-use fajr\libfajr\pub\base\Trace;
+use libfajr\pub\connection\HttpConnection;
+use libfajr\pub\connection\SimpleConnection;
+use libfajr\pub\base\Trace;
 
 /**
  * Adapter that provides SimpleConnection interface

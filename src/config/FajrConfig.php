@@ -12,8 +12,8 @@
 namespace fajr\config;
 
 use Exception;
-use fajr\libfajr\base\IllegalStateException;
-use fajr\libfajr\base\Preconditions;
+use libfajr\base\IllegalStateException;
+use libfajr\base\Preconditions;
 use fajr\config\ConfigUtils;
 use fajr\util\FajrUtils;
 use InvalidArgumentException;

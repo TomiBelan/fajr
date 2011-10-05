@@ -15,7 +15,7 @@ namespace fajr;
 
 use fajr\Request;
 use fajr\Response;
-use fajr\libfajr\pub\connection\AIS2ServerConnection;
+use libfajr\pub\connection\AIS2ServerConnection;
 use sfStorage;
 
 /**

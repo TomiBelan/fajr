@@ -13,8 +13,8 @@
  */
 namespace fajr;
 
-use fajr\libfajr\base\Preconditions;
-use fajr\libfajr\pub\connection\AIS2ServerConnection;
+use libfajr\base\Preconditions;
+use libfajr\pub\connection\AIS2ServerConnection;
 
 /**
  * Class representing incoming request from browser

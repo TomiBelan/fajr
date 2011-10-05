@@ -11,7 +11,7 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\pub\exceptions;
+namespace libfajr\pub\exceptions;
 use Exception;
 
 /**

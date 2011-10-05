@@ -13,14 +13,14 @@
  * @author     Martin Sucha <anty.sk+fajr@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\window\VSES017_administracia_studia\fake;
+namespace libfajr\window\VSES017_administracia_studia\fake;
 
-use fajr\libfajr\pub\window\VSES017_administracia_studia\PrehladKreditovDialog;
+use libfajr\pub\window\VSES017_administracia_studia\PrehladKreditovDialog;
 
-use fajr\libfajr\pub\base\Trace;
-use fajr\libfajr\window\fake\FakeAbstractDialog;
-use fajr\libfajr\data_manipulation\DataTableImpl;
-use fajr\libfajr\pub\regression\PrehladKreditovRegression;
+use libfajr\pub\base\Trace;
+use libfajr\window\fake\FakeAbstractDialog;
+use libfajr\data_manipulation\DataTableImpl;
+use libfajr\pub\regression\PrehladKreditovRegression;
 
 /**
  * Trieda pre dialóg s prehľadom kreditov

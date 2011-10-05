@@ -11,7 +11,7 @@
  * @filesource
  */
 
-namespace fajr\libfajr\util;
+namespace libfajr\util;
 
 use \PHPUnit_Framework_TestCase;
 

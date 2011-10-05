@@ -11,7 +11,7 @@
  * @filesource
  */
 
-namespace fajr\libfajr\connection;
+namespace libfajr\connection;
 
 use PHPUnit_Framework_TestCase;
 

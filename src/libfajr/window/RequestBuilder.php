@@ -10,7 +10,7 @@
  * @author Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\window;
+namespace libfajr\window;
 
 interface RequestBuilder
 {

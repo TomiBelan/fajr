@@ -14,7 +14,7 @@
 namespace fajr;
 
 use PHPUnit_Framework_TestCase;
-use fajr\libfajr\base\SystemTimer;
+use libfajr\base\SystemTimer;
 use fajr\util\File;
 use fajr\util\SimpleStringFile;
 use fajr\util\TraceUtil;

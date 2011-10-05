@@ -14,14 +14,14 @@
  * @author     Martin Kralik <majak47@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\connection;
+namespace libfajr\connection;
 
-use fajr\libfajr\base\ClosureRunner;
-use fajr\libfajr\base\Preconditions;
-use fajr\libfajr\pub\base\Trace;
-use fajr\libfajr\pub\connection\HttpConnection;
+use libfajr\base\ClosureRunner;
+use libfajr\base\Preconditions;
+use libfajr\pub\base\Trace;
+use libfajr\pub\connection\HttpConnection;
 use Exception;
-use fajr\libfajr\base\IllegalStateException;
+use libfajr\base\IllegalStateException;
 
 /**
  * Provides HttpConnection wrapper for Curl library.

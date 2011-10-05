@@ -12,17 +12,17 @@
  * @filesource
  */
 
-namespace fajr\libfajr\window\VSES017_administracia_studia\fake;
+namespace libfajr\window\VSES017_administracia_studia\fake;
 
 use Exception;
-use fajr\libfajr\base\Preconditions;
-use fajr\libfajr\data_manipulation\DataTableImpl;
-use fajr\libfajr\pub\base\Trace;
-use fajr\libfajr\pub\window\VSES017_administracia_studia\TerminyHodnoteniaScreen;
-use fajr\libfajr\window\fake\FakeAbstractScreen;
-use fajr\libfajr\window\fake\FakeRequestExecutor;
-use fajr\libfajr\pub\regression\MojeTerminyRegression;
-use fajr\libfajr\pub\regression\ZapisanePredmetyRegression;
+use libfajr\base\Preconditions;
+use libfajr\data_manipulation\DataTableImpl;
+use libfajr\pub\base\Trace;
+use libfajr\pub\window\VSES017_administracia_studia\TerminyHodnoteniaScreen;
+use libfajr\window\fake\FakeAbstractScreen;
+use libfajr\window\fake\FakeRequestExecutor;
+use libfajr\pub\regression\MojeTerminyRegression;
+use libfajr\pub\regression\ZapisanePredmetyRegression;
 
 /**
  * Trieda reprezentujúca jednu obrazovku so zoznamom predmetov zápisného listu

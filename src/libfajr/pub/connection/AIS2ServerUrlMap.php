@@ -11,10 +11,10 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\pub\connection;
+namespace libfajr\pub\connection;
 
-use fajr\libfajr\base\DisableEvilCallsObject;
-use fajr\libfajr\base\Preconditions;
+use libfajr\base\DisableEvilCallsObject;
+use libfajr\base\Preconditions;
 
 /**
  * A storage class for all ais2 server urls that libfajr will access.

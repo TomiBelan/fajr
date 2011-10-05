@@ -13,7 +13,7 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\base;
+namespace libfajr\base;
 
 /**
  * Interface for timers

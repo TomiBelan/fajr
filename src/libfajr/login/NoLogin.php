@@ -10,11 +10,11 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\login;
+namespace libfajr\login;
 
-use fajr\libfajr\pub\login\Login;
-use fajr\libfajr\pub\connection\HttpConnection;
-use fajr\libfajr\pub\connection\AIS2ServerConnection;
+use libfajr\pub\login\Login;
+use libfajr\pub\connection\HttpConnection;
+use libfajr\pub\connection\AIS2ServerConnection;
 
 class NoLogin implements Login
 {

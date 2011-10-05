@@ -11,15 +11,15 @@
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\login;
-use fajr\libfajr\pub\connection\HttpConnection;
-use fajr\libfajr\pub\login\CosignServiceCookie;
-use fajr\libfajr\pub\base\NullTrace;
-use fajr\libfajr\pub\exceptions\NotImplementedException;
-use fajr\libfajr\pub\exceptions\LoginException;
-use fajr\libfajr\AIS2ServerInstance;
-use fajr\libfajr\pub\connection\AIS2ServerConnection;
-use fajr\libfajr\pub\connection\AIS2ServerUrlMap;
+namespace libfajr\login;
+use libfajr\pub\connection\HttpConnection;
+use libfajr\pub\login\CosignServiceCookie;
+use libfajr\pub\base\NullTrace;
+use libfajr\pub\exceptions\NotImplementedException;
+use libfajr\pub\exceptions\LoginException;
+use libfajr\AIS2ServerInstance;
+use libfajr\pub\connection\AIS2ServerConnection;
+use libfajr\pub\connection\AIS2ServerUrlMap;
 
 /**
  * Trieda reprezentujúca prihlasovanie pomocou cookie

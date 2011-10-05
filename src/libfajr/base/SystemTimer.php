@@ -13,9 +13,9 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\base;
+namespace libfajr\base;
 
-use fajr\libfajr\base\MutableTimer;
+use libfajr\base\MutableTimer;
 
 /**
  * Timer measuring passed time by system clock information.

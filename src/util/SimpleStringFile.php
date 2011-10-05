@@ -15,7 +15,7 @@
 namespace fajr\util;
 
 use Exception;
-use fajr\libfajr\base\Preconditions;
+use libfajr\base\Preconditions;
 
 /**
  * A File that uses string as file contents

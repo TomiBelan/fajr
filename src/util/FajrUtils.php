@@ -14,13 +14,13 @@
 namespace fajr\util;
 
 use fajr\config\FajrConfig;
-use fajr\libfajr\AIS2Session;
-use fajr\libfajr\base\Preconditions;
-use fajr\libfajr\login\AIS2LoginImpl;
-use fajr\libfajr\pub\base\Trace;
-use fajr\libfajr\pub\connection\AIS2ServerConnection;
-use fajr\libfajr\pub\login\Login;
-use fajr\libfajr\util\StrUtil;
+use libfajr\AIS2Session;
+use libfajr\base\Preconditions;
+use libfajr\login\AIS2LoginImpl;
+use libfajr\pub\base\Trace;
+use libfajr\pub\connection\AIS2ServerConnection;
+use libfajr\pub\login\Login;
+use libfajr\util\StrUtil;
 use Exception;
 
 /**

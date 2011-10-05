@@ -11,7 +11,7 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\pub\connection;
+namespace libfajr\pub\connection;
 
 /**
  * Zbiera základné štatistické informácie o vykonaných spojeniach

@@ -12,9 +12,9 @@
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr;
-use \fajr\libfajr\pub\connection\HttpConnection;
-use \fajr\libfajr\pub\login\Login;
+namespace libfajr;
+use \libfajr\pub\connection\HttpConnection;
+use \libfajr\pub\login\Login;
 
 /**
  * Trieda reprezentujúca session systému (stav prihlásenia, ...)

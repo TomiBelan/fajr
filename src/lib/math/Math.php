@@ -13,7 +13,7 @@
  */
 
 namespace fajr\lib\math;
-use fajr\libfajr\base\Preconditions;
+use libfajr\base\Preconditions;
 
 /**
  * Utility class containing useful math functions.

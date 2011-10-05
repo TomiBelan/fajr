@@ -11,14 +11,14 @@
  * @filesource
  */
 
-namespace fajr\libfajr\pub\regression\fake_data;
+namespace libfajr\pub\regression\fake_data;
 
 use PHPUnit_Framework_TestCase;
 use RecursiveDirectoryIterator;
 use RegexIterator;
 use RecursiveIteratorIterator;
-use fajr\libfajr\storage\FileStorage;
-use fajr\libfajr\util\StrUtil;
+use libfajr\storage\FileStorage;
+use libfajr\util\StrUtil;
 
 /**
  * @ignore

@@ -11,9 +11,9 @@
  * @author     Martin Králik <majak47@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\window;
+namespace libfajr\window;
 
-use fajr\libfajr\pub\connection\AIS2ServerUrlMap;
+use libfajr\pub\connection\AIS2ServerUrlMap;
 
 class RequestBuilderImpl implements RequestBuilder
 {

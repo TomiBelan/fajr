@@ -16,10 +16,10 @@
  */
 require_once 'test_include.php';
 
-use fajr\libfajr\pub\base\NullTrace;
-use fajr\libfajr\window\DialogRequestExecutor;
-use fajr\libfajr\window\DialogData;
-use fajr\libfajr\window\RequestBuilder;
+use libfajr\pub\base\NullTrace;
+use libfajr\window\DialogRequestExecutor;
+use libfajr\window\DialogData;
+use libfajr\window\RequestBuilder;
 /**
  * @ignore
  */
@@ -31,9 +31,9 @@ class DialogRequestExecutorTest extends PHPUnit_Framework_TestCase
 
   public function setUp()
   {
-    $this->requestBuilder = $this->getMock('fajr\libfajr\window\RequestBuilder');
+    $this->requestBuilder = $this->getMock('libfajr\window\RequestBuilder');
     $data = new DialogData();
-    $this->connection = $this->getMock('fajr\libfajr\pub\connection\SimpleConnection');
+    $this->connection = $this->getMock('libfajr\pub\connection\SimpleConnection');
     $this->executor = new DialogRequestExecutor($this->requestBuilder,
         $this->connection, $data, null, null);
   }

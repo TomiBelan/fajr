@@ -11,9 +11,9 @@
  * @author Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\connection;
+namespace libfajr\connection;
 
-use fajr\libfajr\pub\connection\RequestStatistics;
+use libfajr\pub\connection\RequestStatistics;
 use Exception;
 
 /**

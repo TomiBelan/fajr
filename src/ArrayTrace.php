@@ -15,10 +15,10 @@
 
 namespace fajr;
 
-use fajr\libfajr\base\Preconditions;
-use fajr\libfajr\base\Timer;
-use fajr\libfajr\pub\base\Trace;
-use fajr\libfajr\util\CodeSnippet;
+use libfajr\base\Preconditions;
+use libfajr\base\Timer;
+use libfajr\pub\base\Trace;
+use libfajr\util\CodeSnippet;
 use fajr\util\TraceUtil;
 
 /**

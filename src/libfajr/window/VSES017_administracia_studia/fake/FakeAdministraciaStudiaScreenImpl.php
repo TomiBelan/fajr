@@ -12,18 +12,18 @@
  * @filesource
  */
 
-namespace fajr\libfajr\window\VSES017_administracia_studia\fake;
+namespace libfajr\window\VSES017_administracia_studia\fake;
 
 
-use fajr\libfajr\base\Preconditions;
-use fajr\libfajr\data_manipulation\DataTableImpl;
-use fajr\libfajr\pub\base\Trace;
-use fajr\libfajr\pub\window\VSES017_administracia_studia\AdministraciaStudiaScreen;
-use fajr\libfajr\util\StrUtil;
-use fajr\libfajr\window\fake\FakeAbstractScreen;
-use fajr\libfajr\window\VSES017_administracia_studia\fake\FakePrehladKreditovDialogImpl;
-use fajr\libfajr\pub\regression\ZoznamStudiiRegression;
-use fajr\libfajr\pub\regression\ZoznamZapisnychListovRegression;
+use libfajr\base\Preconditions;
+use libfajr\data_manipulation\DataTableImpl;
+use libfajr\pub\base\Trace;
+use libfajr\pub\window\VSES017_administracia_studia\AdministraciaStudiaScreen;
+use libfajr\util\StrUtil;
+use libfajr\window\fake\FakeAbstractScreen;
+use libfajr\window\VSES017_administracia_studia\fake\FakePrehladKreditovDialogImpl;
+use libfajr\pub\regression\ZoznamStudiiRegression;
+use libfajr\pub\regression\ZoznamZapisnychListovRegression;
 
 /**
  * Trieda reprezentujúca jednu obrazovku so zoznamom štúdií a zápisných listov.

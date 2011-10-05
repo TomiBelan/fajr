@@ -10,11 +10,11 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\window;
-use fajr\libfajr\pub\base\Trace;
+namespace libfajr\window;
+use libfajr\pub\base\Trace;
 use Exception;
-use fajr\libfajr\base\DisableEvilCallsObject;
-use fajr\libfajr\pub\connection\SimpleConnection;
+use libfajr\base\DisableEvilCallsObject;
+use libfajr\pub\connection\SimpleConnection;
 
 interface ScreenRequestExecutor
 {

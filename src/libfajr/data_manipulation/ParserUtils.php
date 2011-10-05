@@ -16,14 +16,14 @@
  * @filesource
  */
 
-namespace fajr\libfajr\data_manipulation;
+namespace libfajr\data_manipulation;
 
 use DOMDocument;
 use DOMElement;
 use DOMXPath;
-use fajr\libfajr\base\Preconditions;
-use fajr\libfajr\pub\exceptions\ParseException;
-use fajr\libfajr\pub\base\Trace;
+use libfajr\base\Preconditions;
+use libfajr\pub\exceptions\ParseException;
+use libfajr\pub\base\Trace;
 
 
 /**

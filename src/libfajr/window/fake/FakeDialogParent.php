@@ -10,9 +10,9 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\window\fake;
-use fajr\libfajr\window\DialogData;
-use fajr\libfajr\pub\base\Trace;
+namespace libfajr\window\fake;
+use libfajr\window\DialogData;
+use libfajr\pub\base\Trace;
 
 interface FakeDialogParent
 {

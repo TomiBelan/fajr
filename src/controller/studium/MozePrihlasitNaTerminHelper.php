@@ -12,9 +12,9 @@
  */
 namespace fajr\controller\studium;
 
-use fajr\libfajr\AIS2Utils;
-use fajr\libfajr\base\DisableEvilCallsObject;
-use fajr\libfajr\pub\data_manipulation\Znamka;
+use libfajr\AIS2Utils;
+use libfajr\base\DisableEvilCallsObject;
+use libfajr\pub\data_manipulation\Znamka;
 
 include_once 'fields.php';
 

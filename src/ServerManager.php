@@ -16,13 +16,13 @@ use fajr\config\ServerConfig;
 use fajr\config\FajrConfig;
 use fajr\config\FajrConfigLoader;
 use fajr\exceptions\SecurityException;
-use fajr\libfajr\pub\base\Trace;
-use fajr\libfajr\pub\connection\AIS2ServerConnection;
-use fajr\libfajr\pub\login\CosignServiceCookie;
+use libfajr\pub\base\Trace;
+use libfajr\pub\connection\AIS2ServerConnection;
+use libfajr\pub\login\CosignServiceCookie;
 use fajr\Request;
 use fajr\util\FajrUtils;
 use sfStorage;
-use fajr\libfajr\login\CosignProxyLogin;
+use libfajr\login\CosignProxyLogin;
 
 class ServerManager
 {

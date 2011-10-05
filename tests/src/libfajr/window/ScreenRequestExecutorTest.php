@@ -10,7 +10,7 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\window;
+namespace libfajr\window;
 
 /**
  * @ignore
@@ -18,9 +18,9 @@ namespace fajr\libfajr\window;
 require_once 'test_include.php';
 
 use \PHPUnit_Framework_TestCase;
-use fajr\libfajr\window\RequestBuilder;
-use fajr\libfajr\window\ScreenRequestExecutor;
-use fajr\libfajr\pub\base\NullTrace;
+use libfajr\window\RequestBuilder;
+use libfajr\window\ScreenRequestExecutor;
+use libfajr\pub\base\NullTrace;
 /**
  * @ignore
  */
@@ -30,10 +30,10 @@ class ScreenRequestExecutorTest extends PHPUnit_Framework_TestCase
 
   public function setUp()
   {
-    $builder = $this->getMock('\fajr\libfajr\window\RequestBuilder',
+    $builder = $this->getMock('\libfajr\window\RequestBuilder',
         array('buildRequestData', 'getRequestUrl', 'newSerial',
               'getAppInitializationUrl', 'getFilesRequestUrl'));
-    $connection = $this->getMock('\fajr\libfajr\pub\connection\SimpleConnection');
+    $connection = $this->getMock('\libfajr\pub\connection\SimpleConnection');
     $this->executor = new ScreenRequestExecutorImpl($builder, $connection);
   }
 

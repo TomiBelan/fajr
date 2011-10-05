@@ -11,7 +11,7 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\data_manipulation;
+namespace libfajr\data_manipulation;
 
 use PHPUnit_Framework_TestCase;
 

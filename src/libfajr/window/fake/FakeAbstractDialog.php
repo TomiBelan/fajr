@@ -10,12 +10,12 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\window\fake;
+namespace libfajr\window\fake;
 
-use fajr\libfajr\pub\base\Trace;
-use fajr\libfajr\base\DisableEvilCallsObject;
-use fajr\libfajr\pub\window\LazyDialog;
-use fajr\libfajr\util\MiscUtil;
+use libfajr\pub\base\Trace;
+use libfajr\base\DisableEvilCallsObject;
+use libfajr\pub\window\LazyDialog;
+use libfajr\util\MiscUtil;
 
 /**
  * Abstraktná trieda reprezentujúca jednu obrazovku v AISe.

@@ -11,10 +11,10 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\pub\window\VSES017_administracia_studia;
+namespace libfajr\pub\window\VSES017_administracia_studia;
 
-use fajr\libfajr\window\VSES017_administracia_studia as VSES017;
-use fajr\libfajr\pub\base\Trace;
+use libfajr\window\VSES017_administracia_studia as VSES017;
+use libfajr\pub\base\Trace;
 
 /**
  * Provides instances of screens in study management part of ais.

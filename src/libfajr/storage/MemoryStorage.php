@@ -12,12 +12,12 @@
  * @filesource
  */
 
-namespace fajr\libfajr\storage;
+namespace libfajr\storage;
 
 use sfStorage;
 use sfInitializationException;
-use fajr\libfajr\base\Preconditions;
-use fajr\libfajr\pub\exceptions\NotImplementedException;
+use libfajr\base\Preconditions;
+use libfajr\pub\exceptions\NotImplementedException;
 
 /**
  * Storage with all data held in memory. All data will be lost

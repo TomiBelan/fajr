@@ -13,16 +13,16 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\window;
+namespace libfajr\window;
 
-use fajr\libfajr\pub\window\AIS2MainScreen;
-use fajr\libfajr\pub\base\Trace;
-use fajr\libfajr\pub\connection\AIS2ServerConnection;
-use fajr\libfajr\base\DisableEvilCallsObject;
-use fajr\libfajr\data_manipulation\AIS2VersionParser;
-use fajr\libfajr\data_manipulation\AIS2ApplicationAvailabilityParser;
-use fajr\libfajr\data_manipulation\AIS2UserNameParser;
-use fajr\libfajr\base\Preconditions;
+use libfajr\pub\window\AIS2MainScreen;
+use libfajr\pub\base\Trace;
+use libfajr\pub\connection\AIS2ServerConnection;
+use libfajr\base\DisableEvilCallsObject;
+use libfajr\data_manipulation\AIS2VersionParser;
+use libfajr\data_manipulation\AIS2ApplicationAvailabilityParser;
+use libfajr\data_manipulation\AIS2UserNameParser;
+use libfajr\base\Preconditions;
 /**
  * Represents main page of AIS.
  *

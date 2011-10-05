@@ -10,10 +10,10 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\pub\window\VSES017_administracia_studia;
+namespace libfajr\pub\window\VSES017_administracia_studia;
 
-use fajr\libfajr\pub\window\LazyDialog;
-use fajr\libfajr\pub\base\Trace;
+use libfajr\pub\window\LazyDialog;
+use libfajr\pub\base\Trace;
 
 interface HodnoteniaPriemeryScreen extends LazyDialog
 {

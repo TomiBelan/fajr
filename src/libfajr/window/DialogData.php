@@ -10,8 +10,8 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\window;
-use fajr\libfajr\base\DisableEvilCallsObject;
+namespace libfajr\window;
+use libfajr\base\DisableEvilCallsObject;
 
 class DialogData extends DisableEvilCallsObject
 {

@@ -12,10 +12,10 @@
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\base;
+namespace libfajr\base;
 
 use Exception;
-use fajr\libfajr\base\Preconditions;
+use libfajr\base\Preconditions;
 use InvalidArgumentException;
 use PHPUnit_Framework_TestCase;
 

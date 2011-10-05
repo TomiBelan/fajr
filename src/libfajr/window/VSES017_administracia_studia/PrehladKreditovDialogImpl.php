@@ -13,15 +13,15 @@
  * @author     Martin Králik <majak47@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\window\VSES017_administracia_studia;
+namespace libfajr\window\VSES017_administracia_studia;
 
-use fajr\libfajr\pub\window\VSES017_administracia_studia\PrehladKreditovDialog;
+use libfajr\pub\window\VSES017_administracia_studia\PrehladKreditovDialog;
 
-use fajr\libfajr\pub\base\Trace;
-use fajr\libfajr\window\AIS2AbstractDialog;
-use fajr\libfajr\data_manipulation\AIS2TableParser;
-use fajr\libfajr\window\DialogParent;
-use fajr\libfajr\window\DialogData;
+use libfajr\pub\base\Trace;
+use libfajr\window\AIS2AbstractDialog;
+use libfajr\data_manipulation\AIS2TableParser;
+use libfajr\window\DialogParent;
+use libfajr\window\DialogData;
 
 /**
  * Trieda pre dialóg s prehľadom kreditov

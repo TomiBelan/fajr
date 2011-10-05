@@ -12,13 +12,13 @@
  * @filesource
  */
 
-namespace fajr\libfajr\login;
+namespace libfajr\login;
 
-use fajr\libfajr\login\CosignAbstractLogin;
-use fajr\libfajr\pub\connection\HttpConnection;
-use fajr\libfajr\pub\connection\AIS2ServerConnection;
-use fajr\libfajr\pub\connection\AIS2ServerUrlMap;
-use fajr\libfajr\pub\exceptions\LoginException;
+use libfajr\login\CosignAbstractLogin;
+use libfajr\pub\connection\HttpConnection;
+use libfajr\pub\connection\AIS2ServerConnection;
+use libfajr\pub\connection\AIS2ServerUrlMap;
+use libfajr\pub\exceptions\LoginException;
 use PHPUnit_Framework_TestCase;
 
 /**
@@ -33,7 +33,7 @@ class CosignAbstractLoginTest extends PHPUnit_Framework_TestCase
 {
   public function setUp()
   {
-    $this->connection = $this->getMock('\fajr\libfajr\pub\connection\HttpConnection');
+    $this->connection = $this->getMock('\libfajr\pub\connection\HttpConnection');
     $this->serverConnection = new AIS2ServerConnection($this->connection,
                                                        new AIS2ServerUrlMap("ais2.test"));
   }
@@ -46,7 +46,7 @@ class CosignAbstractLoginTest extends PHPUnit_Framework_TestCase
                      ->with($this->anything(), $this->stringContains('logout'))
                      ->will($this->returnValue($data));
 
-    $login = $this->getMockForAbstractClass('\fajr\libfajr\login\CosignAbstractLogin');
+    $login = $this->getMockForAbstractClass('\libfajr\login\CosignAbstractLogin');
     $login->logout($this->serverConnection);
   }
 
@@ -58,7 +58,7 @@ class CosignAbstractLoginTest extends PHPUnit_Framework_TestCase
                      ->with($this->anything(), $this->stringContains('logout'))
                      ->will($this->returnValue('not valid logout'));
 
-    $login = $this->getMockForAbstractClass('\fajr\libfajr\login\CosignAbstractLogin');
+    $login = $this->getMockForAbstractClass('\libfajr\login\CosignAbstractLogin');
     $login->logout($this->serverConnection);
   }
 }

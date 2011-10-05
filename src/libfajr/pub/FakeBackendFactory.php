@@ -10,15 +10,15 @@
  * @author     Tomi Belan <tomi.belan@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\pub;
+namespace libfajr\pub;
 
-use fajr\libfajr\pub\BackendFactory;
-use fajr\libfajr\pub\window\VSES017_administracia_studia\VSES017_FakeFactoryImpl;
-use fajr\libfajr\pub\window\VSST060_register_predmetov\VSST060_FakeFactoryImpl;
-use fajr\libfajr\window\fake\FakeMainScreen;
-use fajr\libfajr\storage\TemporarilyModifiableStorage;
-use fajr\libfajr\storage\FileStorage;
-use fajr\libfajr\pub\regression\fake_data\FakeData;
+use libfajr\pub\BackendFactory;
+use libfajr\pub\window\VSES017_administracia_studia\VSES017_FakeFactoryImpl;
+use libfajr\pub\window\VSST060_register_predmetov\VSST060_FakeFactoryImpl;
+use libfajr\window\fake\FakeMainScreen;
+use libfajr\storage\TemporarilyModifiableStorage;
+use libfajr\storage\FileStorage;
+use libfajr\pub\regression\fake_data\FakeData;
 use sfSessionStorage;
 
 class FakeBackendFactory implements BackendFactory

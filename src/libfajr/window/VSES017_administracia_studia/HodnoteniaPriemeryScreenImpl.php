@@ -13,16 +13,16 @@
  * @author     Martin Králik <majak47@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\window\VSES017_administracia_studia;
+namespace libfajr\window\VSES017_administracia_studia;
 
-use fajr\libfajr\pub\window\VSES017_administracia_studia\HodnoteniaPriemeryScreen;
-use fajr\libfajr\window\AIS2AbstractScreen;
-use fajr\libfajr\window\ScreenData;
-use fajr\libfajr\window\ScreenRequestExecutor;
-use fajr\libfajr\window\RequestBuilderImpl;
-use fajr\libfajr\pub\base\Trace;
-use fajr\libfajr\pub\connection\SimpleConnection;
-use fajr\libfajr\data_manipulation\AIS2TableParser;
+use libfajr\pub\window\VSES017_administracia_studia\HodnoteniaPriemeryScreen;
+use libfajr\window\AIS2AbstractScreen;
+use libfajr\window\ScreenData;
+use libfajr\window\ScreenRequestExecutor;
+use libfajr\window\RequestBuilderImpl;
+use libfajr\pub\base\Trace;
+use libfajr\pub\connection\SimpleConnection;
+use libfajr\data_manipulation\AIS2TableParser;
 
 /**
  * Trieda reprezentujúca jednu obrazovku s hodnoteniami a priemermi za jeden rok.

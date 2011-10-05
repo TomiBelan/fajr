@@ -14,11 +14,11 @@
  * @filesource
  */
 
-namespace fajr\libfajr\data_manipulation;
+namespace libfajr\data_manipulation;
 
 use PHPUnit_Framework_TestCase;
-use fajr\libfajr\data_manipulation\InformacnyListDataImpl;
-use fajr\libfajr\data_manipulation\InformacnyListAttributeEnum as Attr;
+use libfajr\data_manipulation\InformacnyListDataImpl;
+use libfajr\data_manipulation\InformacnyListAttributeEnum as Attr;
 
 /**
  * @ignore

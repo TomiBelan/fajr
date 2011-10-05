@@ -19,13 +19,13 @@ use fajr\Request;
 use fajr\Response;
 use fajr\Context;
 use fajr\MockInvocationParameters;
-use fajr\libfajr\storage\TemporarilyModifiableStorage;
-use fajr\libfajr\storage\MemoryStorage;
-use fajr\libfajr\storage\FileStorage;
-use fajr\libfajr\pub\regression\fake_data\FakeData;
-use fajr\libfajr\pub\window\VSES017_administracia_studia\VSES017_FakeFactoryImpl;
-use fajr\libfajr\pub\base\NullTrace;
-use fajr\libfajr\pub\window\AIS2ApplicationEnum;
+use libfajr\storage\TemporarilyModifiableStorage;
+use libfajr\storage\MemoryStorage;
+use libfajr\storage\FileStorage;
+use libfajr\pub\regression\fake_data\FakeData;
+use libfajr\pub\window\VSES017_administracia_studia\VSES017_FakeFactoryImpl;
+use libfajr\pub\base\NullTrace;
+use libfajr\pub\window\AIS2ApplicationEnum;
 
 /**
  * @ignore

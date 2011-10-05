@@ -11,9 +11,9 @@
  * @TODO documentation
  * @filesource
  */
-namespace fajr\libfajr\pub\window;
+namespace libfajr\pub\window;
 
-use fajr\libfajr\pub\base\Trace;
+use libfajr\pub\base\Trace;
 
 interface LazyDialog
 {

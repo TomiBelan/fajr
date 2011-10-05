@@ -15,7 +15,7 @@
 
 namespace fajr\util;
 
-use fajr\libfajr\base\Preconditions;
+use libfajr\base\Preconditions;
 
 /**
  * Utilities for trace implementations

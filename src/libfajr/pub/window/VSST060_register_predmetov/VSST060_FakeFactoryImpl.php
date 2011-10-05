@@ -10,12 +10,12 @@
  * @author     Tomi Belan <tomi.belan@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\pub\window\VSST060_register_predmetov;
+namespace libfajr\pub\window\VSST060_register_predmetov;
 
-use fajr\libfajr\window\VSST060_register_predmetov as VSST060;
-use fajr\libfajr\window\VSST060_register_predmetov\fake as VSST060fake;
-use fajr\libfajr\pub\base\Trace;
-use fajr\libfajr\window\fake\FakeRequestExecutor;
+use libfajr\window\VSST060_register_predmetov as VSST060;
+use libfajr\window\VSST060_register_predmetov\fake as VSST060fake;
+use libfajr\pub\base\Trace;
+use libfajr\window\fake\FakeRequestExecutor;
 use sfStorage;
 
 class VSST060_FakeFactoryImpl implements VSST060_Factory

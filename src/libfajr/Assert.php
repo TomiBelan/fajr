@@ -13,9 +13,9 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr;
+namespace libfajr;
 
-use fajr\libfajr\util\CodeSnippet;
+use libfajr\util\CodeSnippet;
 use Exception;
 // We can't depend on autoloader here!
 require_once 'util/CodeSnippet.php';
@@ -66,7 +66,7 @@ class Assert
       assert_options(ASSERT_ACTIVE, 1);
       assert_options(ASSERT_WARNING, 0);
       assert_options(ASSERT_QUIET_EVAL, 1);
-      assert_options(ASSERT_CALLBACK, array('fajr\libfajr\Assert', 'myAssertHandler'));
+      assert_options(ASSERT_CALLBACK, array('libfajr\Assert', 'myAssertHandler'));
     }
 }
 

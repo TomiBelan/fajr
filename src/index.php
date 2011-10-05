@@ -13,7 +13,7 @@
  */
 namespace fajr;
 
-use fajr\libfajr\base\SystemTimer;
+use libfajr\base\SystemTimer;
 use Loader;
 use sfStorageAutoloader;
 use Twig_Autoloader;

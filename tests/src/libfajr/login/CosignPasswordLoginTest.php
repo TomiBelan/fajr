@@ -11,13 +11,13 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\login;
+namespace libfajr\login;
 
-use fajr\libfajr\login\CosignPasswordLogin;
-use fajr\libfajr\pub\connection\AIS2ServerConnection;
-use fajr\libfajr\pub\connection\AIS2ServerUrlMap;
-use fajr\libfajr\pub\connection\HttpConnection;
-use fajr\libfajr\pub\exceptions\LoginException;
+use libfajr\login\CosignPasswordLogin;
+use libfajr\pub\connection\AIS2ServerConnection;
+use libfajr\pub\connection\AIS2ServerUrlMap;
+use libfajr\pub\connection\HttpConnection;
+use libfajr\pub\exceptions\LoginException;
 use PHPUnit_Framework_TestCase;
 
 /**
@@ -49,7 +49,7 @@ class CosignPasswordLoginTest extends PHPUnit_Framework_TestCase
     $this->responseWrongPassword2 = file_get_contents(__DIR__.'/testdata/cosignWrongPassword2.dat');
     $this->responseWrongPassword3 = file_get_contents(__DIR__.'/testdata/cosignWrongPassword3.dat');
 
-    $this->connection = $this->getMock('\fajr\libfajr\pub\connection\HttpConnection');
+    $this->connection = $this->getMock('\libfajr\pub\connection\HttpConnection');
     $this->serverConnection = new AIS2ServerConnection($this->connection,
         new AIS2ServerUrlMap("ais2.test"));
   }

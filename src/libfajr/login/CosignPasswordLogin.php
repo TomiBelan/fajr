@@ -11,15 +11,15 @@
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\login;
+namespace libfajr\login;
 
-use fajr\libfajr\pub\connection\HttpConnection;
-use fajr\libfajr\pub\base\NullTrace;
-use fajr\libfajr\pub\exceptions\LoginException;
-use fajr\libfajr\pub\exceptions\NotImplementedException;
-use fajr\libfajr\util\StrUtil;
-use fajr\libfajr\pub\connection\AIS2ServerConnection;
-use fajr\libfajr\pub\connection\AIS2ServerUrlMap;
+use libfajr\pub\connection\HttpConnection;
+use libfajr\pub\base\NullTrace;
+use libfajr\pub\exceptions\LoginException;
+use libfajr\pub\exceptions\NotImplementedException;
+use libfajr\util\StrUtil;
+use libfajr\pub\connection\AIS2ServerConnection;
+use libfajr\pub\connection\AIS2ServerUrlMap;
 
 /**
  * Trieda reprezentujúca prihlasovanie pomocou cosign

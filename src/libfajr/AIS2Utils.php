@@ -10,10 +10,10 @@
  * @author     Martin Králik <majak47@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr;
-use fajr\libfajr\pub\base\Trace;
-use fajr\libfajr\pub\connection\SimpleConnection;
-use fajr\libfajr\util\StrUtil;
+namespace libfajr;
+use libfajr\pub\base\Trace;
+use libfajr\pub\connection\SimpleConnection;
+use libfajr\util\StrUtil;
 use Exception;
 
 /**

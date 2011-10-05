@@ -10,7 +10,7 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\window\VSES017_administracia_studia;
+namespace libfajr\window\VSES017_administracia_studia;
 
 use PHPUnit_Framework_TestCase;
 
@@ -19,8 +19,8 @@ use PHPUnit_Framework_TestCase;
  */
 require_once 'test_include.php';
 
-use fajr\libfajr\pub\base\NullTrace;
-use fajr\libfajr\connection\SimpleConnection;
+use libfajr\pub\base\NullTrace;
+use libfajr\connection\SimpleConnection;
 /**
  * @ignore
  */
@@ -28,8 +28,8 @@ class AdministraciaStudiaScreenTest extends PHPUnit_Framework_TestCase
 {
   public function testIdFromZapisnyListIndexParsing()
   {
-    $mockExecutor = $this->getMock('fajr\libfajr\window\ScreenRequestExecutor');
-    $mockParser = $this->getMock('fajr\libfajr\data_manipulation\AIS2TableParser');
+    $mockExecutor = $this->getMock('libfajr\window\ScreenRequestExecutor');
+    $mockParser = $this->getMock('libfajr\data_manipulation\AIS2TableParser');
 
     $response = file_get_contents(__DIR__.'/testdata/idFromZapisnyList.dat');
     $screen = new AdministraciaStudiaScreenImpl(new NullTrace(), $mockExecutor, $mockParser);

@@ -10,17 +10,17 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\window\fake;
+namespace libfajr\window\fake;
 
-use fajr\libfajr\pub\base\Trace;
-use fajr\libfajr\base\IllegalStateException;
-use fajr\libfajr\login\AIS2LoginException;
+use libfajr\pub\base\Trace;
+use libfajr\base\IllegalStateException;
+use libfajr\login\AIS2LoginException;
 use AIS2Utils;
-use fajr\libfajr\base\DisableEvilCallsObject;
-use fajr\libfajr\pub\window\LazyDialog;
-use fajr\libfajr\window\DialogParent;
-use fajr\libfajr\window\DialogData;
-use fajr\libfajr\base\Preconditions;
+use libfajr\base\DisableEvilCallsObject;
+use libfajr\pub\window\LazyDialog;
+use libfajr\window\DialogParent;
+use libfajr\window\DialogData;
+use libfajr\base\Preconditions;
 /**
  * Abstraktná trieda reprezentujúca jednu obrazovku v AISe.
  *

@@ -13,10 +13,10 @@
  * @filesource
  */
 
-namespace fajr\libfajr\data_manipulation;
+namespace libfajr\data_manipulation;
 
-use fajr\libfajr\pub\data_manipulation\InformacnyListData;
-use fajr\libfajr\pub\exceptions\NotImplementedException;
+use libfajr\pub\data_manipulation\InformacnyListData;
+use libfajr\pub\exceptions\NotImplementedException;
 
 /**
  * Class representing infromation sheet for course.

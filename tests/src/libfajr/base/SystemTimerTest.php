@@ -17,7 +17,7 @@
  */
 require_once 'test_include.php';
 
-use \fajr\libfajr\base\SystemTimer;
+use \libfajr\base\SystemTimer;
 /**
  * @ignore
  */

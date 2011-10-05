@@ -14,7 +14,7 @@
  */
 
 namespace fajr\lib\statistics;
-use fajr\libfajr\base\Preconditions;
+use libfajr\base\Preconditions;
 use fajr\lib\math\Math;
 use RuntimeException;
 use fajr\lib\math\Gamma;

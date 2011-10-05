@@ -10,14 +10,14 @@
  * @author     Martin Králik <majak47@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\window;
+namespace libfajr\window;
 
-use fajr\libfajr\pub\base\Trace;
-use fajr\libfajr\window\DialogData;
-use fajr\libfajr\window\DialogParent;
-use fajr\libfajr\base\DisableEvilCallsObject;
-use fajr\libfajr\pub\window\LazyDialog;
-use fajr\libfajr\util\MiscUtil;
+use libfajr\pub\base\Trace;
+use libfajr\window\DialogData;
+use libfajr\window\DialogParent;
+use libfajr\base\DisableEvilCallsObject;
+use libfajr\pub\window\LazyDialog;
+use libfajr\util\MiscUtil;
 
 /**
  * Abstraktná trieda reprezentujúca jednu obrazovku v AISe.

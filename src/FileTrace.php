@@ -13,10 +13,10 @@
  */
 
 namespace fajr;
-use fajr\libfajr\pub\base\Trace;
-use fajr\libfajr\base\Timer;
-use fajr\libfajr\util\CodeSnippet;
-use fajr\libfajr\base\Preconditions;
+use libfajr\pub\base\Trace;
+use libfajr\base\Timer;
+use libfajr\util\CodeSnippet;
+use libfajr\base\Preconditions;
 use InvalidArgumentException;
 use fajr\util\File;
 use fajr\util\TraceUtil;

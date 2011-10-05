@@ -16,9 +16,9 @@ namespace fajr\controller;
 use Exception;
 use fajr\Context;
 use fajr\controller\Controller;
-use fajr\libfajr\base\DisableEvilCallsObject;
-use fajr\libfajr\base\Preconditions;
-use fajr\libfajr\pub\base\Trace;
+use libfajr\base\DisableEvilCallsObject;
+use libfajr\base\Preconditions;
+use libfajr\pub\base\Trace;
 
 /**
  * Controller dispatching its request to the appropriate controller

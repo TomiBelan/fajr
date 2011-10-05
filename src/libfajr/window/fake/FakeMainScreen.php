@@ -12,13 +12,13 @@
  * @filesource
  */
 
-namespace fajr\libfajr\window\fake;
+namespace libfajr\window\fake;
 
-use fajr\libfajr\pub\base\Trace;
-use fajr\libfajr\pub\window\AIS2MainScreen;
-use fajr\libfajr\pub\window\AIS2ApplicationEnum;
-use fajr\libfajr\data_manipulation\AIS2Version;
-use fajr\libfajr\base\Preconditions;
+use libfajr\pub\base\Trace;
+use libfajr\pub\window\AIS2MainScreen;
+use libfajr\pub\window\AIS2ApplicationEnum;
+use libfajr\data_manipulation\AIS2Version;
+use libfajr\base\Preconditions;
 
 /**
  * Represents main page of AIS.

@@ -11,12 +11,12 @@
  * @author Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\connection;
+namespace libfajr\connection;
 
-use fajr\libfajr\pub\connection\HttpConnection;
-use fajr\libfajr\pub\connection\RequestStatistics;
-use fajr\libfajr\pub\base\Trace;
-use fajr\libfajr\base\MutableTimer;
+use libfajr\pub\connection\HttpConnection;
+use libfajr\pub\connection\RequestStatistics;
+use libfajr\pub\base\Trace;
+use libfajr\base\MutableTimer;
 use \Exception;
 
 /**

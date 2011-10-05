@@ -10,15 +10,15 @@
  * @author     Tomi Belan <tomi.belan@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\pub\window\VSST060_register_predmetov;
+namespace libfajr\pub\window\VSST060_register_predmetov;
 
-use fajr\libfajr\window\VSST060_register_predmetov as VSST060;
-use fajr\libfajr\pub\base\Trace;
-use fajr\libfajr\pub\connection\SimpleConnection;
-use fajr\libfajr\window\RequestBuilderImpl;
-use fajr\libfajr\window\ScreenRequestExecutorImpl;
-use fajr\libfajr\data_manipulation\AIS2TableParser;
-use fajr\libfajr\pub\connection\AIS2ServerConnection;
+use libfajr\window\VSST060_register_predmetov as VSST060;
+use libfajr\pub\base\Trace;
+use libfajr\pub\connection\SimpleConnection;
+use libfajr\window\RequestBuilderImpl;
+use libfajr\window\ScreenRequestExecutorImpl;
+use libfajr\data_manipulation\AIS2TableParser;
+use libfajr\pub\connection\AIS2ServerConnection;
 
 class VSST060_FactoryImpl implements VSST060_Factory
 {

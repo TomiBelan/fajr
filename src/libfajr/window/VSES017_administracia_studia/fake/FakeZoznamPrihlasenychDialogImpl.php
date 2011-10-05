@@ -12,14 +12,14 @@
  * @filesource
  */
 
-namespace fajr\libfajr\window\VSES017_administracia_studia\fake;
+namespace libfajr\window\VSES017_administracia_studia\fake;
 
 
-use fajr\libfajr\data_manipulation\DataTableImpl;
-use fajr\libfajr\pub\base\Trace;
-use fajr\libfajr\pub\window\VSES017_administracia_studia\ZoznamPrihlasenychDialog;
-use fajr\libfajr\window\fake\FakeAbstractDialog;
-use fajr\libfajr\pub\regression\PrihlaseniNaTerminRegression;
+use libfajr\data_manipulation\DataTableImpl;
+use libfajr\pub\base\Trace;
+use libfajr\pub\window\VSES017_administracia_studia\ZoznamPrihlasenychDialog;
+use libfajr\window\fake\FakeAbstractDialog;
+use libfajr\pub\regression\PrihlaseniNaTerminRegression;
 
 /**
  * Trieda pre dialóg so zoznamom prihlásených študentov na termín.

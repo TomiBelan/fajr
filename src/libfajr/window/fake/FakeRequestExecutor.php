@@ -12,13 +12,13 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\window\fake;
-use fajr\libfajr\pub\base\Trace;
+namespace libfajr\window\fake;
+use libfajr\pub\base\Trace;
 use Exception;
-use fajr\libfajr\base\DisableEvilCallsObject;
-use fajr\libfajr\pub\connection\SimpleConnection;
-use fajr\libfajr\base\Preconditions;
-use fajr\libfajr\util\StrUtil;
+use libfajr\base\DisableEvilCallsObject;
+use libfajr\pub\connection\SimpleConnection;
+use libfajr\base\Preconditions;
+use libfajr\util\StrUtil;
 use sfStorage;
 
 /**

@@ -11,7 +11,7 @@
  * @filesource
  */
 
-namespace fajr\libfajr\storage;
+namespace libfajr\storage;
 
 use \PHPUnit_Framework_TestCase;
 
@@ -58,7 +58,7 @@ class FileStorageTest extends PHPUnit_Framework_TestCase
   public function testNoWrite()
   {
     $this->setExpectedException(
-        '\fajr\libfajr\pub\exceptions\NotImplementedException');
+        '\libfajr\pub\exceptions\NotImplementedException');
     $this->storage->write('key', 'data');
   }
 
@@ -66,7 +66,7 @@ class FileStorageTest extends PHPUnit_Framework_TestCase
   public function testNoRemove()
   {
     $this->setExpectedException(
-        'fajr\libfajr\pub\exceptions\NotImplementedException');
+        'libfajr\pub\exceptions\NotImplementedException');
     $this->storage->remove('key');
   }
   

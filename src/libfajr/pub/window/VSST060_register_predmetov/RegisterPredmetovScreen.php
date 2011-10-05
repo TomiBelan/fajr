@@ -10,10 +10,10 @@
  * @author     Tomi Belan <tomi.belan@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\pub\window\VSST060_register_predmetov;
+namespace libfajr\pub\window\VSST060_register_predmetov;
 
-use fajr\libfajr\pub\window\LazyDialog;
-use fajr\libfajr\pub\base\Trace;
+use libfajr\pub\window\LazyDialog;
+use libfajr\pub\base\Trace;
 
 interface RegisterPredmetovScreen extends LazyDialog
 {

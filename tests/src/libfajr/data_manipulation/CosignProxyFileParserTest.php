@@ -11,12 +11,12 @@
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\data_manipulation;
+namespace libfajr\data_manipulation;
 
 use PHPUnit_Framework_TestCase;
-use fajr\libfajr\data_manipulation\CosignProxyFileParser;
-use fajr\libfajr\pub\base\NullTrace;
-use fajr\libfajr\pub\login\CosignServiceCookie;
+use libfajr\data_manipulation\CosignProxyFileParser;
+use libfajr\pub\base\NullTrace;
+use libfajr\pub\login\CosignServiceCookie;
 /**
  * @ignore
  */

@@ -12,10 +12,10 @@
  * @filesource
  */
 
-namespace fajr\libfajr\storage;
+namespace libfajr\storage;
 
 use InvalidArgumentException;
-use fajr\libfajr\base\Preconditions;
+use libfajr\base\Preconditions;
 
 /**
  * Helps with data serialization and deserialization.

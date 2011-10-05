@@ -11,7 +11,7 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr;
+namespace libfajr;
 
 use PHPUnit_Framework_TestCase;
 use Exception;

@@ -11,15 +11,15 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\login;
-use fajr\libfajr\pub\connection\HttpConnection;
-use fajr\libfajr\pub\base\NullTrace;
-use fajr\libfajr\pub\base\Trace;
-use fajr\libfajr\pub\login\Login;
-use fajr\libfajr\pub\exceptions\LoginException;
-use fajr\libfajr\pub\connection\AIS2ServerConnection;
-use fajr\libfajr\pub\connection\AIS2ServerUrlMap;
-use fajr\libfajr\util\Strutil;
+namespace libfajr\login;
+use libfajr\pub\connection\HttpConnection;
+use libfajr\pub\base\NullTrace;
+use libfajr\pub\base\Trace;
+use libfajr\pub\login\Login;
+use libfajr\pub\exceptions\LoginException;
+use libfajr\pub\connection\AIS2ServerConnection;
+use libfajr\pub\connection\AIS2ServerUrlMap;
+use libfajr\util\Strutil;
 
 /**
  * Trieda reprezentujúca prihlasovanie pomocou hesla.

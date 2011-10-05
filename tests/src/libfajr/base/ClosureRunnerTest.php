@@ -16,7 +16,7 @@
  */
 require_once 'test_include.php';
 
-use fajr\libfajr\base\ClosureRunner;
+use libfajr\base\ClosureRunner;
 
 class Data
 {

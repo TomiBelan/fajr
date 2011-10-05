@@ -10,7 +10,7 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\pub\data_manipulation;
+namespace libfajr\pub\data_manipulation;
 
 interface SimpleDataTable
 {

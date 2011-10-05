@@ -10,16 +10,16 @@
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\login;
+namespace libfajr\login;
 
-use fajr\libfajr\base\Preconditions;
-use fajr\libfajr\data_manipulation\CosignProxyFileParser;
-use fajr\libfajr\pub\connection\HttpConnection;
-use fajr\libfajr\pub\connection\AIS2ServerConnection;
-use fajr\libfajr\pub\login\CosignServiceCookie;
-use fajr\libfajr\pub\base\NullTrace;
-use fajr\libfajr\pub\exceptions\NotImplementedException;
-use fajr\libfajr\pub\exceptions\LoginException;
+use libfajr\base\Preconditions;
+use libfajr\data_manipulation\CosignProxyFileParser;
+use libfajr\pub\connection\HttpConnection;
+use libfajr\pub\connection\AIS2ServerConnection;
+use libfajr\pub\login\CosignServiceCookie;
+use libfajr\pub\base\NullTrace;
+use libfajr\pub\exceptions\NotImplementedException;
+use libfajr\pub\exceptions\LoginException;
 
 /**
  * Trieda reprezentujúca prihlasovanie pomocou cosign proxy

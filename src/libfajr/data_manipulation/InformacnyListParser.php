@@ -13,18 +13,18 @@
  * @filesource
  */
 
-namespace fajr\libfajr\data_manipulation;
+namespace libfajr\data_manipulation;
 
 use DOMDocument;
 use DOMElement;
 use DOMXPath;
-use fajr\libfajr\data_manipulation\DataTableImpl;
-use fajr\libfajr\data_manipulation\InformacnyListAttributeEnum;
-use fajr\libfajr\pub\base\Trace;
-use fajr\libfajr\base\Preconditions;
-use fajr\libfajr\pub\exceptions\ParseException;
-use fajr\libfajr\data_manipulation\ParserUtils;
-use fajr\libfajr\util\StrUtil;
+use libfajr\data_manipulation\DataTableImpl;
+use libfajr\data_manipulation\InformacnyListAttributeEnum;
+use libfajr\pub\base\Trace;
+use libfajr\base\Preconditions;
+use libfajr\pub\exceptions\ParseException;
+use libfajr\data_manipulation\ParserUtils;
+use libfajr\util\StrUtil;
 
 /**
  * Parses AIS2 information list and retrieves data.

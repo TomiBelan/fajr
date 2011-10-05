@@ -12,8 +12,8 @@
  */
 namespace fajr;
 
-use fajr\libfajr\pub\connection\AIS2ServerConnection;
-use fajr\libfajr\base\IllegalStateException;
+use libfajr\pub\connection\AIS2ServerConnection;
+use libfajr\base\IllegalStateException;
 
 class LazyServerConnection extends AIS2ServerConnection
 {

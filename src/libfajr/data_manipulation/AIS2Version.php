@@ -11,9 +11,9 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\data_manipulation;
+namespace libfajr\data_manipulation;
 
-use fajr\libfajr\base\Preconditions;
+use libfajr\base\Preconditions;
 /**
  * AIS2 Version information.
  *

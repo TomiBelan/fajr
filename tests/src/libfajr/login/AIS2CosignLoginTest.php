@@ -11,13 +11,13 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\login;
+namespace libfajr\login;
 
-use fajr\libfajr\login\CosignLogin;
-use fajr\libfajr\pub\connection\AIS2ServerConnection;
-use fajr\libfajr\pub\connection\AIS2ServerUrlMap;
-use fajr\libfajr\pub\connection\HttpCoonection;
-use fajr\libfajr\pub\exceptions\AIS2LoginException;
+use libfajr\login\CosignLogin;
+use libfajr\pub\connection\AIS2ServerConnection;
+use libfajr\pub\connection\AIS2ServerUrlMap;
+use libfajr\pub\connection\HttpCoonection;
+use libfajr\pub\exceptions\AIS2LoginException;
 use PHPUnit_Framework_TestCase;
 
 /**
@@ -45,8 +45,8 @@ class AIS2CosignLoginTest extends PHPUnit_Framework_TestCase
     $this->responseNotLogged = file_get_contents(__DIR__.'/testdata/aisNotLogged.dat');
     $this->responseLogout = file_get_contents(__DIR__.'/testdata/aisLogout.dat');
 
-    $this->connection = $this->getMock('\fajr\libfajr\pub\connection\HttpConnection');
-    $this->cosignLogin = $this->getMock('\fajr\libfajr\pub\login\Login');
+    $this->connection = $this->getMock('\libfajr\pub\connection\HttpConnection');
+    $this->cosignLogin = $this->getMock('\libfajr\pub\login\Login');
     $this->serverConnection = new AIS2ServerConnection($this->connection,
         new AIS2ServerUrlMap("ais2.test"), null);
     $this->login = new AIS2CosignLogin($this->cosignLogin);

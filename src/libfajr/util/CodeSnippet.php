@@ -11,7 +11,7 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>; original source: fks.sk database
  * @filesource
  */
-namespace fajr\libfajr\util;
+namespace libfajr\util;
 
 /**
  * Provides simple way of extracting source code near specific line.

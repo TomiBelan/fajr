@@ -10,15 +10,15 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\connection;
+namespace libfajr\connection;
 /**
  * @ignore
  */
 require_once 'test_include.php';
 use PHPUnit_Framework_TestCase;
-use fajr\libfajr\pub\connection\HttpConnection;
-use fajr\libfajr\connection\AIS2ErrorCheckingConnection;
-use fajr\libfajr\pub\base\NullTrace;
+use libfajr\pub\connection\HttpConnection;
+use libfajr\connection\AIS2ErrorCheckingConnection;
+use libfajr\pub\base\NullTrace;
 use Exception;
 /**
  * @ignore
@@ -26,7 +26,7 @@ use Exception;
 class AIS2ErrorCheckingConnectionTest extends PHPUnit_Framework_TestCase
 {
   private function newHttpConnection() {
-    return $this->getMock('fajr\libfajr\pub\connection\HttpConnection',
+    return $this->getMock('libfajr\pub\connection\HttpConnection',
                           array('get', 'post', 'addCookie', 'clearCookies', 'close'));
   }
 

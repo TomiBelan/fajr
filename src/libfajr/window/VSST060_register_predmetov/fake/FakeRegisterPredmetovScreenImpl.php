@@ -12,15 +12,15 @@
  * @filesource
  */
 
-namespace fajr\libfajr\window\VSST060_register_predmetov\fake;
+namespace libfajr\window\VSST060_register_predmetov\fake;
 
 
-use fajr\libfajr\base\Preconditions;
-use fajr\libfajr\data_manipulation\DataTableImpl;
-use fajr\libfajr\pub\base\Trace;
-use fajr\libfajr\pub\window\VSST060_register_predmetov\RegisterPredmetovScreen;
-use fajr\libfajr\util\StrUtil;
-use fajr\libfajr\window\fake\FakeAbstractScreen;
+use libfajr\base\Preconditions;
+use libfajr\data_manipulation\DataTableImpl;
+use libfajr\pub\base\Trace;
+use libfajr\pub\window\VSST060_register_predmetov\RegisterPredmetovScreen;
+use libfajr\util\StrUtil;
+use libfajr\window\fake\FakeAbstractScreen;
 
 /**
  * Trieda reprezentujúca jednu obrazovku so zoznamom predmetov.

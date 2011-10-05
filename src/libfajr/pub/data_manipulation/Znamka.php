@@ -11,9 +11,9 @@
  * @author     Martin Sucha <anty.sk+fajr@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\pub\data_manipulation;
+namespace libfajr\pub\data_manipulation;
 
-use fajr\libfajr\base\Preconditions;
+use libfajr\base\Preconditions;
 /**
  * Reprezentacia znamky (A, B, C, D, E, Fx)
  *

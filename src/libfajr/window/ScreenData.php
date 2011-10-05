@@ -10,9 +10,9 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\window;
+namespace libfajr\window;
 
-use fajr\libfajr\base\DisableEvilCallsObject;
+use libfajr\base\DisableEvilCallsObject;
 
 class ScreenData extends DisableEvilCallsObject
 {

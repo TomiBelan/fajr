@@ -10,13 +10,13 @@
  * @author     Tomi Belan <tomi.belan@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\pub;
+namespace libfajr\pub;
 
-use fajr\libfajr\pub\BackendFactory;
-use fajr\libfajr\pub\window\VSES017_administracia_studia\VSES017_FactoryImpl;
-use fajr\libfajr\pub\window\VSST060_register_predmetov\VSST060_FactoryImpl;
-use fajr\libfajr\window\AIS2MainScreenImpl;
-use fajr\libfajr\pub\connection\AIS2ServerConnection;
+use libfajr\pub\BackendFactory;
+use libfajr\pub\window\VSES017_administracia_studia\VSES017_FactoryImpl;
+use libfajr\pub\window\VSST060_register_predmetov\VSST060_FactoryImpl;
+use libfajr\window\AIS2MainScreenImpl;
+use libfajr\pub\connection\AIS2ServerConnection;
 
 
 class LibfajrBackendFactory implements BackendFactory

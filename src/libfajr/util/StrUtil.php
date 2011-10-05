@@ -12,9 +12,9 @@
  * @filesource
  */
 
-namespace fajr\libfajr\util;
+namespace libfajr\util;
 
-use fajr\libfajr\base\Preconditions;
+use libfajr\base\Preconditions;
 
 /**
  * String utilities.

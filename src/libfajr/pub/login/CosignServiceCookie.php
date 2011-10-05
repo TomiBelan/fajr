@@ -11,11 +11,11 @@
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\pub\login;
+namespace libfajr\pub\login;
 
-use fajr\libfajr\pub\base\Trace;
-use fajr\libfajr\pub\exceptions\ParseException;
-use fajr\libfajr\base\Preconditions;
+use libfajr\pub\base\Trace;
+use libfajr\pub\exceptions\ParseException;
+use libfajr\base\Preconditions;
 
 /**
  * Trieda reprezentujúcu cosign service cookie

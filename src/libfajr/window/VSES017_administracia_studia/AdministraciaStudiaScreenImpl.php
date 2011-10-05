@@ -13,20 +13,20 @@
  * @author     Martin Králik <majak47@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\window\VSES017_administracia_studia;
+namespace libfajr\window\VSES017_administracia_studia;
 
-use fajr\libfajr\pub\window\VSES017_administracia_studia\AdministraciaStudiaScreen;
-use fajr\libfajr\pub\base\Trace;
-use fajr\libfajr\pub\connection\SimpleConnection;
-use fajr\libfajr\window\AIS2AbstractScreen;
-use fajr\libfajr\window\RequestBuilderImpl;
-use fajr\libfajr\window\ScreenRequestExecutor;
-use fajr\libfajr\window\DialogData;
-use fajr\libfajr\window\ScreenData;
-use fajr\libfajr\data_manipulation\AIS2TableParser;
-use fajr\libfajr\util\StrUtil;
-use fajr\libfajr\util\MiscUtil;
-use fajr\libfajr\pub\exceptions\ParseException;
+use libfajr\pub\window\VSES017_administracia_studia\AdministraciaStudiaScreen;
+use libfajr\pub\base\Trace;
+use libfajr\pub\connection\SimpleConnection;
+use libfajr\window\AIS2AbstractScreen;
+use libfajr\window\RequestBuilderImpl;
+use libfajr\window\ScreenRequestExecutor;
+use libfajr\window\DialogData;
+use libfajr\window\ScreenData;
+use libfajr\data_manipulation\AIS2TableParser;
+use libfajr\util\StrUtil;
+use libfajr\util\MiscUtil;
+use libfajr\pub\exceptions\ParseException;
 
 /**
  * Trieda reprezentujúca jednu obrazovku so zoznamom štúdií a zápisných listov.

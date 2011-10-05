@@ -10,15 +10,15 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\connection;
+namespace libfajr\connection;
 
 /**
  * @ignore
  */
 require_once 'test_include.php';
 use PHPUnit_Framework_TestCase;
-use fajr\libfajr\connection\CurlConnection;
-use fajr\libfajr\pub\base\NullTrace;
+use libfajr\connection\CurlConnection;
+use libfajr\pub\base\NullTrace;
 /**
  * @ignore
  */

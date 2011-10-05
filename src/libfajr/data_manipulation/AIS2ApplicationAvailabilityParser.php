@@ -11,11 +11,11 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\data_manipulation;
+namespace libfajr\data_manipulation;
 
-use fajr\libfajr\pub\exceptions\ParseException;
-use fajr\libfajr\util\StrUtil;
-use fajr\libfajr\base\Preconditions;
+use libfajr\pub\exceptions\ParseException;
+use libfajr\util\StrUtil;
+use libfajr\base\Preconditions;
 use DOMDocument;
 use DOMElement;
 use DOMXPath;

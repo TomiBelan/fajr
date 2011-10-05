@@ -10,15 +10,15 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace fajr\libfajr\connection;
+namespace libfajr\connection;
 /**
  * @ignore
  */
 require_once 'test_include.php';
 use PHPUnit_Framework_TestCase;
-use fajr\libfajr\pub\connection\HttpConnection;
-use fajr\libfajr\connection\StatsConnection;
-use fajr\libfajr\pub\base\NullTrace;
+use libfajr\pub\connection\HttpConnection;
+use libfajr\connection\StatsConnection;
+use libfajr\pub\base\NullTrace;
 use Exception;
 /**
  * @ignore
@@ -27,13 +27,13 @@ class StatsConnectionTest extends PHPUnit_Framework_TestCase
 {
   private function newConnection()
   {
-    return $this->getMock('\fajr\libfajr\pub\connection\HttpConnection');
+    return $this->getMock('\libfajr\pub\connection\HttpConnection');
   }
 
   public function testStatistics()
   {
     $mockConnection = $this->newConnection();
-    $mockTimer = $this->getMock('fajr\libfajr\base\MutableTimer', array('reset', 'getElapsedTime'));
+    $mockTimer = $this->getMock('libfajr\base\MutableTimer', array('reset', 'getElapsedTime'));
     $statsConnection = new StatsConnection($mockConnection, $mockTimer);
     $mockTimer->expects($this->any())
               ->method('getElapsedTime')
