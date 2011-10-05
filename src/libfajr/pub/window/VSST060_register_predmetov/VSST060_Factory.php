@@ -6,7 +6,7 @@
 /**
  * Contains factory for all screens from management of study.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Pub__Window__VSST060_register_predmetov
  * @author     Tomi Belan <tomi.belan@gmail.com>
  * @filesource

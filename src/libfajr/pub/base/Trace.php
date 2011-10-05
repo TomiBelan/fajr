@@ -9,7 +9,7 @@
  *
  * PHP version 5.3.0
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Base
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
@@ -22,7 +22,7 @@ namespace libfajr\pub\base;
  * You can pass this object along your call tree
  * and log important information alogn with it.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */

@@ -6,7 +6,7 @@
 /**
  * Contains storage with all data held in memory.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Storage
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
@@ -23,7 +23,7 @@ use libfajr\pub\exceptions\NotImplementedException;
  * Storage with all data held in memory. All data will be lost
  * after destruction of the object.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Storage
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource

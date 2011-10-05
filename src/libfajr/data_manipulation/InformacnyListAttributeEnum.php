@@ -4,7 +4,7 @@
 // found in the LICENSE file in the project root directory.
 
 /**
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr
  * @author     Martin Králik <majak47@gmail.com>
  * @filesource
@@ -16,7 +16,7 @@ use InvalidArgumentException;
 /**
  * Class defining possible items on information sheet.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr
  * @author     Martin Králik <majak47@gmail.com>
  */

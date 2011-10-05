@@ -8,7 +8,7 @@
  * which can be temporarily (usually per-session)
  * altered.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Storage
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
@@ -29,7 +29,7 @@ use libfajr\pub\exceptions\NotImplementedException;
  * In this way, we can easily maintain big database of default values
  * which are modifieably by any user, but the effect of modifications is temporary.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Storage
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */

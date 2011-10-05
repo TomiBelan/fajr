@@ -5,7 +5,7 @@
 
 /**
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Window
  * @author     Martin Králik <majak47@gmail.com>
  * @filesource
@@ -22,7 +22,7 @@ use libfajr\pub\window\LazyDialog;
 /**
  * Abstraktná trieda reprezentujúca jednu obrazovku v AISe.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Window
  * @author     Martin Králik <majak47@gmail.com>
  */

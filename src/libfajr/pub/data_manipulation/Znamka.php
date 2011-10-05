@@ -6,7 +6,7 @@
 /**
  * Reprezentacia znamky (A, B, C, D, E, Fx)
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Pub__Data_manipulation
  * @author     Martin Sucha <anty.sk+fajr@gmail.com>
  * @filesource
@@ -17,7 +17,7 @@ use libfajr\base\Preconditions;
 /**
  * Reprezentacia znamky (A, B, C, D, E, Fx)
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Pub__Data_manipulation
  * @author     Martin Sucha <anty.sk+fajr@gmail.com>
  */

@@ -6,7 +6,7 @@
 /**
  * Contains helper for data serialization and deserialization.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Storage
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
@@ -20,7 +20,7 @@ use libfajr\base\Preconditions;
 /**
  * Helps with data serialization and deserialization.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Storage
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */

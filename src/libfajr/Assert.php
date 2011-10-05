@@ -8,7 +8,7 @@
  *
  * PHP version 5.2.6
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
@@ -23,7 +23,7 @@ require_once 'util/CodeSnippet.php';
 /**
  * static class containing assert callback
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */

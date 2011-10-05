@@ -6,7 +6,7 @@
 /**
  * Reprezentuje obrazovku so zoznamom termínov hodnotení a predmetov.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Window__VSES017_administracia_studia__Fake
  * @author     Peter Perešini <ppershing+fajr@gmail.com>
  * @filesource
@@ -28,7 +28,7 @@ use libfajr\pub\regression\ZapisanePredmetyRegression;
  * Trieda reprezentujúca jednu obrazovku so zoznamom predmetov zápisného listu
  * a termínov hodnotenia.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Window__VSES017_administracia_studia
  * @author     Peter Perešini <ppershing+fajr@gmail.com>
  */

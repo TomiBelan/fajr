@@ -6,7 +6,7 @@
  *             Use of this source code is governed by a MIT license that can be
  *             found in the LICENSE file in the project root directory.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Connection
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
@@ -19,7 +19,7 @@ use libfajr\base\Preconditions;
 /**
  * A storage class for all ais2 server urls that libfajr will access.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Connection
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */

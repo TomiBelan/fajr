@@ -6,7 +6,7 @@
 /**
  * Contains exception thrown if object went to illegal state.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Base
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
@@ -20,7 +20,7 @@ use Exception;
  * For example, if you are trying to use object before initialization
  * or after finalization.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Base
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource

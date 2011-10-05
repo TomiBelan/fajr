@@ -9,7 +9,7 @@
  *
  * PHP version 5.2.6
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
@@ -22,7 +22,7 @@
  * so when PHP tries to use undefined class, it will be first tried
  * to be autoloaded from files. 
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @see        http://sk.php.net/autoload

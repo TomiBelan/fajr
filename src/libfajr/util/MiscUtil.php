@@ -7,7 +7,7 @@ namespace libfajr\util;
 
 /**
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr
  * @author     Martin Králik <majak47@gmail.com>
  * @filesource

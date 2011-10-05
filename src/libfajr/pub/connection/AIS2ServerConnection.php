@@ -6,7 +6,7 @@
  *             Use of this source code is governed by a MIT license that can be
  *             found in the LICENSE file in the project root directory.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Connection
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
@@ -21,7 +21,7 @@ use libfajr\connection\HttpToSimpleConnectionAdapter;
 /**
  * Provides class wrapping anything related to connection to AIS2 server.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Connection
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */

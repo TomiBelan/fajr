@@ -5,7 +5,7 @@
 
 /**
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Pub__Data_manipulation
  * @author     Martin Králik <majak47@gmail.com>
  * @filesource

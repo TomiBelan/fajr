@@ -5,7 +5,7 @@
 
 /**
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Pub
  * @author     Tomi Belan <tomi.belan@gmail.com>
  * @filesource

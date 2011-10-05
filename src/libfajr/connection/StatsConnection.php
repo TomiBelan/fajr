@@ -6,7 +6,7 @@
 /**
  * Zbiera základné štatistické informácie o vykonaných spojeniach
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Connection
  * @author Martin Sucha <anty.sk@gmail.com>
  * @filesource
@@ -22,7 +22,7 @@ use \Exception;
 /**
  * Zbiera základné štatistické informácie o vykonaných spojeniach
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Connection
  * @author Martin Sucha <anty.sk@gmail.com>
  */

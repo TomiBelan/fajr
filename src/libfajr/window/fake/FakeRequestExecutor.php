@@ -7,7 +7,7 @@
  * Contains equivalent of ScreenRequestExecutor
  * for fake screens.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Window__Fake
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
@@ -24,7 +24,7 @@ use sfStorage;
 /**
  * Equivalent of ScreenRequestExecutor.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Window__Fake
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */

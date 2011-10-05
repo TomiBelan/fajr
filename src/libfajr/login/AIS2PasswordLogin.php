@@ -6,7 +6,7 @@
 /**
  * Trieda reprezentujúca prihlasovanie pomocou hesla.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Login
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
@@ -24,7 +24,7 @@ use libfajr\util\Strutil;
 /**
  * Trieda reprezentujúca prihlasovanie pomocou hesla.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Login
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */

@@ -6,7 +6,7 @@
 /**
  * Reprezentuje diálóg so zoznamom študentov prihlásených na termín.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Window__VSES017_administracia_studia__Fake
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
@@ -24,7 +24,7 @@ use libfajr\pub\regression\PrihlaseniNaTerminRegression;
 /**
  * Trieda pre dialóg so zoznamom prihlásených študentov na termín.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Window__VSES017_administracia_studia__Fake
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */

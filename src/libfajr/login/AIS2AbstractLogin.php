@@ -5,7 +5,7 @@
 /**
  * Contains base class for logging into AIS.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Login
  * @author     Martin Králik <majak47@gmail.com>
  * @author     Martin Sucha <anty.sk@gmail.com>
@@ -25,7 +25,7 @@ use libfajr\pub\login\Login;
 /**
  * Trieda zastrešujúca prihlasovanie do AISu
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Login
  * @author     Martin Králik <majak47@gmail.com>
  * @author     Martin Sucha <anty.sk@gmail.com>

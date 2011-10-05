@@ -10,7 +10,7 @@
  * At the moment, the backend factory mostly creates other factories.
  * TODO(tomi): Refactor that. Also, reorganize the directory structure maybe.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Pub
  * @author     Tomi Belan <tomi.belan@gmail.com>
  * @filesource

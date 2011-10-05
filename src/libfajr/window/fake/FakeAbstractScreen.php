@@ -5,7 +5,7 @@
 
 /**
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Window__Fake
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
@@ -24,7 +24,7 @@ use libfajr\base\Preconditions;
 /**
  * Abstraktná trieda reprezentujúca jednu obrazovku v AISe.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Window__Fake
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */

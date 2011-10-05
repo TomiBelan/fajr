@@ -8,7 +8,7 @@
  *
  * PHP version 5.3.0
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Window__VSES017_administracia_studia
  * @author     Martin Králik <majak47@gmail.com>
  * @filesource
@@ -26,7 +26,7 @@ use Exception;
 /**
  * Trieda pre dialóg s termínmi skúšok k jednému predmetu.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Window__VSES017_administracia_studia
  * @author     Martin Králik <majak47@gmail.com>
  */

@@ -8,7 +8,7 @@
  *
  * PHP version 5.3.0
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Base
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
@@ -18,7 +18,7 @@ namespace libfajr\base;
 /**
  * Interface for mutable timers
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Base
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */

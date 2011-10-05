@@ -9,7 +9,7 @@
  *
  * PHP version 5.3.0
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Connection
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
@@ -23,7 +23,7 @@ use libfajr\pub\base\Trace;
  *
  * If you need only basic request functionality, @see SimpleConnection.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Connection
  * @author     Martin Sucha <anty.sk@gmail.com>
  */

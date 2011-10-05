@@ -6,7 +6,7 @@
 /**
  * Contains wrapper for usual argument-checking in function calls.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Base
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
@@ -20,7 +20,7 @@ use InvalidArgumentException;
  *
  * Note: Use only for argument checking!
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Base
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */

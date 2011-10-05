@@ -8,7 +8,7 @@
  *
  * PHP version 5.3.0
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Window
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
@@ -26,7 +26,7 @@ use libfajr\base\Preconditions;
 /**
  * Represents main page of AIS.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Window
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */

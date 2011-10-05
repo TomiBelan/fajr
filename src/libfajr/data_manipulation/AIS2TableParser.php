@@ -7,7 +7,7 @@
  * Contains implementation of ais2 table parsing from
  * html response.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Data_manipulation
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
@@ -26,7 +26,7 @@ use libfajr\util\StrUtil;
 /**
  * Parses AIS2 html response and retrieve data for specific table.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Data_manipulation
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  *

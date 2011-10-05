@@ -8,7 +8,7 @@
  *
  * PHP version 5.3.0
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
@@ -20,7 +20,7 @@ use libfajr\pub\base\Trace;
  * Represents tracer object which does nothing. It shoud be convenient to
  * pass around as default value of trace parameter.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */

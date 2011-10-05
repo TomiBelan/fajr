@@ -6,7 +6,7 @@
 /**
  * Zbiera základné štatistické informácie o vykonaných spojeniach
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Connection
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
@@ -16,7 +16,7 @@ namespace libfajr\pub\connection;
 /**
  * Zbiera základné štatistické informácie o vykonaných spojeniach
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Connection
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */

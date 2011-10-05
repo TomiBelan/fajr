@@ -5,7 +5,7 @@
 /**
  * Used to locate directory of fake data;
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Regression__Fake_data
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
@@ -16,7 +16,7 @@ namespace libfajr\pub\regression\fake_data;
 /**
  * It is here just to know the location of fake data.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Pub__Regression
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource

@@ -5,7 +5,7 @@
 
 /**
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Window
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @author     Martin Králik <majak47@gmail.com>

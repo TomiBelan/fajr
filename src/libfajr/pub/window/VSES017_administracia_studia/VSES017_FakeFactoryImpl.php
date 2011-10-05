@@ -5,7 +5,7 @@
 
 /**
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Pub__Window__VSES017_administracia_studia
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource

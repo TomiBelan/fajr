@@ -6,7 +6,7 @@
  *             found in the LICENSE file in the project root directory.
  *
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr
  * @author     Martin Králik <majak47@gmail.com>
  * @author     Jakub Marek <jakub.marek@gmail.com>
@@ -21,7 +21,7 @@ use libfajr\pub\exceptions\NotImplementedException;
 /**
  * Class representing infromation sheet for course.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr
  * @author     Martin Králik <majak47@gmail.com>
  * @author     Jakub Marek <jakub.marek@gmail.com>

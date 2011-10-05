@@ -7,7 +7,7 @@
  * Contains read-only storage with all data stored
  * in filesystem.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Storage
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
@@ -31,7 +31,7 @@ use libfajr\pub\exceptions\NotImplementedException;
  * </code>
  * Note however that you can't return "false" because of implementation.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Storage
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */

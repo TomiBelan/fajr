@@ -6,7 +6,7 @@
 /**
  * Object which disallows fishy class access.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Base
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
@@ -17,7 +17,7 @@ use \Exception;
 /**
  * Disallow all access to unset methods/properties of an object.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Base
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */

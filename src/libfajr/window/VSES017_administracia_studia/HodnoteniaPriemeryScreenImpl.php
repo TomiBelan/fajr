@@ -8,7 +8,7 @@
  *
  * PHP version 5.3.0
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Window__VSES017_administracia_studia
  * @author     Martin Králik <majak47@gmail.com>
  * @filesource
@@ -27,7 +27,7 @@ use libfajr\data_manipulation\AIS2TableParser;
 /**
  * Trieda reprezentujúca jednu obrazovku s hodnoteniami a priemermi za jeden rok.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Window__VSES017_administracia_studia
  * @author     Martin Králik <majak47@gmail.com>
  */

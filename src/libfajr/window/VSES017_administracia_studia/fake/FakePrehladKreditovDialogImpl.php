@@ -8,7 +8,7 @@
  *
  * PHP version 5.3.0
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Window__VSES017_administracia_studia__Fake
  * @author     Martin Sucha <anty.sk+fajr@gmail.com>
  * @filesource
@@ -25,7 +25,7 @@ use libfajr\pub\regression\PrehladKreditovRegression;
 /**
  * Trieda pre dialóg s prehľadom kreditov
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Window__VSES017_administracia_studia__Fake
  * @author     Martin Sucha <anty.sk+fajr@gmail.com>
  */

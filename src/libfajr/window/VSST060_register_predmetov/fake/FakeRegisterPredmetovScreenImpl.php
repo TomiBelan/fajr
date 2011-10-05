@@ -6,7 +6,7 @@
 /**
  * Reprezentuje obrazovku so zoznamom štúdií a zápisných listov.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Window__VSST060_register_predmetov__Fake
  * @author     Peter Perešini <ppershing+fajr@gmail.com>
  * @filesource
@@ -25,7 +25,7 @@ use libfajr\window\fake\FakeAbstractScreen;
 /**
  * Trieda reprezentujúca jednu obrazovku so zoznamom predmetov.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Libfajr__Window__VSST060_register_predmetov__Fake
  * @author     Tomi Belan <tomi.belan@gmail.com>
  */
