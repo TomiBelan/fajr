@@ -7,7 +7,7 @@
  * Contains utility functions for manipulating with strings.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Util
+ * @subpackage Util
  * @author     Martin Králik <majak47@gmail.com>
  * @filesource
  */
@@ -20,7 +20,7 @@ use libfajr\base\Preconditions;
  * String utilities.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Util
+ * @subpackage Util
  * @author     Martin Králik <majak47@gmail.com>
  * @filesource
  */

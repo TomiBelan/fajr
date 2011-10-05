@@ -6,7 +6,7 @@
 /**
  *
  * @package    Libfajr
- * @subpackage Libfajr__Pub__Window__VSST060_register_predmetov
+ * @subpackage Pub__Window__VSST060_register_predmetov
  * @author     Tomi Belan <tomi.belan@gmail.com>
  * @filesource
  */

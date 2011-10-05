@@ -7,7 +7,7 @@
  * Username parser for AIS html pages.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Data_manipulation
+ * @subpackage Data_manipulation
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
@@ -21,7 +21,7 @@ use libfajr\base\Preconditions;
  * Parses user name from AIS html response.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Data_manipulation
+ * @subpackage Data_manipulation
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 class AIS2UserNameParser {

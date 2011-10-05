@@ -7,7 +7,7 @@
  * Reprezentuje obrazovku so zoznamom termínov hodnotení a predmetov.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Window__VSES017_administracia_studia__Fake
+ * @subpackage Window__VSES017_administracia_studia__Fake
  * @author     Peter Perešini <ppershing+fajr@gmail.com>
  * @filesource
  */
@@ -29,7 +29,7 @@ use libfajr\pub\regression\ZapisanePredmetyRegression;
  * a termínov hodnotenia.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Window__VSES017_administracia_studia
+ * @subpackage Window__VSES017_administracia_studia
  * @author     Peter Perešini <ppershing+fajr@gmail.com>
  */
 class FakeTerminyHodnoteniaScreenImpl extends FakeAbstractScreen

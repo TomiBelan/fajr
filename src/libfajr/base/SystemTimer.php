@@ -9,7 +9,7 @@
  * PHP version 5.3.0
  *
  * @package    Libfajr
- * @subpackage Libfajr__Base
+ * @subpackage Base
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */

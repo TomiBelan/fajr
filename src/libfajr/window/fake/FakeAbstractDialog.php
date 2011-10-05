@@ -6,7 +6,7 @@
 /**
  *
  * @package    Libfajr
- * @subpackage Libfajr__Window__Fake
+ * @subpackage Window__Fake
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
@@ -21,7 +21,7 @@ use libfajr\util\MiscUtil;
  * Abstraktná trieda reprezentujúca jednu obrazovku v AISe.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Window__Fake
+ * @subpackage Window__Fake
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 class FakeAbstractDialog extends DisableEvilCallsObject

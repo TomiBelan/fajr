@@ -7,7 +7,7 @@
  * Contains Exception thrown while parsing AIS response.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Pub__Exceptions
+ * @subpackage Pub__Exceptions
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
@@ -18,7 +18,7 @@ use Exception;
  * Exception representing error while parsing AIS response.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Pub__Exceptions
+ * @subpackage Pub__Exceptions
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 class ParseException extends Exception

@@ -7,7 +7,7 @@
  * Contains CodeSnippet which can extract source code near specific line.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Util
+ * @subpackage Util
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>; original source: fks.sk database
  * @filesource
  */
@@ -17,7 +17,7 @@ namespace libfajr\util;
  * Provides simple way of extracting source code near specific line.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Util
+ * @subpackage Util
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>; original source: fks.sk database
  * @filesource
  */

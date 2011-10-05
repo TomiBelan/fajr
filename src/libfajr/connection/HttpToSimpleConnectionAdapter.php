@@ -10,7 +10,7 @@
  * PHP version 5.3.0
  *
  * @package    Libfajr
- * @subpackage Libfajr__Connection
+ * @subpackage Connection
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
@@ -25,7 +25,7 @@ use libfajr\pub\base\Trace;
  * encapsulating HttpConnection.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Connection
+ * @subpackage Connection
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 class HttpToSimpleConnectionAdapter implements SimpleConnection

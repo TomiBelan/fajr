@@ -9,7 +9,7 @@
  * PHP version 5.3.0
  *
  * @package    Libfajr
- * @subpackage Libfajr__Window__VSES017_administracia_studia
+ * @subpackage Window__VSES017_administracia_studia
  * @author     Martin Králik <majak47@gmail.com>
  * @filesource
  */
@@ -28,7 +28,7 @@ use libfajr\data_manipulation\AIS2TableParser;
  * Trieda reprezentujúca jednu obrazovku s hodnoteniami a priemermi za jeden rok.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Window__VSES017_administracia_studia
+ * @subpackage Window__VSES017_administracia_studia
  * @author     Martin Králik <majak47@gmail.com>
  */
 class HodnoteniaPriemeryScreenImpl extends AIS2AbstractScreen

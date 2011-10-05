@@ -6,7 +6,7 @@
 /**
  * 
  * @package    Libfajr
- * @subpackage Libfajr__Login
+ * @subpackage Login
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */
@@ -25,7 +25,7 @@ use libfajr\pub\exceptions\LoginException;
  * Trieda reprezentujúca prihlasovanie pomocou cosign proxy
  *
  * @package    Libfajr
- * @subpackage Libfajr__Login
+ * @subpackage Login
  * @author     Martin Sucha <anty.sk@gmail.com>
  */
 class CosignProxyLogin extends CosignAbstractLogin

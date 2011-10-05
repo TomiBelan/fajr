@@ -7,7 +7,7 @@
  * PHP version 5.3.0
  *
  * @package    Libfajr
- * @subpackage Libfajr__Window__VSES017_administracia_studia
+ * @subpackage Window__VSES017_administracia_studia
  * @author     Martin Králik <majak47@gmail.com>
  * @filesource
  */
@@ -30,7 +30,7 @@ use Exception;
  * a termínov hodnotenia.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Window__VSES017_administracia_studia
+ * @subpackage Window__VSES017_administracia_studia
  * @author     Martin Králik <majak47@gmail.com>
  */
 class TerminyHodnoteniaScreenImpl extends AIS2AbstractScreen

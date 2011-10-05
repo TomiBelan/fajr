@@ -17,7 +17,7 @@ namespace libfajr\pub\regression\fake_data;
  * It is here just to know the location of fake data.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Pub__Regression
+ * @subpackage Pub__Regression
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */

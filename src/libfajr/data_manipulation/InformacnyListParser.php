@@ -8,7 +8,7 @@
  *             found in the LICENSE file in the project root directory.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Data_manipulation
+ * @subpackage Data_manipulation
  * @author     Jakub Marek <jakub.marek@gmail.com>
  * @filesource
  */
@@ -30,7 +30,7 @@ use libfajr\util\StrUtil;
  * Parses AIS2 information list and retrieves data.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Data_manipulation
+ * @subpackage Data_manipulation
  * @author     Jakub Marek <jakub.marek@gmail.com>
  *
  */

@@ -7,7 +7,7 @@
  * Trieda reprezentujúca prihlasovanie pomocou hesla.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Login
+ * @subpackage Login
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
@@ -25,7 +25,7 @@ use libfajr\util\Strutil;
  * Trieda reprezentujúca prihlasovanie pomocou hesla.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Login
+ * @subpackage Login
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 class AIS2PasswordLogin extends AIS2AbstractLogin

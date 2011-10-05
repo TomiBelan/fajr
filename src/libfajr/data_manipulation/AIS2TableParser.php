@@ -8,7 +8,7 @@
  * html response.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Data_manipulation
+ * @subpackage Data_manipulation
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
@@ -27,7 +27,7 @@ use libfajr\util\StrUtil;
  * Parses AIS2 html response and retrieve data for specific table.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Data_manipulation
+ * @subpackage Data_manipulation
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  *
  * TODO(ppershing): document methods

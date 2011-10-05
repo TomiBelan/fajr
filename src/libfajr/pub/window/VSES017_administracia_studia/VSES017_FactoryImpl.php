@@ -6,7 +6,7 @@
 /**
  *
  * @package    Libfajr
- * @subpackage Libfajr__Pub__Window__VSES017_administracia_studia
+ * @subpackage Pub__Window__VSES017_administracia_studia
  * @author     Martin Králik <majak47@gmail.com>
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource

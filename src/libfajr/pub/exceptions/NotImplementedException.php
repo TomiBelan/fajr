@@ -6,7 +6,7 @@
 /**
  * 
  * @package    Libfajr
- * @subpackage Libfajr__Pub__Exceptions
+ * @subpackage Pub__Exceptions
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */

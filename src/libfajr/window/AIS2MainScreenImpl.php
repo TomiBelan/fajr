@@ -9,7 +9,7 @@
  * PHP version 5.3.0
  *
  * @package    Libfajr
- * @subpackage Libfajr__Window
+ * @subpackage Window
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
@@ -27,7 +27,7 @@ use libfajr\base\Preconditions;
  * Represents main page of AIS.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Window
+ * @subpackage Window
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 class AIS2MainScreenImpl extends DisableEvilCallsObject implements AIS2MainScreen 

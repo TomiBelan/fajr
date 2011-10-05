@@ -7,7 +7,7 @@
  *             found in the LICENSE file in the project root directory.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Connection
+ * @subpackage Connection
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
@@ -20,7 +20,7 @@ use libfajr\base\Preconditions;
  * A storage class for all ais2 server urls that libfajr will access.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Connection
+ * @subpackage Connection
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 class AIS2ServerUrlMap extends DisableEvilCallsObject

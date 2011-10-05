@@ -9,7 +9,7 @@
  * altered.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Storage
+ * @subpackage Storage
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
@@ -30,7 +30,7 @@ use libfajr\pub\exceptions\NotImplementedException;
  * which are modifieably by any user, but the effect of modifications is temporary.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Storage
+ * @subpackage Storage
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 class TemporarilyModifiableStorage extends sfStorage

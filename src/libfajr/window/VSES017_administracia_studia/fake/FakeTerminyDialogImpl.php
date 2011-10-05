@@ -7,7 +7,7 @@
  * Reprezentuje diálóg s termínami skúšok k predmetu.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Window__VSES017_administracia_studia__Fake
+ * @subpackage Window__VSES017_administracia_studia__Fake
  * @author     Peter Perešini <ppershing+fajr@gmail.com>
  * @filesource
  */
@@ -29,7 +29,7 @@ use libfajr\pub\regression\TerminyKPredmetuRegression;
  * Trieda pre dialóg s termínmi skúšok k jednému predmetu.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Window__VSES017_administracia_studia__Fake
+ * @subpackage Window__VSES017_administracia_studia__Fake
  * @author     Peter Perešini <ppershing+fajr@gmail.com>
  */
 class FakeTerminyDialogImpl extends FakeAbstractDialog

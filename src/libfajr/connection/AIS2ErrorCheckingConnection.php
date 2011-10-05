@@ -10,7 +10,7 @@
  * PHP version 5.3.0
  *
  * @package    Libfajr
- * @subpackage Libfajr__Connection
+ * @subpackage Connection
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @author     Martin Kralik <majak47@gmail.com>
  * @filesource
@@ -30,7 +30,7 @@ use libfajr\util\StrUtil;
  * PHP version 5.3.0
  *
  * @package    Libfajr
- * @subpackage Libfajr__Connection
+ * @subpackage Connection
  * @author     Martin Sucha <anty@gjh.sk>
  * @author     Martin Kralik <majak47@gmail.com>
  */

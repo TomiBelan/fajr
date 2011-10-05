@@ -6,7 +6,7 @@
  * Represents logging into AIS using cosign cookie.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Login
+ * @subpackage Login
  * @author     Martin Králik <majak47@gmail.com>
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
@@ -27,7 +27,7 @@ use libfajr\pub\login\Login;
  * cookie od cosignu.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Login
+ * @subpackage Login
  * @author     Martin Králik <majak47@gmail.com>
  * @author     Martin Sucha <anty.sk@gmail.com>
  */

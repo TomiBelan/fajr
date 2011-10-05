@@ -8,7 +8,7 @@
  * for fake screens.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Window__Fake
+ * @subpackage Window__Fake
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
@@ -25,7 +25,7 @@ use sfStorage;
  * Equivalent of ScreenRequestExecutor.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Window__Fake
+ * @subpackage Window__Fake
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 class FakeRequestExecutor extends DisableEvilCallsObject

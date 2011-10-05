@@ -6,7 +6,7 @@
 /**
  *
  * @package    Libfajr
- * @subpackage Libfajr__Window__Fake
+ * @subpackage Window__Fake
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
@@ -25,7 +25,7 @@ use libfajr\base\Preconditions;
  * Abstraktná trieda reprezentujúca jednu obrazovku v AISe.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Window__Fake
+ * @subpackage Window__Fake
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 abstract class FakeAbstractScreen extends DisableEvilCallsObject

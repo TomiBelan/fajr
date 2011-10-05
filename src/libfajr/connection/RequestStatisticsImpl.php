@@ -7,7 +7,7 @@
  * Zbiera základné štatistické informácie o vykonaných spojeniach
  *
  * @package    Libfajr
- * @subpackage Libfajr__Connection
+ * @subpackage Connection
  * @author Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */
@@ -20,7 +20,7 @@ use Exception;
  * Zbiera základné štatistické informácie o vykonaných spojeniach
  *
  * @package    Libfajr
- * @subpackage Libfajr__Connection
+ * @subpackage Connection
  * @author Martin Sucha <anty.sk@gmail.com>
  */
 class RequestStatisticsImpl implements RequestStatistics

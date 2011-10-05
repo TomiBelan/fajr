@@ -6,7 +6,7 @@
 /**
  *
  * @package    Libfajr
- * @subpackage Libfajr__Window
+ * @subpackage Window
  * @author     Martin Králik <majak47@gmail.com>
  * @filesource
  */
@@ -23,7 +23,7 @@ use libfajr\util\MiscUtil;
  * Abstraktná trieda reprezentujúca jednu obrazovku v AISe.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Window
+ * @subpackage Window
  * @author     Martin Králik <majak47@gmail.com>
  */
 class AIS2AbstractDialog extends DisableEvilCallsObject

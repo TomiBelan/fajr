@@ -9,7 +9,7 @@
  * PHP version 5.3.0
  *
  * @package    Libfajr
- * @subpackage Libfajr__Window__VSES017_administracia_studia
+ * @subpackage Window__VSES017_administracia_studia
  * @author     Martin Králik <majak47@gmail.com>
  * @filesource
  */
@@ -32,7 +32,7 @@ use libfajr\pub\exceptions\ParseException;
  * Trieda reprezentujúca jednu obrazovku so zoznamom štúdií a zápisných listov.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Window__VSES017_administracia_studia
+ * @subpackage Window__VSES017_administracia_studia
  * @author     Martin Kralik <majak47@gmail.com>
  */
 class AdministraciaStudiaScreenImpl extends AIS2AbstractScreen

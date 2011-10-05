@@ -6,7 +6,7 @@
 /**
  *
  * @package    Libfajr
- * @subpackage Libfajr__Pub__Window
+ * @subpackage Pub__Window
  * @author Peter Perešíni <ppershing+fajr@gmail.com>
  * @TODO documentation
  * @filesource

@@ -7,7 +7,7 @@
  * Contains exception thrown if object went to illegal state.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Base
+ * @subpackage Base
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
@@ -21,7 +21,7 @@ use Exception;
  * or after finalization.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Base
+ * @subpackage Base
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */

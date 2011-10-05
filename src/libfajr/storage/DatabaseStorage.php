@@ -7,7 +7,7 @@
  * Contains database storage.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Storage
+ * @subpackage Storage
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
@@ -26,7 +26,7 @@ use PDO;
  * DatabaseStorage allows to store data in pdo database.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Storage
+ * @subpackage Storage
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 class DatabaseStorage extends sfStorage

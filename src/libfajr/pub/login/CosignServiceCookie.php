@@ -7,7 +7,7 @@
  * Tento súbor obsahuje triedu reprezentujúcu cosignovú service cookie
  *
  * @package    Libfajr
- * @subpackage Libfajr__Pub__Login
+ * @subpackage Pub__Login
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */
@@ -21,7 +21,7 @@ use libfajr\base\Preconditions;
  * Trieda reprezentujúcu cosign service cookie
  *
  * @package    Libfajr
- * @subpackage Libfajr__Login
+ * @subpackage Login
  * @author     Martin Sucha <anty.sk@gmail.com>
  */
 final class CosignServiceCookie

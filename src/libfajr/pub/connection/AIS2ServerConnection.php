@@ -7,7 +7,7 @@
  *             found in the LICENSE file in the project root directory.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Connection
+ * @subpackage Connection
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
@@ -22,7 +22,7 @@ use libfajr\connection\HttpToSimpleConnectionAdapter;
  * Provides class wrapping anything related to connection to AIS2 server.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Connection
+ * @subpackage Connection
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 class AIS2ServerConnection extends DisableEvilCallsObject

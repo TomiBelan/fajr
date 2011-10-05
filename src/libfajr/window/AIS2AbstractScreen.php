@@ -6,7 +6,7 @@
 /**
  *
  * @package    Libfajr
- * @subpackage Libfajr__Window
+ * @subpackage Window
  * @author     Martin Králik <majak47@gmail.com>
  * @filesource
  */
@@ -23,7 +23,7 @@ use libfajr\pub\window\LazyDialog;
  * Abstraktná trieda reprezentujúca jednu obrazovku v AISe.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Window
+ * @subpackage Window
  * @author     Martin Králik <majak47@gmail.com>
  */
 abstract class AIS2AbstractScreen extends DisableEvilCallsObject

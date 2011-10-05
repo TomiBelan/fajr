@@ -9,7 +9,7 @@
  * PHP version 5.3.0
  *
  * @package    Libfajr
- * @subpackage Libfajr__Window__VSST060_register_predmetov
+ * @subpackage Window__VSST060_register_predmetov
  * @author     Tomi Belan <tomi.belan@gmail.com>
  * @filesource
  */
@@ -33,7 +33,7 @@ use libfajr\pub\exceptions\ParseException;
  * Trieda reprezentujúca jednu obrazovku s registrom predmetov.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Window__VSES017_administracia_studia
+ * @subpackage Window__VSES017_administracia_studia
  * @author     Martin Kralik <majak47@gmail.com>
  */
 class RegisterPredmetovScreenImpl extends AIS2AbstractScreen

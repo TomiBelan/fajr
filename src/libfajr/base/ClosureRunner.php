@@ -7,7 +7,7 @@
  * Contains class that runs callback on destruction.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Base
+ * @subpackage Base
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */

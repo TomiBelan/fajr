@@ -7,7 +7,7 @@
  * Contains wrapper for usual argument-checking in function calls.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Base
+ * @subpackage Base
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
@@ -21,7 +21,7 @@ use InvalidArgumentException;
  * Note: Use only for argument checking!
  *
  * @package    Libfajr
- * @subpackage Libfajr__Base
+ * @subpackage Base
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 class Preconditions

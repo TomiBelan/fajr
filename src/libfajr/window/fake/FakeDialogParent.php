@@ -6,7 +6,7 @@
 /**
  *
  * @package    Libfajr
- * @subpackage Libfajr__Window__Fake
+ * @subpackage Window__Fake
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */

@@ -7,7 +7,7 @@
  * Object which disallows fishy class access.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Base
+ * @subpackage Base
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
@@ -18,7 +18,7 @@ use \Exception;
  * Disallow all access to unset methods/properties of an object.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Base
+ * @subpackage Base
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 class DisableEvilCallsObject

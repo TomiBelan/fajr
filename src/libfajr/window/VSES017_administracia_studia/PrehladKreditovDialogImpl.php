@@ -9,7 +9,7 @@
  * PHP version 5.3.0
  *
  * @package    Libfajr
- * @subpackage Libfajr__Window__VSES017_administracia_studia
+ * @subpackage Window__VSES017_administracia_studia
  * @author     Martin Králik <majak47@gmail.com>
  * @filesource
  */
@@ -27,7 +27,7 @@ use libfajr\window\DialogData;
  * Trieda pre dialóg s prehľadom kreditov
  *
  * @package    Libfajr
- * @subpackage Libfajr__Window__VSES017_administracia_studia
+ * @subpackage Window__VSES017_administracia_studia
  * @author     Martin Králik <majak47@gmail.com>
  * @author     Martin Sucha <anty.sk+fajr@gmail.com>
  */

@@ -7,7 +7,7 @@
  * Represents "start" screen of AIS.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Window__Fake
+ * @subpackage Window__Fake
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
@@ -24,7 +24,7 @@ use libfajr\base\Preconditions;
  * Represents main page of AIS.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Pub__Window
+ * @subpackage Pub__Window
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 class FakeMainScreen implements AIS2MainScreen

@@ -7,7 +7,7 @@
  * Application availability parser for AIS html pages.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Data_manipulation
+ * @subpackage Data_manipulation
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
@@ -24,7 +24,7 @@ use DOMXPath;
  * Parses AIS2 html response and finds whether specific application is available.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Data_manipulation
+ * @subpackage Data_manipulation
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 class AIS2ApplicationAvailabilityParser {

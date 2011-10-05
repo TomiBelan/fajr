@@ -8,7 +8,7 @@
  * in filesystem.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Storage
+ * @subpackage Storage
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
@@ -32,7 +32,7 @@ use libfajr\pub\exceptions\NotImplementedException;
  * Note however that you can't return "false" because of implementation.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Storage
+ * @subpackage Storage
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 class FileStorage extends sfStorage

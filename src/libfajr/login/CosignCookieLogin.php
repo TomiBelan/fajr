@@ -6,7 +6,7 @@
 /**
  *
  * @package    Libfajr
- * @subpackage Libfajr__Login
+ * @subpackage Login
  * @author     Martin Králik <majak47@gmail.com>
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
@@ -25,7 +25,7 @@ use libfajr\pub\connection\AIS2ServerUrlMap;
  * Trieda reprezentujúca prihlasovanie pomocou cookie
  *
  * @package    Libfajr
- * @subpackage Libfajr__Login
+ * @subpackage Login
  * @author     Martin Králik <majak47@gmail.com>
  * @author     Martin Sucha <anty.sk@gmail.com>
  */

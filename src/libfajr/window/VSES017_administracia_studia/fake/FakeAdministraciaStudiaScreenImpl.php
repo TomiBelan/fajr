@@ -7,7 +7,7 @@
  * Reprezentuje obrazovku so zoznamom štúdií a zápisných listov.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Window__VSES017_administracia_studia__Fake
+ * @subpackage Window__VSES017_administracia_studia__Fake
  * @author     Peter Perešini <ppershing+fajr@gmail.com>
  * @filesource
  */
@@ -29,7 +29,7 @@ use libfajr\pub\regression\ZoznamZapisnychListovRegression;
  * Trieda reprezentujúca jednu obrazovku so zoznamom štúdií a zápisných listov.
  *
  * @package    Libfajr
- * @subpackage Libfajr__Window__VSES017_administracia_studia__Fake
+ * @subpackage Window__VSES017_administracia_studia__Fake
  * @author     Peter Perešini <ppershing+fajr@gmail.com>
  */
 class FakeAdministraciaStudiaScreenImpl extends FakeAbstractScreen
