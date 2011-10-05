@@ -7,7 +7,6 @@
  * Trieda reprezentujúca session systému (stav prihlásenia, ...)
  *
  * @package    Libfajr
- * @subpackage Libfajr
  * @author     Martin Králik <majak47@gmail.com>
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
@@ -20,7 +19,6 @@ use \libfajr\pub\login\Login;
  * Trieda reprezentujúca session systému (stav prihlásenia, ...)
  *
  * @package    Libfajr
- * @subpackage Libfajr
  * @author     Martin Králik <majak47@gmail.com>
  * @author     Martin Sucha <anty.sk@gmail.com>
  */

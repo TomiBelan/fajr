@@ -5,7 +5,6 @@
 
 /**
  * @package    Libfajr
- * @subpackage Libfajr
  * @author     Martin Králik <majak47@gmail.com>
  * @filesource
  */
@@ -17,7 +16,6 @@ use InvalidArgumentException;
  * Class defining possible items on information sheet.
  *
  * @package    Libfajr
- * @subpackage Libfajr
  * @author     Martin Králik <majak47@gmail.com>
  */
 class InformacnyListAttributeEnum

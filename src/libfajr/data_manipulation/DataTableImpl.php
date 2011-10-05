@@ -7,7 +7,6 @@
  * Tento súbor obsahuje objekt zaobaľujúci tabuľku dát.
  *
  * @package    Libfajr
- * @subpackage Libfajr
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
@@ -19,7 +18,6 @@ use libfajr\pub\data_manipulation\SimpleDataTable;
  * Trieda zastrešujúca tabuľku dát.
  *
  * @package    Libfajr
- * @subpackage Libfajr
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 class DataTableImpl implements SimpleDataTable

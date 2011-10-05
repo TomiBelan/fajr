@@ -6,7 +6,6 @@
 /**
  * 
  * @package    Libfajr
- * @subpackage Libfajr
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */

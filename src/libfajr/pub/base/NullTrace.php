@@ -9,7 +9,6 @@
  * PHP version 5.3.0
  *
  * @package    Libfajr
- * @subpackage Libfajr
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
@@ -21,7 +20,6 @@ use libfajr\pub\base\Trace;
  * pass around as default value of trace parameter.
  *
  * @package    Libfajr
- * @subpackage Libfajr
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 class NullTrace implements Trace

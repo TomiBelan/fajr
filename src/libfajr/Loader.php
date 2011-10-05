@@ -10,7 +10,6 @@
  * PHP version 5.2.6
  *
  * @package    Libfajr
- * @subpackage Libfajr
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
@@ -23,7 +22,6 @@
  * to be autoloaded from files. 
  *
  * @package    Libfajr
- * @subpackage Libfajr
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @see        http://sk.php.net/autoload
  */

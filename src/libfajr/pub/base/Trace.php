@@ -23,7 +23,6 @@ namespace libfajr\pub\base;
  * and log important information alogn with it.
  *
  * @package    Libfajr
- * @subpackage Libfajr
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 interface Trace
