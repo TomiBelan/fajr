@@ -12,9 +12,9 @@
  */
 namespace libfajr\login;
 
-use libfajr\pub\login\Login;
-use libfajr\pub\connection\AIS2ServerConnection;
-use libfajr\pub\exceptions\AIS2LoginException;
+use libfajr\login\Login;
+use libfajr\connection\AIS2ServerConnection;
+use libfajr\exceptions\AIS2LoginException;
 
 class FakeLogin implements Login
 {

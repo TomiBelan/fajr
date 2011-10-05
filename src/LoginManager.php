@@ -14,9 +14,9 @@ namespace fajr;
 
 use fajr\config\ServerConfig;
 use fajr\exceptions\SecurityException;
-use libfajr\pub\base\Trace;
-use libfajr\pub\connection\AIS2ServerConnection;
-use libfajr\pub\login\CosignServiceCookie;
+use libfajr\base\Trace;
+use libfajr\connection\AIS2ServerConnection;
+use libfajr\login\CosignServiceCookie;
 use libfajr\login\CosignPasswordLogin;
 use libfajr\login\CosignProxyLogin;
 use libfajr\login\CosignCookieLogin;

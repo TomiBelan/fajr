@@ -14,7 +14,7 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace libfajr\pub\base;
+namespace libfajr\base;
 
 /**
  * Interface to objects tracing debug information.

@@ -10,10 +10,10 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace libfajr\pub\window\VSES017_administracia_studia;
+namespace libfajr\window\VSES017_administracia_studia;
 
-use libfajr\pub\window\LazyDialog;
-use libfajr\pub\base\Trace;
+use libfajr\window\LazyDialog;
+use libfajr\base\Trace;
 
 interface TerminyHodnoteniaScreen extends LazyDialog
 {

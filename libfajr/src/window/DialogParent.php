@@ -12,7 +12,7 @@
  */
 namespace libfajr\window;
 use libfajr\window\DialogData;
-use libfajr\pub\base\Trace;
+use libfajr\base\Trace;
 
 interface DialogParent
 {

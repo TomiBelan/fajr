@@ -17,9 +17,9 @@ use fajr\config\FajrConfig;
 use libfajr\AIS2Session;
 use libfajr\base\Preconditions;
 use libfajr\login\AIS2LoginImpl;
-use libfajr\pub\base\Trace;
-use libfajr\pub\connection\AIS2ServerConnection;
-use libfajr\pub\login\Login;
+use libfajr\base\Trace;
+use libfajr\connection\AIS2ServerConnection;
+use libfajr\login\Login;
 use libfajr\util\StrUtil;
 use Exception;
 

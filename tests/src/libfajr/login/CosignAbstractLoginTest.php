@@ -15,10 +15,10 @@
 namespace libfajr\login;
 
 use libfajr\login\CosignAbstractLogin;
-use libfajr\pub\connection\HttpConnection;
-use libfajr\pub\connection\AIS2ServerConnection;
-use libfajr\pub\connection\AIS2ServerUrlMap;
-use libfajr\pub\exceptions\LoginException;
+use libfajr\connection\HttpConnection;
+use libfajr\connection\AIS2ServerConnection;
+use libfajr\connection\AIS2ServerUrlMap;
+use libfajr\exceptions\LoginException;
 use PHPUnit_Framework_TestCase;
 
 /**
@@ -33,7 +33,7 @@ class CosignAbstractLoginTest extends PHPUnit_Framework_TestCase
 {
   public function setUp()
   {
-    $this->connection = $this->getMock('\libfajr\pub\connection\HttpConnection');
+    $this->connection = $this->getMock('\libfajr\connection\HttpConnection');
     $this->serverConnection = new AIS2ServerConnection($this->connection,
                                                        new AIS2ServerUrlMap("ais2.test"));
   }

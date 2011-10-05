@@ -16,9 +16,9 @@ namespace libfajr\connection;
  */
 require_once 'test_include.php';
 use PHPUnit_Framework_TestCase;
-use libfajr\pub\connection\HttpConnection;
+use libfajr\connection\HttpConnection;
 use libfajr\connection\AIS2ErrorCheckingConnection;
-use libfajr\pub\base\NullTrace;
+use libfajr\base\NullTrace;
 use Exception;
 /**
  * @ignore
@@ -26,7 +26,7 @@ use Exception;
 class AIS2ErrorCheckingConnectionTest extends PHPUnit_Framework_TestCase
 {
   private function newHttpConnection() {
-    return $this->getMock('libfajr\pub\connection\HttpConnection',
+    return $this->getMock('libfajr\connection\HttpConnection',
                           array('get', 'post', 'addCookie', 'clearCookies', 'close'));
   }
 

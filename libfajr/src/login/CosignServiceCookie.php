@@ -11,10 +11,10 @@
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */
-namespace libfajr\pub\login;
+namespace libfajr\login;
 
-use libfajr\pub\base\Trace;
-use libfajr\pub\exceptions\ParseException;
+use libfajr\base\Trace;
+use libfajr\exceptions\ParseException;
 use libfajr\base\Preconditions;
 
 /**

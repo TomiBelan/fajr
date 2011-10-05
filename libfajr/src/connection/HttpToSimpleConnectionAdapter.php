@@ -16,9 +16,9 @@
  */
 namespace libfajr\connection;
 
-use libfajr\pub\connection\HttpConnection;
-use libfajr\pub\connection\SimpleConnection;
-use libfajr\pub\base\Trace;
+use libfajr\connection\HttpConnection;
+use libfajr\connection\SimpleConnection;
+use libfajr\base\Trace;
 
 /**
  * Adapter that provides SimpleConnection interface

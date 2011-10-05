@@ -12,10 +12,10 @@
  * @filesource
  */
 namespace libfajr\window;
-use libfajr\pub\base\Trace;
+use libfajr\base\Trace;
 use Exception;
 use libfajr\base\DisableEvilCallsObject;
-use libfajr\pub\connection\SimpleConnection;
+use libfajr\connection\SimpleConnection;
 
 class ScreenRequestExecutorImpl extends DisableEvilCallsObject
     implements ScreenRequestExecutor

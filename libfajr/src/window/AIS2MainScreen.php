@@ -12,9 +12,9 @@
  * @filesource
  */
 
-namespace libfajr\pub\window;
+namespace libfajr\window;
 
-use libfajr\pub\base\Trace;
+use libfajr\base\Trace;
 
 /**
  * Represents main page of AIS.

@@ -12,8 +12,8 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace libfajr\pub\base;
-use libfajr\pub\base\Trace;
+namespace libfajr\base;
+use libfajr\base\Trace;
 
 /**
  * Represents tracer object which does nothing. It shoud be convenient to

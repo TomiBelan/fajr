@@ -11,7 +11,7 @@
  * @filesource
  */
 
-namespace libfajr\pub\regression\fake_data;
+namespace libfajr\regression\fake_data;
 
 use PHPUnit_Framework_TestCase;
 use RecursiveDirectoryIterator;

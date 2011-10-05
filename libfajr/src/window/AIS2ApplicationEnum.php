@@ -12,7 +12,7 @@
  * @filesource
  */
 
-namespace libfajr\pub\window;
+namespace libfajr\window;
 
 /**
  * Maps AIS2 applications to their string identifier.

@@ -12,12 +12,12 @@
  */
 namespace libfajr\window;
 
-use libfajr\pub\base\Trace;
+use libfajr\base\Trace;
 use libfajr\base\IllegalStateException;
 use libfajr\login\AIS2LoginException;
 use AIS2Utils;
 use libfajr\base\DisableEvilCallsObject;
-use libfajr\pub\window\LazyDialog;
+use libfajr\window\LazyDialog;
 
 /**
  * Abstraktná trieda reprezentujúca jednu obrazovku v AISe.

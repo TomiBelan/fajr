@@ -11,7 +11,7 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace libfajr\pub\connection;
+namespace libfajr\connection;
 
 use libfajr\base\DisableEvilCallsObject;
 use libfajr\base\Preconditions;

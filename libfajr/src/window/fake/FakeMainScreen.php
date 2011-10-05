@@ -14,9 +14,9 @@
 
 namespace libfajr\window\fake;
 
-use libfajr\pub\base\Trace;
-use libfajr\pub\window\AIS2MainScreen;
-use libfajr\pub\window\AIS2ApplicationEnum;
+use libfajr\base\Trace;
+use libfajr\window\AIS2MainScreen;
+use libfajr\window\AIS2ApplicationEnum;
 use libfajr\data_manipulation\AIS2Version;
 use libfajr\base\Preconditions;
 

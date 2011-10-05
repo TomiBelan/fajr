@@ -14,8 +14,8 @@
 
 namespace libfajr\data_manipulation;
 
-use libfajr\pub\data_manipulation\InformacnyListData;
-use libfajr\pub\exceptions\NotImplementedException;
+use libfajr\data_manipulation\InformacnyListData;
+use libfajr\exceptions\NotImplementedException;
 
 /**
  * Class representing infromation sheet for course.

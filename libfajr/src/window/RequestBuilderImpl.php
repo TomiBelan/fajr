@@ -13,7 +13,7 @@
  */
 namespace libfajr\window;
 
-use libfajr\pub\connection\AIS2ServerUrlMap;
+use libfajr\connection\AIS2ServerUrlMap;
 
 class RequestBuilderImpl implements RequestBuilder
 {

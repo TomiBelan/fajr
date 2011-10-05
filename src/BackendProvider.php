@@ -16,9 +16,9 @@ namespace fajr;
 use fajr\config\FajrConfig;
 use fajr\config\FajrConfigOptions;
 use fajr\config\FajrConfigLoader;
-use libfajr\pub\BackendFactory;
-use libfajr\pub\FakeBackendFactory;
-use libfajr\pub\LibfajrBackendFactory;
+use libfajr\BackendFactory;
+use libfajr\FakeBackendFactory;
+use libfajr\LibfajrBackendFactory;
 
 class BackendProvider
 {

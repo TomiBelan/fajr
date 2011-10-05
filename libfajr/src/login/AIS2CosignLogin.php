@@ -14,13 +14,13 @@
 
 namespace libfajr\login;
 
-use libfajr\pub\base\NullTrace;
-use libfajr\pub\base\Trace;
-use libfajr\pub\connection\AIS2ServerConnection;
-use libfajr\pub\connection\AIS2ServerUrlMap;
-use libfajr\pub\connection\HttpConnection;
-use libfajr\pub\exceptions\LoginException;
-use libfajr\pub\login\Login;
+use libfajr\base\NullTrace;
+use libfajr\base\Trace;
+use libfajr\connection\AIS2ServerConnection;
+use libfajr\connection\AIS2ServerUrlMap;
+use libfajr\connection\HttpConnection;
+use libfajr\exceptions\LoginException;
+use libfajr\login\Login;
 
 /**
  * Trieda reprezentujúca prihlasovanie využívajúce

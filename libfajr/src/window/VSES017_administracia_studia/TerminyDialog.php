@@ -10,11 +10,11 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace libfajr\pub\window\VSES017_administracia_studia;
+namespace libfajr\window\VSES017_administracia_studia;
 
-use libfajr\pub\window\LazyDialog;
-use libfajr\pub\data_manipulation\SimpleDataTable;
-use libfajr\pub\base\Trace;
+use libfajr\window\LazyDialog;
+use libfajr\data_manipulation\SimpleDataTable;
+use libfajr\base\Trace;
 
 interface TerminyDialog extends LazyDialog
 {

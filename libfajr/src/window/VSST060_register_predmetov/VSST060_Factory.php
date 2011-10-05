@@ -11,10 +11,10 @@
  * @author     Tomi Belan <tomi.belan@gmail.com>
  * @filesource
  */
-namespace libfajr\pub\window\VSST060_register_predmetov;
+namespace libfajr\window\VSST060_register_predmetov;
 
 use libfajr\window\VSST060_register_predmetov as VSST060;
-use libfajr\pub\base\Trace;
+use libfajr\base\Trace;
 
 /**
  * Provides instances of screens in study management part of ais.

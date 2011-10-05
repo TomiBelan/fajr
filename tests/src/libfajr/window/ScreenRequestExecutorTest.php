@@ -20,7 +20,7 @@ require_once 'test_include.php';
 use \PHPUnit_Framework_TestCase;
 use libfajr\window\RequestBuilder;
 use libfajr\window\ScreenRequestExecutor;
-use libfajr\pub\base\NullTrace;
+use libfajr\base\NullTrace;
 /**
  * @ignore
  */
@@ -33,7 +33,7 @@ class ScreenRequestExecutorTest extends PHPUnit_Framework_TestCase
     $builder = $this->getMock('\libfajr\window\RequestBuilder',
         array('buildRequestData', 'getRequestUrl', 'newSerial',
               'getAppInitializationUrl', 'getFilesRequestUrl'));
-    $connection = $this->getMock('\libfajr\pub\connection\SimpleConnection');
+    $connection = $this->getMock('\libfajr\connection\SimpleConnection');
     $this->executor = new ScreenRequestExecutorImpl($builder, $connection);
   }
 

@@ -11,7 +11,7 @@
  * @filesource
  */
 
-namespace libfajr\pub\regression\fake_data;
+namespace libfajr\regression\fake_data;
 
 /**
  * It is here just to know the location of fake data.

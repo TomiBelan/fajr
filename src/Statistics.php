@@ -17,8 +17,8 @@ namespace fajr;
 use libfajr\base\SystemTimer;
 use libfajr\base\Timer;
 use libfajr\connection\StatsConnection;
-use libfajr\pub\connection\HttpConnection;
-use libfajr\pub\connection\RequestStatistics;
+use libfajr\connection\HttpConnection;
+use libfajr\connection\RequestStatistics;
 use libfajr\base\IllegalStateException;
 
 /**

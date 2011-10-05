@@ -10,11 +10,11 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace libfajr\pub\window\VSES017_administracia_studia;
+namespace libfajr\window\VSES017_administracia_studia;
 
 use libfajr\window\VSES017_administracia_studia as VSES017;
 use libfajr\window\VSES017_administracia_studia\fake as VSES017fake;
-use libfajr\pub\base\Trace;
+use libfajr\base\Trace;
 use libfajr\window\fake\FakeRequestExecutor;
 use sfStorage;
 

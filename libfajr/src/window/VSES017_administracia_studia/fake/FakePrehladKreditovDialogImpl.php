@@ -15,12 +15,12 @@
  */
 namespace libfajr\window\VSES017_administracia_studia\fake;
 
-use libfajr\pub\window\VSES017_administracia_studia\PrehladKreditovDialog;
+use libfajr\window\VSES017_administracia_studia\PrehladKreditovDialog;
 
-use libfajr\pub\base\Trace;
+use libfajr\base\Trace;
 use libfajr\window\fake\FakeAbstractDialog;
 use libfajr\data_manipulation\DataTableImpl;
-use libfajr\pub\regression\PrehladKreditovRegression;
+use libfajr\regression\PrehladKreditovRegression;
 
 /**
  * Trieda pre dialóg s prehľadom kreditov

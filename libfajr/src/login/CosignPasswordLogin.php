@@ -13,13 +13,13 @@
  */
 namespace libfajr\login;
 
-use libfajr\pub\connection\HttpConnection;
-use libfajr\pub\base\NullTrace;
-use libfajr\pub\exceptions\LoginException;
-use libfajr\pub\exceptions\NotImplementedException;
+use libfajr\connection\HttpConnection;
+use libfajr\base\NullTrace;
+use libfajr\exceptions\LoginException;
+use libfajr\exceptions\NotImplementedException;
 use libfajr\util\StrUtil;
-use libfajr\pub\connection\AIS2ServerConnection;
-use libfajr\pub\connection\AIS2ServerUrlMap;
+use libfajr\connection\AIS2ServerConnection;
+use libfajr\connection\AIS2ServerUrlMap;
 
 /**
  * Trieda reprezentujúca prihlasovanie pomocou cosign

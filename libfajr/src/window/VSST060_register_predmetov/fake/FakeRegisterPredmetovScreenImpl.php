@@ -17,8 +17,8 @@ namespace libfajr\window\VSST060_register_predmetov\fake;
 
 use libfajr\base\Preconditions;
 use libfajr\data_manipulation\DataTableImpl;
-use libfajr\pub\base\Trace;
-use libfajr\pub\window\VSST060_register_predmetov\RegisterPredmetovScreen;
+use libfajr\base\Trace;
+use libfajr\window\VSST060_register_predmetov\RegisterPredmetovScreen;
 use libfajr\util\StrUtil;
 use libfajr\window\fake\FakeAbstractScreen;
 

@@ -58,7 +58,7 @@ class FileStorageTest extends PHPUnit_Framework_TestCase
   public function testNoWrite()
   {
     $this->setExpectedException(
-        '\libfajr\pub\exceptions\NotImplementedException');
+        '\libfajr\exceptions\NotImplementedException');
     $this->storage->write('key', 'data');
   }
 
@@ -66,7 +66,7 @@ class FileStorageTest extends PHPUnit_Framework_TestCase
   public function testNoRemove()
   {
     $this->setExpectedException(
-        'libfajr\pub\exceptions\NotImplementedException');
+        'libfajr\exceptions\NotImplementedException');
     $this->storage->remove('key');
   }
   

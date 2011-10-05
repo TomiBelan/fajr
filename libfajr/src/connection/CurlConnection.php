@@ -18,8 +18,8 @@ namespace libfajr\connection;
 
 use libfajr\base\ClosureRunner;
 use libfajr\base\Preconditions;
-use libfajr\pub\base\Trace;
-use libfajr\pub\connection\HttpConnection;
+use libfajr\base\Trace;
+use libfajr\connection\HttpConnection;
 use Exception;
 use libfajr\base\IllegalStateException;
 

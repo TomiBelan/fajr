@@ -13,9 +13,9 @@
  */
 namespace libfajr\connection;
 
-use libfajr\pub\connection\HttpConnection;
-use libfajr\pub\connection\RequestStatistics;
-use libfajr\pub\base\Trace;
+use libfajr\connection\HttpConnection;
+use libfajr\connection\RequestStatistics;
+use libfajr\base\Trace;
 use libfajr\base\MutableTimer;
 use \Exception;
 

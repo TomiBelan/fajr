@@ -10,7 +10,7 @@
  * @author     Martin Králik <majak47@gmail.com>
  * @filesource
  */
-namespace libfajr\pub\data_manipulation;
+namespace libfajr\data_manipulation;
 
 interface InformacnyListData
 {

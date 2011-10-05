@@ -19,7 +19,7 @@ use sfStorage;
 use sfInitializationException;
 use sfStorageException;
 use libfajr\base\Preconditions;
-use libfajr\pub\exceptions\NotImplementedException;
+use libfajr\exceptions\NotImplementedException;
 
 /**
  * FileStorage can be used to retrieve data from filesystem.

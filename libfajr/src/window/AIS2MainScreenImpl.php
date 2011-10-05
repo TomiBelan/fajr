@@ -15,9 +15,9 @@
  */
 namespace libfajr\window;
 
-use libfajr\pub\window\AIS2MainScreen;
-use libfajr\pub\base\Trace;
-use libfajr\pub\connection\AIS2ServerConnection;
+use libfajr\window\AIS2MainScreen;
+use libfajr\base\Trace;
+use libfajr\connection\AIS2ServerConnection;
 use libfajr\base\DisableEvilCallsObject;
 use libfajr\data_manipulation\AIS2VersionParser;
 use libfajr\data_manipulation\AIS2ApplicationAvailabilityParser;

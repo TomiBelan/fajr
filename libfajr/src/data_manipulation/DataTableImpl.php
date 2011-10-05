@@ -12,7 +12,7 @@
  */
 namespace libfajr\data_manipulation;
 
-use libfajr\pub\data_manipulation\SimpleDataTable;
+use libfajr\data_manipulation\SimpleDataTable;
 
 /**
  * Trieda zastrešujúca tabuľku dát.

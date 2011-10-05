@@ -19,7 +19,7 @@ use PHPUnit_Framework_TestCase;
  */
 require_once 'test_include.php';
 
-use libfajr\pub\base\NullTrace;
+use libfajr\base\NullTrace;
 use libfajr\connection\SimpleConnection;
 /**
  * @ignore

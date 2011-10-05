@@ -17,15 +17,15 @@ namespace libfajr\connection;
 require_once 'test_include.php';
 use PHPUnit_Framework_TestCase;
 use libfajr\connection\HttpToSimpleConnectionAdapter;
-use libfajr\pub\base\NullTrace;
-use libfajr\pub\connection\HttpConnection;
+use libfajr\base\NullTrace;
+use libfajr\connection\HttpConnection;
 /**
  * @ignore
  */
 class HttpToSimpleConnectionAdapterTest extends PHPUnit_Framework_TestCase
 {
   private function newConnection() {
-    return $this->getMock('libfajr\pub\connection\HttpConnection');
+    return $this->getMock('libfajr\connection\HttpConnection');
   }
 
   public function testRequest()

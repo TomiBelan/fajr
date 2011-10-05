@@ -17,7 +17,7 @@ namespace libfajr\storage;
 use sfStorage;
 use sfInitializationException;
 use libfajr\base\Preconditions;
-use libfajr\pub\exceptions\NotImplementedException;
+use libfajr\exceptions\NotImplementedException;
 
 /**
  * Storage with all data held in memory. All data will be lost

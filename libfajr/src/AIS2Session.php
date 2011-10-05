@@ -12,8 +12,8 @@
  * @filesource
  */
 namespace libfajr;
-use \libfajr\pub\connection\HttpConnection;
-use \libfajr\pub\login\Login;
+use \libfajr\connection\HttpConnection;
+use \libfajr\login\Login;
 
 /**
  * Trieda reprezentujúca session systému (stav prihlásenia, ...)

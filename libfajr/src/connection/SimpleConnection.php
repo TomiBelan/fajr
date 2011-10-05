@@ -10,8 +10,8 @@
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */
-namespace libfajr\pub\connection;
-use libfajr\pub\base\Trace;
+namespace libfajr\connection;
+use libfajr\base\Trace;
 
 /**
  * Zjednodušená verzia konekcie vhodná pre triedy

@@ -11,7 +11,7 @@
  * @author     Martin Sucha <anty.sk+fajr@gmail.com>
  * @filesource
  */
-namespace libfajr\pub\data_manipulation;
+namespace libfajr\data_manipulation;
 
 use libfajr\base\Preconditions;
 /**

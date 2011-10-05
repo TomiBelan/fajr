@@ -13,7 +13,7 @@
  */
 namespace libfajr\data_manipulation;
 
-use libfajr\pub\exceptions\ParseException;
+use libfajr\exceptions\ParseException;
 use libfajr\util\StrUtil;
 use libfajr\base\Preconditions;
 use DOMDocument;

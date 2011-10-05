@@ -18,12 +18,12 @@ namespace libfajr\window\VSES017_administracia_studia\fake;
 use Exception;
 use libfajr\base\Preconditions;
 use libfajr\data_manipulation\DataTableImpl;
-use libfajr\pub\base\Trace;
-use libfajr\pub\data_manipulation\Znamka;
-use libfajr\pub\window\VSES017_administracia_studia\TerminyDialog;
+use libfajr\base\Trace;
+use libfajr\data_manipulation\Znamka;
+use libfajr\window\VSES017_administracia_studia\TerminyDialog;
 use libfajr\window\fake\FakeAbstractDialog;
 use libfajr\window\fake\FakeRequestExecutor;
-use libfajr\pub\regression\TerminyKPredmetuRegression;
+use libfajr\regression\TerminyKPredmetuRegression;
 
 /**
  * Trieda pre dialóg s termínmi skúšok k jednému predmetu.

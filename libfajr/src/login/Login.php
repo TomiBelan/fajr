@@ -10,8 +10,8 @@
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */
-namespace libfajr\pub\login;
-use libfajr\pub\connection\AIS2ServerConnection;
+namespace libfajr\login;
+use libfajr\connection\AIS2ServerConnection;
 
 interface Login
 {

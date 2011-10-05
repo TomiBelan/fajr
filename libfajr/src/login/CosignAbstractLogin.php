@@ -11,13 +11,13 @@
  * @filesource
  */
 namespace libfajr\login;
-use libfajr\pub\connection\HttpConnection;
-use libfajr\pub\login\Login;
+use libfajr\connection\HttpConnection;
+use libfajr\login\Login;
 use libfajr\base\DisableEvilCallsObject;
-use libfajr\pub\base\NullTrace;
-use libfajr\pub\exceptions\LoginException;
-use libfajr\pub\exceptions\NotImplementedException;
-use libfajr\pub\connection\AIS2ServerConnection;
+use libfajr\base\NullTrace;
+use libfajr\exceptions\LoginException;
+use libfajr\exceptions\NotImplementedException;
+use libfajr\connection\AIS2ServerConnection;
 
 abstract class CosignAbstractLogin extends DisableEvilCallsObject implements Login
 {

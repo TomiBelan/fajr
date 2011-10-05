@@ -12,12 +12,12 @@
  */
 namespace libfajr\window\fake;
 
-use libfajr\pub\base\Trace;
+use libfajr\base\Trace;
 use libfajr\base\IllegalStateException;
 use libfajr\login\AIS2LoginException;
 use AIS2Utils;
 use libfajr\base\DisableEvilCallsObject;
-use libfajr\pub\window\LazyDialog;
+use libfajr\window\LazyDialog;
 use libfajr\window\DialogParent;
 use libfajr\window\DialogData;
 use libfajr\base\Preconditions;

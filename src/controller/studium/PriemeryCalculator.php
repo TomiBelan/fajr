@@ -14,7 +14,7 @@ namespace fajr\controller\studium;
 
 use libfajr\base\DisableEvilCallsObject;
 use libfajr\base\Preconditions;
-use libfajr\pub\data_manipulation\Znamka;
+use libfajr\data_manipulation\Znamka;
 use InvalidArgumentException;
 
 /**

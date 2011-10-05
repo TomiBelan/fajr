@@ -13,10 +13,10 @@
  */
 namespace libfajr\data_manipulation;
 
-use libfajr\pub\base\Trace;
-use libfajr\pub\exceptions\ParseException;
+use libfajr\base\Trace;
+use libfajr\exceptions\ParseException;
 use libfajr\base\Preconditions;
-use libfajr\pub\login\CosignServiceCookie;
+use libfajr\login\CosignServiceCookie;
 use InvalidArgumentException;
 
 /**

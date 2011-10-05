@@ -14,12 +14,12 @@ namespace libfajr\login;
 
 use libfajr\base\Preconditions;
 use libfajr\data_manipulation\CosignProxyFileParser;
-use libfajr\pub\connection\HttpConnection;
-use libfajr\pub\connection\AIS2ServerConnection;
-use libfajr\pub\login\CosignServiceCookie;
-use libfajr\pub\base\NullTrace;
-use libfajr\pub\exceptions\NotImplementedException;
-use libfajr\pub\exceptions\LoginException;
+use libfajr\connection\HttpConnection;
+use libfajr\connection\AIS2ServerConnection;
+use libfajr\login\CosignServiceCookie;
+use libfajr\base\NullTrace;
+use libfajr\exceptions\NotImplementedException;
+use libfajr\exceptions\LoginException;
 
 /**
  * Trieda reprezentujúca prihlasovanie pomocou cosign proxy

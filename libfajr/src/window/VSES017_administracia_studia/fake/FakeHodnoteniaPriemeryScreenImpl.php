@@ -17,12 +17,12 @@ namespace libfajr\window\VSES017_administracia_studia\fake;
 
 use libfajr\base\Preconditions;
 use libfajr\data_manipulation\DataTableImpl;
-use libfajr\pub\base\Trace;
-use libfajr\pub\window\VSES017_administracia_studia\HodnoteniaPriemeryScreen;
+use libfajr\base\Trace;
+use libfajr\window\VSES017_administracia_studia\HodnoteniaPriemeryScreen;
 use libfajr\window\fake\FakeAbstractScreen;
 use libfajr\window\fake\FakeRequestExecutor;
-use libfajr\pub\regression\HodnoteniaRegression;
-use libfajr\pub\regression\PriemeryRegression;
+use libfajr\regression\HodnoteniaRegression;
+use libfajr\regression\PriemeryRegression;
 
 /**
  * Trieda reprezentujúca jednu obrazovku s hodnoteniami a priemermi za jeden rok.

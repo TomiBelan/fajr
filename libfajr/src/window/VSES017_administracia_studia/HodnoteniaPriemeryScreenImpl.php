@@ -15,13 +15,13 @@
  */
 namespace libfajr\window\VSES017_administracia_studia;
 
-use libfajr\pub\window\VSES017_administracia_studia\HodnoteniaPriemeryScreen;
+use libfajr\window\VSES017_administracia_studia\HodnoteniaPriemeryScreen;
 use libfajr\window\AIS2AbstractScreen;
 use libfajr\window\ScreenData;
 use libfajr\window\ScreenRequestExecutor;
 use libfajr\window\RequestBuilderImpl;
-use libfajr\pub\base\Trace;
-use libfajr\pub\connection\SimpleConnection;
+use libfajr\base\Trace;
+use libfajr\connection\SimpleConnection;
 use libfajr\data_manipulation\AIS2TableParser;
 
 /**

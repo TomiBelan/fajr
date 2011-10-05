@@ -15,8 +15,8 @@
  */
 namespace libfajr\window\VSES017_administracia_studia;
 
-use libfajr\pub\window\VSES017_administracia_studia\TerminyDialog;
-use libfajr\pub\base\Trace;
+use libfajr\window\VSES017_administracia_studia\TerminyDialog;
+use libfajr\base\Trace;
 use libfajr\window\DialogData;
 use libfajr\window\DialogParent;
 use libfajr\window\AIS2AbstractDialog;

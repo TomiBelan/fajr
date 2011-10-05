@@ -17,13 +17,13 @@ namespace libfajr\window\VSES017_administracia_studia\fake;
 
 use libfajr\base\Preconditions;
 use libfajr\data_manipulation\DataTableImpl;
-use libfajr\pub\base\Trace;
-use libfajr\pub\window\VSES017_administracia_studia\AdministraciaStudiaScreen;
+use libfajr\base\Trace;
+use libfajr\window\VSES017_administracia_studia\AdministraciaStudiaScreen;
 use libfajr\util\StrUtil;
 use libfajr\window\fake\FakeAbstractScreen;
 use libfajr\window\VSES017_administracia_studia\fake\FakePrehladKreditovDialogImpl;
-use libfajr\pub\regression\ZoznamStudiiRegression;
-use libfajr\pub\regression\ZoznamZapisnychListovRegression;
+use libfajr\regression\ZoznamStudiiRegression;
+use libfajr\regression\ZoznamZapisnychListovRegression;
 
 /**
  * Trieda reprezentujúca jednu obrazovku so zoznamom štúdií a zápisných listov.

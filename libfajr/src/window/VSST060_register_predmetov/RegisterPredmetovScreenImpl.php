@@ -15,9 +15,9 @@
  */
 namespace libfajr\window\VSST060_register_predmetov;
 
-use libfajr\pub\window\VSST060_register_predmetov\RegisterPredmetovScreen;
-use libfajr\pub\base\Trace;
-use libfajr\pub\connection\SimpleConnection;
+use libfajr\window\VSST060_register_predmetov\RegisterPredmetovScreen;
+use libfajr\base\Trace;
+use libfajr\connection\SimpleConnection;
 use libfajr\window\AIS2AbstractScreen;
 use libfajr\window\RequestBuilderImpl;
 use libfajr\window\ScreenRequestExecutor;
@@ -26,7 +26,7 @@ use libfajr\window\ScreenData;
 use libfajr\data_manipulation\AIS2TableParser;
 use libfajr\util\StrUtil;
 use libfajr\util\MiscUtil;
-use libfajr\pub\exceptions\ParseException;
+use libfajr\exceptions\ParseException;
 // TODO checknut ci vsetky hentie use stale treba (su skopcene z VSES017)
 
 /**

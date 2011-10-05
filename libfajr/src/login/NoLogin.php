@@ -12,9 +12,9 @@
  */
 namespace libfajr\login;
 
-use libfajr\pub\login\Login;
-use libfajr\pub\connection\HttpConnection;
-use libfajr\pub\connection\AIS2ServerConnection;
+use libfajr\login\Login;
+use libfajr\connection\HttpConnection;
+use libfajr\connection\AIS2ServerConnection;
 
 class NoLogin implements Login
 {

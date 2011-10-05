@@ -15,8 +15,8 @@ namespace libfajr\data_manipulation;
 
 use PHPUnit_Framework_TestCase;
 use libfajr\data_manipulation\CosignProxyFileParser;
-use libfajr\pub\base\NullTrace;
-use libfajr\pub\login\CosignServiceCookie;
+use libfajr\base\NullTrace;
+use libfajr\login\CosignServiceCookie;
 /**
  * @ignore
  */

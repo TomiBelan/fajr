@@ -20,9 +20,9 @@ use DOMElement;
 use DOMXPath;
 use libfajr\data_manipulation\DataTableImpl;
 use libfajr\data_manipulation\InformacnyListAttributeEnum;
-use libfajr\pub\base\Trace;
+use libfajr\base\Trace;
 use libfajr\base\Preconditions;
-use libfajr\pub\exceptions\ParseException;
+use libfajr\exceptions\ParseException;
 use libfajr\data_manipulation\ParserUtils;
 use libfajr\util\StrUtil;
 

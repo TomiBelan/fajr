@@ -19,7 +19,7 @@ namespace libfajr\storage;
 use sfStorage;
 use sfInitializationException;
 use libfajr\base\Preconditions;
-use libfajr\pub\exceptions\NotImplementedException;
+use libfajr\exceptions\NotImplementedException;
 
 /**
  * TemporarilyModifiableStorage allows storage of temporal modifications.

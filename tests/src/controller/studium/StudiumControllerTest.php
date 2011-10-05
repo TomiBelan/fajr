@@ -22,10 +22,10 @@ use fajr\MockInvocationParameters;
 use libfajr\storage\TemporarilyModifiableStorage;
 use libfajr\storage\MemoryStorage;
 use libfajr\storage\FileStorage;
-use libfajr\pub\regression\fake_data\FakeData;
-use libfajr\pub\window\VSES017_administracia_studia\VSES017_FakeFactoryImpl;
-use libfajr\pub\base\NullTrace;
-use libfajr\pub\window\AIS2ApplicationEnum;
+use libfajr\regression\fake_data\FakeData;
+use libfajr\window\VSES017_administracia_studia\VSES017_FakeFactoryImpl;
+use libfajr\base\NullTrace;
+use libfajr\window\AIS2ApplicationEnum;
 
 /**
  * @ignore

@@ -11,7 +11,7 @@
  * @filesource
  */
 
-namespace libfajr\pub\exceptions;
+namespace libfajr\exceptions;
 use Exception;
 
 class LoginException extends Exception

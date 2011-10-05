@@ -13,7 +13,7 @@
  */
 namespace libfajr\connection;
 
-use libfajr\pub\connection\RequestStatistics;
+use libfajr\connection\RequestStatistics;
 use Exception;
 
 /**

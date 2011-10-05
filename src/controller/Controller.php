@@ -14,7 +14,7 @@
 namespace fajr\controller;
 
 use fajr\Context;
-use libfajr\pub\base\Trace;
+use libfajr\base\Trace;
 
 /**
  * Provides Fajr template customizations for the Twig templating engine

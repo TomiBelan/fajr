@@ -11,15 +11,15 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace libfajr\pub\window\VSES017_administracia_studia;
+namespace libfajr\window\VSES017_administracia_studia;
 
 use libfajr\window\VSES017_administracia_studia as VSES017;
-use libfajr\pub\base\Trace;
-use libfajr\pub\connection\SimpleConnection;
+use libfajr\base\Trace;
+use libfajr\connection\SimpleConnection;
 use libfajr\window\RequestBuilderImpl;
 use libfajr\window\ScreenRequestExecutorImpl;
 use libfajr\data_manipulation\AIS2TableParser;
-use libfajr\pub\connection\AIS2ServerConnection;
+use libfajr\connection\AIS2ServerConnection;
 
 class VSES017_FactoryImpl implements VSES017_Factory
 {

@@ -15,9 +15,9 @@
  */
 namespace libfajr\window\VSES017_administracia_studia;
 
-use libfajr\pub\window\VSES017_administracia_studia\AdministraciaStudiaScreen;
-use libfajr\pub\base\Trace;
-use libfajr\pub\connection\SimpleConnection;
+use libfajr\window\VSES017_administracia_studia\AdministraciaStudiaScreen;
+use libfajr\base\Trace;
+use libfajr\connection\SimpleConnection;
 use libfajr\window\AIS2AbstractScreen;
 use libfajr\window\RequestBuilderImpl;
 use libfajr\window\ScreenRequestExecutor;
@@ -26,7 +26,7 @@ use libfajr\window\ScreenData;
 use libfajr\data_manipulation\AIS2TableParser;
 use libfajr\util\StrUtil;
 use libfajr\util\MiscUtil;
-use libfajr\pub\exceptions\ParseException;
+use libfajr\exceptions\ParseException;
 
 /**
  * Trieda reprezentujúca jednu obrazovku so zoznamom štúdií a zápisných listov.

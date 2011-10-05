@@ -11,7 +11,7 @@
  * @filesource
  */
 
-namespace libfajr\pub\regression;
+namespace libfajr\regression;
 
 use libfajr\data_manipulation\AIS2Version;
 

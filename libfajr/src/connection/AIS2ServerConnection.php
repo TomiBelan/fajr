@@ -11,12 +11,12 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace libfajr\pub\connection;
+namespace libfajr\connection;
 
 use BadFunctionCallException;
 use libfajr\base\DisableEvilCallsObject;
-use libfajr\pub\connection\HttpConnection;
-use libfajr\pub\connection\SimpleConnection;
+use libfajr\connection\HttpConnection;
+use libfajr\connection\SimpleConnection;
 use libfajr\connection\HttpToSimpleConnectionAdapter;
 /**
  * Provides class wrapping anything related to connection to AIS2 server.

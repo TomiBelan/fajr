@@ -18,7 +18,7 @@ use sfStorage;
 use sfInitializationException;
 use sfStorageException;
 use libfajr\base\Preconditions;
-use libfajr\pub\exceptions\NotImplementedException;
+use libfajr\exceptions\NotImplementedException;
 use InvalidArgumentException;
 use PDO;
 

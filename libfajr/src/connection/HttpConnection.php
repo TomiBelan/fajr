@@ -14,9 +14,9 @@
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */
-namespace libfajr\pub\connection;
+namespace libfajr\connection;
 
-use libfajr\pub\base\Trace;
+use libfajr\base\Trace;
 
 /**
  * Interface to any http connection with cookie management.

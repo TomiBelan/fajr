@@ -15,9 +15,9 @@
  */
 namespace libfajr\window\VSES017_administracia_studia;
 
-use libfajr\pub\window\VSES017_administracia_studia\ZoznamPrihlasenychDialog;
+use libfajr\window\VSES017_administracia_studia\ZoznamPrihlasenychDialog;
 
-use libfajr\pub\base\Trace;
+use libfajr\base\Trace;
 use libfajr\window\AIS2AbstractDialog;
 use libfajr\data_manipulation\AIS2TableParser;
 use libfajr\window\DialogParent;

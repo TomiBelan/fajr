@@ -16,9 +16,9 @@ namespace libfajr\connection;
  */
 require_once 'test_include.php';
 use PHPUnit_Framework_TestCase;
-use libfajr\pub\connection\HttpConnection;
+use libfajr\connection\HttpConnection;
 use libfajr\connection\StatsConnection;
-use libfajr\pub\base\NullTrace;
+use libfajr\base\NullTrace;
 use Exception;
 /**
  * @ignore
@@ -27,7 +27,7 @@ class StatsConnectionTest extends PHPUnit_Framework_TestCase
 {
   private function newConnection()
   {
-    return $this->getMock('\libfajr\pub\connection\HttpConnection');
+    return $this->getMock('\libfajr\connection\HttpConnection');
   }
 
   public function testStatistics()

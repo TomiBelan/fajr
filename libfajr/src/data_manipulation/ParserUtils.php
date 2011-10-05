@@ -22,8 +22,8 @@ use DOMDocument;
 use DOMElement;
 use DOMXPath;
 use libfajr\base\Preconditions;
-use libfajr\pub\exceptions\ParseException;
-use libfajr\pub\base\Trace;
+use libfajr\exceptions\ParseException;
+use libfajr\base\Trace;
 
 
 /**

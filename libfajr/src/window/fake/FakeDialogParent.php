@@ -12,7 +12,7 @@
  */
 namespace libfajr\window\fake;
 use libfajr\window\DialogData;
-use libfajr\pub\base\Trace;
+use libfajr\base\Trace;
 
 interface FakeDialogParent
 {
