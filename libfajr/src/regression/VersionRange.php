@@ -6,7 +6,7 @@
  * Contains information about compatible version of AIS.
  *
  * @package    Libfajr
- * @subpackage Pub__Regression
+ * @subpackage Regression
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
@@ -19,7 +19,7 @@ use libfajr\data_manipulation\AIS2Version;
  * Contains information about compatible version of AIS.
  *
  * @package    Libfajr
- * @subpackage Pub__Regression
+ * @subpackage Regression
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */

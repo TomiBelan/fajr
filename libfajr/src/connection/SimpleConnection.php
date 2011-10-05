@@ -6,7 +6,7 @@
 /**
  *
  * @package    Libfajr
- * @subpackage Pub__Connection
+ * @subpackage Connection
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */

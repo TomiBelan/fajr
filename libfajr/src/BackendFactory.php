@@ -11,7 +11,6 @@
  * TODO(tomi): Refactor that. Also, reorganize the directory structure maybe.
  *
  * @package    Libfajr
- * @subpackage Pub
  * @author     Tomi Belan <tomi.belan@gmail.com>
  * @filesource
  */

@@ -17,7 +17,7 @@ namespace libfajr\regression;
  * Contains AIS2 table description.
  *
  * @package    Libfajr
- * @subpackage Pub__Regression
+ * @subpackage Regression
  * @author     Martin Sucha <anty.sk+fajr@gmail.com>
  */
 class PrehladKreditovRegression

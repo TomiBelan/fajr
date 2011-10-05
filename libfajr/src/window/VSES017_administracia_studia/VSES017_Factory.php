@@ -7,7 +7,7 @@
  * Contains factory for all screens from management of study.
  *
  * @package    Libfajr
- * @subpackage Pub__Window__VSES017_administracia_studia
+ * @subpackage Window__VSES017_administracia_studia
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */

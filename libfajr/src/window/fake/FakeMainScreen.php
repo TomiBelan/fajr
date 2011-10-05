@@ -24,7 +24,7 @@ use libfajr\base\Preconditions;
  * Represents main page of AIS.
  *
  * @package    Libfajr
- * @subpackage Pub__Window
+ * @subpackage Window
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 class FakeMainScreen implements AIS2MainScreen

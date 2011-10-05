@@ -7,7 +7,7 @@
  * Represents "start" screen of AIS.
  *
  * @package    Libfajr
- * @subpackage Pub__Window
+ * @subpackage Window
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
@@ -20,7 +20,7 @@ use libfajr\base\Trace;
  * Represents main page of AIS.
  *
  * @package    Libfajr
- * @subpackage Pub__Window
+ * @subpackage Window
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 interface AIS2MainScreen

@@ -6,7 +6,7 @@
 /**
  *
  * @package Libfajr
- * @subpackage Pub__Exceptions
+ * @subpackage Exceptions
  * @author Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */

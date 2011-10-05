@@ -6,7 +6,7 @@
 /**
  *
  * @package    Libfajr
- * @subpackage Pub__Data_manipulation
+ * @subpackage Data_manipulation
  * @author     Martin Králik <majak47@gmail.com>
  * @filesource
  */

@@ -6,7 +6,7 @@
 /**
  *
  * @package    Libfajr
- * @subpackage Pub__Data_manipulation
+ * @subpackage Data_manipulation
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */

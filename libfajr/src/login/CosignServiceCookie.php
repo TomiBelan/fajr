@@ -7,7 +7,7 @@
  * Tento súbor obsahuje triedu reprezentujúcu cosignovú service cookie
  *
  * @package    Libfajr
- * @subpackage Pub__Login
+ * @subpackage Login
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */
