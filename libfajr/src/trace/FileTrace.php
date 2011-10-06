@@ -5,20 +5,20 @@
  *             Use of this source code is governed by a MIT license that can be
  *             found in the LICENSE file in the project root directory.
  *
- * @package    Fajr
- * @subpackage Fajr
+ * @package    Libfajr
+ * @subpackage Trace
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
 
-namespace fajr;
+namespace libfajr\Trace;
 use libfajr\trace\Trace;
 use libfajr\base\Timer;
 use libfajr\util\CodeSnippet;
 use libfajr\base\Preconditions;
 use InvalidArgumentException;
-use fajr\util\File;
+use libfajr\util\File;
 use libfajr\trace\TraceUtil;
 
 /**

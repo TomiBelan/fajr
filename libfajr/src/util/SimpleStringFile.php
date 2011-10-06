@@ -6,13 +6,13 @@
  *             Use of this source code is governed by a MIT license that can be
  *             found in the LICENSE file in the project root directory.
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Util
  * @author     Martin Sucha <anty.sk+fajr@gmail.com>
  * @filesource
  */
 
-namespace fajr\util;
+namespace libfajr\util;
 
 use Exception;
 use libfajr\base\Preconditions;

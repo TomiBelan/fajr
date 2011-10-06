@@ -6,8 +6,8 @@
 /**
  * This file contains tests for FileTrace class
  *
- * @package    Fajr
- * @subpackage Fajr
+ * @package    Libfajr
+ * @subpackage Trace
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */
@@ -15,9 +15,10 @@ namespace fajr;
 
 use PHPUnit_Framework_TestCase;
 use libfajr\base\SystemTimer;
-use fajr\util\File;
-use fajr\util\SimpleStringFile;
-use fajr\util\TraceUtil;
+use libfajr\util\File;
+use libfajr\util\SimpleStringFile;
+use libfajr\util\TraceUtil;
+use libfajr\trace\FileTrace;
 
 /**
  * @ignore
