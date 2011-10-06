@@ -23,11 +23,6 @@ use libfajr\data_manipulation\InformacnyListAttributeEnum as Attr;
 /**
  * @ignore
  */
-require_once 'test_include.php';
-
-/**
- * @ignore
- */
 class InformacnyListDataImplTest extends PHPUnit_Framework_TestCase {
 
     public $informacnyList;

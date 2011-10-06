@@ -19,11 +19,6 @@ use fajr\lib\statistics\PearsonChiSquare;
 /**
  * @ignore
  */
-require_once 'test_include.php';
-
-/**
- * @ignore
- */
 require_once 'FrequencyDistributionHelper.php';
 
 /**

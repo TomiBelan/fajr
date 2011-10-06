@@ -17,10 +17,6 @@ use \PHPUnit_Framework_TestCase;
 use libfajr\data_manipulation\DataTable;
 use libfajr\data_manipulation\AIS2TableParser;
 use libfajr\trace\NullTrace;
-/**
- * @ignore
- */
-require_once 'test_include.php';
 require_once 'testdata/zoznamStudii.table';
 
 /**

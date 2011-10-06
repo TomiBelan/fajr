@@ -17,10 +17,6 @@ use PHPUnit_Framework_TestCase;
 use libfajr\data_manipulation\CosignProxyFileParser;
 use libfajr\trace\NullTrace;
 use libfajr\login\CosignServiceCookie;
-/**
- * @ignore
- */
-require_once 'test_include.php';
 
 /**
  * @ignore

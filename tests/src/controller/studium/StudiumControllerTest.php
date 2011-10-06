@@ -30,11 +30,6 @@ use libfajr\window\AIS2ApplicationEnum;
 /**
  * @ignore
  */
-require_once 'test_include.php';
-
-/**
- * @ignore
- */
 class StudiumControllerTest extends PHPUnit_Framework_TestCase
 {
   private $request;

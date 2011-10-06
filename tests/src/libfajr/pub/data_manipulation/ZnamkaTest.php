@@ -15,10 +15,6 @@ namespace libfajr\data_manipulation;
 
 use PHPUnit_Framework_TestCase;
 use libfajr\data_manipulation\Znamka;
-/**
- * @ignore
- */
-require_once 'test_include.php';
 
 /**
  * @ignore

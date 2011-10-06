@@ -20,11 +20,6 @@ use libfajr\data_manipulation\AIS2VersionParser;
 /**
  * @ignore
  */
-require_once 'test_include.php';
-
-/**
- * @ignore
- */
 class AIS2VersionParserTest extends PHPUnit_Framework_TestCase
 {
   private $parser;

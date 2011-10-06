@@ -11,11 +11,6 @@
  * @filesource
  */
 
-/**
- * @ignore
- */
-require_once 'test_include.php';
-
 use libfajr\trace\NullTrace;
 use libfajr\window\DialogRequestExecutor;
 use libfajr\window\DialogData;

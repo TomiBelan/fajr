@@ -24,11 +24,6 @@ use libfajr\trace\NullTrace;
 /**
  * @ignore
  */
-require_once 'test_include.php';
-
-/**
- * @ignore
- */
 class InformacnyListParserTest extends PHPUnit_Framework_TestCase
 {
 

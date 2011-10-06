@@ -18,11 +18,6 @@ use PHPUnit_Framework_TestCase;
 /**
  * @ignore
  */
-require_once 'test_include.php';
-
-/**
- * @ignore
- */
 class RequestStatisticsImplTest extends PHPUnit_Framework_TestCase
 {
   private $stats;

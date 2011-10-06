@@ -7,7 +7,8 @@
          processIsolation="true"
          stopOnFailure="false"
          syntaxCheck="true"
-         testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader">
+         testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
+         bootstrap="test_include.php">
   <logging>
     <log type="coverage-html" target="../report/tests/coverage" charset="UTF-8"/>
     <log type="testdox-html" target="../report/tests/report.html"/>

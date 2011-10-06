@@ -12,11 +12,6 @@
  */
 namespace libfajr\window;
 
-/**
- * @ignore
- */
-require_once 'test_include.php';
-
 use \PHPUnit_Framework_TestCase;
 use libfajr\window\RequestBuilder;
 use libfajr\window\ScreenRequestExecutor;

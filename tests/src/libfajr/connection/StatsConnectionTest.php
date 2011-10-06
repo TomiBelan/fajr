@@ -11,10 +11,6 @@
  * @filesource
  */
 namespace libfajr\connection;
-/**
- * @ignore
- */
-require_once 'test_include.php';
 use PHPUnit_Framework_TestCase;
 use libfajr\connection\HttpConnection;
 use libfajr\connection\StatsConnection;

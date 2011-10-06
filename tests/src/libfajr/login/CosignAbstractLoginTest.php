@@ -24,11 +24,6 @@ use PHPUnit_Framework_TestCase;
 /**
  * @ignore
  */
-require_once 'test_include.php';
-
-/**
- * @ignore
- */
 class CosignAbstractLoginTest extends PHPUnit_Framework_TestCase
 {
   public function setUp()

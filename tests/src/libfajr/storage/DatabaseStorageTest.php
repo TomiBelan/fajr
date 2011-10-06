@@ -18,11 +18,6 @@ use PDO;
 use PDOStatement;
 
 /**
- * @ignore
- */
-require_once 'test_include.php';
-
-/**
  * Helper for PDO mocking.
  * @see http://stackoverflow.com/questions/3138946/mocking-the-pdo-object-using-phpunit
  */

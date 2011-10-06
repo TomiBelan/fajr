@@ -19,11 +19,6 @@ use fajr\lib\math\Math;
 /**
  * @ignore
  */
-require_once 'test_include.php';
-
-/**
- * @ignore
- */
 class MathTest extends PHPUnit_Framework_TestCase
 {
   public function testSqr()

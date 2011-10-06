@@ -20,11 +20,6 @@ use PDOStatement;
 /**
  * @ignore
  */
-require_once 'test_include.php';
-
-/**
- * @ignore
- */
 class DatabaseStorageSqliteTest extends PHPUnit_Framework_TestCase
 {
   protected $backupGlobals = FALSE;

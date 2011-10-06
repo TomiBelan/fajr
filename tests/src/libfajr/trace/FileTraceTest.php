@@ -23,11 +23,6 @@ use libfajr\trace\FileTrace;
 /**
  * @ignore
  */
-require_once 'test_include.php';
-
-/**
- * @ignore
- */
 class FileTraceTest extends PHPUnit_Framework_TestCase
 {
 

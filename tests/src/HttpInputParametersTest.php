@@ -19,11 +19,6 @@ use Exception;
 /**
  * @ignore
  */
-require_once 'test_include.php';
-
-/**
- * @ignore
- */
 class HttpInputParametersTest extends PHPUnit_Framework_TestCase
 {
 

@@ -12,11 +12,6 @@
  * @filesource
  */
 
-/**
- * @ignore
- */
-require_once 'test_include.php';
-
 use \libfajr\base\SystemTimer;
 /**
  * @ignore

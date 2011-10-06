@@ -23,11 +23,6 @@ use PHPUnit_Framework_TestCase;
 /**
  * @ignore
  */
-require_once 'test_include.php';
-
-/**
- * @ignore
- */
 class AIS2CosignLoginTest extends PHPUnit_Framework_TestCase
 {
   private $responseLoggedIn;

@@ -19,11 +19,6 @@ use RegexIterator;
 use RecursiveIteratorIterator;
 use libfajr\storage\FileStorage;
 use libfajr\util\StrUtil;
-
-/**
- * @ignore
- */
-require_once 'test_include.php';
 /**
  * @ignore
  */

@@ -14,11 +14,6 @@ namespace libfajr\window\VSES017_administracia_studia;
 
 use PHPUnit_Framework_TestCase;
 
-/**
- * @ignore
- */
-require_once 'test_include.php';
-
 use libfajr\trace\NullTrace;
 use libfajr\connection\SimpleConnection;
 /**
