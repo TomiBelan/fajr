@@ -13,7 +13,7 @@
 namespace libfajr\window\VSST060_register_predmetov;
 
 use libfajr\window\VSST060_register_predmetov as VSST060;
-use libfajr\base\Trace;
+use libfajr\trace\Trace;
 use libfajr\connection\SimpleConnection;
 use libfajr\window\RequestBuilderImpl;
 use libfajr\window\ScreenRequestExecutorImpl;

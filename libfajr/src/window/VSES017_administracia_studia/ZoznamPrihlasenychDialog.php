@@ -14,7 +14,7 @@ namespace libfajr\window\VSES017_administracia_studia;
 
 use libfajr\window\LazyDialog;
 use libfajr\data_manipulation\SimpleDataTable;
-use libfajr\base\Trace;
+use libfajr\trace\Trace;
 
 interface ZoznamPrihlasenychDialog extends LazyDialog
 {

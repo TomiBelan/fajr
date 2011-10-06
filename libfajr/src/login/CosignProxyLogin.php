@@ -17,7 +17,7 @@ use libfajr\data_manipulation\CosignProxyFileParser;
 use libfajr\connection\HttpConnection;
 use libfajr\connection\AIS2ServerConnection;
 use libfajr\login\CosignServiceCookie;
-use libfajr\base\NullTrace;
+use libfajr\trace\NullTrace;
 use libfajr\exceptions\NotImplementedException;
 use libfajr\exceptions\LoginException;
 

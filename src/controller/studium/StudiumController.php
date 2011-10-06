@@ -19,7 +19,7 @@ use fajr\controller\BaseController;
 use fajr\controller\studium\PriemeryCalculator;
 use libfajr\AIS2Utils;
 use libfajr\base\Preconditions;
-use libfajr\base\Trace;
+use libfajr\trace\Trace;
 use libfajr\window\AIS2ApplicationEnum;
 use libfajr\window\VSES017_administracia_studia as VSES017;
 use libfajr\regression;

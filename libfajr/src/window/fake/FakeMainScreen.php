@@ -14,7 +14,7 @@
 
 namespace libfajr\window\fake;
 
-use libfajr\base\Trace;
+use libfajr\trace\Trace;
 use libfajr\window\AIS2MainScreen;
 use libfajr\window\AIS2ApplicationEnum;
 use libfajr\data_manipulation\AIS2Version;

@@ -18,7 +18,7 @@ use fajr\Context;
 use fajr\controller\BaseController;
 use libfajr\AIS2Utils;
 use libfajr\base\Preconditions;
-use libfajr\base\Trace;
+use libfajr\trace\Trace;
 use libfajr\window\AIS2ApplicationEnum;
 use libfajr\window\VSST060_register_predmetov as VSST060;
 use libfajr\regression;

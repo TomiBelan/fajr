@@ -16,7 +16,7 @@
 namespace libfajr\window\VSES017_administracia_studia;
 
 use libfajr\window\VSES017_administracia_studia\AdministraciaStudiaScreen;
-use libfajr\base\Trace;
+use libfajr\trace\Trace;
 use libfajr\connection\SimpleConnection;
 use libfajr\window\AIS2AbstractScreen;
 use libfajr\window\RequestBuilderImpl;

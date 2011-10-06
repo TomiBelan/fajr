@@ -16,7 +16,7 @@
  */
 namespace libfajr\connection;
 
-use libfajr\base\Trace;
+use libfajr\trace\Trace;
 
 /**
  * Interface to any http connection with cookie management.

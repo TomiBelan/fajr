@@ -13,7 +13,7 @@
 namespace libfajr\window\VSST060_register_predmetov;
 
 use libfajr\window\LazyDialog;
-use libfajr\base\Trace;
+use libfajr\trace\Trace;
 
 interface RegisterPredmetovScreen extends LazyDialog
 {

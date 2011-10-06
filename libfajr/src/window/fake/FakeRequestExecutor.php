@@ -13,7 +13,7 @@
  * @filesource
  */
 namespace libfajr\window\fake;
-use libfajr\base\Trace;
+use libfajr\trace\Trace;
 use Exception;
 use libfajr\base\DisableEvilCallsObject;
 use libfajr\connection\SimpleConnection;

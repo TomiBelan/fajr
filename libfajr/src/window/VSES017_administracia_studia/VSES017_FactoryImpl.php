@@ -14,7 +14,7 @@
 namespace libfajr\window\VSES017_administracia_studia;
 
 use libfajr\window\VSES017_administracia_studia as VSES017;
-use libfajr\base\Trace;
+use libfajr\trace\Trace;
 use libfajr\connection\SimpleConnection;
 use libfajr\window\RequestBuilderImpl;
 use libfajr\window\ScreenRequestExecutorImpl;

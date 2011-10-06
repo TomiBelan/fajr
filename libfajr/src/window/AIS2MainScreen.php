@@ -14,7 +14,7 @@
 
 namespace libfajr\window;
 
-use libfajr\base\Trace;
+use libfajr\trace\Trace;
 
 /**
  * Represents main page of AIS.

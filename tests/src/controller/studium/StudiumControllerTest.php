@@ -24,7 +24,7 @@ use libfajr\storage\MemoryStorage;
 use libfajr\storage\FileStorage;
 use libfajr\regression\fake_data\FakeData;
 use libfajr\window\VSES017_administracia_studia\VSES017_FakeFactoryImpl;
-use libfajr\base\NullTrace;
+use libfajr\trace\NullTrace;
 use libfajr\window\AIS2ApplicationEnum;
 
 /**

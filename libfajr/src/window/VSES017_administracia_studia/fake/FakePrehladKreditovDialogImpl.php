@@ -17,7 +17,7 @@ namespace libfajr\window\VSES017_administracia_studia\fake;
 
 use libfajr\window\VSES017_administracia_studia\PrehladKreditovDialog;
 
-use libfajr\base\Trace;
+use libfajr\trace\Trace;
 use libfajr\window\fake\FakeAbstractDialog;
 use libfajr\data_manipulation\DataTableImpl;
 use libfajr\regression\PrehladKreditovRegression;

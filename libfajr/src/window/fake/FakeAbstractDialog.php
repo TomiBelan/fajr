@@ -12,7 +12,7 @@
  */
 namespace libfajr\window\fake;
 
-use libfajr\base\Trace;
+use libfajr\trace\Trace;
 use libfajr\base\DisableEvilCallsObject;
 use libfajr\window\LazyDialog;
 use libfajr\util\MiscUtil;

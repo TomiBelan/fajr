@@ -19,7 +19,7 @@ use \PHPUnit_Framework_TestCase;
 use libfajr\data_manipulation\DataTable;
 use libfajr\data_manipulation\InformacnyListParser;
 use libfajr\data_manipulation\InformacnyListAttributeEnum as Attr;
-use libfajr\base\NullTrace;
+use libfajr\trace\NullTrace;
 
 /**
  * @ignore

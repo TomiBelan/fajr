@@ -14,7 +14,7 @@ namespace libfajr\window\VSES017_administracia_studia;
 
 use libfajr\window\VSES017_administracia_studia as VSES017;
 use libfajr\window\VSES017_administracia_studia\fake as VSES017fake;
-use libfajr\base\Trace;
+use libfajr\trace\Trace;
 use libfajr\window\fake\FakeRequestExecutor;
 use sfStorage;
 

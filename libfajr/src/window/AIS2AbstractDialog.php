@@ -12,7 +12,7 @@
  */
 namespace libfajr\window;
 
-use libfajr\base\Trace;
+use libfajr\trace\Trace;
 use libfajr\window\DialogData;
 use libfajr\window\DialogParent;
 use libfajr\base\DisableEvilCallsObject;

@@ -13,7 +13,7 @@
  */
 namespace libfajr\window;
 
-use libfajr\base\Trace;
+use libfajr\trace\Trace;
 
 interface LazyDialog
 {

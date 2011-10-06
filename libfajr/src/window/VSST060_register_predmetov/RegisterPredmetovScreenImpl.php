@@ -16,7 +16,7 @@
 namespace libfajr\window\VSST060_register_predmetov;
 
 use libfajr\window\VSST060_register_predmetov\RegisterPredmetovScreen;
-use libfajr\base\Trace;
+use libfajr\trace\Trace;
 use libfajr\connection\SimpleConnection;
 use libfajr\window\AIS2AbstractScreen;
 use libfajr\window\RequestBuilderImpl;

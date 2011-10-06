@@ -12,7 +12,7 @@
  */
 namespace libfajr\window\fake;
 
-use libfajr\base\Trace;
+use libfajr\trace\Trace;
 use libfajr\base\IllegalStateException;
 use libfajr\login\AIS2LoginException;
 use AIS2Utils;

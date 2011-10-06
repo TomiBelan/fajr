@@ -20,7 +20,7 @@ use libfajr\window\AIS2AbstractScreen;
 use libfajr\window\ScreenData;
 use libfajr\window\ScreenRequestExecutor;
 use libfajr\window\RequestBuilderImpl;
-use libfajr\base\Trace;
+use libfajr\trace\Trace;
 use libfajr\connection\SimpleConnection;
 use libfajr\data_manipulation\AIS2TableParser;
 

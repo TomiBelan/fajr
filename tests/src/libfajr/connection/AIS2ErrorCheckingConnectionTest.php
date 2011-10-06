@@ -18,7 +18,7 @@ require_once 'test_include.php';
 use PHPUnit_Framework_TestCase;
 use libfajr\connection\HttpConnection;
 use libfajr\connection\AIS2ErrorCheckingConnection;
-use libfajr\base\NullTrace;
+use libfajr\trace\NullTrace;
 use Exception;
 /**
  * @ignore

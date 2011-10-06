@@ -18,7 +18,7 @@ use DOMDocument;
 use DOMElement;
 use DOMXPath;
 use libfajr\data_manipulation\DataTableImpl;
-use libfajr\base\Trace;
+use libfajr\trace\Trace;
 use libfajr\base\Preconditions;
 use libfajr\exceptions\ParseException;
 use libfajr\util\StrUtil;

@@ -14,8 +14,8 @@
 
 namespace libfajr\login;
 
-use libfajr\base\NullTrace;
-use libfajr\base\Trace;
+use libfajr\trace\NullTrace;
+use libfajr\trace\Trace;
 use libfajr\connection\AIS2ServerConnection;
 use libfajr\connection\AIS2ServerUrlMap;
 use libfajr\connection\HttpConnection;

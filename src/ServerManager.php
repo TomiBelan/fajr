@@ -16,7 +16,7 @@ use fajr\config\ServerConfig;
 use fajr\config\FajrConfig;
 use fajr\config\FajrConfigLoader;
 use fajr\exceptions\SecurityException;
-use libfajr\base\Trace;
+use libfajr\trace\Trace;
 use libfajr\connection\AIS2ServerConnection;
 use libfajr\login\CosignServiceCookie;
 use fajr\Request;

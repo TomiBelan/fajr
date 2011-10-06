@@ -14,7 +14,7 @@
 namespace libfajr\window\VSES017_administracia_studia;
 
 use libfajr\window\VSES017_administracia_studia\TerminyHodnoteniaScreen;
-use libfajr\base\Trace;
+use libfajr\trace\Trace;
 use libfajr\connection\SimpleConnection;
 use libfajr\window\DialogData;
 use libfajr\window\ScreenData;

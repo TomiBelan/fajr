@@ -18,7 +18,7 @@
 namespace libfajr\connection;
 
 use Exception;
-use libfajr\base\Trace;
+use libfajr\trace\Trace;
 use libfajr\connection\HttpConnection;
 use libfajr\exceptions\LoginException;
 use libfajr\util\StrUtil;

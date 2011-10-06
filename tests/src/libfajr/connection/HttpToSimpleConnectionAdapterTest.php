@@ -17,7 +17,7 @@ namespace libfajr\connection;
 require_once 'test_include.php';
 use PHPUnit_Framework_TestCase;
 use libfajr\connection\HttpToSimpleConnectionAdapter;
-use libfajr\base\NullTrace;
+use libfajr\trace\NullTrace;
 use libfajr\connection\HttpConnection;
 /**
  * @ignore

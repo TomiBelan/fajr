@@ -14,7 +14,7 @@
 namespace libfajr\window\VSES017_administracia_studia;
 
 use libfajr\window\VSES017_administracia_studia as VSES017;
-use libfajr\base\Trace;
+use libfajr\trace\Trace;
 
 /**
  * Provides instances of screens in study management part of ais.

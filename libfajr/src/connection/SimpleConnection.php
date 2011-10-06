@@ -11,7 +11,7 @@
  * @filesource
  */
 namespace libfajr\connection;
-use libfajr\base\Trace;
+use libfajr\trace\Trace;
 
 /**
  * Zjednodušená verzia konekcie vhodná pre triedy

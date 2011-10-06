@@ -14,7 +14,7 @@ namespace libfajr\window\VSST060_register_predmetov;
 
 use libfajr\window\VSST060_register_predmetov as VSST060;
 use libfajr\window\VSST060_register_predmetov\fake as VSST060fake;
-use libfajr\base\Trace;
+use libfajr\trace\Trace;
 use libfajr\window\fake\FakeRequestExecutor;
 use sfStorage;
 

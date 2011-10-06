@@ -14,7 +14,7 @@
 namespace libfajr\login;
 
 use libfajr\connection\HttpConnection;
-use libfajr\base\NullTrace;
+use libfajr\trace\NullTrace;
 use libfajr\exceptions\LoginException;
 use libfajr\exceptions\NotImplementedException;
 use libfajr\util\StrUtil;

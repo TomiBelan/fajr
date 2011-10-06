@@ -14,7 +14,7 @@
 namespace libfajr\window\VSST060_register_predmetov;
 
 use libfajr\window\VSST060_register_predmetov as VSST060;
-use libfajr\base\Trace;
+use libfajr\trace\Trace;
 
 /**
  * Provides instances of screens in study management part of ais.

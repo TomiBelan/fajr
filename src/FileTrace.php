@@ -13,7 +13,7 @@
  */
 
 namespace fajr;
-use libfajr\base\Trace;
+use libfajr\trace\Trace;
 use libfajr\base\Timer;
 use libfajr\util\CodeSnippet;
 use libfajr\base\Preconditions;

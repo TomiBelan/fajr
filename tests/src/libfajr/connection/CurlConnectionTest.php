@@ -18,7 +18,7 @@ namespace libfajr\connection;
 require_once 'test_include.php';
 use PHPUnit_Framework_TestCase;
 use libfajr\connection\CurlConnection;
-use libfajr\base\NullTrace;
+use libfajr\trace\NullTrace;
 /**
  * @ignore
  */

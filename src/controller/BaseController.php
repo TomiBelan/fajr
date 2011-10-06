@@ -18,7 +18,7 @@ use fajr\Context;
 use fajr\controller\Controller;
 use libfajr\base\DisableEvilCallsObject;
 use libfajr\base\Preconditions;
-use libfajr\base\Trace;
+use libfajr\trace\Trace;
 use fajr\Request;
 use fajr\Response;
 use ReflectionMethod;

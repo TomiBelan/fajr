@@ -10,7 +10,7 @@
  * @filesource
  */
 namespace libfajr;
-use libfajr\base\Trace;
+use libfajr\trace\Trace;
 use libfajr\connection\SimpleConnection;
 use libfajr\util\StrUtil;
 use Exception;

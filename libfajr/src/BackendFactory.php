@@ -17,7 +17,7 @@
 
 namespace libfajr;
 
-use libfajr\base\Trace;
+use libfajr\trace\Trace;
 use libfajr\window\VSES017_administracia_studia\VSES017_Factory;
 use libfajr\window\VSST060_register_predmetov\VSST060_Factory;
 use libfajr\window\AIS2MainScreen;

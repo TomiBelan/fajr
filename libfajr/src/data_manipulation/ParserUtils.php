@@ -23,7 +23,7 @@ use DOMElement;
 use DOMXPath;
 use libfajr\base\Preconditions;
 use libfajr\exceptions\ParseException;
-use libfajr\base\Trace;
+use libfajr\trace\Trace;
 
 
 /**

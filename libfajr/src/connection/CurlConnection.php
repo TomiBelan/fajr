@@ -18,7 +18,7 @@ namespace libfajr\connection;
 
 use libfajr\base\ClosureRunner;
 use libfajr\base\Preconditions;
-use libfajr\base\Trace;
+use libfajr\trace\Trace;
 use libfajr\connection\HttpConnection;
 use Exception;
 use libfajr\base\IllegalStateException;

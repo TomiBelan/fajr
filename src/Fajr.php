@@ -21,7 +21,7 @@ use fajr\exceptions\AuthenticationRequiredException;
 use fajr\exceptions\SecurityException;
 use fajr\exceptions\ValidationException;
 use libfajr\AIS2Session;
-use libfajr\base\Trace;
+use libfajr\trace\Trace;
 use libfajr\connection\AIS2ServerConnection;
 use libfajr\connection\AIS2ServerUrlMap;
 use libfajr\login\Login;

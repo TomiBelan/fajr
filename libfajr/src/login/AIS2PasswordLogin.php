@@ -13,8 +13,8 @@
  */
 namespace libfajr\login;
 use libfajr\connection\HttpConnection;
-use libfajr\base\NullTrace;
-use libfajr\base\Trace;
+use libfajr\trace\NullTrace;
+use libfajr\trace\Trace;
 use libfajr\login\Login;
 use libfajr\exceptions\LoginException;
 use libfajr\connection\AIS2ServerConnection;

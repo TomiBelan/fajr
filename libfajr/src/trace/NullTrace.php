@@ -9,17 +9,19 @@
  * PHP version 5.3.0
  *
  * @package    Libfajr
+ * @subpackage Trace
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace libfajr\base;
-use libfajr\base\Trace;
+namespace libfajr\trace;
+use libfajr\trace\Trace;
 
 /**
  * Represents tracer object which does nothing. It shoud be convenient to
  * pass around as default value of trace parameter.
  *
  * @package    Libfajr
+ * @subpackage Trace
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 class NullTrace implements Trace

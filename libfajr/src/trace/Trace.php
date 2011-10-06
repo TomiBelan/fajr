@@ -10,11 +10,11 @@
  * PHP version 5.3.0
  *
  * @package    Libfajr
- * @subpackage Base
+ * @subpackage Trace
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace libfajr\base;
+namespace libfajr\trace;
 
 /**
  * Interface to objects tracing debug information.
@@ -23,6 +23,7 @@ namespace libfajr\base;
  * and log important information alogn with it.
  *
  * @package    Libfajr
+ * @subpackage Trace
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 interface Trace

@@ -13,7 +13,7 @@
  */
 namespace libfajr\login;
 
-use libfajr\base\Trace;
+use libfajr\trace\Trace;
 use libfajr\exceptions\ParseException;
 use libfajr\base\Preconditions;
 
