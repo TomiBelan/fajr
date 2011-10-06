@@ -13,13 +13,13 @@
  * @filesource
  */
 
-namespace fajr;
+namespace libfajr\trace;
 
 use libfajr\base\Preconditions;
 use libfajr\base\Timer;
 use libfajr\trace\Trace;
 use libfajr\util\CodeSnippet;
-use fajr\util\TraceUtil;
+use libfajr\trace\TraceUtil;
 
 /**
  * A Trace that stores its data in an array

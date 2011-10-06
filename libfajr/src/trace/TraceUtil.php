@@ -6,22 +6,22 @@
  *             Use of this source code is governed by a MIT license that can be
  *             found in the LICENSE file in the project root directory.
  *
- * @package    Fajr
- * @subpackage Util
+ * @package    Libfajr
+ * @subpackage Trace
  * @author     Martin Sucha <anty.sk+fajr@gmail.com>
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
 
-namespace fajr\util;
+namespace libfajr\trace;
 
 use libfajr\base\Preconditions;
 
 /**
  * Utilities for trace implementations
  *
- * @package    Fajr
- * @subpackage Util
+ * @package    Libfajr
+ * @subpackage Trace
  * @author     Martin Sucha <anty.sk+fajr@gmail.com>
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */

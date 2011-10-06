@@ -19,7 +19,7 @@ use libfajr\util\CodeSnippet;
 use libfajr\base\Preconditions;
 use InvalidArgumentException;
 use fajr\util\File;
-use fajr\util\TraceUtil;
+use libfajr\trace\TraceUtil;
 
 /**
  * A Trace that writes trace information to a file

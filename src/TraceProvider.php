@@ -19,7 +19,7 @@ use fajr\config\FajrConfigOptions;
 use fajr\config\FajrConfigLoader;
 use fajr\util\PHPFile;
 use fajr\FileTrace;
-use fajr\ArrayTrace;
+use libfajr\trace\ArrayTrace;
 use libfajr\trace\NullTrace;
 use libfajr\base\SystemTimer;
 

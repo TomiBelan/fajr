@@ -149,7 +149,7 @@ class Fajr {
     if ($trace !== null) {
       $trace->tlog("everything done, rendering template");
 
-      if ($trace instanceof \fajr\ArrayTrace) {
+      if ($trace instanceof \libfajr\trace\ArrayTrace) {
         $this->context->getResponse()->set('trace', $trace);
       } else {
         $this->context->getResponse()->set('trace', null);
