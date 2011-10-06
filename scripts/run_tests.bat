@@ -14,4 +14,4 @@ set PARAMS=%PARAMS% --process-isolation
 set PARAMS=%PARAMS% --testdox-html %REPORT_PATH%/report.html
 
 cd %TEST_PATH%
-phpunit %PARAMS% %TEST_PATH%
+phpunit %PARAMS%

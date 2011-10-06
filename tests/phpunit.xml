@@ -15,6 +15,15 @@
     <log type="testdox-text" target="../report/tests/report.txt"/>
     <log type="tap" target="../report/tests/report.tap"/>
   </logging>
+  
+  <testsuites>
+    <testsuite name="Fajr">
+      <directory>src</directory>
+    </testsuite>
+    <testsuite name="Libfajr">
+      <directory>../libfajr/tests</directory>
+    </testsuite>
+  </testsuites>
 
   <!-- Konfiguraciu whitelistu pre code coverage -->
   <filter>
