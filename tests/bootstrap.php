@@ -10,17 +10,23 @@
  * @filesource
  */
 
-require_once '../third_party/symfony_storage/sfStorageAutoloader.php';
+/* Bootstrap autoloaders */
+
+require_once __DIR__ . '/../third_party/symfony_storage/sfStorageAutoloader.php';
 sfStorageAutoloader::register();
 
-require_once '../third_party/twig/lib/Twig/Autoloader.php';
+require_once __DIR__ . '/../third_party/twig/lib/Twig/Autoloader.php';
 Twig_Autoloader::register();
 
-require_once '../libfajr/src/libfajr.php';
+require_once __DIR__ . '/../libfajr/src/libfajr.php';
 Loader::register();
 Loader::searchForClasses(__DIR__.'/../src', true);
 Loader::searchForClasses(__DIR__.'/../libfajr/src', true);
 ini_set('error_reporting', E_ALL | E_STRICT);
 
-
-?>
+/* Prepare report directory */
+$_ds = DIRECTORY_SEPARATOR;
+$reportPath = __DIR__ . $_ds . '..' . $_ds . 'report' . $_ds .  'tests';
+if (!is_dir($reportPath)) {
+  mkdir($reportPath, 0755, true);
+}

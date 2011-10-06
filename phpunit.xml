@@ -8,29 +8,29 @@
          stopOnFailure="false"
          syntaxCheck="true"
          testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
-         bootstrap="test_include.php">
+         bootstrap="tests/bootstrap.php">
   <logging>
-    <log type="coverage-html" target="../report/tests/coverage" charset="UTF-8"/>
-    <log type="testdox-html" target="../report/tests/report.html"/>
-    <log type="testdox-text" target="../report/tests/report.txt"/>
-    <log type="tap" target="../report/tests/report.tap"/>
+    <log type="coverage-html" target="report/tests/coverage" charset="UTF-8"/>
+    <log type="testdox-html" target="report/tests/report.html"/>
+    <log type="testdox-text" target="report/tests/report.txt"/>
+    <log type="tap" target="report/tests/report.tap"/>
   </logging>
   
   <testsuites>
     <testsuite name="Fajr">
-      <directory>src</directory>
+      <directory>tests/src</directory>
     </testsuite>
     <testsuite name="Libfajr">
-      <directory>../libfajr/tests</directory>
+      <directory>libfajr/tests</directory>
     </testsuite>
   </testsuites>
 
   <!-- Konfiguraciu whitelistu pre code coverage -->
   <filter>
     <whitelist>
-      <directory suffix=".php">../src</directory>
+      <directory suffix=".php">src</directory>
       <exclude>
-        <file>../src/index.php</file>
+        <file>src/index.php</file>
       </exclude>
     </whitelist>
   </filter>
