@@ -5,7 +5,7 @@
 
 /**
  *
- * @package    Fajr
+ * @package    Libfajr
  * @subpackage Regression__Fake_data
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource

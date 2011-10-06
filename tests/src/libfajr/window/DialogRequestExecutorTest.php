@@ -5,8 +5,8 @@
 
 /**
  *
- * @package    Fajr
- * @subpackage Libfajr__Window
+ * @package    Libfajr
+ * @subpackage Window
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */

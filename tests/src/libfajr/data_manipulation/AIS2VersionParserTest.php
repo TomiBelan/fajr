@@ -6,8 +6,8 @@
 /**
  * This file contains tests for AIS version parser.
  *
- * @package    Fajr
- * @subpackage Libfajr__Data_manipulation
+ * @package    Libfajr
+ * @subpackage Data_manipulation
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */

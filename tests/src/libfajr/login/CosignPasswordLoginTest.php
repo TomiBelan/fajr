@@ -6,8 +6,8 @@
 /**
  * This file contains tests for CosignPasswordLogin class.
  *
- * @package    Fajr
- * @subpackage Libfajr__Login
+ * @package    Libfajr
+ * @subpackage Login
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */

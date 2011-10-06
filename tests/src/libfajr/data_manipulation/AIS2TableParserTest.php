@@ -6,8 +6,8 @@
 /**
  * This file contains tests for ais2 Table class.
  *
- * @package    Fajr
- * @subpackage Libfajr__Data_manipulation
+ * @package    Libfajr
+ * @subpackage Data_manipulation
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */

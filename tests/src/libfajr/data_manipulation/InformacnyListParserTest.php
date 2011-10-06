@@ -7,8 +7,8 @@
  *             Use of this source code is governed by a MIT license that can be
  *             found in the LICENSE file in the project root directory.
  *
- * @package    Fajr
- * @subpackage Libfajr__Data_manipulation
+ * @package    Libfajr
+ * @subpackage Data_manipulation
  * @author     Jakub Marek <jakub.marek@gmail.com>
  * @filesource
  */

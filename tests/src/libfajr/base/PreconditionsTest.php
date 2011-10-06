@@ -6,8 +6,8 @@
 /**
  * This file contains tests for Preconditions class
  *
- * @package    Fajr
- * @subpackage Libfajr__Base
+ * @package    Libfajr
+ * @subpackage Base
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource

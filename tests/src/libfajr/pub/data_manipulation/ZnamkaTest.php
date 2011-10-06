@@ -6,8 +6,8 @@
 /**
  * This file contains tests for Znamka
  *
- * @package    Fajr
- * @subpackage Libfajr__Pub__Data_manipulation
+ * @package    Libfajr
+ * @subpackage Data_manipulation
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */

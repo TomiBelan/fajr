@@ -6,8 +6,8 @@
 /**
  * This file contains tests for Cosign proxy file parser
  *
- * @package    Fajr
- * @subpackage Libfajr__Data_manipulation
+ * @package    Libfajr
+ * @subpackage Data_manipulation
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */

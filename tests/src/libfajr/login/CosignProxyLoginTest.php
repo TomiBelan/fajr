@@ -6,8 +6,8 @@
 /**
  * This file contains tests for CosignProxyLogin class
  *
- * @package    Fajr
- * @subpackage Libfajr__Login
+ * @package    Libfajr
+ * @subpackage Login
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */
