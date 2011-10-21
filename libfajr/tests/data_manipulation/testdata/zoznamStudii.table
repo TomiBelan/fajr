@@ -1,5 +1,5 @@
 <?php
-namespace libfajr\data_manipulation;
+namespace libfajr\data;
 
 class ZoznamStudiiTable {
 public static function get() {

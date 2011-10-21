@@ -15,7 +15,7 @@
 namespace libfajr\window\VSES017_administracia_studia\fake;
 
 
-use libfajr\data_manipulation\DataTableImpl;
+use libfajr\data\DataTableImpl;
 use libfajr\trace\Trace;
 use libfajr\window\VSES017_administracia_studia\ZoznamPrihlasenychDialog;
 use libfajr\window\fake\FakeAbstractDialog;

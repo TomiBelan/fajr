@@ -10,9 +10,9 @@
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace libfajr\data_manipulation;
+namespace libfajr\data;
 
-use libfajr\data_manipulation\SimpleDataTable;
+use libfajr\data\SimpleDataTable;
 
 /**
  * Trieda zastrešujúca tabuľku dát.

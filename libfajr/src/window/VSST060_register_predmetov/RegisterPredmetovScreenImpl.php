@@ -23,7 +23,7 @@ use libfajr\window\RequestBuilderImpl;
 use libfajr\window\ScreenRequestExecutor;
 use libfajr\window\DialogData;
 use libfajr\window\ScreenData;
-use libfajr\data_manipulation\AIS2TableParser;
+use libfajr\data\AIS2TableParser;
 use libfajr\util\StrUtil;
 use libfajr\util\MiscUtil;
 use libfajr\exceptions\ParseException;

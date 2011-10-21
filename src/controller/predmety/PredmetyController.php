@@ -27,7 +27,7 @@ use fajr\Response;
 use fajr\Sorter;
 use fajr\BackendProvider;
 use fajr\util\FajrUtils;
-use libfajr\data_manipulation\InformacnyListParser;
+use libfajr\data\InformacnyListParser;
 
 /**
  * Controller, ktory sa stara o register predmetov

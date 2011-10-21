@@ -6,11 +6,11 @@
 /**
  *
  * @package    Libfajr
- * @subpackage Data_manipulation
+ * @subpackage Data
  * @author     Martin Králik <majak47@gmail.com>
  * @filesource
  */
-namespace libfajr\data_manipulation;
+namespace libfajr\data;
 
 interface InformacnyListData
 {

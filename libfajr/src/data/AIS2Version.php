@@ -7,18 +7,18 @@
  * AIS2 Version information.
  *
  * @package    Libfajr
- * @subpackage Data_manipulation
+ * @subpackage Data
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace libfajr\data_manipulation;
+namespace libfajr\data;
 
 use libfajr\base\Preconditions;
 /**
  * AIS2 Version information.
  *
  * @package    Libfajr
- * @subpackage Data_manipulation
+ * @subpackage Data
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
 class AIS2Version {

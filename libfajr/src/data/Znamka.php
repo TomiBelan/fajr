@@ -7,18 +7,18 @@
  * Reprezentacia znamky (A, B, C, D, E, Fx)
  *
  * @package    Libfajr
- * @subpackage Data_manipulation
+ * @subpackage Data
  * @author     Martin Sucha <anty.sk+fajr@gmail.com>
  * @filesource
  */
-namespace libfajr\data_manipulation;
+namespace libfajr\data;
 
 use libfajr\base\Preconditions;
 /**
  * Reprezentacia znamky (A, B, C, D, E, Fx)
  *
  * @package    Libfajr
- * @subpackage Data_manipulation
+ * @subpackage Data
  * @author     Martin Sucha <anty.sk+fajr@gmail.com>
  */
 class Znamka {

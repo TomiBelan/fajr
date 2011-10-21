@@ -8,16 +8,16 @@
  * html response.
  *
  * @package    Libfajr
- * @subpackage Data_manipulation
+ * @subpackage Data
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace libfajr\data_manipulation;
+namespace libfajr\data;
 
 use DOMDocument;
 use DOMElement;
 use DOMXPath;
-use libfajr\data_manipulation\DataTableImpl;
+use libfajr\data\DataTableImpl;
 use libfajr\trace\Trace;
 use libfajr\base\Preconditions;
 use libfajr\exceptions\ParseException;
@@ -27,7 +27,7 @@ use libfajr\util\StrUtil;
  * Parses AIS2 html response and retrieve data for specific table.
  *
  * @package    Libfajr
- * @subpackage Data_manipulation
+ * @subpackage Data
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  *
  * TODO(ppershing): document methods

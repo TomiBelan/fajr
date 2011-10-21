@@ -7,15 +7,15 @@
  * This file contains tests for ais2 Table class.
  *
  * @package    Libfajr
- * @subpackage Data_manipulation
+ * @subpackage Data
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace libfajr\data_manipulation;
+namespace libfajr\data;
 
 use \PHPUnit_Framework_TestCase;
-use libfajr\data_manipulation\DataTable;
-use libfajr\data_manipulation\AIS2TableParser;
+use libfajr\data\DataTable;
+use libfajr\data\AIS2TableParser;
 use libfajr\trace\NullTrace;
 require_once 'testdata/zoznamStudii.table';
 

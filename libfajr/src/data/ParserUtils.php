@@ -11,12 +11,12 @@
  *             found in the LICENSE file in the project root directory.
  *
  * @package    Libfajr
- * @subpackage Data_manipulation
+ * @subpackage Data
  * @author     Jakub Marek <jakub.marek@gmail.com>
  * @filesource
  */
 
-namespace libfajr\data_manipulation;
+namespace libfajr\data;
 
 use DOMDocument;
 use DOMElement;
@@ -30,7 +30,7 @@ use libfajr\trace\Trace;
  * Contains utils on parsing html files.
  *
  * @package    Libfajr
- * @subpackage Data_manipulation
+ * @subpackage Data
  * @author     Jakub Marek <jakub.marek@gmail.com>
  *
  */

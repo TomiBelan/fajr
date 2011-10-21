@@ -19,7 +19,7 @@ use libfajr\window\VSES017_administracia_studia\PrehladKreditovDialog;
 
 use libfajr\trace\Trace;
 use libfajr\window\fake\FakeAbstractDialog;
-use libfajr\data_manipulation\DataTableImpl;
+use libfajr\data\DataTableImpl;
 use libfajr\regression\PrehladKreditovRegression;
 
 /**

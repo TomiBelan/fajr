@@ -16,7 +16,7 @@ namespace libfajr\window\VSES017_administracia_studia\fake;
 
 use Exception;
 use libfajr\base\Preconditions;
-use libfajr\data_manipulation\DataTableImpl;
+use libfajr\data\DataTableImpl;
 use libfajr\trace\Trace;
 use libfajr\window\VSES017_administracia_studia\TerminyHodnoteniaScreen;
 use libfajr\window\fake\FakeAbstractScreen;

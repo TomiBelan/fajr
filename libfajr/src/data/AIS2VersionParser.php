@@ -4,47 +4,47 @@
 // found in the LICENSE file in the project root directory.
 
 /**
- * Username parser for AIS html pages.
+ * Version parser for AIS html pages.
  *
  * @package    Libfajr
- * @subpackage Data_manipulation
+ * @subpackage Data
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace libfajr\data_manipulation;
+namespace libfajr\data;
 
 use libfajr\exceptions\ParseException;
 use libfajr\util\StrUtil;
 use libfajr\base\Preconditions;
 
 /**
- * Parses user name from AIS html response.
+ * Parses AIS2 html response and finds AIS2 version.
  *
  * @package    Libfajr
- * @subpackage Data_manipulation
+ * @subpackage Data
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
-class AIS2UserNameParser {
+class AIS2VersionParser {
   /**
-   * Regexp pattern for username.
+   * Regexp pattern for AIS2 version.
    */
-  const USERNAME_PATTERN =
-      '@\<div class="user-name"\>(?P<username>[^<]*)\</div\>@';
+  const VERSION_PATTERN =
+      '@\<div class="verzia"\>AiS2 verzia 2\.(?P<major>[0-9]+)\.(?P<minor>[0-9]+)\.(?<patch>[0-9]+)\</div\>@';
 
   /**
-   * Parses user name from AIS2 start page
+   * Parses the AIS2 version from html page.
    *
    * @param string $html AIS2 html reply to be parsed
    *
    * @returns AIS2Version AIS2 version
    * @throws ParseException on error
    */
-  public function parseUserNameFromMainPage($html) {
+  public function parseVersionStringFromMainPage($html) {
     Preconditions::checkIsString($html);
-    $data = StrUtil::matchAll(self::USERNAME_PATTERN, $html);
+    $data = StrUtil::matchAll(self::VERSION_PATTERN, $html);
     if ($data === false) {
-      throw new ParseException("Cannot parse username from response.");
+      throw new ParseException("Cannot parse AIS version from response.");
     }
-    return $data['username'];
+    return new AIS2Version(2, $data['major'], $data['minor'], $data['patch']);
   }
 }

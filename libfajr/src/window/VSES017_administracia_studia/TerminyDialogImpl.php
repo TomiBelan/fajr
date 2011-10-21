@@ -20,7 +20,7 @@ use libfajr\trace\Trace;
 use libfajr\window\DialogData;
 use libfajr\window\DialogParent;
 use libfajr\window\AIS2AbstractDialog;
-use libfajr\data_manipulation\AIS2TableParser;
+use libfajr\data\AIS2TableParser;
 use libfajr\util\StrUtil;
 use Exception;
 /**

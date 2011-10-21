@@ -21,7 +21,7 @@ use libfajr\window\ScreenData;
 use libfajr\window\RequestBuilderImpl;
 use libfajr\window\ScreenRequestExecutor;
 use libfajr\window\AIS2AbstractScreen;
-use libfajr\data_manipulation\AIS2TableParser;
+use libfajr\data\AIS2TableParser;
 use libfajr\util\StrUtil;
 use Exception;
 

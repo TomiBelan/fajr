@@ -24,7 +24,7 @@ class AdministraciaStudiaScreenTest extends PHPUnit_Framework_TestCase
   public function testIdFromZapisnyListIndexParsing()
   {
     $mockExecutor = $this->getMock('libfajr\window\ScreenRequestExecutor');
-    $mockParser = $this->getMock('libfajr\data_manipulation\AIS2TableParser');
+    $mockParser = $this->getMock('libfajr\data\AIS2TableParser');
 
     $response = file_get_contents(__DIR__.'/testdata/idFromZapisnyList.dat');
     $screen = new AdministraciaStudiaScreenImpl(new NullTrace(), $mockExecutor, $mockParser);

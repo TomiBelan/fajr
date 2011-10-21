@@ -19,7 +19,7 @@ use libfajr\window\VSES017_administracia_studia\PrehladKreditovDialog;
 
 use libfajr\trace\Trace;
 use libfajr\window\AIS2AbstractDialog;
-use libfajr\data_manipulation\AIS2TableParser;
+use libfajr\data\AIS2TableParser;
 use libfajr\window\DialogParent;
 use libfajr\window\DialogData;
 

@@ -13,7 +13,7 @@
 namespace libfajr\login;
 
 use libfajr\base\Preconditions;
-use libfajr\data_manipulation\CosignProxyFileParser;
+use libfajr\data\CosignProxyFileParser;
 use libfajr\connection\HttpConnection;
 use libfajr\connection\AIS2ServerConnection;
 use libfajr\login\CosignServiceCookie;

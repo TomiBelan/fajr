@@ -18,7 +18,7 @@ use libfajr\trace\Trace;
 use libfajr\connection\SimpleConnection;
 use libfajr\window\RequestBuilderImpl;
 use libfajr\window\ScreenRequestExecutorImpl;
-use libfajr\data_manipulation\AIS2TableParser;
+use libfajr\data\AIS2TableParser;
 use libfajr\connection\AIS2ServerConnection;
 
 class VSES017_FactoryImpl implements VSES017_Factory

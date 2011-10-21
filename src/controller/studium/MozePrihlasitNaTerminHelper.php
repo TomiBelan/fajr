@@ -14,7 +14,7 @@ namespace fajr\controller\studium;
 
 use libfajr\AIS2Utils;
 use libfajr\base\DisableEvilCallsObject;
-use libfajr\data_manipulation\Znamka;
+use libfajr\data\Znamka;
 
 include_once 'fields.php';
 

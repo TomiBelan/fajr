@@ -19,9 +19,9 @@ use libfajr\window\AIS2MainScreen;
 use libfajr\trace\Trace;
 use libfajr\connection\AIS2ServerConnection;
 use libfajr\base\DisableEvilCallsObject;
-use libfajr\data_manipulation\AIS2VersionParser;
-use libfajr\data_manipulation\AIS2ApplicationAvailabilityParser;
-use libfajr\data_manipulation\AIS2UserNameParser;
+use libfajr\data\AIS2VersionParser;
+use libfajr\data\AIS2ApplicationAvailabilityParser;
+use libfajr\data\AIS2UserNameParser;
 use libfajr\base\Preconditions;
 /**
  * Represents main page of AIS.

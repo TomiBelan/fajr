@@ -8,29 +8,29 @@
  *             found in the LICENSE file in the project root directory.
  *
  * @package    Libfajr
- * @subpackage Data_manipulation
+ * @subpackage Data
  * @author     Jakub Marek <jakub.marek@gmail.com>
  * @filesource
  */
 
-namespace libfajr\data_manipulation;
+namespace libfajr\data;
 
 use DOMDocument;
 use DOMElement;
 use DOMXPath;
-use libfajr\data_manipulation\DataTableImpl;
-use libfajr\data_manipulation\InformacnyListAttributeEnum;
+use libfajr\data\DataTableImpl;
+use libfajr\data\InformacnyListAttributeEnum;
 use libfajr\trace\Trace;
 use libfajr\base\Preconditions;
 use libfajr\exceptions\ParseException;
-use libfajr\data_manipulation\ParserUtils;
+use libfajr\data\ParserUtils;
 use libfajr\util\StrUtil;
 
 /**
  * Parses AIS2 information list and retrieves data.
  *
  * @package    Libfajr
- * @subpackage Data_manipulation
+ * @subpackage Data
  * @author     Jakub Marek <jakub.marek@gmail.com>
  *
  */

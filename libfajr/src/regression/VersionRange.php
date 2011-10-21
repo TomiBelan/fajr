@@ -13,7 +13,7 @@
 
 namespace libfajr\regression;
 
-use libfajr\data_manipulation\AIS2Version;
+use libfajr\data\AIS2Version;
 
 /**
  * Contains information about compatible version of AIS.

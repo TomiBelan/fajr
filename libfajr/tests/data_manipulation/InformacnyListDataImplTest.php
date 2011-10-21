@@ -8,17 +8,17 @@
  *             found in the LICENSE file in the project root directory.
  *
  * @package    Libfajr
- * @subpackage Data_manipulation
+ * @subpackage Data
  * @author     Martin Králik <majak47@gmail.com>
  * @author     Jakub Marek <jakub.marek@gmail.com>
  * @filesource
  */
 
-namespace libfajr\data_manipulation;
+namespace libfajr\data;
 
 use PHPUnit_Framework_TestCase;
-use libfajr\data_manipulation\InformacnyListDataImpl;
-use libfajr\data_manipulation\InformacnyListAttributeEnum as Attr;
+use libfajr\data\InformacnyListDataImpl;
+use libfajr\data\InformacnyListAttributeEnum as Attr;
 
 /**
  * @ignore

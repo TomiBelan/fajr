@@ -8,7 +8,7 @@
  * @author     Martin Králik <majak47@gmail.com>
  * @filesource
  */
-namespace libfajr\data_manipulation;
+namespace libfajr\data;
 
 use InvalidArgumentException;
 

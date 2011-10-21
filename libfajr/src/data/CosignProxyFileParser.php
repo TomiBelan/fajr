@@ -7,11 +7,11 @@
  * Tento súbor obsahuje parser cosignových proxy súborov
  *
  * @package    Libfajr
- * @subpackage Data_manipulation
+ * @subpackage Data
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */
-namespace libfajr\data_manipulation;
+namespace libfajr\data;
 
 use libfajr\trace\Trace;
 use libfajr\exceptions\ParseException;
@@ -23,7 +23,7 @@ use InvalidArgumentException;
  * Trieda na parsovanie proxy súborov, ktoré ukladá cosign
  *
  * @package    Libfajr
- * @subpackage Data_manipulation
+ * @subpackage Data
  * @author     Martin Sucha <anty.sk@gmail.com>
  */
 class CosignProxyFileParser

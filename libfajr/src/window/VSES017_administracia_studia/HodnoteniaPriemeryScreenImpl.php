@@ -22,7 +22,7 @@ use libfajr\window\ScreenRequestExecutor;
 use libfajr\window\RequestBuilderImpl;
 use libfajr\trace\Trace;
 use libfajr\connection\SimpleConnection;
-use libfajr\data_manipulation\AIS2TableParser;
+use libfajr\data\AIS2TableParser;
 
 /**
  * Trieda reprezentujúca jednu obrazovku s hodnoteniami a priemermi za jeden rok.

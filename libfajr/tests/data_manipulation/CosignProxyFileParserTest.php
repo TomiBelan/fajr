@@ -7,14 +7,14 @@
  * This file contains tests for Cosign proxy file parser
  *
  * @package    Libfajr
- * @subpackage Data_manipulation
+ * @subpackage Data
  * @author     Martin Sucha <anty.sk@gmail.com>
  * @filesource
  */
-namespace libfajr\data_manipulation;
+namespace libfajr\data;
 
 use PHPUnit_Framework_TestCase;
-use libfajr\data_manipulation\CosignProxyFileParser;
+use libfajr\data\CosignProxyFileParser;
 use libfajr\trace\NullTrace;
 use libfajr\login\CosignServiceCookie;
 

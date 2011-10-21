@@ -12,9 +12,9 @@
  * @filesource
  */
 
-namespace libfajr\data_manipulation;
+namespace libfajr\data;
 
-use libfajr\data_manipulation\InformacnyListData;
+use libfajr\data\InformacnyListData;
 use libfajr\exceptions\NotImplementedException;
 
 /**

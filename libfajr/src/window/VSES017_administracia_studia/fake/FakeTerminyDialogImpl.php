@@ -17,9 +17,9 @@ namespace libfajr\window\VSES017_administracia_studia\fake;
 
 use Exception;
 use libfajr\base\Preconditions;
-use libfajr\data_manipulation\DataTableImpl;
+use libfajr\data\DataTableImpl;
 use libfajr\trace\Trace;
-use libfajr\data_manipulation\Znamka;
+use libfajr\data\Znamka;
 use libfajr\window\VSES017_administracia_studia\TerminyDialog;
 use libfajr\window\fake\FakeAbstractDialog;
 use libfajr\window\fake\FakeRequestExecutor;
