@@ -6,12 +6,12 @@
  * Used to locate directory of fake data;
  *
  * @package    Libfajr
- * @subpackage Regression__Fake_data
+ * @subpackage Regression__Fixtures
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
 
-namespace libfajr\regression\fake_data;
+namespace libfajr\regression\fixtures;
 
 /**
  * It is here just to know the location of fake data.

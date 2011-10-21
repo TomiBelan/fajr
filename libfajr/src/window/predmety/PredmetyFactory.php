@@ -19,7 +19,7 @@ use libfajr\trace\Trace;
 /**
  * Provides instances of screens in study management part of ais.
  */
-interface VSST060_Factory
+interface PredmetyFactory
 {
 
   /**

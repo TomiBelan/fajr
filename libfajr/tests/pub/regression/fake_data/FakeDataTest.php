@@ -6,12 +6,12 @@
 /**
  *
  * @package    Libfajr
- * @subpackage Regression__Fake_data
+ * @subpackage Regression__Fixtures
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
 
-namespace libfajr\regression\fake_data;
+namespace libfajr\regression\fixtures;
 
 use PHPUnit_Framework_TestCase;
 use RecursiveDirectoryIterator;

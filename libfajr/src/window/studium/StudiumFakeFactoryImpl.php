@@ -18,7 +18,7 @@ use libfajr\trace\Trace;
 use libfajr\window\fake\FakeRequestExecutor;
 use sfStorage;
 
-class VSES017_FakeFactoryImpl implements VSES017_Factory
+class StudiumFakeFactoryImpl implements StudiumFactory
 {
   /** @var sfStorage session storage to save modifications to defaults */
   private $storage;

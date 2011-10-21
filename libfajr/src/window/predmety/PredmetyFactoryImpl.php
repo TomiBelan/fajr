@@ -20,7 +20,7 @@ use libfajr\window\ScreenRequestExecutorImpl;
 use libfajr\data\AIS2TableParser;
 use libfajr\connection\AIS2ServerConnection;
 
-class VSST060_FactoryImpl implements VSST060_Factory
+class PredmetyFactoryImpl implements PredmetyFactory
 {
   private $connection;
 

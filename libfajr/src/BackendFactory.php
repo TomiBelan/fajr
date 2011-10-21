@@ -18,8 +18,8 @@
 namespace libfajr;
 
 use libfajr\trace\Trace;
-use libfajr\window\studium\VSES017_Factory;
-use libfajr\window\predmety\VSST060_Factory;
+use libfajr\window\studium\StudiumFactory;
+use libfajr\window\predmety\PredmetyFactory;
 use libfajr\window\AIS2MainScreen;
 
 interface BackendFactory
@@ -30,12 +30,12 @@ interface BackendFactory
   public function getServerTime();
 
   /**
-   * @returns VSES017_Factory
+   * @returns StudiumFactory
    */
   public function newVSES017Factory();
 
   /**
-   * @returns VSST060_Factory
+   * @returns PredmetyFactory
    */
   public function newVSST060Factory();
 

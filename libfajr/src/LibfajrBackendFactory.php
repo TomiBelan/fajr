@@ -12,8 +12,8 @@
 namespace libfajr;
 
 use libfajr\BackendFactory;
-use libfajr\window\studium\VSES017_FactoryImpl;
-use libfajr\window\predmety\VSST060_FactoryImpl;
+use libfajr\window\studium\StudiumFactoryImpl;
+use libfajr\window\predmety\PredmetyFactoryImpl;
 use libfajr\window\AIS2MainScreenImpl;
 use libfajr\connection\AIS2ServerConnection;
 
@@ -36,12 +36,12 @@ class LibfajrBackendFactory implements BackendFactory
 
   public function newVSES017Factory()
   {
-    return new VSES017_FactoryImpl($this->connection);
+    return new StudiumFactoryImpl($this->connection);
   }
 
   public function newVSST060Factory()
   {
-    return new VSST060_FactoryImpl($this->connection);
+    return new PredmetyFactoryImpl($this->connection);
   }
 
   public function newAIS2MainScreen()

@@ -12,12 +12,12 @@
 namespace libfajr;
 
 use libfajr\BackendFactory;
-use libfajr\window\studium\VSES017_FakeFactoryImpl;
-use libfajr\window\predmety\VSST060_FakeFactoryImpl;
+use libfajr\window\studium\StudiumFakeFactoryImpl;
+use libfajr\window\predmety\PredmetyFakeFactoryImpl;
 use libfajr\window\fake\FakeMainScreen;
 use libfajr\storage\TemporarilyModifiableStorage;
 use libfajr\storage\FileStorage;
-use libfajr\regression\fake_data\FakeData;
+use libfajr\regression\fixtures\FakeData;
 use sfSessionStorage;
 
 class FakeBackendFactory implements BackendFactory
@@ -41,12 +41,12 @@ class FakeBackendFactory implements BackendFactory
 
   public function newVSES017Factory()
   {
-    return new VSES017_FakeFactoryImpl($this->storage);
+    return new StudiumFakeFactoryImpl($this->storage);
   }
 
   public function newVSST060Factory()
   {
-    return new VSST060_FakeFactoryImpl($this->storage);
+    return new PredmetyFakeFactoryImpl($this->storage);
   }
 
   public function newAIS2MainScreen()

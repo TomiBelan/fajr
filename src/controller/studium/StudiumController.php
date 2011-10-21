@@ -65,7 +65,7 @@ class StudiumController extends BaseController
   
   private $loginManager;
 
-  public function __construct(VSES017\VSES017_Factory $factory, $serverTime, LoginManager $loginManager)
+  public function __construct(VSES017\StudiumFactory $factory, $serverTime, LoginManager $loginManager)
   {
     $this->factory = $factory;
     $this->serverTime = $serverTime;

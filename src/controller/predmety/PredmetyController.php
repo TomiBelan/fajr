@@ -50,7 +50,7 @@ class PredmetyController extends BaseController
   private $factory;
   private $serverTime;
 
-  public function __construct(VSST060\VSST060_Factory $factory, $serverTime)
+  public function __construct(VSST060\PredmetyFactory $factory, $serverTime)
   {
     $this->factory = $factory;
     $this->serverTime = $serverTime;
