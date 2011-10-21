@@ -20,13 +20,13 @@ use fajr\controller\DispatchController;
 use fajr\exceptions\AuthenticationRequiredException;
 use fajr\exceptions\SecurityException;
 use fajr\exceptions\ValidationException;
-use fajr\libfajr\AIS2Session;
-use fajr\libfajr\pub\base\Trace;
-use fajr\libfajr\pub\connection\AIS2ServerConnection;
-use fajr\libfajr\pub\connection\AIS2ServerUrlMap;
-use fajr\libfajr\pub\login\Login;
-use fajr\libfajr\pub\regression;
-use fajr\libfajr\window\AIS2MainScreenImpl;
+use libfajr\AIS2Session;
+use libfajr\trace\Trace;
+use libfajr\connection\AIS2ServerConnection;
+use libfajr\connection\AIS2ServerUrlMap;
+use libfajr\login\Login;
+use libfajr\regression;
+use libfajr\window\AIS2MainScreenImpl;
 use fajr\Request;
 use fajr\Response;
 use fajr\Statistics;
@@ -149,7 +149,7 @@ class Fajr {
     if ($trace !== null) {
       $trace->tlog("everything done, rendering template");
 
-      if ($trace instanceof \fajr\ArrayTrace) {
+      if ($trace instanceof \libfajr\trace\ArrayTrace) {
         $this->context->getResponse()->set('trace', $trace);
       } else {
         $this->context->getResponse()->set('trace', null);

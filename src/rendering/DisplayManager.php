@@ -13,7 +13,7 @@
 namespace fajr\rendering;
 
 use Twig_Environment;
-use fajr\libfajr\base\Preconditions;
+use libfajr\base\Preconditions;
 use fajr\config\SkinConfig;
 use fajr\Response;
 use fajr\config\FajrConfigLoader;

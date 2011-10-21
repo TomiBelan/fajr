@@ -16,11 +16,6 @@ namespace fajr\security;
 use PHPUnit_Framework_TestCase;
 use fajr\lib\statistics\PearsonChiSquare;
 
-/**
- * @ignore
- */
-require_once 'test_include.php';
-
 
 class TestProvider implements SecureRandomProvider {
   public function randomBytes($count) {

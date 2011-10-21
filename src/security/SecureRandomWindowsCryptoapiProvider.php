@@ -17,7 +17,7 @@
  */
 namespace fajr\security;
 
-use fajr\libfajr\base\Preconditions;
+use libfajr\base\Preconditions;
 use COM;
 
 /**

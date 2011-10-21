@@ -13,7 +13,7 @@
  */
 namespace fajr;
 
-use fajr\libfajr\base\SystemTimer;
+use libfajr\base\SystemTimer;
 use Loader;
 use sfStorageAutoloader;
 use Twig_Autoloader;
@@ -90,11 +90,12 @@ require_once '../third_party/twig/lib/Twig/Autoloader.php';
 Twig_Autoloader::register();
 
 // register our autoloader as last
-require_once 'libfajr/libfajr.php';
+require_once '../libfajr/src/libfajr.php';
 Loader::register();
 Loader::searchForClasses(dirname(__FILE__), true);
+Loader::searchForClasses('../libfajr/src', true);
 // TODO(ppershing): move this to libfajr/Loader.php as that is the right place for it
-require_once 'libfajr/Assert.php';
+require_once '../libfajr/src/Assert.php';
 
 // is there configuration.php file present?
 if (!FajrConfigLoader::isConfigured()) {

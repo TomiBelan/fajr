@@ -19,11 +19,6 @@ use fajr\lib\statistics\PearsonChiSquare;
 /**
  * @ignore
  */
-require_once 'test_include.php';
-
-/**
- * @ignore
- */
 class PearsonChiSquareTest extends PHPUnit_Framework_TestCase
 {
   public function testWrongArgumentsMismatchCount()

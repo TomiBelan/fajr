@@ -13,7 +13,7 @@
  */
 namespace fajr;
 
-use fajr\libfajr\base\Preconditions;
+use libfajr\base\Preconditions;
 
 /**
  * Mock version of InvocationParams

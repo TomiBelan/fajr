@@ -14,11 +14,11 @@
  */
 namespace fajr;
 
-use fajr\libfajr\base\SystemTimer;
-use fajr\libfajr\base\Timer;
-use fajr\libfajr\connection\StatsConnection;
-use fajr\libfajr\pub\connection\HttpConnection;
-use fajr\libfajr\pub\connection\RequestStatistics;
+use libfajr\base\SystemTimer;
+use libfajr\base\Timer;
+use libfajr\connection\StatsConnection;
+use libfajr\connection\HttpConnection;
+use libfajr\connection\RequestStatistics;
 use libfajr\base\IllegalStateException;
 
 /**

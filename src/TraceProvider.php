@@ -17,11 +17,10 @@ namespace fajr;
 use fajr\config\FajrConfig;
 use fajr\config\FajrConfigOptions;
 use fajr\config\FajrConfigLoader;
-use fajr\util\PHPFile;
-use fajr\FileTrace;
-use fajr\ArrayTrace;
-use fajr\libfajr\pub\base\NullTrace;
-use fajr\libfajr\base\SystemTimer;
+use libfajr\trace\FileTrace;
+use libfajr\trace\ArrayTrace;
+use libfajr\trace\NullTrace;
+use libfajr\base\SystemTimer;
 
 class TraceProvider
 {
@@ -35,8 +34,11 @@ class TraceProvider
       if($config->get(FajrConfigOptions::DEBUG_TRACE) === true) {
         $debugFile = $config->getDirectory(FajrConfigOptions::DEBUG_TRACE_FILE);
         if ($debugFile !== null) {
-          $phpfile = new PHPFile($debugFile, 'a');
-          self::$instance = new FileTrace(SystemTimer::getInstance(), $phpfile, 0, '--Trace--');
+          $file = @fopen($debugFile, 'a');
+          if ($file === false) {
+            throw new Exception('Cannot open trace file');
+          }
+          self::$instance = new FileTrace(SystemTimer::getInstance(), $file, 0, '--Trace--');
         }
         else {
           self::$instance = new ArrayTrace(SystemTimer::getInstance(), '--Trace--');

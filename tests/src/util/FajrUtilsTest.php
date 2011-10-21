@@ -15,10 +15,6 @@ namespace fajr\util;
 
 use PHPUnit_Framework_TestCase;
 use Exception;
-/**
- * @ignore
- */
-require_once 'test_include.php';
 
 /**
  * @ignore

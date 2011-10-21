@@ -15,7 +15,7 @@
 namespace fajr\validators;
 
 use fajr\exceptions\ValidationException;
-use fajr\libfajr\base\Preconditions;
+use libfajr\base\Preconditions;
 
 /**
  * Validates any string.

@@ -14,7 +14,7 @@
 namespace fajr;
 
 use fajr\config\SkinConfig;
-use fajr\libfajr\base\Preconditions;
+use libfajr\base\Preconditions;
 use fajr\util\FajrUtils;
 
 /**

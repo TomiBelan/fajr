@@ -16,10 +16,6 @@ namespace fajr;
 use PHPUnit_Framework_TestCase;
 use fajr\config\ConfigUtils;
 use fajr\validators\ChoiceValidator;
-/**
- * @ignore
- */
-require_once 'test_include.php';
 
 /**
  * @ignore

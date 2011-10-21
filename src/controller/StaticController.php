@@ -16,8 +16,8 @@ namespace fajr\controller;
 use Exception;
 use fajr\Context;
 use fajr\controller\BaseController;
-use fajr\libfajr\base\Preconditions;
-use fajr\libfajr\pub\base\Trace;
+use libfajr\base\Preconditions;
+use libfajr\trace\Trace;
 use fajr\Request;
 use fajr\Response;
 

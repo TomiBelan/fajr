@@ -16,8 +16,8 @@ namespace fajr\settings;
 use fajr\config\FajrConfig;
 use fajr\config\FajrConfigOptions;
 use fajr\config\SkinConfig;
-use fajr\libfajr\base\DisableEvilCallsObject;
-use fajr\libfajr\base\Preconditions;
+use libfajr\base\DisableEvilCallsObject;
+use libfajr\base\Preconditions;
 use sfStorage;
 
 class SkinSettings extends DisableEvilCallsObject {

@@ -19,8 +19,8 @@ use fajr\config\FajrConfigOptions;
 use fajr\config\FajrConfigLoader;
 use fajr\util\FajrUtils;
 use fajr\Statistics;
-use fajr\libfajr\connection\CurlConnection;
-use fajr\libfajr\connection\AIS2ErrorCheckingConnection;
+use libfajr\connection\CurlConnection;
+use libfajr\connection\AIS2ErrorCheckingConnection;
 
 /**
  * Curl connection provider

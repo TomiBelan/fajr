@@ -16,18 +16,18 @@ namespace fajr\controller\predmety;
 use Exception;
 use fajr\Context;
 use fajr\controller\BaseController;
-use fajr\libfajr\AIS2Utils;
-use fajr\libfajr\base\Preconditions;
-use fajr\libfajr\pub\base\Trace;
-use fajr\libfajr\pub\window\AIS2ApplicationEnum;
-use fajr\libfajr\pub\window\VSST060_register_predmetov as VSST060;
-use fajr\libfajr\pub\regression;
+use libfajr\AIS2Utils;
+use libfajr\base\Preconditions;
+use libfajr\trace\Trace;
+use libfajr\window\AIS2ApplicationEnum;
+use libfajr\window\predmety as VSST060;
+use libfajr\regression;
 use fajr\Request;
 use fajr\Response;
 use fajr\Sorter;
 use fajr\BackendProvider;
 use fajr\util\FajrUtils;
-use fajr\libfajr\data_manipulation\InformacnyListParser;
+use libfajr\data\InformacnyListParser;
 
 /**
  * Controller, ktory sa stara o register predmetov
@@ -50,7 +50,7 @@ class PredmetyController extends BaseController
   private $factory;
   private $serverTime;
 
-  public function __construct(VSST060\VSST060_Factory $factory, $serverTime)
+  public function __construct(VSST060\PredmetyFactory $factory, $serverTime)
   {
     $this->factory = $factory;
     $this->serverTime = $serverTime;

@@ -20,11 +20,6 @@ use fajr\exceptions\ValidationException;
 /**
  * @ignore
  */
-require_once 'test_include.php';
-
-/**
- * @ignore
- */
 class IntegerValidatorTest extends PHPUnit_Framework_TestCase
 {
   private $validator;

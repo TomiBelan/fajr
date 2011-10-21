@@ -19,18 +19,13 @@ use fajr\Request;
 use fajr\Response;
 use fajr\Context;
 use fajr\MockInvocationParameters;
-use fajr\libfajr\storage\TemporarilyModifiableStorage;
-use fajr\libfajr\storage\MemoryStorage;
-use fajr\libfajr\storage\FileStorage;
-use fajr\libfajr\pub\regression\fake_data\FakeData;
-use fajr\libfajr\pub\window\VSES017_administracia_studia\VSES017_FakeFactoryImpl;
-use fajr\libfajr\pub\base\NullTrace;
-use fajr\libfajr\pub\window\AIS2ApplicationEnum;
-
-/**
- * @ignore
- */
-require_once 'test_include.php';
+use libfajr\storage\TemporarilyModifiableStorage;
+use libfajr\storage\MemoryStorage;
+use libfajr\storage\FileStorage;
+use libfajr\regression\fixtures\FakeData;
+use libfajr\window\studium\StudiumFakeFactoryImpl;
+use libfajr\trace\NullTrace;
+use libfajr\window\AIS2ApplicationEnum;
 
 /**
  * @ignore
@@ -60,7 +55,7 @@ class StudiumControllerTest extends PHPUnit_Framework_TestCase
         array('permanent_storage' => $permanent_storage,
               'temporary_storage' => $temporary_storage));
     $this->context->setSessionStorage($this->storage);
-    $factory = new VSES017_FakeFactoryImpl($this->storage);
+    $factory = new StudiumFakeFactoryImpl($this->storage);
     $this->loginManager = $this->getMock('\fajr\LoginManager', array(), 
         array(), '', false);
     $this->loginManager->expects($this->any())

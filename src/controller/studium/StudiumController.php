@@ -17,12 +17,12 @@ use Exception;
 use fajr\Context;
 use fajr\controller\BaseController;
 use fajr\controller\studium\PriemeryCalculator;
-use fajr\libfajr\AIS2Utils;
-use fajr\libfajr\base\Preconditions;
-use fajr\libfajr\pub\base\Trace;
-use fajr\libfajr\pub\window\AIS2ApplicationEnum;
-use fajr\libfajr\pub\window\VSES017_administracia_studia as VSES017;
-use fajr\libfajr\pub\regression;
+use libfajr\AIS2Utils;
+use libfajr\base\Preconditions;
+use libfajr\trace\Trace;
+use libfajr\window\AIS2ApplicationEnum;
+use libfajr\window\studium as VSES017;
+use libfajr\regression;
 use fajr\Request;
 use fajr\Response;
 use fajr\Sorter;
@@ -65,7 +65,7 @@ class StudiumController extends BaseController
   
   private $loginManager;
 
-  public function __construct(VSES017\VSES017_Factory $factory, $serverTime, LoginManager $loginManager)
+  public function __construct(VSES017\StudiumFactory $factory, $serverTime, LoginManager $loginManager)
   {
     $this->factory = $factory;
     $this->serverTime = $serverTime;

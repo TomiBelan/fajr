@@ -14,11 +14,6 @@
 namespace fajr\controller\studium;
 
 use PHPUnit_Framework_TestCase;
-
-/**
- * @ignore
- */
-require_once 'test_include.php';
 fields::autoload();
 
 /**
