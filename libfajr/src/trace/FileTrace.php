@@ -29,30 +29,30 @@ class FileTrace implements Trace
   private $constructTime = null;
   private $timer = null;
 
-  /** @var File file to write to */
+  /** @var resource file to write to */
   private $file = null;
 
-  /** @var int Number of tabs to indent */
-  private $indentLevel = 0;
+  /** @var int Number of parent trace objects */
+  private $depthLevel = 0;
 
   /**
    * Construct a FileTrace
    * @param Timer $timer timer to measure time with
-   * @param resource|string $file file resource handle or filename to write to
+   * @param resource $file file resource handle to write to
    * @param string $header header text to be displayed
    */
-  public function __construct(Timer $timer, File $file, $indentLevel = 0, $header = "")
+  public function __construct(Timer $timer, $file, $depthLevel = 0, $header = "")
   {
     $this->file = $file;
     $this->constructTime = microtime(true);
     $this->timer = $timer;
-    $this->indentLevel = $indentLevel;
+    $this->depthLevel = $depthLevel;
     $this->writeIndent();
-    $this->file->write($header . "\n");
+    $this->write($header . "\n");
     $this->writeInfoLine("Type: Trace\n");
     $this->writeInfo();
-    $this->file->flush();
-    $this->indentLevel += 1;
+    $this->flush();
+    $this->depthLevel += 1;
   }
 
   /**
@@ -73,10 +73,10 @@ class FileTrace implements Trace
   {
     Preconditions::checkIsString($text, '$text should be string');
     $this->writeIndent();
-    $this->file->write($text . "\n");
+    $this->write($text . "\n");
     $this->writeInfoLine("Type: log\n");
     $this->writeInfo();
-    $this->file->flush();
+    $this->flush();
   }
 
   /**
@@ -87,10 +87,10 @@ class FileTrace implements Trace
   {
     Preconditions::checkIsString($text, '$text should be string');
     $this->writeIndent();
-    $this->file->write($text . "\n");
+    $this->write($text . "\n");
     $this->writeInfoLine("Type: data\n");
     $this->writeInfo();
-    $this->file->flush();
+    $this->flush();
   }
 
   /**
@@ -103,10 +103,10 @@ class FileTrace implements Trace
     $data = preg_replace("@\\\\'@", "'", var_export($variable, true));
     
     $this->writeIndent();
-    $this->file->write($name . ' = ' . $data. "\n");
+    $this->write($name . ' = ' . $data. "\n");
     $this->writeInfoLine("Type: variable\n");
     $this->writeInfo();
-    $this->file->flush();
+    $this->flush();
   }
 
   /**
@@ -118,7 +118,7 @@ class FileTrace implements Trace
   {
     Preconditions::checkIsString($header, '$header should be string');
     return new FileTrace($this->timer, $this->file,
-                         $this->indentLevel + 1, $header);
+                         $this->depthLevel + 1, $header);
   }
 
   /**
@@ -145,14 +145,23 @@ class FileTrace implements Trace
 
   private function writeIndent()
   {
-    $this->file->write(str_repeat("\t", $this->indentLevel));
+    $this->write(str_repeat("\t", $this->depthLevel));
   }
 
   private function writeInfoLine($text)
   {
     Preconditions::checkIsString($text, 'text must be string');
     $this->writeIndent();
-    $this->file->write("\t" . $text . "\n");
+    $this->write("\t" . $text . "\n");
+  }
+  
+  private function write($text) {
+    Preconditions::checkIsString($text, 'text must be string');
+    fwrite($this->file, $text);
+  }
+  
+  private function flush() {
+    fflush($this->file);
   }
   
 }

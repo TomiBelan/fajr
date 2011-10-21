@@ -35,8 +35,11 @@ class TraceProvider
       if($config->get(FajrConfigOptions::DEBUG_TRACE) === true) {
         $debugFile = $config->getDirectory(FajrConfigOptions::DEBUG_TRACE_FILE);
         if ($debugFile !== null) {
-          $phpfile = new PHPFile($debugFile, 'a');
-          self::$instance = new FileTrace(SystemTimer::getInstance(), $phpfile, 0, '--Trace--');
+          $file = @fopen($debugFile, 'a');
+          if ($file === false) {
+            throw new Exception('Cannot open trace file');
+          }
+          self::$instance = new FileTrace(SystemTimer::getInstance(), $file, 0, '--Trace--');
         }
         else {
           self::$instance = new ArrayTrace(SystemTimer::getInstance(), '--Trace--');
