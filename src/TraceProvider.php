@@ -17,7 +17,6 @@ namespace fajr;
 use fajr\config\FajrConfig;
 use fajr\config\FajrConfigOptions;
 use fajr\config\FajrConfigLoader;
-use libfajr\util\PHPFile;
 use libfajr\trace\FileTrace;
 use libfajr\trace\ArrayTrace;
 use libfajr\trace\NullTrace;
