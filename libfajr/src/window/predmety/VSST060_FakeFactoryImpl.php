@@ -6,14 +6,14 @@
 /**
  *
  * @package    Libfajr
- * @subpackage Window__VSST060_register_predmetov
+ * @subpackage Window__Predmety
  * @author     Tomi Belan <tomi.belan@gmail.com>
  * @filesource
  */
-namespace libfajr\window\VSST060_register_predmetov;
+namespace libfajr\window\predmety;
 
-use libfajr\window\VSST060_register_predmetov as VSST060;
-use libfajr\window\VSST060_register_predmetov\fake as VSST060fake;
+use libfajr\window\predmety as VSST060;
+use libfajr\window\predmety\fake as VSST060fake;
 use libfajr\trace\Trace;
 use libfajr\window\fake\FakeRequestExecutor;
 use sfStorage;

@@ -21,7 +21,7 @@ use libfajr\AIS2Utils;
 use libfajr\base\Preconditions;
 use libfajr\trace\Trace;
 use libfajr\window\AIS2ApplicationEnum;
-use libfajr\window\VSES017_administracia_studia as VSES017;
+use libfajr\window\studium as VSES017;
 use libfajr\regression;
 use fajr\Request;
 use fajr\Response;

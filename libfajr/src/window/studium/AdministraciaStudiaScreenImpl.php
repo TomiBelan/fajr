@@ -9,13 +9,13 @@
  * PHP version 5.3.0
  *
  * @package    Libfajr
- * @subpackage Window__VSES017_administracia_studia
+ * @subpackage Window__Studium
  * @author     Martin Králik <majak47@gmail.com>
  * @filesource
  */
-namespace libfajr\window\VSES017_administracia_studia;
+namespace libfajr\window\studium;
 
-use libfajr\window\VSES017_administracia_studia\AdministraciaStudiaScreen;
+use libfajr\window\studium\AdministraciaStudiaScreen;
 use libfajr\trace\Trace;
 use libfajr\connection\SimpleConnection;
 use libfajr\window\AIS2AbstractScreen;
@@ -32,7 +32,7 @@ use libfajr\exceptions\ParseException;
  * Trieda reprezentujúca jednu obrazovku so zoznamom štúdií a zápisných listov.
  *
  * @package    Libfajr
- * @subpackage Window__VSES017_administracia_studia
+ * @subpackage Window__Studium
  * @author     Martin Kralik <majak47@gmail.com>
  */
 class AdministraciaStudiaScreenImpl extends AIS2AbstractScreen

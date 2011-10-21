@@ -9,13 +9,13 @@
  * PHP version 5.3.0
  *
  * @package    Libfajr
- * @subpackage Window__VSES017_administracia_studia__Fake
+ * @subpackage Window__Studium__Fake
  * @author     Martin Sucha <anty.sk+fajr@gmail.com>
  * @filesource
  */
-namespace libfajr\window\VSES017_administracia_studia\fake;
+namespace libfajr\window\studium\fake;
 
-use libfajr\window\VSES017_administracia_studia\PrehladKreditovDialog;
+use libfajr\window\studium\PrehladKreditovDialog;
 
 use libfajr\trace\Trace;
 use libfajr\window\fake\FakeAbstractDialog;
@@ -26,7 +26,7 @@ use libfajr\regression\PrehladKreditovRegression;
  * Trieda pre dialóg s prehľadom kreditov
  *
  * @package    Libfajr
- * @subpackage Window__VSES017_administracia_studia__Fake
+ * @subpackage Window__Studium__Fake
  * @author     Martin Sucha <anty.sk+fajr@gmail.com>
  */
 class FakePrehladKreditovDialogImpl extends FakeAbstractDialog

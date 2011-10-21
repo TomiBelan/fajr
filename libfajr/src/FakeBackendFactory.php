@@ -12,8 +12,8 @@
 namespace libfajr;
 
 use libfajr\BackendFactory;
-use libfajr\window\VSES017_administracia_studia\VSES017_FakeFactoryImpl;
-use libfajr\window\VSST060_register_predmetov\VSST060_FakeFactoryImpl;
+use libfajr\window\studium\VSES017_FakeFactoryImpl;
+use libfajr\window\predmety\VSST060_FakeFactoryImpl;
 use libfajr\window\fake\FakeMainScreen;
 use libfajr\storage\TemporarilyModifiableStorage;
 use libfajr\storage\FileStorage;

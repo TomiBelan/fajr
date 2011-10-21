@@ -7,18 +7,18 @@
  * Reprezentuje obrazovku s hodnoteniami a priemermi.
  *
  * @package    Libfajr
- * @subpackage Window__VSES017_administracia_studia__Fake
+ * @subpackage Window__Studium__Fake
  * @author     Peter Perešini <ppershing+fajr@gmail.com>
  * @filesource
  */
 
-namespace libfajr\window\VSES017_administracia_studia\fake;
+namespace libfajr\window\studium\fake;
 
 
 use libfajr\base\Preconditions;
 use libfajr\data\DataTableImpl;
 use libfajr\trace\Trace;
-use libfajr\window\VSES017_administracia_studia\HodnoteniaPriemeryScreen;
+use libfajr\window\studium\HodnoteniaPriemeryScreen;
 use libfajr\window\fake\FakeAbstractScreen;
 use libfajr\window\fake\FakeRequestExecutor;
 use libfajr\regression\HodnoteniaRegression;
@@ -28,7 +28,7 @@ use libfajr\regression\PriemeryRegression;
  * Trieda reprezentujúca jednu obrazovku s hodnoteniami a priemermi za jeden rok.
  *
  * @package    Libfajr
- * @subpackage Window__VSES017_administracia_studia
+ * @subpackage Window__Studium
  * @author     Peter Perešini <ppershing+fajr@gmail.com>
  */
 class FakeHodnoteniaPriemeryScreenImpl extends FakeAbstractScreen

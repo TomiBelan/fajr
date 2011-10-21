@@ -18,8 +18,8 @@
 namespace libfajr;
 
 use libfajr\trace\Trace;
-use libfajr\window\VSES017_administracia_studia\VSES017_Factory;
-use libfajr\window\VSST060_register_predmetov\VSST060_Factory;
+use libfajr\window\studium\VSES017_Factory;
+use libfajr\window\predmety\VSST060_Factory;
 use libfajr\window\AIS2MainScreen;
 
 interface BackendFactory

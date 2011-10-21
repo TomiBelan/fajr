@@ -9,13 +9,13 @@
  * PHP version 5.3.0
  *
  * @package    Libfajr
- * @subpackage Window__VSES017_administracia_studia
+ * @subpackage Window__Studium
  * @author     Martin Králik <majak47@gmail.com>
  * @filesource
  */
-namespace libfajr\window\VSES017_administracia_studia;
+namespace libfajr\window\studium;
 
-use libfajr\window\VSES017_administracia_studia\TerminyDialog;
+use libfajr\window\studium\TerminyDialog;
 use libfajr\trace\Trace;
 use libfajr\window\DialogData;
 use libfajr\window\DialogParent;
@@ -27,7 +27,7 @@ use Exception;
  * Trieda pre dialóg s termínmi skúšok k jednému predmetu.
  *
  * @package    Libfajr
- * @subpackage Window__VSES017_administracia_studia
+ * @subpackage Window__Studium
  * @author     Martin Králik <majak47@gmail.com>
  */
 class TerminyDialogImpl extends AIS2AbstractDialog

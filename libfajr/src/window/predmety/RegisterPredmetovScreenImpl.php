@@ -9,13 +9,13 @@
  * PHP version 5.3.0
  *
  * @package    Libfajr
- * @subpackage Window__VSST060_register_predmetov
+ * @subpackage Window__Predmety
  * @author     Tomi Belan <tomi.belan@gmail.com>
  * @filesource
  */
-namespace libfajr\window\VSST060_register_predmetov;
+namespace libfajr\window\predmety;
 
-use libfajr\window\VSST060_register_predmetov\RegisterPredmetovScreen;
+use libfajr\window\predmety\RegisterPredmetovScreen;
 use libfajr\trace\Trace;
 use libfajr\connection\SimpleConnection;
 use libfajr\window\AIS2AbstractScreen;
@@ -33,7 +33,7 @@ use libfajr\exceptions\ParseException;
  * Trieda reprezentujúca jednu obrazovku s registrom predmetov.
  *
  * @package    Libfajr
- * @subpackage Window__VSES017_administracia_studia
+ * @subpackage Window__Studium
  * @author     Martin Kralik <majak47@gmail.com>
  */
 class RegisterPredmetovScreenImpl extends AIS2AbstractScreen

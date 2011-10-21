@@ -7,12 +7,12 @@
  * Reprezentuje diálóg s termínami skúšok k predmetu.
  *
  * @package    Libfajr
- * @subpackage Window__VSES017_administracia_studia__Fake
+ * @subpackage Window__Studium__Fake
  * @author     Peter Perešini <ppershing+fajr@gmail.com>
  * @filesource
  */
 
-namespace libfajr\window\VSES017_administracia_studia\fake;
+namespace libfajr\window\studium\fake;
 
 
 use Exception;
@@ -20,7 +20,7 @@ use libfajr\base\Preconditions;
 use libfajr\data\DataTableImpl;
 use libfajr\trace\Trace;
 use libfajr\data\Znamka;
-use libfajr\window\VSES017_administracia_studia\TerminyDialog;
+use libfajr\window\studium\TerminyDialog;
 use libfajr\window\fake\FakeAbstractDialog;
 use libfajr\window\fake\FakeRequestExecutor;
 use libfajr\regression\TerminyKPredmetuRegression;
@@ -29,7 +29,7 @@ use libfajr\regression\TerminyKPredmetuRegression;
  * Trieda pre dialóg s termínmi skúšok k jednému predmetu.
  *
  * @package    Libfajr
- * @subpackage Window__VSES017_administracia_studia__Fake
+ * @subpackage Window__Studium__Fake
  * @author     Peter Perešini <ppershing+fajr@gmail.com>
  */
 class FakeTerminyDialogImpl extends FakeAbstractDialog

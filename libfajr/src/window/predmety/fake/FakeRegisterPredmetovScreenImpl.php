@@ -7,18 +7,18 @@
  * Reprezentuje obrazovku so zoznamom štúdií a zápisných listov.
  *
  * @package    Libfajr
- * @subpackage Window__VSST060_register_predmetov__Fake
+ * @subpackage Window__Predmety__Fake
  * @author     Peter Perešini <ppershing+fajr@gmail.com>
  * @filesource
  */
 
-namespace libfajr\window\VSST060_register_predmetov\fake;
+namespace libfajr\window\predmety\fake;
 
 
 use libfajr\base\Preconditions;
 use libfajr\data\DataTableImpl;
 use libfajr\trace\Trace;
-use libfajr\window\VSST060_register_predmetov\RegisterPredmetovScreen;
+use libfajr\window\predmety\RegisterPredmetovScreen;
 use libfajr\util\StrUtil;
 use libfajr\window\fake\FakeAbstractScreen;
 
@@ -26,7 +26,7 @@ use libfajr\window\fake\FakeAbstractScreen;
  * Trieda reprezentujúca jednu obrazovku so zoznamom predmetov.
  *
  * @package    Libfajr
- * @subpackage Window__VSST060_register_predmetov__Fake
+ * @subpackage Window__Predmety__Fake
  * @author     Tomi Belan <tomi.belan@gmail.com>
  */
 class FakeRegisterPredmetovScreenImpl extends FakeAbstractScreen

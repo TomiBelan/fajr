@@ -6,11 +6,11 @@
 /**
  *
  * @package    Libfajr
- * @subpackage Window__VSES017_administracia_studia
+ * @subpackage Window__Studium
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace libfajr\window\VSES017_administracia_studia;
+namespace libfajr\window\studium;
 
 use PHPUnit_Framework_TestCase;
 

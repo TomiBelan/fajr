@@ -7,18 +7,18 @@
  * Reprezentuje obrazovku so zoznamom termínov hodnotení a predmetov.
  *
  * @package    Libfajr
- * @subpackage Window__VSES017_administracia_studia__Fake
+ * @subpackage Window__Studium__Fake
  * @author     Peter Perešini <ppershing+fajr@gmail.com>
  * @filesource
  */
 
-namespace libfajr\window\VSES017_administracia_studia\fake;
+namespace libfajr\window\studium\fake;
 
 use Exception;
 use libfajr\base\Preconditions;
 use libfajr\data\DataTableImpl;
 use libfajr\trace\Trace;
-use libfajr\window\VSES017_administracia_studia\TerminyHodnoteniaScreen;
+use libfajr\window\studium\TerminyHodnoteniaScreen;
 use libfajr\window\fake\FakeAbstractScreen;
 use libfajr\window\fake\FakeRequestExecutor;
 use libfajr\regression\MojeTerminyRegression;
@@ -29,7 +29,7 @@ use libfajr\regression\ZapisanePredmetyRegression;
  * a termínov hodnotenia.
  *
  * @package    Libfajr
- * @subpackage Window__VSES017_administracia_studia
+ * @subpackage Window__Studium
  * @author     Peter Perešini <ppershing+fajr@gmail.com>
  */
 class FakeTerminyHodnoteniaScreenImpl extends FakeAbstractScreen

@@ -7,13 +7,13 @@
  * PHP version 5.3.0
  *
  * @package    Libfajr
- * @subpackage Window__VSES017_administracia_studia
+ * @subpackage Window__Studium
  * @author     Martin Králik <majak47@gmail.com>
  * @filesource
  */
-namespace libfajr\window\VSES017_administracia_studia;
+namespace libfajr\window\studium;
 
-use libfajr\window\VSES017_administracia_studia\TerminyHodnoteniaScreen;
+use libfajr\window\studium\TerminyHodnoteniaScreen;
 use libfajr\trace\Trace;
 use libfajr\connection\SimpleConnection;
 use libfajr\window\DialogData;
@@ -30,7 +30,7 @@ use Exception;
  * a termínov hodnotenia.
  *
  * @package    Libfajr
- * @subpackage Window__VSES017_administracia_studia
+ * @subpackage Window__Studium
  * @author     Martin Králik <majak47@gmail.com>
  */
 class TerminyHodnoteniaScreenImpl extends AIS2AbstractScreen

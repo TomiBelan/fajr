@@ -12,8 +12,8 @@
 namespace libfajr;
 
 use libfajr\BackendFactory;
-use libfajr\window\VSES017_administracia_studia\VSES017_FactoryImpl;
-use libfajr\window\VSST060_register_predmetov\VSST060_FactoryImpl;
+use libfajr\window\studium\VSES017_FactoryImpl;
+use libfajr\window\predmety\VSST060_FactoryImpl;
 use libfajr\window\AIS2MainScreenImpl;
 use libfajr\connection\AIS2ServerConnection;
 

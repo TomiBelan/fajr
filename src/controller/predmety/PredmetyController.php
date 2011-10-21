@@ -20,7 +20,7 @@ use libfajr\AIS2Utils;
 use libfajr\base\Preconditions;
 use libfajr\trace\Trace;
 use libfajr\window\AIS2ApplicationEnum;
-use libfajr\window\VSST060_register_predmetov as VSST060;
+use libfajr\window\predmety as VSST060;
 use libfajr\regression;
 use fajr\Request;
 use fajr\Response;

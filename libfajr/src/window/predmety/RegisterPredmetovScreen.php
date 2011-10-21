@@ -6,11 +6,11 @@
 /**
  *
  * @package    Libfajr
- * @subpackage Window__VSST060_register_predmetov
+ * @subpackage Window__Predmety
  * @author     Tomi Belan <tomi.belan@gmail.com>
  * @filesource
  */
-namespace libfajr\window\VSST060_register_predmetov;
+namespace libfajr\window\predmety;
 
 use libfajr\window\LazyDialog;
 use libfajr\trace\Trace;

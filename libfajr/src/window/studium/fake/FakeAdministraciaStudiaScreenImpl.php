@@ -7,21 +7,21 @@
  * Reprezentuje obrazovku so zoznamom štúdií a zápisných listov.
  *
  * @package    Libfajr
- * @subpackage Window__VSES017_administracia_studia__Fake
+ * @subpackage Window__Studium__Fake
  * @author     Peter Perešini <ppershing+fajr@gmail.com>
  * @filesource
  */
 
-namespace libfajr\window\VSES017_administracia_studia\fake;
+namespace libfajr\window\studium\fake;
 
 
 use libfajr\base\Preconditions;
 use libfajr\data\DataTableImpl;
 use libfajr\trace\Trace;
-use libfajr\window\VSES017_administracia_studia\AdministraciaStudiaScreen;
+use libfajr\window\studium\AdministraciaStudiaScreen;
 use libfajr\util\StrUtil;
 use libfajr\window\fake\FakeAbstractScreen;
-use libfajr\window\VSES017_administracia_studia\fake\FakePrehladKreditovDialogImpl;
+use libfajr\window\studium\fake\FakePrehladKreditovDialogImpl;
 use libfajr\regression\ZoznamStudiiRegression;
 use libfajr\regression\ZoznamZapisnychListovRegression;
 
@@ -29,7 +29,7 @@ use libfajr\regression\ZoznamZapisnychListovRegression;
  * Trieda reprezentujúca jednu obrazovku so zoznamom štúdií a zápisných listov.
  *
  * @package    Libfajr
- * @subpackage Window__VSES017_administracia_studia__Fake
+ * @subpackage Window__Studium__Fake
  * @author     Peter Perešini <ppershing+fajr@gmail.com>
  */
 class FakeAdministraciaStudiaScreenImpl extends FakeAbstractScreen

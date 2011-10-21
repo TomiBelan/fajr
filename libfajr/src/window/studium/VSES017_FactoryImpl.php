@@ -6,14 +6,14 @@
 /**
  *
  * @package    Libfajr
- * @subpackage Window__VSES017_administracia_studia
+ * @subpackage Window__Studium
  * @author     Martin Králik <majak47@gmail.com>
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  * @filesource
  */
-namespace libfajr\window\VSES017_administracia_studia;
+namespace libfajr\window\studium;
 
-use libfajr\window\VSES017_administracia_studia as VSES017;
+use libfajr\window\studium as VSES017;
 use libfajr\trace\Trace;
 use libfajr\connection\SimpleConnection;
 use libfajr\window\RequestBuilderImpl;
