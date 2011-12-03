@@ -148,6 +148,7 @@ class StudiumController extends BaseController
         $lastList = end($zapisneListyData);
         $this->zapisnyList = $lastList['index'];
       }
+      $this->zapisnyList = intval($this->zapisnyList);
 
       $this->terminyHodnoteniaScreen = $screenFactory->newTerminyHodnoteniaScreen(
                 $trace,
@@ -171,7 +172,7 @@ class StudiumController extends BaseController
 
     if (array_key_exists($action, $this->actionInfo)) {
       $info = $this->actionInfo[$action];
-      if ($info['requiresZapisnyList'] && $this->zapisnyList == null) {
+      if ($info['requiresZapisnyList'] && $this->zapisnyList === null) {
         $response->set('activeTab', $info['tabName']);
         $response->setTemplate('studium/chybaZapisnyList');
         return;
