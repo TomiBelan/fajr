@@ -213,19 +213,19 @@ class Fajr {
     $loggedIn = $loginManager->isLoggedIn($serverConnection);
     $response->set('loggedIn', $loggedIn);
     
-    $backendFactory = BackendProvider::getInstance();
-    $mainScreen = $backendFactory->newAIS2MainScreen();
-
-    if (($aisVersion = $session->read('ais/aisVersion')) == null) {
-      $aisVersion = $mainScreen->getAisVersion($trace->addChild('Get AIS version'));
-      $session->write('ais/aisVersion', $aisVersion);
-    }
-    $response->set('aisVersion', $aisVersion);
-    $response->set('aisVersionIncompatible', 
-      !($aisVersion >= regression\VersionRange::getMinVersion() &&
-        $aisVersion <= regression\VersionRange::getMaxVersion()));
-    
     if ($loggedIn) {
+      $backendFactory = BackendProvider::getInstance();
+      $mainScreen = $backendFactory->newAIS2MainScreen();
+
+      if (($aisVersion = $session->read('ais/aisVersion')) == null) {
+        $aisVersion = $mainScreen->getAisVersion($trace->addChild('Get AIS version'));
+        $session->write('ais/aisVersion', $aisVersion);
+      }
+      $response->set('aisVersion', $aisVersion);
+      $response->set('aisVersionIncompatible',
+        !($aisVersion >= regression\VersionRange::getMinVersion() &&
+          $aisVersion <= regression\VersionRange::getMaxVersion()));
+
       if (($aisApps = $session->read('ais/aisApps')) == null) {
         $aisModules = array('SP', 'LZ', 'ES', 'ST', 'RH', 'UB', 'AS', 'RP');
         $aisApps = $mainScreen->
@@ -238,6 +238,10 @@ class Fajr {
         $session->write('ais/aisUserName', $userName);
       }
       $response->set('aisUserName', $userName);
+    }
+    else {
+      $response->set('aisVersion', null);
+      $response->set('aisVersionIncompatible', null);
     }
 
     $controller = DispatchController::getInstance();
