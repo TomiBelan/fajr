@@ -17,15 +17,22 @@
 
 h1 {
   margin: 0.5ex;
-  font-size: 300%;
+  font-size: 250%;
+}
+
+h1.logo {
+  background: #333;
+  color: white;
+  margin: 0;
+  padding: 0.5ex;
 }
 
 a.logo {
   padding-left: 64px;
   background: transparent url("../../images/logo.png") 16px 50% no-repeat;
   min-height: 32px;
+  color: white;
 }
-
 
 
 /* Buttons */
@@ -44,13 +51,11 @@ button.tableButton
 }
 
 .warningBanner {
-  font-size: 150%;
-  margin: 1ex;
-  padding: 0.5ex;
-  padding-left: 36px;
-  border: 1px solid red;
-  background: transparent url("../../images/third_party/silk/error.png") 10px 50% no-repeat;
-  min-height: 16px;
+  font-size: 110%;
+  margin: 1.5ex;
+  padding: 0.7ex 1em;
+  border: 1px solid #ff7f2a;
+  background: #ffefaf;
 }
 
 .warningBanner strong {
@@ -59,7 +64,13 @@ button.tableButton
 }
 
 div.linkbar {
-  margin: 1ex;
+  background: #333;
+  color: white;
+  padding: 1ex;
+}
+
+div.linkbar a {
+  color: white;
 }
 
 div.linkbarLeft {

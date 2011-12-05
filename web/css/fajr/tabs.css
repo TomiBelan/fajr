@@ -1,7 +1,8 @@
 /* Tabs */
 
 .tab_header {
-  border-bottom: 2px solid black;
+  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAgCAYAAADT5RIaAAAAAXNSR0IArs4c6QAAAChJREFUCNdj+P///38mBgYGBiTi////5HCJUIef+PfvH5T4+/cvhAUAR+w2+UN0r48AAAAASUVORK5CYII=") repeat-x bottom;
+  border-bottom: 1px solid #b6b6b6;
   padding: 6px;
   margin: 0px;
   margin-top: 20px;
@@ -10,25 +11,19 @@
 
 .tab a, .tab_selected a {
   text-decoration: none;
-  font-size: 18px;
-}
-
-.tab:hover, .tab_selected:hover {
-  background-color: lightgreen;
+  font-size: 150%;
 }
 
 .tab, .tab_selected{
   margin-left: 15px;
-  padding: 4px;
-  border: 2px solid black;
-  padding-bottom: 5px;
-  background-color: #dfd;
+  padding: 1em 0.5em 0.5em;
+  border: 1px solid transparent;
 }
-.tab_selected {
-  border-bottom: 0px;
-  padding-bottom: 7px;
+.tab_selected, .tab:hover {
+  border: 1px solid #b6b6b6;
+  background-color: white;
 }
 
 .tab_selected {
-  background-color:yellow;
+  border-bottom: 1px solid white;
 }
