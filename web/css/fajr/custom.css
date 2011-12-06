@@ -92,3 +92,7 @@ p.intabs {
 .with-js .studium-a-zapisny-list {
   display: none;
 }
+
+.tabcontent {
+  padding: 0ex 1em;
+}

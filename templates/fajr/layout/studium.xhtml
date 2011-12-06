@@ -14,6 +14,12 @@
 {{ studiumMacros.studiumTabs('', currentTab, studium, zapisnyList) }}
 {% endblock %}
 
-{% include "parts/studium/studiumAZapisnyList.xhtml" %}
+<div class="tabcontent">
+  {% include "parts/studium/studiumAZapisnyList.xhtml" %}
+  
+{% block tabcontent %}
+
+{% endblock %}
+</div>
 
 {% endblock %}
