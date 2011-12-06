@@ -9,6 +9,17 @@
 {% import "macros/decorators.xhtml" as decorators %}
 {% import "macros/table.xhtml" as table %}
 
+{% unique collapsible id %}
+
+<p id="p_{{ id }}">
+Aktuálne zvolené štúdium a zápisný list:
+{{ studiumObj.studijnyProgramPopis }}
+({{ studiumObj.studijnyProgramSkratka }})
+{{ zapisnyListObj.popisAkadRok }}.
+</p>
+
+<div id="{{ id }}" class="studium-a-zapisny-list">
+
 {# --------------------- ZOZNAM STUDII -------------------------------#}
 
 {% set head %}
@@ -42,15 +53,8 @@
   {% endfor %}
 {% endset %}
 
-{% set title %}
-  <h2>Zoznam štúdií</h2>
-{% endset %}
-
-{% set tableHTML %}
+<h2>Zoznam štúdií</h2>
 {{ decorators.table(none, head, body) }}
-{% endset %}
-
-{{ decorators.collapsible(title, tableHTML, true) }}
 
 {# --------------------- ZOZNAM ZAPISNYCH LISTOV -------------------#}
 
@@ -81,12 +85,7 @@
   {% endfor %}
 {% endset %}
 
-{% set title %}
-  <h2>Zoznam zápisných listov</h2>
-{% endset %}
-
-{% set tableHTML %}
+<h2>Zoznam zápisných listov</h2>
 {{ decorators.table(none, head, body) }}
-{% endset %}
 
-{{ decorators.collapsible(title, tableHTML, true) }}
+</div>

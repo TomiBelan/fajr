@@ -1,5 +1,7 @@
 var clickable = true;
 
+document.getElementsByTagName('html')[0].className = 'with-js';
+
 document.observe('dom:loaded', function() {
 	$$('table tbody tr td a').each(function (link){
 		var target = link.href;

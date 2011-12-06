@@ -168,8 +168,13 @@ class StudiumController extends BaseController
     $response->set('currentTab', '');
     $response->set('zoznamStudii', $this->zoznamStudii);
     $response->set('studium', $this->studium);
+    // TODO(anty): refactor
+    $zoznamStudiiData = $this->zoznamStudii->getData();
+    $response->set('studiumObj', $zoznamStudiiData[$this->studium]);
     $response->set('zapisneListy', $this->zapisneListy);
     $response->set('zapisnyList', $this->zapisnyList);
+    // TODO(anty): refactor
+    $response->set('zapisnyListObj', $zapisneListyData[$this->zapisnyList]);
 
     if (array_key_exists($action, $this->actionInfo)) {
       $info = $this->actionInfo[$action];

@@ -29,6 +29,3 @@ div.collapsible {
   margin-bottom: 15px;
 }
 
-div.collapsible+div.collapsible .collapsibleheader {
-  border-top: 1px solid #333333;
-}

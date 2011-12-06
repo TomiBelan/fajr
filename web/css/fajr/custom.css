@@ -84,3 +84,11 @@ div.linkbarRight {
 div.infoFooter {
   border-top: 1px solid #AAAAAA;
 }
+
+p.intabs {
+  margin: 1ex 1em;
+}
+
+.with-js .studium-a-zapisny-list {
+  display: none;
+}
