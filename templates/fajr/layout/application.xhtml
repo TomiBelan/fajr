@@ -19,15 +19,15 @@
   {% block application_content %}{% endblock %}
   <div class="infoFooter">
     <div>
-      Fajr verzia {% include "parts/version.xhtml" %}
-        (pripojený na systém AIS verzie {{ aisVersion }} na stránke {{ currentServer.serverName}})
+      Verzia fajru: {% include "parts/version.xhtml" %}<br />
+      Pripojený na {{ currentServer.serverName}}: verzia {{ aisVersion }}
     </div>
     <div>
-      Fajr spravil {{ statistics.requestCount }} dotazov a stiahol
-      {{ "%.2f"|format(statistics.downloadedByteCount/1024) }} kB
+      Prenesené dáta: {{ "%.2f"|format(statistics.downloadedByteCount/1024) }} kB
       ({{ "%.2f"|format(statistics.decodedByteCount/1024) }} kB nekomprimovane)
-      dát z AISu za {{ "%.3f"|format(statistics.totalRequestTime) }} sekundy.
-      Vygenerovanie tejto stránky trvalo 
+      za {{ "%.3f"|format(statistics.totalRequestTime) }} sekundy
+      ({{ statistics.requestCount }} dotazov)<br />
+      Celkový čas generovania stránky: 
       {{ "%.3f"|format(statistics.totalTime) }} sekundy.
     </div>
   </div>
