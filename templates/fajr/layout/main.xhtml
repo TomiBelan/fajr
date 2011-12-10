@@ -28,10 +28,12 @@
       {% include "parts/linkbar.xhtml" %}
       {% url mainPage for {'_file': 'index.php'} %}
       <h1 class="logo"><a class="logo" href="{{ mainPage }}">FAJR</a>: {{ block('title') }}</h1>
+      <div id="mainContent">
       {% block warnings %}
         {% include "parts/warnings.xhtml" %}
       {% endblock %}
       {% block content %}{% endblock %}
+      </div>
       <div class="infoFooter">
         <div>
           Verzia fajru: {% include "parts/version.xhtml" %}

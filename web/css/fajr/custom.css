@@ -2,6 +2,7 @@
 
 body {
   font-size: 80%;
+  background: #f9f9f9;
 }
 
 .increase-line-height {
@@ -90,6 +91,12 @@ div.infoFooter {
   color: black;
   padding: 1ex 1em;
   clear: both;
+}
+
+#mainContent {
+  background: white;
+  color: black;
+  overflow: hidden;
 }
 
 p.intabs {
