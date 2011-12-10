@@ -18,21 +18,21 @@
 
 {% block content %}
 {% import "macros/utils.xhtml" as utils %}
+
+<div id="loginVpravo">
+{# server selection #}
+{% include "parts/serverSelection.xhtml" %}
+
 {% block loginBox %}
   {# loginBox #}
   {% include "parts/passwordLoginBox.xhtml" %}
 {% endblock %}
-
-{# server selection #}
-{% include "parts/serverSelection.xhtml" %}
-
-<hr class="space" />
+</div>
 
 {# warnings #}
-<div class="span-18 prepend-1 last increase-line-height">
+<div id="welcomeMain">
   <p>
-    Vitajte pred bránou do aplikácie FAJR.
-    Snahou tejto miniaplikácie je poskytovať najčastejšie používané funkcie
+    Snahou miniaplikácie FAJR je poskytovať najčastejšie používané funkcie
     {{ utils.instanceLink(currentServer.instanceName, currentServer.serverName) }} a to jednoducho, rýchlo,
     bez zbytočných klikaní a na všetkých browseroch.
   </p>
@@ -47,19 +47,15 @@
   {% block info %}
     {% include "parts/passwordInfo.xhtml" %}
   {% endblock %}
-</div>
 
 {# terms #}
 {% url termsOfUse for {'action': 'static.TermsOfUse', '_file': 'index.php'} %}
-<div class="span-21 prepend-1 last increase-line-height">
   <p>
     Prihlásením do systému Fajr súhlasíte s
     <a href="{{ termsOfUse }}">Podmienkami používania</a>
   </p>
-</div>
 
 {# credits #}
-<div class="span-21 prepend-1 last increase-line-height">
   <p>
     Autori (Martin Králik, Peter Perešíni, Martin Sucha) by chceli poďakovať
     všetkým ľudom, čo projekt podporujú, tým čo prispeli kódom, dokumentáciou
@@ -74,11 +70,6 @@
     <a href="http://www.famfamfam.com/lab/icons/silk/">Silk icons</a> a
     <a href="http://www.twig-project.org/">Twig</a>.
   </p>
-</div>
-
-{# version #}
-<div class='version prepend-1 span-21 last increase-line-height'>
-  <strong>Verzia fajru:</strong> {% include "parts/version.xhtml" %}
 </div>
 
 {# changelog #}

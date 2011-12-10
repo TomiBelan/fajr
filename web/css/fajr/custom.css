@@ -1,5 +1,9 @@
 /* ??? */
 
+body {
+  font-size: 80%;
+}
+
 .increase-line-height {
   line-height:1.5;
 }
@@ -51,7 +55,6 @@ button.tableButton
 }
 
 .warningBanner {
-  font-size: 110%;
   margin: 1.5ex;
   padding: 0.7ex 1em;
   border: 1px solid #ff7f2a;

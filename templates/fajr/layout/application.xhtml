@@ -19,10 +19,10 @@
   {% block application_content %}{% endblock %}
   <div class="infoFooter">
     <div>
-      Verzia fajru: {% include "parts/version.xhtml" %}<br />
-      Pripojený na {{ currentServer.serverName}}: verzia {{ aisVersion }}
+      Verzia fajru: {% include "parts/version.xhtml" %}
     </div>
     <div>
+      Pripojený na {{ currentServer.serverName}}: verzia {{ aisVersion }}<br />
       Prenesené dáta: {{ "%.2f"|format(statistics.downloadedByteCount/1024) }} kB
       ({{ "%.2f"|format(statistics.decodedByteCount/1024) }} kB nekomprimovane)
       za {{ "%.3f"|format(statistics.totalRequestTime) }} sekundy

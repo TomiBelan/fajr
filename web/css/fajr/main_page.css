@@ -2,6 +2,24 @@
   width: 100%;
 }
 
+#loginVpravo {
+  width: 25em;
+  float: right;
+  padding-right: 2em;
+  padding-left: 2em;
+}
+
+#welcomeMain {
+  padding-left: 2em;
+  padding-right: 27em;
+  min-width: 50em;
+}
+
+#serverSelect button {
+  float: none;
+  display: inline-block;
+}
+
 .velkyDisclaimer {
   font-size: 150%;
 }
