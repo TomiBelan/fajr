@@ -32,6 +32,12 @@
         {% include "parts/warnings.xhtml" %}
       {% endblock %}
       {% block content %}{% endblock %}
+      <div class="infoFooter">
+        <div>
+          Verzia fajru: {% include "parts/version.xhtml" %}
+        </div>
+        {% block footer %}{% endblock %}
+      </div>
       {% if trace %}
         <div class="span-24">
           {{ traceGen.trace(trace) }}

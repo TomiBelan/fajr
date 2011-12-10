@@ -17,18 +17,16 @@
 {% block content %}
   {{ parent() }}
   {% block application_content %}{% endblock %}
-  <div class="infoFooter">
-    <div>
-      Verzia fajru: {% include "parts/version.xhtml" %}
-    </div>
-    <div>
-      Pripojený na {{ currentServer.serverName}}: verzia {{ aisVersion }}<br />
-      Prenesené dáta: {{ "%.2f"|format(statistics.downloadedByteCount/1024) }} kB
-      ({{ "%.2f"|format(statistics.decodedByteCount/1024) }} kB nekomprimovane)
-      za {{ "%.3f"|format(statistics.totalRequestTime) }} sekundy
-      ({{ statistics.requestCount }} dotazov)<br />
-      Celkový čas generovania stránky: 
-      {{ "%.3f"|format(statistics.totalTime) }} sekundy.
-    </div>
+{% endblock %}
+
+{% block footer %}
+  <div>
+    Pripojený na {{ currentServer.serverName}}: verzia {{ aisVersion }}<br />
+    Prenesené dáta: {{ "%.2f"|format(statistics.downloadedByteCount/1024) }} kB
+    ({{ "%.2f"|format(statistics.decodedByteCount/1024) }} kB nekomprimovane)
+    za {{ "%.3f"|format(statistics.totalRequestTime) }} sekundy
+    ({{ statistics.requestCount }} dotazov)<br />
+    Celkový čas generovania stránky: 
+    {{ "%.3f"|format(statistics.totalTime) }} sekundy.
   </div>
 {% endblock %}
