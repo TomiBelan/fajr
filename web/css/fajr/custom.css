@@ -111,3 +111,23 @@ p.intabs {
 .tabcontent {
   padding: 0ex 1em;
 }
+
+.textPage {
+  padding: 0ex 1em;
+  margin-bottom: 1em;
+}
+
+.textPage ol {
+  padding-left: 2em;
+  margin: 0.5ex 0;
+}
+
+.textPage p {
+  margin: 0.75em 0;
+}
+
+.textPage h2 {
+  font-size: 135%;
+  margin-bottom: 0.8ex;
+  margin-top: 2ex;
+}
