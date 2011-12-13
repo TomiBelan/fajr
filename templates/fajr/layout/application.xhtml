@@ -21,12 +21,16 @@
 
 {% block footer %}
   <div>
-    Pripojený na {{ currentServer.serverName}}: verzia {{ aisVersion }}<br />
+    Pripojený na {{ currentServer.serverName}}{#
+    #}{% if aisVersion is defined and aisVersion|length > 0 %}: verzia {{ aisVersion }}{% endif %}
+    {% if statistics is defined %}
+    <br />
     Prenesené dáta: {{ "%.2f"|format(statistics.downloadedByteCount/1024) }} kB
     ({{ "%.2f"|format(statistics.decodedByteCount/1024) }} kB nekomprimovane)
     za {{ "%.3f"|format(statistics.totalRequestTime) }} sekundy
     ({{ statistics.requestCount }} dotazov)<br />
     Celkový čas generovania stránky: 
     {{ "%.3f"|format(statistics.totalTime) }} sekundy.
+    {% endif %}
   </div>
 {% endblock %}
