@@ -3,6 +3,7 @@
 body {
   font-size: 80%;
   background: #f9f9f9;
+  min-width: 70em;
 }
 
 .increase-line-height {
@@ -96,8 +97,12 @@ div.infoFooter {
 #mainContent {
   background: white;
   color: black;
-  overflow: hidden;
   padding-top: 1em;
+  border-bottom: 1px solid white; /* napriek moznemu marginu chceme biele pozadie aj dole */
+}
+
+#welcome {
+    overflow: hidden; /* kvoli floatom */
 }
 
 p.intabs {
