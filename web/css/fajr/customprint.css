@@ -59,7 +59,21 @@ tfoot {
   font-style: italic;
 }
 
-.logo {
+.logo a {
+  color: black;
+  text-decoration: inherit;
+  font-weight: inherit;
+}
+
+.infoFooter {
+  display: none;
+}
+
+.linkbar {
+  display: none;
+}
+
+.warningBanner {
   display: none;
 }
 
@@ -73,5 +87,13 @@ button.tableButton img
 }
 
 .noprint {
+  display: none;
+}
+
+a.togglovac {
+  display: none;
+}
+
+.with-js .studium-a-zapisny-list {
   display: none;
 }
