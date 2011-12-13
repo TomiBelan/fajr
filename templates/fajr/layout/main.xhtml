@@ -46,19 +46,6 @@
         </div>
       {% endif %}
     </div>
-    {# TODO(ppershing): move analytics to special file #}
-    {% if google_analytics %}
-      <script type="text/javascript">
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', '{{ google_analytics }}']);
-        _gaq.push(['_trackPageview']);
-
-        (function() {
-          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-          ga.src = 'javascripts/third_party/ga.js';
-          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-        })();
-      </script>
-    {% endif %}
+    {% include 'parts/analytics.xhtml' %}
   </body>
 </html>
