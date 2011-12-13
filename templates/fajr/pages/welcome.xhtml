@@ -31,48 +31,29 @@
 
 {# warnings #}
 <div id="welcomeMain">
+  <h2>Vybavte čo potrebujete</h2>
   <p>
     Snahou miniaplikácie FAJR je poskytovať najčastejšie používané funkcie
-    {{ utils.instanceLink(currentServer.instanceName, currentServer.serverName) }} a to jednoducho, rýchlo,
-    bez zbytočných klikaní a na všetkých browseroch.
+    <a href="https://ais2.uniba.sk/">AIS2</a> a to jednoducho, rýchlo,
+    bez zbytočných klikaní a vo všetkých webových prehliadačoch &mdash; obsahuje dokonca verziu pre mobilné telefóny.
   </p>
   <p>
-    Táto aplikácia nerobí nič zlé (aspoň jej autori o tom nevedia).
-    Ale ak jej aj tak nedôverujete, môžete si ju rozbehnúť u seba.
-    Stačí vám k tomu webserver, PHP a jej
-    <a href="http://code.google.com/p/fajr/source/checkout">zdrojové kódy</a>
-    (pre viac informácií viď <a href="http://code.google.com/p/fajr/source/browse/trunk/README">README</a>).
-    Ak jej ani tak nedôverujete, používajte AIS ;-).
+    Fajr Vám pomôže vybaviť časté úkony:
   </p>
-  {% block info %}
-    {% include "parts/passwordInfo.xhtml" %}
-  {% endblock %}
-
-{# terms #}
-{% url termsOfUse for {'action': 'static.TermsOfUse', '_file': 'index.php'} %}
-  <p>
-    Prihlásením do systému Fajr súhlasíte s
-    <a href="{{ termsOfUse }}">Podmienkami používania</a>
+  <ul id="featurelist">
+    <li>zapíšte sa na skúšky</li>
+    <li>prezrite si hodnotenie</li>
+    <li>skontrolujte si počet kreditov</li>
+    {# TODO: <li>vyhľadajte si informácie o predmetoch</li> #}
+  </ul>
+  <p class="disclaimer">
+    {% include 'parts/disclaimer.xhtml' %}
   </p>
-
-{# credits #}
-  <p>
-    Autori (Martin Králik, Peter Perešíni, Martin Sucha) by chceli poďakovať
-    všetkým ľudom, čo projekt podporujú, tým čo prispeli kódom, dokumentáciou
-    alebo testovaním, či informáciou o chybe alebo nápadom na nejakú funkciu.
-  </p>
-  <p>
-    Fajr mohol vzniknúť aj vďaka nasledovným projektom, ktoré sme
-    použili pri vývoji:
-    <a href="http://www.prototypejs.org/">Prototype</a>,
-    <a href="http://www.blueprintcss.org/">Blueprint</a>,
-    <a href="http://www.frequency-decoder.com/2006/09/16/unobtrusive-table-sort-script-revisited">Unobtrusive Table Sort Script</a>,
-    <a href="http://www.famfamfam.com/lab/icons/silk/">Silk icons</a> a
-    <a href="http://www.twig-project.org/">Twig</a>.
+  <p>Ak chcete vidieť ako fajr vyzerá aj bez prihlásenia, {# TODO: demonštračné video #}
+     môžete vyskúšať <a href="https://fajr.dcs.fmph.uniba.sk/demo/">Fajr Demo</a>.
+     Navyše &mdash; Fajr je open source - môžete si pozrieť <a href="http://code.google.com/p/fajr/source/checkout">zdrojové kódy</a>,
+     prípadne aplikáciu rozbehať u seba.
   </p>
 </div>
-
-{# changelog #}
-{% include "parts/changelog.xhtml" %}
 
 {% endblock %}

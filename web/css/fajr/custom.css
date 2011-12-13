@@ -97,6 +97,7 @@ div.infoFooter {
   background: white;
   color: black;
   overflow: hidden;
+  padding-top: 1em;
 }
 
 p.intabs {
