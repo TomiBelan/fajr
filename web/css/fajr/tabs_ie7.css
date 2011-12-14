@@ -1,0 +1,12 @@
+.tab_header {
+  overflow: hidden;
+}
+
+.tab, .tab_selected {
+  float: left;
+}
+
+.tab_selected {
+  z-index: 50;
+  position: relative;
+}
