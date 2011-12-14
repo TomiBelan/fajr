@@ -98,6 +98,7 @@ div.infoFooter {
   background: white;
   color: black;
   padding-top: 1em;
+  padding-bottom: 2em;
   border-bottom: 1px solid white; /* napriek moznemu marginu chceme biele pozadie aj dole */
 }
 
@@ -114,7 +115,7 @@ p.intabs {
 }
 
 .tabcontent {
-  padding: 0ex 1em;
+  padding: 2ex 1em 0;
 }
 
 .textPage {

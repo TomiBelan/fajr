@@ -3,27 +3,32 @@
 .tab_header {
   background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAgCAYAAADT5RIaAAAAAXNSR0IArs4c6QAAAChJREFUCNdj+P///38mBgYGBiTi////5HCJUIef+PfvH5T4+/cvhAUAR+w2+UN0r48AAAAASUVORK5CYII=") repeat-x bottom;
   border-bottom: 1px solid #b6b6b6;
-  padding: 6px;
   margin: 0px;
-  margin-top: 20px;
-  margin-bottom: 10px;
-}
-
-.tab a, .tab_selected a {
-  text-decoration: none;
-  font-size: 150%;
+  margin-top: 3ex;
+  padding-left: 0;
 }
 
 .tab, .tab_selected{
-  margin-left: 15px;
-  padding: 1em 0.5em 0.5em;
-  border: 1px solid transparent;
+  display: inline-block;
+  margin-left: 1em;
+  list-style-type: none;
 }
-.tab_selected, .tab:hover {
+
+.tab a, .tab_selected a {
+  display: inline-block;
+  text-decoration: none;
+  font-size: 150%;
+  padding: 0.5ex 0.5em;
+  border: 1px solid transparent;
+  margin-bottom: -1px; /* Prekryme spodnu ciaru */
+  
+}
+
+.tab_selected a, .tab a:hover {
   border: 1px solid #b6b6b6;
   background-color: white;
 }
 
-.tab_selected {
+.tab_selected a {
   border-bottom: 1px solid white;
 }
