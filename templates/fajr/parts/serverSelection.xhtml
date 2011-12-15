@@ -16,7 +16,7 @@
         onChange="$('serverSelectForm').submit();">
         {% for key,item in availableServers  %}
           {% if item == currentServer %}
-            {% set selected='selected="true"' %}
+            {% set selected='selected' %}
           {% else %}
             {% set selected='' %}
           {% endif %}
