@@ -1,11 +1,16 @@
 table {
-  margin: 2px;
-  padding-right: 5px;
+  margin: 0;
+  border: 1px solid #999;
+}
+table {
+  /* Pridajme trocha CSS3 parady, pre istotu v samostatnom pravidle */
+  -moz-box-shadow: 0 0 5px #aaa;
+  -webkit-box-shadow: 0 0 5px #aaa;
+  box-shadow: 0 0 5px #aaa;
 }
 
 tr {
-  padding: 5px;
-  margin: 5px;
+  padding: 0.5ex;
 }
 
 /* table headers */
@@ -18,8 +23,12 @@ th.forwardSort, th.reverseSort {
 }
 
 /* table rows */
-td,th {
-  border-bottom: 1px solid #999;
+td, th {
+  padding: 0.7ex 0.7em;
+}
+
+td {
+  border-top: 1px solid #999;
 }
 
 tr:hover {

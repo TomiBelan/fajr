@@ -8,7 +8,7 @@
  #}
 {% extends "layout/studium.xhtml" %}
 {% block title %}Hodnotenia a priemery{% endblock %}
-{% block application_content %}
+{% block tabcontent %}
 {% import "macros/decorators.xhtml" as decorators %}
 {% import "macros/studium.xhtml" as studiumMacros %}
 {% import "macros/table.xhtml" as table %}
@@ -102,7 +102,7 @@
 {% endmacro %}
 
 {% set content %}
-  Nasledovné priemery sú prebraté z AISu, čiže to (ne)funguje presne rovnako:
+  <p>Nasledovné priemery sú prebraté z AISu, čiže to (ne)funguje presne rovnako:</p>
   {{ decorators.table(none, head, body, none, priemery|length == 0) }}
   {% if priemeryCalculator.hasPriemer %}
     <p><br />

@@ -10,6 +10,15 @@ body {
   line-height:1.5;
 }
 
+p {
+  margin-bottom: 1em;
+}
+
+hr {
+  margin-top: 0.75em;
+  margin-bottom: 0.75em;
+}
+
 /* general style for all clickable elements */
 .clickable { 
   cursor: pointer;
@@ -40,6 +49,11 @@ a.logo {
   color: white;
 }
 
+h2 {
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  font-size: 160%;
+}
 
 /* Buttons */
 

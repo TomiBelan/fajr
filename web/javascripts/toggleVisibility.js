@@ -10,6 +10,27 @@ function toggleVisibility(id) {
 }
 
 document.observe('dom:loaded', function() {
+  $$('.collapsible').each(function (div) {
+    var header = div.down('.collapsibleheader h2');
+    if (!header) {
+      // Vo fajri asi vsade mame aj h2
+      // ale pre kazdy pripad chceme vzdy mat link v collapsibleheader
+      header = div.down('.collapsibleheader');
+    }
+    var inner = header.innerHTML;
+    header.innerHTML = '';
+    var link = document.createElement('a');
+    link.innerHTML = inner;
+    link.setAttribute('href', '#');
+    link.onclick = function() {
+      toggleVisibility(div);
+      return false;
+    };
+    header.appendChild(link);
+  });
+});
+
+document.observe('dom:loaded', function() {
   $$('.studium-a-zapisny-list').each(function (div) {
     var active = false;
     var p = document.getElementById('p_'+div.id);
