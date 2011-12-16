@@ -9,27 +9,36 @@
  # 
  #}
 {% extends "layout/application.xhtml" %}
-{% block title %}Predmet {{ code }}{% endblock %}
+{% block title %}{{ subjectName }}{% endblock %}
 {% block application_content %}
   {{ parent() }}
+  <div class="textPage">
+    {# TODO(anty): Pridat link na DCS pre informaticke predmety #}
   <table>
+    <thead>
     <tr>
       <th>Názov</th>
       <th>Hodnota</th>
     </tr>
+    </thead>
+    <tbody>
     {% for item in list %}
       <tr>
         <td>{{ item.name }}</td>
         {% if item.values|length == 1 %}
+          {# TODO: matchovat veci a prerabat na linky #}
           <td>{{ item.values[0] }}</td>
         {% else %}
           <td><ul>
             {% for value in item.values %}
+              {# TODO: matchovat veci a prerabat na linky #}
               <li>{{ value }}</li>
             {% endfor %}
           </ul></td>
         {% endif %}
       </tr>
-    {% endfor %}  
+    {% endfor %}
+    </tbody>
   </table>
+  </div>
 {% endblock %}
