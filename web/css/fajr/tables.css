@@ -19,7 +19,7 @@ thead th {
 }
 
 th.forwardSort, th.reverseSort { 
-  background-color: yellow;
+  background-color: #ef0;
 }
 
 /* table rows */
@@ -31,30 +31,29 @@ td {
   border-top: 1px solid #999;
 }
 
-tr:hover {
-  background-color: #fdc;
-}
-
 tr:nth-child(even) {
   background-color: #F0F8FF;
 }
 
-tr.selected {background-color:yellow;}
+tr:hover {
+  background-color: #eee;
+}
+
+tr.selected {
+  background-color: #449;
+  color: white;
+}
+
+tr.selected a, tr.selected a:hover {
+  color: white;
+}
+
+tr.selected:hover {
+  background-color: #449;
+}
 
 tr.terminold {
   color:gray;
-}
-
-tr.terminmozeodhlasit {
-  color:green;
-}
-
-tr.terminnemozeodhlasit {
-  color: orange;
-}
-
-tr.terminodhlaseny {
-  color: #aaa;
 }
 
 tr.leto {
@@ -65,12 +64,20 @@ tr.leto:nth-child(even) {
   background-color: #FFFFC2;
 }
 
+tr.leto:hover {
+  background-color: #eee;
+}
+
 tr.zima {
   background-color: #E0E0FF;
 }
 
 tr.zima:nth-child(even) {
   background-color: #D1D1FF;
+}
+
+tr.zima:hover {
+  background-color: #eee;
 }
 
 tr.rok {
@@ -81,9 +88,13 @@ tr.rok:nth-child(even) {
   background-color: #D1FFD1;
 }
 
+tr.rok:hover {
+  background-color: #eee;
+}
+
 /* table footer */
 
 tfoot tr {
-  background-color:#efefef;
+  background-color: #B3C9EF;
   font-style: italic;
 }

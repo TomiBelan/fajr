@@ -5,3 +5,8 @@ a.logo {
 #mainContent {
   width: 100%; /* IE6 hasLayout */
 }
+
+button.big {
+  padding: 0;
+  margin: 0;
+}
