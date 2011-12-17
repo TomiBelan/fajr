@@ -23,32 +23,28 @@ Aktuálne zvolené štúdium a zápisný list:
 {# --------------------- ZOZNAM STUDII -------------------------------#}
 
 {% set head %}
+  {{ table.column("študijný program", "sortable-text") }}
+  {{ table.column("číslo programu", "sortable-numeric") }}
   {{ table.column("ročník", "sortable-numeric") }}
   {{ table.column("rok štúdia", "sortable-numeric") }}
-  {{ table.column("skratka", "sortable-text") }}
-  {{ table.column("študijný program", "sortable-text") }}
-  {{ table.column("doplňujúce údaje", "sortable-text") }}
-  {{ table.column("dĺžka štúdia", "sortable-numeric") }}
   {{ table.column("dĺžka v semestroch", "sortable-numeric") }}
   {{ table.column("začiatok štúdia", "sortable-date-dmy") }}
   {{ table.column("koniec štúdia", "sortable-date-dmy") }}
-  {{ table.column("číslo programu", "sortable-numeric") }}
+  {{ table.column("doplňujúce údaje", "sortable-text") }}
 {% endset %}
 
 {% set body %}
   {% for row in zoznamStudii.data %}
     {{ table.row(none, row.index == studium) }}
       {% url link for {'action': action, 'studium': row.index} %}
-      <td><a href="{{ link }}">{{ row.rokDoporuceny }}</a></td>
+      <td><a href="{{ link }}">{{ row.studijnyProgramPopis }} ({{ row.studijnyProgramSkratka }})</a></td>
+      <td>{{ row.studijnyProgramIdProgramCRS }}</td>
+      <td>{{ row.rokDoporuceny }}</a></td>
       <td>{{ row.rokStudia }}</td>
-      <td>{{ row.studijnyProgramSkratka }}</td>
-      <td>{{ row.studijnyProgramPopis }}</td>
-      <td>{{ row.studijnyProgramDoplnUdaje }}</td>
-      <td>{{ row.dobaStudia }}</td>
       <td>{{ row.studijnyProgramDlzka }}</td>
       <td>{{ row.zaciatokStudia }}</td>
       <td>{{ row.koniecStudia }}</td>
-      <td>{{ row.studijnyProgramIdProgramCRS }}</td>
+      <td>{{ row.studijnyProgramDoplnUdaje }}</td>
     {{ table.endrow() }}
   {% endfor %}
 {% endset %}
@@ -61,12 +57,8 @@ Aktuálne zvolené štúdium a zápisný list:
 {% set head %}
   {{ table.column("akademicky rok", "sortable-text") }}
   {{ table.column("ročník", "sortable-numeric") }}
-  {{ table.column("skratka", "sortable-text") }}
-  {{ table.column("štud. program", "sortable-text") }}
-  {{ table.column("doplňujúce údaje", "sortable-text") }}
-  {{ table.column("dĺžka v semestroch", "sortable-numeric") }}
+  {{ table.column("študijný program", "sortable-text") }}
   {{ table.column("dátum zápisu", "sortable-date-dmy") }}
-  {{ table.column("číslo programu", "sortable-numeric") }}
 {% endset %}
 
 {% set body %}
@@ -75,12 +67,8 @@ Aktuálne zvolené štúdium a zápisný list:
       {% url link for {'action': action, 'studium': studium, 'list': row.index} %}
       <td><a href="{{ link }}">{{ row.popisAkadRok }}</a></td>
       <td>{{ row.rokRocnik }}</td>
-      <td>{{ row.studProgramSkratka }}</td>
-      <td>{{ row.studProgramPopis }}</td>
-      <td>{{ row.studProgramDoplnUdaje }}</td>
-      <td>{{ row.studProgramDlzka }}</td>
+      <td>{{ row.studProgramPopis }} ({{ row.studProgramSkratka }})</td>
       <td>{{ row.datumZapisu }}</td>
-      <td>{{ row.studProgramIdProgramCRS }}</td>
     {{ table.endrow() }}
   {% endfor %}
 {% endset %}
