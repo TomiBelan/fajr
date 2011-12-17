@@ -40,16 +40,16 @@ tr:hover {
 }
 
 tr.selected {
-  background-color: #449;
-  color: white;
+  background-color: #FFDC64;
+  color: black;
 }
 
 tr.selected a, tr.selected a:hover {
-  color: white;
+  color: black;
 }
 
 tr.selected:hover {
-  background-color: #449;
+  background-color: #FFEC84;
 }
 
 tr.terminold {

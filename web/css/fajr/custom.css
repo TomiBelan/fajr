@@ -79,13 +79,33 @@ button.big {
   text-align: center;
   color: white;
   background: #333;
+  border: 1px solid #333;
 }
 
-button:hover {
+button.big:hover {
+  background-color: #111;
+}
+
+button {
   /* Pridajme trocha CSS3 parady, pre istotu v samostatnom pravidle */
-  -moz-box-shadow: 0 0 10px 333;
-  -webkit-box-shadow: 0 0 10px 333;
-  box-shadow: 0 0 10px 333;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  
+  box-shadow: 1px 1px 3px #333;
+  -moz-box-shadow: 1px 1px 3px #333;
+  -webkit-box-shadow: 1px 1px 3px #333;
+}
+
+button.big {
+  /* Pridajme trocha CSS3 parady, pre istotu v samostatnom pravidle */
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  
+  box-shadow: 2px 2px 5px #333;
+  -moz-box-shadow: 2px 2px 5px #333;
+  -webkit-box-shadow: 2px 2px 5px #333;
 }
 
 .warningBanner {
