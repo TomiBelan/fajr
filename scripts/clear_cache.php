@@ -3,9 +3,10 @@
 use fajr\config\FajrConfigLoader;
 
 // register our autoloader
-require_once (__DIR__ . '/../src/libfajr/libfajr.php');
+require_once (__DIR__ . '/../libfajr/src/libfajr.php');
 Loader::register();
 Loader::searchForClasses(__DIR__ . '/../src', true);
+Loader::searchForClasses(__DIR__ . '/../libfajr/src', true);
 
 if (!FajrConfigLoader::isConfigured()) {
   echo 'Chyba: Fajr nie je nakonfigurovany'. "\n";
