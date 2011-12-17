@@ -15,12 +15,11 @@
 {{ parent() }}
 {% set head %}
   {{ table.column("predmet", "sortable-text") }}
-  {{ table.column("čas", "sortable-text") }} {# cas je hh:mm #}
   {{ table.column("dátum", "sortable-date-dmy") }}
+  {{ table.column("čas", "sortable-text") }} {# cas je hh:mm #}
   {{ table.column("miestnosť", "sortable-text") }}
   {{ table.column("hodnotiaci", "sortable-sortPriezviskoMeno") }}
-  {{ table.column("počet prihlásených", "sortable-numeric") }}
-  {{ table.column("maximálny počet", "sortable-numeric") }}
+  {{ table.column("prihlásení", "sortable-numeric") }}
   {{ table.column("poznámka", "sortable-text") }}
   {{ table.column("prihlasovanie", "sortable-sortPrihlasovanieOdhlasovanie") }}
   {{ table.column("odhlasovanie", "sortable-sortPrihlasovanieOdhlasovanie") }}
@@ -34,13 +33,15 @@
                    'studium': studium,
                    'list': zapisnyList,
                    'termin': row.index} %}
-  <td><a href="{{ link }}">{{ row.predmetNazov }}</a></td>
-  <td>{{ row.cas }}</td>
+  <td>{{ row.predmetNazov }}</td>
   <td>{{ row.dat }}</td>
+  <td>{{ row.cas }}</td>
   <td>{{ row.miestnosti }}</td>
   <td>{{ row.hodnotiaci }}</td>
-  <td>{{ row.pocetPrihlasenych }}</td>
-  <td>{{ row.maxPocet }}</td>
+  <td>{{ row.pocetPrihlasenych }}{% if not row.maxPocet is empty %}/{{ row.maxPocet }}{% endif %}
+      {% if row.pocetPrihlasenych > 0 %}<a href="{{ link }}"
+      title="Zoznam prihlásených študentov na {{ row.predmetNazov }} {{ row.dat }} {{ row.cas }}">zoznam</a>{% endif %}
+  </td>
   <td>{{ row.poznamka }}</td>
   <td>{{ row.prihlasovanie }}</td>
   <td>{{ row.odhlasovanie }}</td>
