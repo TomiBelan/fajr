@@ -35,10 +35,6 @@ tr:nth-child(even) {
   background-color: #F0F8FF;
 }
 
-tr:hover {
-  background-color: #eee;
-}
-
 tr.selected {
   background-color: #FFDC64;
   color: black;
@@ -52,10 +48,6 @@ tr.selected:hover {
   background-color: #FFEC84;
 }
 
-tr.terminold {
-  color:gray;
-}
-
 tr.leto {
   background-color: #FFFFD0;
 }
@@ -64,20 +56,12 @@ tr.leto:nth-child(even) {
   background-color: #FFFFC2;
 }
 
-tr.leto:hover {
-  background-color: #eee;
-}
-
 tr.zima {
   background-color: #E0E0FF;
 }
 
 tr.zima:nth-child(even) {
-  background-color: #D1D1FF;
-}
-
-tr.zima:hover {
-  background-color: #eee;
+  background-color: #D7D7FF;
 }
 
 tr.rok {
@@ -85,11 +69,20 @@ tr.rok {
 }
 
 tr.rok:nth-child(even) {
-  background-color: #D1FFD1;
+  background-color: #D7FFD7;
+}
+
+tr:hover, tr.leto:hover {
+  background-color: #FFEC84;
+  /* #FFEC84; */
+}
+
+tr.zima:hover {
+  background-color: #9EC0FF;
 }
 
 tr.rok:hover {
-  background-color: #eee;
+  background-color: #75FF75;
 }
 
 /* table footer */
