@@ -38,6 +38,7 @@
 #serverSelect button {
   float: none;
   display: inline-block;
+  margin-left: 1em;
 }
 
 .velkyDisclaimer {
