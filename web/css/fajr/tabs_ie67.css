@@ -1,0 +1,14 @@
+.tab_header {
+  overflow: hidden;
+  width: 100%; /* IE6 hasLayout */
+  background-image: url("../../images/tabbar-bg.png");
+}
+
+.tab, .tab_selected {
+  float: left;
+}
+
+.tab_selected {
+  z-index: 50;
+  position: relative;
+}

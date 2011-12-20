@@ -2,6 +2,45 @@
   width: 100%;
 }
 
+#loginVpravo {
+  width: 25em;
+  float: right;
+  padding-top: 2em;
+  padding-right: 5em;
+  padding-left: 5em;
+}
+
+#welcomeMain {
+  padding-left: 5em;
+  padding-right: 5em;
+  padding-top: 4ex;
+  padding-bottom: 8ex;
+  min-width: 50em;
+}
+
+#featurelist {
+  padding: 0;
+  margin: 2em 0;
+  padding-left: 2em;
+}
+
+#featurelist li {
+  /*
+  list-style: none;
+  margin-left: 0;
+  */
+  margin-left: 1em;
+  padding-left: 0;
+  margin-top: 1em;
+  font-size: 120%;
+}
+
+#serverSelect button {
+  float: none;
+  display: inline-block;
+  margin-left: 1em;
+}
+
 .velkyDisclaimer {
   font-size: 150%;
 }

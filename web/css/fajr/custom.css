@@ -1,7 +1,24 @@
 /* ??? */
 
+body {
+  font-size: 80%;
+  background: #f9f9f9;
+  min-width: 70em;
+}
+
 .increase-line-height {
   line-height:1.5;
+}
+
+p {
+  margin-bottom: 1em;
+}
+
+hr {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  height: 1px;
+  background-color: #B6B6B6;
 }
 
 /* general style for all clickable elements */
@@ -9,24 +26,36 @@
   cursor: pointer;
 }
 
-.clickable:hover {
-  background-color: #85FF85;
-}
-
 /* Main title && logo */
 
 h1 {
   margin: 0.5ex;
-  font-size: 300%;
+  font-size: 250%;
+}
+
+h1.logo {
+  background: #333;
+  color: white;
+  margin: 0;
+  padding: 0.5ex;
 }
 
 a.logo {
   padding-left: 64px;
   background: transparent url("../../images/logo.png") 16px 50% no-repeat;
   min-height: 32px;
+  color: white;
 }
 
+a.logo:hover {
+  color: white;
+}
 
+h2 {
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  font-size: 160%;
+}
 
 /* Buttons */
 
@@ -43,14 +72,47 @@ button.tableButton
   margin:0 0 0 0;
 }
 
+button.big {
+  font-size: 250%;
+  width: 100%;
+  height: 1.5em;
+  text-align: center;
+  color: white;
+  background: #333;
+  border: 1px solid #333;
+}
+
+button.big:hover {
+  background-color: #111;
+}
+
+button {
+  /* Pridajme trocha CSS3 parady, pre istotu v samostatnom pravidle */
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  
+  box-shadow: 1px 1px 1px #CCCCCC inset, -1px -1px 1px #222222 inset;
+  -moz-box-shadow: 1px 1px 1px #CCCCCC inset, -1px -1px 1px #222222 inset;
+  -webkit-box-shadow: 1px 1px 1px #CCCCCC inset, -1px -1px 1px #222222 inset;
+}
+
+button.big {
+  /* Pridajme trocha CSS3 parady, pre istotu v samostatnom pravidle */
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+}
+
 .warningBanner {
-  font-size: 150%;
-  margin: 1ex;
-  padding: 0.5ex;
-  padding-left: 36px;
-  border: 1px solid red;
-  background: transparent url("../../images/third_party/silk/error.png") 10px 50% no-repeat;
-  min-height: 16px;
+  margin: 1.5ex;
+  padding: 0.7ex 1em;
+  border: 1px solid #ff7f2a;
+  background: #ffefaf;
 }
 
 .warningBanner strong {
@@ -59,7 +121,17 @@ button.tableButton
 }
 
 div.linkbar {
-  margin: 1ex;
+  background: #333;
+  color: white;
+  padding: 1ex;
+}
+
+div.linkbar a {
+  color: white;
+}
+
+div.linkbar a:hover {
+  color: white;
 }
 
 div.linkbarLeft {
@@ -71,5 +143,53 @@ div.linkbarRight {
 }
 
 div.infoFooter {
-  border-top: 1px solid #AAAAAA;
+  border-top: 1px solid #b6b6b6;
+  background: #f9f9f9;
+  color: black;
+  padding: 1ex 1em;
+  clear: both;
+}
+
+#mainContent {
+  background: white;
+  color: black;
+  padding-top: 1em;
+  padding-bottom: 2em;
+  border-bottom: 1px solid white; /* napriek moznemu marginu chceme biele pozadie aj dole */
+}
+
+#welcome {
+    overflow: hidden; /* kvoli floatom */
+}
+
+p.intabs {
+  margin: 1ex 1em;
+}
+
+.with-js .studium-a-zapisny-list {
+  display: none;
+}
+
+.tabcontent {
+  padding: 2ex 1em 0;
+}
+
+.textPage {
+  padding: 0ex 1em;
+  margin-bottom: 1em;
+}
+
+.textPage ol {
+  padding-left: 2em;
+  margin: 0.5ex 0;
+}
+
+.textPage p {
+  margin: 0.75em 0;
+}
+
+.textPage h2 {
+  font-size: 135%;
+  margin-bottom: 0.8ex;
+  margin-top: 2ex;
 }

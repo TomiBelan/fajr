@@ -10,4 +10,6 @@
 {% block loginBox %}
   {# loginBox #}
   {% include "parts/cosignLoginBox.xhtml" %}
+  {% set passwordLoginType = 'cosignpassword' %}
+  {% include "parts/passwordLoginBox.xhtml" %}
 {% endblock %}
