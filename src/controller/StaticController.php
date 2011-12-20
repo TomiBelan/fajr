@@ -40,4 +40,9 @@ class StaticController extends BaseController
     $context->getResponse()->setTemplate('termsOfUse');
   }
   
+  public function runAbout(Trace $trace, Context $context)
+  {
+    $context->getResponse()->setTemplate('about');
+  }
+  
 }

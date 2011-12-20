@@ -38,6 +38,10 @@
           Verzia fajru: {% include "parts/version.xhtml" %}
         </div>
         {% block footer %}{% endblock %}
+        <div>
+          {% url about for {'action': 'static.About', '_file': 'index.php'} %}
+          Copyright 2010,2011 Kolektív autorov. <a href="{{ about }}">O aplikácii</a>
+        </div>
       </div>
       {% if trace %}
         <div class="span-24">
