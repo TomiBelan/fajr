@@ -47,6 +47,8 @@ class FajrConfigOptions {
   const BACKEND_LIBFAJR = 'libfajr';
   /** use fake backend with virtual data */
   const BACKEND_FAKE = 'fake';
+  /** Unique instance ID on a given server, used e.g. for naming session cookies */
+  const INSTANCE_NAME = 'Instance.Name';
 
   /**
    * Return description of configuration parameters
@@ -158,6 +160,10 @@ class FajrConfigOptions {
           array('defaultValue' => self::BACKEND_LIBFAJR,
                 'validator' => new ChoiceValidator(
                   array(self::BACKEND_LIBFAJR, self::BACKEND_FAKE))),
+      
+      self::INSTANCE_NAME =>
+          array('defaultValue' => 'fajr',
+                'validator' => $stringValidator),
     );
 
     return $parameterDescription;

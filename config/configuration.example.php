@@ -15,6 +15,10 @@ use fajr\config\ServerConfig;
 use fajr\config\SkinConfig;
 
 return array(
+  /* Určuje ID inštancie na danom serveri, od tohto sa odvíja aj napr. názov
+   * session cookie */
+  'Instance.Name' => 'fajr',
+  
   /*
    * Ak táto voľba obsahuje tracking code na Google Analytics,
    * do stránky sa vloží potrebný skript na trackovanie. V prípade,
