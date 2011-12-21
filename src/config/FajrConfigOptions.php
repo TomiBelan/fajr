@@ -26,7 +26,11 @@ class FajrConfigOptions {
   const GOOGLE_ANALYTICS_ACCOUNT = 'GoogleAnalytics.Account';
   const DEBUG_BANNER = 'Debug.Banner';
   const DEBUG_TRACE = 'Debug.Trace';
-  const DEBUG_TRACE_FILE = 'Debug.Trace.File';
+  const DEBUG_TRACE_DIR = 'Debug.Trace.Directory';
+  const DEBUG_TRACE_NONE = 'none';
+  const DEBUG_TRACE_ARRAY = 'array';
+  const DEBUG_TRACE_BINARY = 'binary';
+  const DEBUG_TRACE_TEXT = 'text';
   const DEBUG_EXCEPTION_SHOWSTACKTRACE = 'Debug.Exception.ShowStacktrace';
   const PATH_TO_TEMP = 'Path.Temporary';
   const PATH_TO_COOKIES = 'Path.Temporary.Cookies';
@@ -76,10 +80,12 @@ class FajrConfigOptions {
               'validator' => $booleanValidator),
 
       self::DEBUG_TRACE =>
-        array('defaultValue' => false,
-              'validator' => $booleanValidator),
+        array('defaultValue' => self::DEBUG_TRACE_NONE,
+              'validator' => new ChoiceValidator(
+                  array(self::DEBUG_TRACE_NONE, self::DEBUG_TRACE_ARRAY,
+                    self::DEBUG_TRACE_BINARY, self::DEBUG_TRACE_TEXT))),
 
-      self::DEBUG_TRACE_FILE =>
+      self::DEBUG_TRACE_DIR =>
         array('defaultValue' => null,
               'relativeTo' => 'Path.Temporary',
               'validator' => $pathValidator),

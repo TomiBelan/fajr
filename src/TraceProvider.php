@@ -22,6 +22,7 @@ use libfajr\trace\BinaryFileTrace;
 use libfajr\trace\ArrayTrace;
 use libfajr\trace\NullTrace;
 use libfajr\base\SystemTimer;
+use fajr\util\FajrUtils;
 
 class TraceProvider
 {
@@ -32,22 +33,32 @@ class TraceProvider
   {
     if (!isset(self::$instance)) {
       $config = FajrConfigLoader::getConfiguration();
-      if($config->get(FajrConfigOptions::DEBUG_TRACE) === true) {
-        $debugFile = $config->getDirectory(FajrConfigOptions::DEBUG_TRACE_FILE);
-        if ($debugFile !== null) {
-          $uniqueSuffix = sha1(uniqid('trace', true));
-          $file = @fopen($debugFile.'.'.$uniqueSuffix, 'ab');
-          if ($file === false) {
-            throw new Exception('Cannot open trace file');
-          }
-          self::$instance = new BinaryFileTrace(SystemTimer::getInstance(), $file, '--Trace--');
-        }
-        else {
-          self::$instance = new ArrayTrace(SystemTimer::getInstance(), '--Trace--');
-        }
+      $type = $config->get(FajrConfigOptions::DEBUG_TRACE);
+      $uniqueID = sha1(uniqid('trace', true));
+      $header = 'Trace (id: '.$uniqueID.')';
+      if($type === FajrConfigOptions::DEBUG_TRACE_NONE) {
+        self::$instance = new NullTrace();
+      }
+      else if ($type === FajrConfigOptions::DEBUG_TRACE_ARRAY) {
+        self::$instance = new ArrayTrace(SystemTimer::getInstance(), $header);
       }
       else {
-        self::$instance = new NullTrace();
+        // File-based trace
+        $traceDir = $config->getDirectory(FajrConfigOptions::DEBUG_TRACE_DIR);
+        if ($traceDir === null) {
+          throw new \LogicException(FajrConfigOptions::DEBUG_TRACE_DIR .
+              ' is not set, but is required for file-based traces');
+        }
+        $ext = $type == FajrConfigOptions::DEBUG_TRACE_TEXT ? 'txt' : 'bin';
+        $filename = FajrUtils::joinPath($traceDir, 'trace'.$uniqueID.'.'.$ext);
+        $file = @fopen($filename, 'ab');
+        if ($file === false) {
+          throw new \Exception('Cannot open trace file');
+        }
+        if ($type == FajrConfigOptions::DEBUG_TRACE_TEXT) {
+          self::$instance = new FileTrace(SystemTimer::getInstance(), $file, 0, $header);
+        }
+        self::$instance = new BinaryFileTrace(SystemTimer::getInstance(), $file, $header);
       }
     }
     return self::$instance;
