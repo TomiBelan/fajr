@@ -29,15 +29,6 @@ namespace libfajr\trace;
 interface Trace
 {
   /**
-   * Set the header of the current trace.
-   *
-   * @param string $header Header.
-   *
-   * @returns void
-   */
-  public function setHeader($header);
-
-  /**
    * Append a new text node into tracer.
    *
    * @param string $text Text to append.

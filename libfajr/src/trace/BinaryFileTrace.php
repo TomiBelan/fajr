@@ -134,15 +134,6 @@ class BinaryFileTrace implements Trace
   }
 
   /**
-   * BinaryFileTrace does not support setting header text after construction.
-   * @param string $header header text to be displayed
-   */
-  public function setHeader($header)
-  {
-    Preconditions::checkIsString($header, '$header should be string');
-  }
-
-  /**
    * Log an event
    * @param string $text text to be displayed
    */

@@ -26,10 +26,6 @@ use libfajr\trace\Trace;
  */
 class NullTrace implements Trace
 {
-  public function setHeader($header)
-  {
-  }
-
   public function tlog($text)
   {
   }

@@ -48,17 +48,6 @@ class ArrayTrace implements Trace
     $this->timer = $timer;
   }
 
-
-  /**
-   * Set this trace's header
-   * @param string $header header text to be displayed
-   */
-  public function setHeader($header)
-  {
-    Preconditions::checkIsString($header, '$header should be string');
-    $this->header = $header;
-  }
-
   /**
    * Log an event
    * @param string $text text to be displayed
