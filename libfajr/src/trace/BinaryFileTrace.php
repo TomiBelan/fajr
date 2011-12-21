@@ -1,6 +1,44 @@
 <?php
 /**
- *
+ * BinaryTrace writes traces to a file in binary format.
+ * 
+ * The binary format consists of:
+ * - four byte signature - always 'FBTR' (ascii)
+ * - any number of entries
+ * 
+ * An entry consists of:
+ * - a header:
+ *   - two byte signature - always 'BE' (ascii)
+ *   - two byte entry type
+ *   - 16-bit unsigned big-endian integer id
+ *   - 16-bit unsigned big-endian integer parent (a value of 0 means no parent)
+ *   - 32-bit unsigned entry data length (number of bytes following the header)
+ * - binary entry data
+ * 
+ * Currently the only defined type of entry is 'TR', defined as a sequence of:
+ * - serialized message
+ * - serialized trace information
+ * - serialized user data
+ * 
+ * Data is serialized as follows:
+ * - null:
+ *   - signature - 'N' (ascii)
+ * - string:
+ *   - signature - 'S' (ascii)
+ *   - 32-bit unsigned big-endian length of string data
+ *   - string data
+ * - int:
+ *   - signature - 'I' (ascii)
+ *   - 32-bit unsigned big-endian value (TODO: negative numbers?!)
+ * - array:
+ *   - signature - 'A' (ascii)
+ *   - 32-bit unsigned count of key-value pairs
+ *   - count entries consisting of:
+ *     - serialized array key
+ *     - serialized array value
+ * - all other data types are converted to string first, then processed
+ *   accordingly
+ * 
  * @copyright  Copyright (c) 2010,2011 The Fajr authors (see AUTHORS).
  *             Use of this source code is governed by a MIT license that can be
  *             found in the LICENSE file in the project root directory.
@@ -21,8 +59,17 @@ use InvalidArgumentException;
 use libfajr\trace\TraceUtil;
 use libfajr\util\StrUtil;
 
+/**
+ * A helper class that represents writable stream of trace entries.
+ * Multiple BinaryTrace instances share a single instance of
+ * EntryStream if the traces are related (and so write to the same file)
+ */
 class EntryStream {
+  /* Types of trace entries. MUST be 2 bytes long.
+   * Currently there is only a sigle entry type */
   const ENTRY_TRACE = 'TR';
+  
+  /* Types of serialized entities */
   const SER_STRING = 'S';
   const SER_INT = 'I';
   const SER_ARRAY = 'A';
@@ -46,6 +93,7 @@ class EntryStream {
   public function writeEntry($type, $parent, $data)
   {
     Preconditions::checkIsString($type);
+    /* Entry type is defined to be 2-bytes long so check that */
     Preconditions::check(StrUtil::byteLength($type) == 2);
     Preconditions::checkIsNumber($parent);
     Preconditions::checkIsString($data);
