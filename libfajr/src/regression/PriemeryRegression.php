@@ -54,6 +54,10 @@ class PriemeryRegression
           22 => 'priemerPocitatNeabsC',
           23 => 'pocetPredmetovVyp',
           24 => 'priemerInfoStudentiVypoctu',
+          25 => 'priemerInfoKodSemesterOd',
+          26 => 'priemerInfoPopisAkadRokOd',
+          27 => 'priemerInfoDatum1HodnOd',
+          28 => 'priemerInfoDatum2HodnOd',
           );
   }
 }

@@ -1,11 +1,16 @@
 table {
-  margin: 2px;
-  padding-right: 5px;
+  margin: 0;
+  border: 1px solid #999;
+}
+table {
+  /* Pridajme trocha CSS3 parady, pre istotu v samostatnom pravidle */
+  -moz-box-shadow: 0 0 5px #aaa;
+  -webkit-box-shadow: 0 0 5px #aaa;
+  box-shadow: 0 0 5px #aaa;
 }
 
 tr {
-  padding: 5px;
-  margin: 5px;
+  padding: 0.5ex;
 }
 
 /* table headers */
@@ -14,38 +19,33 @@ thead th {
 }
 
 th.forwardSort, th.reverseSort { 
-  background-color: yellow;
+  background-color: #ef0;
 }
 
 /* table rows */
-td,th {
-  border-bottom: 1px solid #999;
+td, th {
+  padding: 0.7ex 0.7em;
 }
 
-tr:hover {
-  background-color: #fdc;
+td {
+  border-top: 1px solid #999;
 }
 
 tr:nth-child(even) {
   background-color: #F0F8FF;
 }
 
-tr.selected {background-color:yellow;}
-
-tr.terminold {
-  color:gray;
+tr.selected {
+  background-color: #FFDC64;
+  color: black;
 }
 
-tr.terminmozeodhlasit {
-  color:green;
+tr.selected a, tr.selected a:hover {
+  color: black;
 }
 
-tr.terminnemozeodhlasit {
-  color: orange;
-}
-
-tr.terminodhlaseny {
-  color: #aaa;
+tr.selected:hover {
+  background-color: #FFEC84;
 }
 
 tr.leto {
@@ -61,7 +61,7 @@ tr.zima {
 }
 
 tr.zima:nth-child(even) {
-  background-color: #D1D1FF;
+  background-color: #D7D7FF;
 }
 
 tr.rok {
@@ -69,12 +69,25 @@ tr.rok {
 }
 
 tr.rok:nth-child(even) {
-  background-color: #D1FFD1;
+  background-color: #D7FFD7;
+}
+
+tr:hover, tr.leto:hover {
+  background-color: #FFEC84;
+  /* #FFEC84; */
+}
+
+tr.zima:hover {
+  background-color: #9EC0FF;
+}
+
+tr.rok:hover {
+  background-color: #75FF75;
 }
 
 /* table footer */
 
 tfoot tr {
-  background-color:#efefef;
+  background-color: #B3C9EF;
   font-style: italic;
 }

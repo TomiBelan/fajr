@@ -6,21 +6,19 @@
  #             found in the LICENSE file in the project root directory.
  # @author     Peter Perešíni <ppershing+fajr@gmail.com>
  #}
-<div class="span-14 prepend-1 last">
+<div id="demoLoginBox" class="loginBoxDiv">
   {# Cosign proxy needs GET method! #}
   <form method="get" action="fajr.php">
     <fieldset class="login-box">
+      <legend>Prihlásenie do {{ currentServer.serverName }} </legend>
       <input type="hidden" name="serverName" value="{{ currentServer.serverName }}" />
       <input type="hidden" name="loginType" value="nologin" />
       <input type="hidden" name="action" value="login.Login" />
-      <legend>Prihlásenie do {{ currentServer.serverName }} </legend>
       <div>
-        <div class="velkyDisclaimer">
           Nemáš prístup do AISu? Alebo len nechceš brať mačku vo vreci? Pozri si ako vyzerá fajr
           aj bez nutnosti prihlásiť sa!
-        </div>
         <br/>
-        <button type="submit" name="submit">
+        <button type="submit" name="submit" class="big">
           Ukáž demo
         </button>
       </div>

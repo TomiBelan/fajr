@@ -165,10 +165,16 @@ class StudiumController extends BaseController
                 VSES017\AdministraciaStudiaScreen::ACTION_HODNOTENIA_PRIEMERY));
     }
 
+    $response->set('currentTab', '');
     $response->set('zoznamStudii', $this->zoznamStudii);
     $response->set('studium', $this->studium);
+    // TODO(anty): refactor
+    $zoznamStudiiData = $this->zoznamStudii->getData();
+    $response->set('studiumObj', $zoznamStudiiData[$this->studium]);
     $response->set('zapisneListy', $this->zapisneListy);
     $response->set('zapisnyList', $this->zapisnyList);
+    // TODO(anty): refactor
+    $response->set('zapisnyListObj', $zapisneListyData[$this->zapisnyList]);
 
     if (array_key_exists($action, $this->actionInfo)) {
       $info = $this->actionInfo[$action];
@@ -199,6 +205,7 @@ class StudiumController extends BaseController
     $predmetyData = $hodnoteniaData = Sorter::sort($predmety->getData(),
           array("akRok"=>1, "semester"=>-1, "nazov"=>1));
     
+    $response->set('currentTab', 'PrehladKreditov');
     $response->set('predmety', $predmetyData);
     $response->setTemplate('studium/prehladKreditov');
   }
@@ -238,6 +245,7 @@ class StudiumController extends BaseController
         regression\PriemeryRegression::get(),
         $priemery->getTableDefinition());
 
+    $response->set('currentTab', 'Hodnotenia');
     $response->set('hodnotenia', $hodnoteniaData);
     $response->set('priemery', $priemery->getData());
     $response->set('priemeryCalculator', $priemeryCalculator);
@@ -362,6 +370,7 @@ class StudiumController extends BaseController
       $response->set('prihlaseni', $prihlaseni->getData());
     }
 
+    $response->set('currentTab', 'TerminyHodnotenia');
     $response->set('terminyActive', $terminyHodnoteniaActive);
     $response->set('terminyOld', $terminyHodnoteniaOld);
     $response->set('termin', $termin);
@@ -395,6 +404,7 @@ class StudiumController extends BaseController
       $priemeryCalculator->add($semester, '', $predmetyRow[PredmetyFields::KREDIT]);
     }
 
+    $response->set('currentTab', 'ZapisnyList');
     $response->set('predmetyZapisnehoListu', $predmetyZapisnehoListuData);
     $response->set('predmetyStatistika', $priemeryCalculator);
     $response->setTemplate('studium/zapisanePredmety');
@@ -542,6 +552,7 @@ class StudiumController extends BaseController
       $response->set('prihlaseni', $prihlaseni->getData());
     }
 
+    $response->set('currentTab', 'ZapisSkusok');
     $response->set('predmetyZapisnehoListu', $predmetyZapisnehoListu);
     $response->set('terminy', $terminyData);
     $response->set('termin', $request->getParameter('termin'));

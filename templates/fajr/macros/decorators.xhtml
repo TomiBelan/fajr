@@ -17,18 +17,13 @@
  #}
 {% macro collapsible(title, content, collapsed) %}
   {% unique collapsible id %}
-  <div class="collapsible" id="{{ id }}">
-    <div class="collapsibleheader togglevisibility" onclick="toggleVisibility('{{ id }}')">
+  <div class="collapsible{% if collapsed %} collapsed{% endif %}" id="{{ id }}">
+    <div class="collapsibleheader">
       {{ title|raw }}
     </div>
     <div class="collapsiblecontent">
       {{ content|raw }}
     </div>
-    {% if collapsed %}
-      <script type="text/javascript">
-        toggleVisibility("{{ id }}");
-      </script>
-    {% endif %}
   </div>
 {% endmacro %}
 
@@ -81,11 +76,11 @@
  # @param safeString $selectedTab nazov aktualneho tabu
  #}
 {% macro tabs(content, definitions, selectedTab) %}
-<div class="tab_header">
+<ul class="tab_header">
   {% for tabKey in definitions|keys %}{% set tab = definitions[tabKey] %}{#
-    #}<span class="tab{% if tabKey == selectedTab %}_selected{% endif %}"
-          ><a href="{{ tab.url }}">{{ tab.title }}</a></span>{#
+    #}<li class="tab{% if tabKey == selectedTab %}_selected{% endif %}"
+          ><a href="{{ tab.url }}">{{ tab.title }}</a></li>{#
   #}{% endfor %}
-</div>
+</ul>
 {{ content|raw }}
 {% endmacro %}

@@ -88,12 +88,12 @@ class PredmetyController extends BaseController
     $request = $context->getRequest();
     $response = $context->getResponse();
 
-    $code = $request->getParameter('code');
+    $searchCode = $request->getParameter('code');
     $format = $request->getParameter('format');
 
-    Preconditions::check(!empty($code), "Nezadaný kód predmetu!");
+    Preconditions::check(!empty($searchCode), "Nezadaný kód predmetu!");
 
-    $content = $this->registerPredmetovScreen->getInformacnyList($trace, $code);
+    $content = $this->registerPredmetovScreen->getInformacnyList($trace, $searchCode);
     
     $ip = new InformacnyListParser();
     $list = $ip->parse($trace, $content);
@@ -101,6 +101,21 @@ class PredmetyController extends BaseController
     $response->setTemplate('predmety/informacnyList');
     if ($format == 'json') $response->setFormat('json');
     $response->set('list', $list->getAllAttributes());
-    $response->set('code', $code);
+    $response->set('code', $searchCode);
+    $name = $list->getAttribute('nazov');
+    $code = $list->getAttribute('kod');
+    if ($code === false) {
+      $code = $searchCode;
+    }
+    else {
+      $code = $code['values'][0];
+    }
+    if ($name === false) {
+      $name = 'Predmet '.$code;
+    }
+    else {
+      $name = $name['values'][0];
+    }
+    $response->set('subjectName', $name);
   }
 }

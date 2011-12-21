@@ -38,17 +38,14 @@
 {% endmacro %}
 
 {% block content %}
-  {% url logout for {'action': 'logout', '_file': 'index.php'} %}
-  <div class="logout">
-    <a class="button negative" href="{{ logout }}">
-    <img src="images/third_party/silk/door_in.png" alt=""/>Odhlásiť</a>
-  </div>
 <div class="error">
   <h2>Pri spracúvaní požiadavky nastala chyba:</h2>
   {{ _self.recursiveException(exception, showStackTrace) }}
 </div>
   <div class="prepend-1">
     {% url mainPage for {} %}
+    {% url logout for {'action': 'login.Logout', '_file': 'index.php'} %}
     <a href="{{ mainPage }}">Späť na hlavnú stránku</a>
+    <a href="{{ logout }}">Odhlásiť</a>
   </div>
 {% endblock %}

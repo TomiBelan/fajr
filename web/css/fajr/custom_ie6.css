@@ -1,0 +1,12 @@
+a.logo {
+  background-image: url("../../images/logo.gif");
+}
+
+#mainContent {
+  width: 100%; /* IE6 hasLayout */
+}
+
+button.big {
+  padding: 0;
+  margin: 0;
+}
