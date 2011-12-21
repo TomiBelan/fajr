@@ -27,15 +27,17 @@ def read_entry(f):
   if ehdr_data == '':
     # eof
     return None
-  if ehdr_data[:4] != 'BETR':
+  if ehdr_data[:2] != 'BE':
     raise DecodeError('Bad trace entry header')
-  ehdr = EntryHeader._make(unpack('>HHI', ehdr_data[4:]))
+  if ehdr_data[2:4] != 'TR':
+    raise DecodeError('Unknown trace entry type')
+  ehdr = EntryHeader(*unpack('>HHI', ehdr_data[4:]))
   edata = f.read(ehdr.length)
   pos, msg = unserialize(edata)
   skip, trace = unserialize(edata[pos:])
   pos += skip
   skip, data = unserialize(edata[pos:])
-  return Entry._make((ehdr.id, ehdr.parent, msg, trace, data, []))
+  return Entry(ehdr.id, ehdr.parent, msg, trace, data, [])
 
 def unserialize(data):
   if data[0] == 'S':
@@ -47,7 +49,7 @@ def unserialize(data):
     return 5, i
   elif data[0] == 'A':
     cnt = unpack('>I', data[1:5])[0]
-    # In PHP, order of key matters, so use array of tuples
+    # In PHP, order of keys matters, so use array of tuples
     # instead of a map
     vals = []
     pos = 5
