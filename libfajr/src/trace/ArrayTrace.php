@@ -43,20 +43,10 @@ class ArrayTrace implements Trace
    */
   public function __construct(Timer $timer, $header = "")
   {
-    $this->setHeader($header);
+    Preconditions::checkIsString($header);
+    $this->header = $header;
     $this->constructTime = microtime(true);
     $this->timer = $timer;
-  }
-
-
-  /**
-   * Set this trace's header
-   * @param string $header header text to be displayed
-   */
-  public function setHeader($header)
-  {
-    Preconditions::checkIsString($header, '$header should be string');
-    $this->header = $header;
   }
 
   /**

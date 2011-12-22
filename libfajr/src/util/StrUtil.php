@@ -146,5 +146,21 @@ class StrUtil {
   {
     return htmlspecialchars(self::utf8Sanitize($string), ENT_QUOTES, 'UTF-8');
   }
+  
+  /**
+   * Return the length of string in bytes
+   * @param string $str 
+   */
+  public static function byteLength($str) {
+    Preconditions::checkIsString($str);
+    $overloadMode = ini_get('mbstring.func_overload');
+    if (($overloadMode & 2) == 2) {
+      // overloaded string functions
+      // strlen returns # of chars instead of bytes in this case
+      // so we use mb_strlen
+      return mb_strlen($str, '8bit');
+    }
+    return strlen($str);
+  }
 }
 ?>

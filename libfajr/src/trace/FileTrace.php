@@ -55,16 +55,6 @@ class FileTrace implements Trace
   }
 
   /**
-   * FileTrace does not support setting header text after construction.
-   * TODO(anty): implement when needed
-   * @param string $header header text to be displayed
-   */
-  public function setHeader($header)
-  {
-    Preconditions::checkIsString($header, '$header should be string');
-  }
-
-  /**
    * Log an event
    * @param string $text text to be displayed
    */
