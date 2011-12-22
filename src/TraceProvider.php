@@ -58,7 +58,9 @@ class TraceProvider
         if ($type == FajrConfigOptions::DEBUG_TRACE_TEXT) {
           self::$instance = new FileTrace(SystemTimer::getInstance(), $file, 0, $header);
         }
-        self::$instance = new BinaryFileTrace(SystemTimer::getInstance(), $file, $header);
+        else {
+          self::$instance = new BinaryFileTrace(SystemTimer::getInstance(), $file, $header);
+        }
       }
     }
     return self::$instance;
