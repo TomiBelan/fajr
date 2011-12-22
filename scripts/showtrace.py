@@ -14,7 +14,7 @@ class DecodeError(Exception):
     return repr(self.value)
 
 def entry_stream(f):
-  hdr = f.read(4);
+  hdr = f.read(4)
   if hdr != 'FBTR':
     raise DecodeError('Bad header')
   entry = read_entry(f)
@@ -91,7 +91,7 @@ if __name__ == '__main__':
   elif len(sys.argv) == 2:
     id = int(sys.argv[1])
     if not id in entry_map:
-      sys.stderr.write('No such id: ' + str(id) + '\n');
+      sys.stderr.write('No such id: ' + str(id) + '\n')
       exit(1)
     entry = entry_map[int(sys.argv[1])]
     if entry.data == None:
