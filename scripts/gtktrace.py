@@ -172,5 +172,9 @@ class TraceView(object):
 if __name__ == '__main__':
 	import sys
 	trace_view = TraceView()
-	trace_view.loadtrace(sys.stdin)
+	if len(sys.argv) == 2:
+		with open(sys.argv[1], 'rb') as f:
+			trace_view.loadtrace(f)
+	else:
+		trace_view.loadtrace(sys.stdin)
 	gtk.main()
