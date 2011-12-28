@@ -103,7 +103,6 @@ class Fajr {
     
   }
 
-
   public function render(Response $response)
   {
     try {
@@ -128,7 +127,7 @@ class Fajr {
       $trace = TraceProvider::getInstance();
       $this->context = Context::getInstance();
 
-      $this->setResponseFields($this->context->getResponse());
+      $this->setResponseFields($this->context->getRequest(), $this->context->getResponse());
       $this->runLogic($trace);
     } catch (SecurityException $e) {
       $this->logSecurityException($e);
@@ -162,13 +161,18 @@ class Fajr {
   /**
    * Sets common template fields.
    */
-  private function setResponseFields(Response $response)
+  private function setResponseFields(Request $request, Response $response)
   {
     $response = $this->context->getResponse();
     $response->set('version', new Version());
     $response->set('banner_debug', $this->config->get(FajrConfigOptions::DEBUG_BANNER));
-    $response->set('google_analytics',
+    if ($request->isDoNotTrack()) {
+      $response->set('google_analytics', null);
+    }
+    else {
+      $response->set('google_analytics',
                    $this->config->get(FajrConfigOptions::GOOGLE_ANALYTICS_ACCOUNT));
+    }
     $response->set('base', FajrUtils::basePath());
     $response->set('language', 'sk');
 

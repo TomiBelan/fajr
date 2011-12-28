@@ -101,4 +101,29 @@ class Request
     return $this->time;
   }
 
+  /**
+   * Get a value of HTTP header from request or null if not present
+   * @param string $name
+   * @return string|null the header value
+   */
+  public function getHeader($name)
+  {
+    Preconditions::checkIsString($name, '$name should be string.');
+    $var_name = 'HTTP_' . strtoupper(str_replace('-', '_', $name));
+    if (!isset($_SERVER[$var_name])) {
+      return null;
+    }
+    return $_SERVER[$var_name];
+  }
+
+  /**
+   * Return true if the user wishes not to be tracked, false otherwise
+   */
+  public function isDoNotTrack()
+  {
+    $header1 = $this->getHeader('X-Do-Not-Track');
+    $header2 = $this->getHeader('DNT');
+    return ($header1 === '1') || ($header2 === '1');
+  }
+
 }
