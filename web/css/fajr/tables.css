@@ -1,6 +1,12 @@
 table {
   margin: 0;
   border: 1px solid #999;
+  /*
+   * V tabulkach nechceme mat medzery medzi bunkami,
+   * navyse, tato vec sposobi, ze prazdne bunky v tabulke
+   * funguju OK aj v IE6/7
+   */
+  border-collapse: collapse;
 }
 table {
   /* Pridajme trocha CSS3 parady, pre istotu v samostatnom pravidle */
