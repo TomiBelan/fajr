@@ -165,6 +165,7 @@ class TraceView(object):
 				add_tree(child, it)
 		add_tree(entry_map[0], None)
 		self.tree.set_model(treestore)
+		self.tree.expand_row((0,), False)
 		
 	def destroy(self, widget, data=None):
 		gtk.main_quit()
