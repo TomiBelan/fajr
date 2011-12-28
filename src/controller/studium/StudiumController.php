@@ -141,6 +141,7 @@ class StudiumController extends BaseController
       $this->zapisnyList = null;
       $this->terminyHodnoteniaScreen = null;
       $this->hodnoteniaScreen = null;
+      $response->set('zapisnyListObj', null);
     }
     else {
       $this->zapisnyList = $request->getParameter('list');
@@ -150,6 +151,7 @@ class StudiumController extends BaseController
         $this->zapisnyList = $lastList['index'];
       }
       $this->zapisnyList = intval($this->zapisnyList);
+      $response->set('zapisnyListObj', $zapisneListyData[$this->zapisnyList]);
 
       try {
         $this->terminyHodnoteniaScreen = $screenFactory->newTerminyHodnoteniaScreen(
@@ -179,7 +181,6 @@ class StudiumController extends BaseController
     $response->set('zapisneListy', $this->zapisneListy);
     $response->set('zapisnyList', $this->zapisnyList);
     // TODO(anty): refactor
-    $response->set('zapisnyListObj', $zapisneListyData[$this->zapisnyList]);
 
     if (array_key_exists($action, $this->actionInfo)) {
       $info = $this->actionInfo[$action];

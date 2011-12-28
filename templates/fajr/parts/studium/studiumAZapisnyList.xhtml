@@ -12,10 +12,10 @@
 {% unique collapsible id %}
 
 <p id="p_{{ id }}">
-Aktuálne zvolené štúdium a zápisný list:
+Aktuálne zvolené štúdium{% if zapisnyListObj %} a zápisný list{% endif %}:
 {{ studiumObj.studijnyProgramPopis }}
 ({{ studiumObj.studijnyProgramSkratka }})
-{{ zapisnyListObj.popisAkadRok }}.
+{%- if zapisnyListObj  %} {{ zapisnyListObj.popisAkadRok }}{% endif %}.
 </p>
 
 <div id="{{ id }}" class="studium-a-zapisny-list">

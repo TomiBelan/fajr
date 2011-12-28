@@ -10,16 +10,11 @@
 {% block title %}Chýba zápisný list{% endblock %}
 {% block tabcontent %}  
 
-
 {% import "macros/decorators.xhtml" as decorators %}
 {% import "macros/studium.xhtml" as studiumMacros %}
 {{ parent() }}
-{% set tabContent %}
-  <div class="error">
-    Táto časť vyžaduje zápisný list, v aktuálne zvolenom štúdiu sa však žiaden
-    nevyskytuje. {# TODO(anty): link na vytvorenie noveho #}
-  </div>
-{% endset %}
-
-{{ studiumMacros.studiumTabs(tabContent, activeTab, studium, none) }}
+<div class="error">
+  Táto časť vyžaduje zápisný list, v aktuálne zvolenom štúdiu sa však žiaden
+  nevyskytuje. {# TODO(anty): link na vytvorenie noveho #}
+</div>
 {% endblock %}
