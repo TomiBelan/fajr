@@ -163,7 +163,9 @@ class Fajr {
    */
   private function setResponseFields(Request $request, Response $response)
   {
-    $response = $this->context->getResponse();
+    // https://developer.mozilla.org/en/The_X-FRAME-OPTIONS_response_header
+    $response->setHeader('X-Frame-Options', 'DENY');
+
     $response->set('version', new Version());
     $response->set('banner_debug', $this->config->get(FajrConfigOptions::DEBUG_BANNER));
     if ($request->isDoNotTrack()) {

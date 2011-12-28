@@ -152,9 +152,21 @@ class Response
     // php shutdown phase and according to manual
     // there is unpredictable object destruction order
     // in this phase
-    header('Location: ' . $url);
+    $this->setHeader('Location', $url);
     $this->set('redirectUrl', $url);
     $this->setTemplate('redirect');
+  }
+
+  /**
+   * Set a response header
+   * @param string $name
+   * @param string $value
+   */
+  public function setHeader($name, $value)
+  {
+    Preconditions::checkIsString($name, '$name must be string');
+    Preconditions::checkIsString($value, '$value must be string');
+    header($name.': '.$value);
   }
 
   /**
