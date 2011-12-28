@@ -1,3 +1,6 @@
+# all
+*.pyc
+*.swp
 
 # /
 /.htaccess
@@ -12,12 +15,6 @@
 
 # /nbproject/
 /nbproject/private
-
-# /scripts/gcl/
-/scripts/gcl/*.pyc
-
-# /scripts/gcl/third_party/
-/scripts/gcl/third_party/*.pyc
 
 # /temp/cookies/
 /temp/cookies/*
