@@ -30,6 +30,7 @@ use fajr\util\FajrUtils;
 use fajr\LoginManager;
 use fajr\BackendProvider;
 use fajr\exceptions\AuthenticationRequiredException;
+use libfajr\exceptions\ParseException;
 
 fields::autoload();
 
@@ -150,12 +151,16 @@ class StudiumController extends BaseController
       }
       $this->zapisnyList = intval($this->zapisnyList);
 
-      $this->terminyHodnoteniaScreen = $screenFactory->newTerminyHodnoteniaScreen(
+      try {
+        $this->terminyHodnoteniaScreen = $screenFactory->newTerminyHodnoteniaScreen(
                 $trace,
                 $adminStudia->getZapisnyListIdFromZapisnyListIndex($trace, $this->zapisnyList,
                     VSES017\AdministraciaStudiaScreen::ACTION_TERMINY_HODNOTENIA),
                 $adminStudia->getStudiumIdFromZapisnyListIndex($trace, $this->zapisnyList,
                     VSES017\AdministraciaStudiaScreen::ACTION_TERMINY_HODNOTENIA));
+      } catch (ParseException $e) {
+        $this->terminyHodnoteniaScreen = null;
+      }
 
       // FIXME: chceme to nejak refaktorovat, aby sme nevytvarali zbytocne
       // objekty, ktore v konstruktore robia requesty
@@ -263,6 +268,11 @@ class StudiumController extends BaseController
 
     $request = $context->getRequest();
     $response = $context->getResponse();
+    
+    if ($this->terminyHodnoteniaScreen == null) {
+      $response->setTemplate('studium/terminyHodnoteniaNedostupne');
+      return;
+    }
 
     $terminIndex = $request->getParameter("odhlasIndex");
 
@@ -308,6 +318,12 @@ class StudiumController extends BaseController
 
     $request = $context->getRequest();
     $response = $context->getResponse();
+    $response->set('currentTab', 'TerminyHodnotenia');
+    
+    if ($this->terminyHodnoteniaScreen == null) {
+      $response->setTemplate('studium/terminyHodnoteniaNedostupne');
+      return;
+    }
 
     $termin = $request->getParameter('termin');
 
@@ -370,7 +386,6 @@ class StudiumController extends BaseController
       $response->set('prihlaseni', $prihlaseni->getData());
     }
 
-    $response->set('currentTab', 'TerminyHodnotenia');
     $response->set('terminyActive', $terminyHodnoteniaActive);
     $response->set('terminyOld', $terminyHodnoteniaOld);
     $response->set('termin', $termin);
@@ -387,6 +402,13 @@ class StudiumController extends BaseController
   public function runZapisanePredmety(Trace $trace, Context $context) {
     $request = $context->getRequest();
     $response = $context->getResponse();
+    
+    $response->set('currentTab', 'ZapisnyList');
+    
+    if ($this->terminyHodnoteniaScreen == null) {
+      $response->setTemplate('studium/terminyHodnoteniaNedostupne');
+      return;
+    }
 
     $predmetyZapisnehoListu = $this->terminyHodnoteniaScreen->getPredmetyZapisnehoListu($trace);
     FajrUtils::warnWrongTableStructure($trace, $response, 'terminy hodnotenia-predmety',
@@ -404,7 +426,6 @@ class StudiumController extends BaseController
       $priemeryCalculator->add($semester, '', $predmetyRow[PredmetyFields::KREDIT]);
     }
 
-    $response->set('currentTab', 'ZapisnyList');
     $response->set('predmetyZapisnehoListu', $predmetyZapisnehoListuData);
     $response->set('predmetyStatistika', $priemeryCalculator);
     $response->setTemplate('studium/zapisanePredmety');
@@ -420,6 +441,11 @@ class StudiumController extends BaseController
   {
     $request = $context->getRequest();
     $response = $context->getResponse();
+    
+    if ($this->terminyHodnoteniaScreen == null) {
+      $response->setTemplate('studium/terminyHodnoteniaNedostupne');
+      return;
+    }
 
     $predmetIndex = $request->getParameter("prihlasPredmetIndex");
     $terminIndex = $request->getParameter("prihlasTerminIndex");
@@ -487,6 +513,13 @@ class StudiumController extends BaseController
   public function runZoznamTerminov(Trace $trace, Context $context) {
     $request = $context->getRequest();
     $response = $context->getResponse();
+    
+    $response->set('currentTab', 'ZapisSkusok');
+    
+    if ($this->terminyHodnoteniaScreen == null) {
+      $response->setTemplate('studium/terminyHodnoteniaNedostupne');
+      return;
+    }
 
     $predmetyZapisnehoListu = $this->terminyHodnoteniaScreen->getPredmetyZapisnehoListu($trace);
     FajrUtils::warnWrongTableStructure($trace, $response, 'terminy hodnotenia - predmety',
@@ -552,7 +585,6 @@ class StudiumController extends BaseController
       $response->set('prihlaseni', $prihlaseni->getData());
     }
 
-    $response->set('currentTab', 'ZapisSkusok');
     $response->set('predmetyZapisnehoListu', $predmetyZapisnehoListu);
     $response->set('terminy', $terminyData);
     $response->set('termin', $request->getParameter('termin'));
