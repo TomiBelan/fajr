@@ -20,6 +20,7 @@ use libfajr\connection\AIS2ServerConnection;
 use libfajr\connection\AIS2ServerUrlMap;
 use libfajr\connection\HttpConnection;
 use libfajr\exceptions\LoginException;
+use libfajr\exceptions\ReloginFailedException;
 use libfajr\login\Login;
 
 /**
@@ -99,7 +100,7 @@ class AIS2CosignLogin extends AIS2AbstractLogin {
     $urlMap = $serverConnection->getUrlMap();
     $data = $connection->get(new NullTrace(), $urlMap->getLoginUrl());
     if (!preg_match(self::LOGGED_IN_PATTERN, $data)) {
-      throw new LoginException("Relogin failed. Cosign cookie expired.");
+      throw new ReloginFailedException("Relogin failed. Cosign cookie expired.");
     }
     return true;
   }

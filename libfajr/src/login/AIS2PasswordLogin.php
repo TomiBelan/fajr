@@ -70,6 +70,6 @@ class AIS2PasswordLogin extends AIS2AbstractLogin
 
   public function ais2Relogin(AIS2ServerConnection $serverConnection)
   {
-    throw new LoginException("Can't relogin. User credentials weren't saved.");
+    throw new ReloginFailedException("Can't relogin. User credentials weren't saved.");
   }
 }

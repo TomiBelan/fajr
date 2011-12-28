@@ -23,6 +23,7 @@ use libfajr\login\CosignCookieLogin;
 use libfajr\login\AIS2PasswordLogin;
 use libfajr\login\AIS2CosignLogin;
 use libfajr\login\NoLogin;
+use libfajr\exceptions\ReloginFailedException;
 use fajr\Request;
 use fajr\util\FajrUtils;
 use sfStorage;
@@ -79,20 +80,17 @@ class LoginManager
     if ($login === null) return false;
     if ($this->cachedLoggedIn != null) return $this->cachedLoggedIn;
 
-    $this->cachedLoggedIn =  $login->isLoggedIn($this->connection) ||
+    try {
+      $this->cachedLoggedIn =  $login->isLoggedIn($this->connection) ||
            $login->ais2Relogin($this->connection);
+    }
+    catch (ReloginFailedException $ex) {
+      return false;
+    }
     return $this->cachedLoggedIn;
   }
-
-  /**
-   * Odhlási z Cosignu a zmaže lokálne cookies.
-   */
-  public function logout()
-  {
-    $this->cachedLoggedIn = null;
-    $login = $this->session->read('login/login.class');
-    $server = $this->session->read('server');
-
+  
+  private function destroySession() {
     // It is better to remove all session information also
     // in case when logout fails. Otherwise it may be not
     // possible for user to logout from fajr and this
@@ -104,7 +102,18 @@ class LoginManager
     // Note, calling $session->regenerate() preserve data
     // so we force destroy in old way
     session_destroy();
+  }
 
+  /**
+   * Odhlási z Cosignu a zmaže lokálne cookies.
+   */
+  public function logout()
+  {
+    $this->cachedLoggedIn = null;
+    $login = $this->session->read('login/login.class');
+    $server = $this->session->read('server');
+    
+    $this->destroySession();
 
     if ($login === null || !$login->logout($this->connection)) {
       $this->response->redirect(array(), 'index.php');
