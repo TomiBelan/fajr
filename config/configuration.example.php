@@ -79,6 +79,13 @@ return array(
    * Vypnutie SSL.Require sa na produkčnej inštalácii neodporúča!
    */
   //'SSL.Require'=>true,
+  
+  /*
+   * Pri nastaveni na nenulove cislo, zapina HTTP Strict Transport Security
+   * Cislo udava pocet sekund kolko plati tato hlavicka
+   * https://developer.mozilla.org/en/Security/HTTP_Strict_Transport_Security
+   */
+  //'SSL.StrictRequre'=>7*24*60*60,
 
   /*
    * User agent pod akým sa má libfajr identifikovať.

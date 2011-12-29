@@ -39,6 +39,7 @@ class FajrConfigOptions {
   const AIS_DEFAULT_SERVER = 'AIS2.DefaultServer';
   const PATH_TO_SSL_CERTIFICATES = 'SSL.CertificatesDir';
   const REQUIRE_SSL = 'SSL.Require';
+  const STRICT_TRANSPORT_SECURITY = 'SSL.StrictRequire';
   const USER_AGENT = 'Connection.UserAgent';
   const PATH_TO_TEMPLATES = 'Template.Directory';
   const USE_TEMPLATE_CACHE = 'Template.Cache';
@@ -120,6 +121,9 @@ class FajrConfigOptions {
       self::REQUIRE_SSL =>
         array('defaultValue' => true,
               'validator' => $booleanValidator),
+
+      self::STRICT_TRANSPORT_SECURITY =>
+        array('defaultValue' => null),
 
       self::USER_AGENT =>
         array('defaultValue' => 'Mozilla/5.0 (Windows; U; Windows NT 5.1; sk; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7',

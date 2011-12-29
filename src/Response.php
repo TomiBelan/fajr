@@ -170,6 +170,29 @@ class Response
   }
 
   /**
+   * Nastavi Strict-Transport-Security header.
+   * 
+   * Ak browser narazi na takyto header pokial je pripojeny cez HTTPS,
+   * nebude povolovat HTTP requesty po dobu $expireTime, ale namiesto toho
+   * pouzije rovno HTTPS.
+   * 
+   * @see https://developer.mozilla.org/en/Security/HTTP_Strict_Transport_Security
+   * 
+   * @param int $expireTime cas v sekundach kolko header plati
+   * @param boolean $includeSubdomains ci sa vztahuje aj na poddomeny
+   */
+  public function setStrictTransportSecurity($expireTime, $includeSubdomains=false)
+  {
+    Preconditions::check(is_int($expireTime), '$expireTime must be integer');
+    Preconditions::check(is_bool($includeSubdomains), '$includeSubdomains must be bool');
+    $content = 'max-age=' . $expireTime;
+    if ($includeSubdomains) {
+      $content .= '; includeSubdomains';
+    }
+    $this->setHeader('Strict-Transport-Security', $content);
+  }
+
+  /**
    * Clear a cookie.
    *
    * @param string $cookieName name of the cookie to clear

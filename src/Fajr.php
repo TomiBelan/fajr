@@ -165,6 +165,12 @@ class Fajr {
   {
     // https://developer.mozilla.org/en/The_X-FRAME-OPTIONS_response_header
     $response->setHeader('X-Frame-Options', 'DENY');
+    if (FajrUtils::isHTTPS()) {
+      $hstsExpireTime = $this->config->get(FajrConfigOptions::STRICT_TRANSPORT_SECURITY);
+      if ($hstsExpireTime !== null && $hstsExpireTime > 0) {
+        $response->setStrictTransportSecurity($hstsExpireTime);
+      }
+    }
 
     $response->set('version', new Version());
     $response->set('banner_debug', $this->config->get(FajrConfigOptions::DEBUG_BANNER));
