@@ -324,4 +324,21 @@ class FajrUtils
     }
     return $info;
   }
+  
+  public static function datetime2icsdatetime($datetime=null)
+  {
+    if ($datetime == null) {
+        $datetime = time();
+    }
+
+    $timeinfo = getdate($datetime);
+    return array(
+        'year'=>$timeinfo['year'],
+        'month'=>$timeinfo['mon'],
+        'day'=>$timeinfo['mday'],
+        'hour'=>$timeinfo['hours'],
+        'min'=>$timeinfo['minutes'],
+        'sec'=>$timeinfo['seconds']
+    );
+  }
 }

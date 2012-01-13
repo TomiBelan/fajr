@@ -70,6 +70,9 @@ class DisplayManager
    */
   public function display(Response $response)
   {
+    if ($response->getAlreadyRendered()) {
+      return; // no-op
+    }
     Preconditions::checkNotNull($response->getTemplate(), "Template not set");
     if ($response->getSkin()) {
       $skin = $response->getSkin();

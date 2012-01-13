@@ -42,10 +42,13 @@ class Response
   
   /** @var string output format name*/
   private $format = 'xhtml';
+  
+  /** @var boolean whether the response was already rendered*/
+  private $alreadyRendered = false;
 
   /** SkinConfig skin configuration */
   private $skin = null;
-
+  
   protected $data = array('warnings' => array());
 
   /**
@@ -209,4 +212,15 @@ class Response
     // removal
     setCookie( $cookieName, "null", 1, $path, $domain, $secure );
   }
+  
+  public function getAlreadyRendered()
+  {
+    return $this->alreadyRendered;
+  }
+
+  public function setAlreadyRendered($alreadyRendered)
+  {
+    $this->alreadyRendered = $alreadyRendered;
+  }
+
 }

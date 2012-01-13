@@ -125,5 +125,13 @@ class Request
     $header2 = $this->getHeader('DNT');
     return ($header1 === '1') || ($header2 === '1');
   }
+  
+  /**
+   * Return the name of the host the application is running
+   */
+  public function getHostName()
+  {
+    return $_SERVER['SERVER_NAME'];
+  }
 
 }
