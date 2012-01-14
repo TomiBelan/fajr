@@ -8,6 +8,4 @@
  * @author Martin Sucha <anty.sk@gmail.com>
  */
 
-define('_FAJR','INCLUDED');
-
-include('../src/index.php');
+include('index.php');
