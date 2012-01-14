@@ -7,4 +7,20 @@
 
 define('_FAJR','INCLUDED');
 
+$errors = '';
+
+if (!defined('PHP_VERSION_ID') or (PHP_VERSION_ID < 50300)) {
+  $errors .= 'FAJR potrebuje PHP verzie 5.3 a vyssie.<br/>';
+}
+
+if (!extension_loaded('mbstring')) {
+  $errors .= 'FAJR potrebuje mat v PHP zapnute rozsirenie mbstring.<br/>';
+}
+
+if (!extension_loaded('curl')) {
+  $errors .= 'FAJR potrebuje mat v PHP zapnute rozsirenie curl.<br/>';
+}
+
+if ($errors !== '') die($errors);
+
 include('../src/index.php');

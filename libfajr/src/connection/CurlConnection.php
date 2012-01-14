@@ -104,7 +104,6 @@ class CurlConnection implements HttpConnection
     $trace->tlogVariable("URL", $url);
 
     $this->checkNotClosed();
-
     $this->_curlSetOption(CURLOPT_URL, $url);
     $this->_curlSetOption(CURLOPT_HTTPGET, true);
     return $this->exec($trace);
