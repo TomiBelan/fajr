@@ -32,8 +32,9 @@ use libfajr\login\Login;
  */
 abstract class AIS2AbstractLogin implements Login
 {
-  // Note: ais response is in win-1250 charset, so we can't match accents
-  const NOT_LOGGED_PATTERN = '@Prihl.senie@';
+  /* Detekcia z hlavnej AIS stránky, či používateľ je neprihlásený */
+  const NOT_LOGGED_IN_PATTERN = '<form name="LoginForm"';
+  /* Detekcia z hlavnej AIS stránky, či používateľ je prihlásený*/
   const LOGGED_IN_PATTERN = '@\<div class="user-name"\>[^<]@';
 
   /**
@@ -59,9 +60,9 @@ abstract class AIS2AbstractLogin implements Login
     $connection = $serverConnection->getHttpConnection();
     $urlMap = $serverConnection->getUrlMap();
     $data = $connection->get(new NullTrace(), $urlMap->getStartPageUrl());
-    if (preg_match(self::NOT_LOGGED_PATTERN, $data)) return false;
+    if (preg_match(self::NOT_LOGGED_IN_PATTERN, $data)) return false;
     if (preg_match(self::LOGGED_IN_PATTERN, $data)) return true;
-    throw new LoginException("Unexpected response.");
+    throw new LoginException("Cannot tell if user is logged in: Unexpected response.");
   }
 
 }

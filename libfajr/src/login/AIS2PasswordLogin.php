@@ -52,10 +52,13 @@ class AIS2PasswordLogin extends AIS2AbstractLogin
 
     $data = $connection->post(new NullTrace(), $urlMap->getLoginUrl(),
         array("login" => $login, "password" => $password) );
-    if (!preg_match(self::LOGGED_IN_PATTERN, $data)) {
-      if ($reason = Strutil::match(self::LOGIN_ERROR_PATTERN, $data)) {
+    $loggedIn = preg_match(self::LOGGED_IN_PATTERN, $data);
+    $loggedOut = preg_match(self::NOT_LOGGED_IN_PATTERN, $data);
+    if (!$loggedIn || $loggedOut) {
+      $reason = Strutil::match(self::LOGIN_ERROR_PATTERN, $data);
+      if ($reason) {
         $reason = iconv("WINDOWS-1250", "UTF-8", $reason);
-        throw new LoginException('Login failed, reason: <b>'.$reason.'</b>');
+        throw new LoginException('Login failed, reason: ' . $reason);
       }
       throw new LoginException("Login failed, unknown reason.");
     }
@@ -63,8 +66,8 @@ class AIS2PasswordLogin extends AIS2AbstractLogin
   }
 
   protected function _checkLogoutPattern($response) {
-    if (!preg_match(self::NOT_LOGGED_PATTERN, $response)) {
-      throw new LoginException("Unexpected response.");
+    if (!preg_match(self::NOT_LOGGED_IN_PATTERN, $response)) {
+      throw new LoginException("Unexpected response, expecting to be logged out");
     }
   }
 
