@@ -38,16 +38,6 @@ interface Trace
   public function tlog($text);
 
   /**
-   * Append a new data node into tracer. Data nodes are usually bigger than
-   * text nodes and contains data that should retain formatting.
-   *
-   * @param string $string_data Data to append.
-   *
-   * @returns void
-   */
-  public function tlogData($string_data);
-
-  /**
    * Convenient way of appending any variable definition to tracer.
    * Implementations should use var_export() or similar function to
    * obtain string version of variable.

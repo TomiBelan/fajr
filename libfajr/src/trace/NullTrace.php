@@ -30,10 +30,6 @@ class NullTrace implements Trace
   {
   }
 
-  public function tlogData($text)
-  {
-  }
-
   public function tlogVariable($name, $variable)
   {
   }

@@ -66,12 +66,6 @@ class FileTraceTest extends PHPUnit_Framework_TestCase
     $this->assertRegExp('/<<MESSAGE>>/', $this->getFileAsString());
   }
 
-  public function testTlogData()
-  {
-    $this->trace->tlogData('<<MESSAGE>>');
-    $this->assertRegExp('/<<MESSAGE>>/', $this->getFileAsString());
-  }
-
   public function testTlogVariable()
   {
     $this->trace->tlogVariable('<<VARIABLE>>', '<<VALUE>>');

@@ -69,20 +69,6 @@ class FileTrace implements Trace
   }
 
   /**
-   * Log data
-   * @param string $text text to be displayed as is
-   */
-  public function tlogData($text)
-  {
-    Preconditions::checkIsString($text, '$text should be string');
-    $this->writeIndent();
-    $this->write($text . "\n");
-    $this->writeInfoLine("Type: data\n");
-    $this->writeInfo();
-    $this->flush();
-  }
-
-  /**
    * Log contents of a variable
    * @param string $name name of the variable (without dollar sign)
    * @param mixed $variable contents of the variable to be dumped

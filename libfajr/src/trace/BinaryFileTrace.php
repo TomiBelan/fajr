@@ -192,16 +192,6 @@ class BinaryFileTrace implements Trace
   }
 
   /**
-   * Log data
-   * @param string $text text to be displayed as is
-   */
-  public function tlogData($text)
-  {
-    Preconditions::checkIsString($text, '$text should be string');
-    $this->writeEntry('Long data', $text, $this->id);
-  }
-
-  /**
    * Log contents of a variable
    * @param string $name name of the variable (without dollar sign)
    * @param mixed $variable contents of the variable to be dumped
