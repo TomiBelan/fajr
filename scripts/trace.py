@@ -94,6 +94,9 @@ if __name__ == '__main__':
       sys.stderr.write('No such id: ' + str(id) + '\n')
       exit(1)
     entry = entry_map[int(sys.argv[1])]
+    sys.stderr.write('Entry ' + str(id) + (' in ' + str(entry.parent) if entry.parent else '') + ': ' + entry.message + '\n')
+    for key, value in entry.trace:
+	sys.stderr.write(str(key) + ': ' + str(value) + '\n')
     if entry.data == None:
       sys.stdout.write('null\n')
     else:
