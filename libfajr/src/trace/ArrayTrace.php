@@ -52,8 +52,9 @@ class ArrayTrace implements Trace
   /**
    * Log an event
    * @param string $text text to be displayed
+   * @param array $tags to use
    */
-  public function tlog($text)
+  public function tlog($text, array $tags = null)
   {
     Preconditions::checkIsString($text, '$text should be string');
     $this->children[] = array('info'=>$this->getInfoArray(),
@@ -65,8 +66,9 @@ class ArrayTrace implements Trace
    * Log contents of a variable
    * @param string $name name of the variable (without dollar sign)
    * @param mixed $variable contents of the variable to be dumped
+   * @param array $tags to use
    */
-  public function tlogVariable($name, $variable)
+  public function tlogVariable($name, $variable, array $tags = null)
   {
     $data = preg_replace("@\\\\'@", "'", var_export($variable, true));
     $this->children[] = array('info'=>$this->getInfoArray(),
@@ -77,13 +79,14 @@ class ArrayTrace implements Trace
 
   /**
    * Create a new ArrayTrace at the insertion point
-   * @param string $header text to use as header
+   * @param string $message text of the message
+   * @param array $tags
    * @return ArrayTrace child trace object
    */
-  public function addChild($header = "")
+  public function addChild($message, array $tags = null)
   {
-    Preconditions::checkIsString($header, '$header should be string');
-    $child = new ArrayTrace($this->timer, $header);
+    Preconditions::checkIsString($message, '$message should be string');
+    $child = new ArrayTrace($this->timer, $message);
     $this->children[] = array('info'=>$this->getInfoArray(),
                               'type'=>'trace',
                               'trace'=>$child);

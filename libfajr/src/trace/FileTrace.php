@@ -57,8 +57,9 @@ class FileTrace implements Trace
   /**
    * Log an event
    * @param string $text text to be displayed
+   * @param array $tags
    */
-  public function tlog($text)
+  public function tlog($text, array $tags = null)
   {
     Preconditions::checkIsString($text, '$text should be string');
     $this->writeIndent();
@@ -73,7 +74,7 @@ class FileTrace implements Trace
    * @param string $name name of the variable (without dollar sign)
    * @param mixed $variable contents of the variable to be dumped
    */
-  public function tlogVariable($name, $variable)
+  public function tlogVariable($name, $variable, array $tags = null)
   {
     $data = preg_replace("@\\\\'@", "'", var_export($variable, true));
     
@@ -86,14 +87,15 @@ class FileTrace implements Trace
 
   /**
    * Create a new FileTrace
-   * @param string $header text to use as header
+   * @param string $message text to use as header
+   * @param array $tags
    * @returns FileTrace child trace object
    */
-  public function addChild($header = "")
+  public function addChild($message, array $tags = null)
   {
-    Preconditions::checkIsString($header, '$header should be string');
+    Preconditions::checkIsString($message, '$header should be string');
     return new FileTrace($this->timer, $this->file,
-                         $this->depthLevel + 1, $header);
+                         $this->depthLevel + 1, $message);
   }
 
   /**

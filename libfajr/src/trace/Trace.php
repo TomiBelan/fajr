@@ -32,10 +32,11 @@ interface Trace
    * Append a new text node into tracer.
    *
    * @param string $text Text to append.
+   * @param array $tags to use
    *
    * @returns void
    */
-  public function tlog($text);
+  public function tlog($text, array $tags = null);
 
   /**
    * Convenient way of appending any variable definition to tracer.
@@ -44,19 +45,21 @@ interface Trace
    *
    * @param string $name     name of the variable to be dumped
    * @param mixed  $variable variable to be dumped
+   * @param array $tags to use
    *
    * @returns void
    */
-  public function tlogVariable($name, $variable);
+  public function tlogVariable($name, $variable, array $tags = null);
 
   /**
    * Create a new child node of this trace object and return it.
    *
-   * @param string $header Optional child header
+   * @param string $message message
+   * @param array $tags to use
    *
    * @returns Trace Newly created child node.
    */
-  public function addChild($header = "");
+  public function addChild($message, array $tags = null);
 
   /**
    * Determine whether the trace is active or not.

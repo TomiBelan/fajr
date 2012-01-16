@@ -36,6 +36,7 @@ class TraceProvider
       $type = $config->get(FajrConfigOptions::DEBUG_TRACE);
       $uniqueID = sha1(uniqid('trace', true));
       $header = 'Trace (id: '.$uniqueID.')';
+      $tags = array('unique-id' => $uniqueID);
       if($type === FajrConfigOptions::DEBUG_TRACE_NONE) {
         self::$instance = new NullTrace();
       }
@@ -59,7 +60,7 @@ class TraceProvider
           self::$instance = new FileTrace(SystemTimer::getInstance(), $file, 0, $header);
         }
         else {
-          self::$instance = new BinaryFileTrace(SystemTimer::getInstance(), $file, $header);
+          self::$instance = new BinaryFileTrace(SystemTimer::getInstance(), $file, $header, $tags);
         }
       }
     }
