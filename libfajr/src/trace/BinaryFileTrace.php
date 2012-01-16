@@ -178,7 +178,7 @@ class BinaryFileTrace implements Trace
     $this->constructTime = microtime(true);
     $this->timer = $timer;
     
-    $this->id = $this->writeEntry($header, null);
+    $this->id = $this->writeEntry($header, null, $this->parentId);
   }
 
   /**
@@ -188,7 +188,7 @@ class BinaryFileTrace implements Trace
   public function tlog($text)
   {
     Preconditions::checkIsString($text, '$text should be string');
-    $this->writeEntry($text, null);
+    $this->writeEntry($text, null, $this->id);
   }
 
   /**
@@ -198,7 +198,7 @@ class BinaryFileTrace implements Trace
   public function tlogData($text)
   {
     Preconditions::checkIsString($text, '$text should be string');
-    $this->writeEntry('Long data', $text);
+    $this->writeEntry('Long data', $text, $this->id);
   }
 
   /**
@@ -208,7 +208,7 @@ class BinaryFileTrace implements Trace
    */
   public function tlogVariable($name, $variable)
   {
-    $this->writeEntry($name, $variable);
+    $this->writeEntry($name, $variable, $this->id);
   }
 
   /**
@@ -227,7 +227,7 @@ class BinaryFileTrace implements Trace
    * Writes information about current Trace event
    *
    */
-  private function writeEntry($logMsg, $userData)
+  private function writeEntry($logMsg, $userData, $parent)
   {
     Preconditions::checkIsString($logMsg);
     
@@ -253,7 +253,7 @@ class BinaryFileTrace implements Trace
     $serialized .= $this->stream->serialize($traceInfo);
     $serialized .= $this->stream->serialize($userData);
     
-    $id = $this->stream->writeEntry(EntryStream::ENTRY_TRACE, $this->parentId,
+    $id = $this->stream->writeEntry(EntryStream::ENTRY_TRACE, $parent,
         $serialized);
     
     return $id;
