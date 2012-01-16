@@ -33,7 +33,7 @@ use libfajr\login\Login;
 abstract class AIS2AbstractLogin implements Login
 {
   /* Detekcia z hlavnej AIS stránky, či používateľ je neprihlásený */
-  const NOT_LOGGED_IN_PATTERN = '<form name="LoginForm"';
+  const NOT_LOGGED_IN_PATTERN = '@\<form name="LoginForm"@';
   /* Detekcia z hlavnej AIS stránky, či používateľ je prihlásený*/
   const LOGGED_IN_PATTERN = '@\<div class="user-name"\>[^<]@';
 
