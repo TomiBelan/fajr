@@ -100,8 +100,7 @@ class CurlConnection implements HttpConnection
 
   public function get(Trace $trace, $url)
   {
-    $trace->tlog("Http GET");
-    $trace->tlogVariable("URL", $url);
+    $trace->tlogVariable("HTTP GET URL", $url);
 
     $this->checkNotClosed();
     $this->_curlSetOption(CURLOPT_URL, $url);
@@ -111,13 +110,11 @@ class CurlConnection implements HttpConnection
 
   public function post(Trace $trace, $url, $data)
   {
-    $trace->tlog("Http POST");
-    $trace->tlogVariable("URL", $url);
+    $trace->tlogVariable("HTTP POST URL", $url);
 
     $this->checkNotClosed();
 
-    $child=$trace->addChild("POST data");
-    $child->tlogVariable("post_data", $data);
+    $trace->tlogVariable("POST data", $data);
     $this->_curlSetOption(CURLOPT_URL, $url);
     $this->_curlSetOption(CURLOPT_POST, true);
 
@@ -185,17 +182,18 @@ class CurlConnection implements HttpConnection
     $this->_curlSetOption(CURLOPT_COOKIEFILE, $this->cookieFile);
 
     $output = curl_exec($this->curl);
-    $child = $trace->addChild("Response");
-    $child->tlogVariable("Http resonse code",
-        curl_getinfo($this->curl, CURLINFO_HTTP_CODE));
-    $child->tlogVariable("Http content type",
-        curl_getinfo($this->curl, CURLINFO_CONTENT_TYPE));
-    $child->tlogVariable("Response", $output);
+    $response_code = curl_getinfo($this->curl, CURLINFO_HTTP_CODE);
+    $content_type = curl_getinfo($this->curl, CURLINFO_CONTENT_TYPE);
+    $tags = array(
+      'http-response-code' => $response_code,
+      'content-type' => $content_type,
+    );
+    $trace->tlogVariable("Response", $output, $tags);
 
     $this->processStatistics($this->curl);
 
     if (curl_errno($this->curl)) {
-      $child->tlog("There was an error receiving data");
+      $trace->tlog("There was an error receiving data");
       throw new Exception("Chyba pri nadväzovaní spojenia:".
           curl_error($this->curl));
     };
