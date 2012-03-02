@@ -45,7 +45,7 @@ class AIS2CosignLogin extends AIS2AbstractLogin {
 
   protected function _checkLogoutPattern($response) {
     if (!preg_match(self::LOGOUT_OK_PATTERN, $response)) {
-      throw new LoginException("Unexpected response.");
+      throw new LoginException("Unexpected response, expecting IIKS logout page");
     }
   }
 
@@ -89,7 +89,10 @@ class AIS2CosignLogin extends AIS2AbstractLogin {
     $urlMap = $serverConnection->getUrlMap();
     $data = $connection->get(new NullTrace(), $urlMap->getLoginUrl());
     if (!preg_match(self::LOGGED_IN_PATTERN, $data)) {
-      throw new LoginException("Login failed.");
+      throw new LoginException("Login failed, username not present.");
+    }
+    if (preg_match(self::NOT_LOGGED_IN_PATTERN, $data)) {
+      throw new LoginException('Login failed, login form still present.');
     }
     return true;
   }

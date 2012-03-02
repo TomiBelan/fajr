@@ -2,7 +2,7 @@
 /**
  * The main logic of fajr application.
  *
- * @copyright  Copyright (c) 2010, 2011 The Fajr authors (see AUTHORS).
+ * @copyright  Copyright (c) 2010, 2011, 2012 The Fajr authors (see AUTHORS).
  *             Use of this source code is governed by a MIT license that can be
  *             found in the LICENSE file in the project root directory.
  *
@@ -37,6 +37,8 @@ use fajr\config\FajrConfig;
 use fajr\config\FajrConfigOptions;
 use fajr\ServerManager;
 use fajr\rendering\DisplayManager;
+use libfajr\exceptions\ReloginFailedException;
+
 
 /**
  * This is "main()" of the fajr. It instantiates all neccessary
@@ -201,14 +203,16 @@ class Fajr {
 
   public function runLogic(Trace $trace)
   {
+    $action = $this->context->getRequest()->getParameter('action',
+                                           'studium.MojeTerminyHodnotenia');
     $session = $this->context->getSessionStorage();
     $loginManager = LoginManager::getInstance();
-    // we are going to log in and  we need a clean session.
+    // If we are going to log in, we need a clean session.
     // This needs to be done before a connection
     // is created, because we pass cookie file name
     // that contains session_id into AIS2CurlConnection
-    if ($loginManager->shouldLogin()) {
-      $session->regenerate(true);
+    if ($action == 'user.Login') {
+      $loginManager->destroySession();
     }
 
     $connection = ConnectionProvider::getInstance();
@@ -218,11 +222,19 @@ class Fajr {
     $connService = LazyServerConnection::getInstance();
     $connService->setReal($serverConnection);
 
-    $action = $this->context->getRequest()->getParameter('action',
-                                           'studium.MojeTerminyHodnotenia');
     $response = $this->context->getResponse();
     
     $loggedIn = $loginManager->isLoggedIn($serverConnection);
+    if (!$loggedIn) {
+      try {
+        $loggedIn = $loginManager->relogin();
+      }
+      catch (ReloginFailedException $ex) {
+        $loginManager->destroySession();
+        $response->redirect(array('action' => 'login.LoginScreen'), 'index.php');
+        return;
+      }
+    }
     $response->set('loggedIn', $loggedIn);
     
     if ($loggedIn) {

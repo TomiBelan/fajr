@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * @copyright  Copyright (c) 2010, 2011 The Fajr authors (see AUTHORS).
+ * @copyright  Copyright (c) 2010, 2011, 2012 The Fajr authors (see AUTHORS).
  *             Use of this source code is governed by a MIT license that can be
  *             found in the LICENSE file in the project root directory.
  *
@@ -23,7 +23,6 @@ use libfajr\login\CosignCookieLogin;
 use libfajr\login\AIS2PasswordLogin;
 use libfajr\login\AIS2CosignLogin;
 use libfajr\login\NoLogin;
-use libfajr\exceptions\ReloginFailedException;
 use fajr\Request;
 use fajr\util\FajrUtils;
 use sfStorage;
@@ -64,44 +63,41 @@ class LoginManager
     $this->connection = $connection;
   }
 
-  /**
-   * @returns true iff the user initiated a login
-   */
-  public function shouldLogin()
-  {
-    // TODO(ppershing): refactor templates
-    // to use action=login and special controller
-    return $this->request->hasParameter('loginType');
-  }
-
   public function isLoggedIn()
   {
     $login = $this->session->read('login/login.class');
     if ($login === null) return false;
     if ($this->cachedLoggedIn != null) return $this->cachedLoggedIn;
-
-    try {
-      $this->cachedLoggedIn =  $login->isLoggedIn($this->connection) ||
-           $login->ais2Relogin($this->connection);
-    }
-    catch (ReloginFailedException $ex) {
-      return false;
-    }
+    
+    $this->cachedLoggedIn =  $login->isLoggedIn($this->connection);
     return $this->cachedLoggedIn;
   }
   
-  private function destroySession() {
-    // It is better to remove all session information also
-    // in case when logout fails. Otherwise it may be not
-    // possible for user to logout from fajr and this
-    // is greater security risk than leaving active cookies
-    // on server side.
-    $this->session->remove('login/login.class');
-    $this->session->remove('server');
-    // wipe out all other session data
-    // Note, calling $session->regenerate() preserve data
-    // so we force destroy in old way
-    session_destroy();
+  public function relogin()
+  {
+    $this->cachedLoggedIn = null;
+    $login = $this->session->read('login/login.class');
+    if ($login === null) return false;
+    $this->cachedLoggedIn = $login->ais2Relogin($this->connection);
+    return $this->cachedLoggedIn;
+  }
+  
+  /**
+   * Properly destroy session and start a new clean one. 
+   */
+  public function destroySession()
+  {
+    // Regenerate the session id and delete the old session file.
+    // Note that regenerating session id does not in any way alter the
+    // session data stored in $_SESSION, so we need to be careful to clear
+    // that as well. Otherwise only the session id will be changed with
+    // the session data copied to the new session.
+    $result = session_regenerate_id(true);
+
+    // Ensure we don't copy any data to the new session
+    $_SESSION = array();
+
+    return $result;
   }
 
   /**
@@ -113,6 +109,10 @@ class LoginManager
     $login = $this->session->read('login/login.class');
     $server = $this->session->read('server');
     
+    // Destroy the session before requesting AIS logout page
+    // to be sure that we logout properly in case the connection
+    // or login on AIS side fails (we must assume that the possible
+    // error would be permanent)
     $this->destroySession();
 
     if ($login === null || !$login->logout($this->connection)) {
