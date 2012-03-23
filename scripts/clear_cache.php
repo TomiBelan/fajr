@@ -20,11 +20,21 @@ if (!$config->get('Template.Cache')) {
   return;
 }
 
+function clearDirectory($path) {
+  foreach (new DirectoryIterator($path) as $fileInfo) {
+    if (!$fileInfo->isDot() && ($fileInfo->isFile() || $fileInfo->isDir())) {
+      if ($fileInfo->isDir()) {
+        clearDirectory($fileInfo->getPathname());
+        rmdir($fileInfo->getPathname());
+      }
+      else {
+        unlink($fileInfo->getPathname());
+      }
+    }
+  }
+}
+
 $path = $config->getDirectory('Template.Cache.Path');
 echo 'Info: Template cache je ' . $path . "\n";
 
-foreach (new DirectoryIterator($path) as $fileInfo) {
-  if (!$fileInfo->isDot() && $fileInfo->isFile()) {
-    unlink($fileInfo->getPathname());
-  }
-}
+clearDirectory($path);
