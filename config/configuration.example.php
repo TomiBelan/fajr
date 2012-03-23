@@ -28,7 +28,7 @@ return array(
 
   /*
    * Zapnutím voľby sa začne zobrazovat varujúca hláška o development verzii
-   * a redirect na ostrú verziu fajr.dcs.fmph.uniba.sk
+   * a redirect na ostrú verziu fajr.fmph.uniba.sk
    */
   //'Debug.Banner'=>true,
 
