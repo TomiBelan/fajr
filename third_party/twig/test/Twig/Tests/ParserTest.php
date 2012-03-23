@@ -16,7 +16,23 @@ class Twig_Tests_ParserTest extends PHPUnit_Framework_TestCase
     public function testSetMacroThrowsExceptionOnReservedMethods()
     {
         $parser = new Twig_Parser(new Twig_Environment());
-        $parser->setMacro('display', $this->getMock('Twig_Node_Macro', null, array(), '', null));
+        $parser->setMacro('display', $this->getMock('Twig_Node_Macro', array(), array(), '', null));
+    }
+
+    /**
+     * @expectedException        Twig_Error_Syntax
+     * @expectedExceptionMessage Unknown tag name "foo". Did you mean "for" at line 0
+     */
+    public function testUnkownTag()
+    {
+        $stream = new Twig_TokenStream(array(
+            new Twig_Token(Twig_Token::BLOCK_START_TYPE, '', 0),
+            new Twig_Token(Twig_Token::NAME_TYPE, 'foo', 0),
+            new Twig_Token(Twig_Token::BLOCK_END_TYPE, '', 0),
+            new Twig_Token(Twig_Token::EOF_TYPE, '', 0),
+        ));
+        $parser = new Twig_Parser(new Twig_Environment());
+        $parser->parse($stream);
     }
 
     /**
@@ -66,6 +82,39 @@ class Twig_Tests_ParserTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @expectedException Twig_Error_Syntax
+     * @expectedExceptionMessage A template that extends another one cannot have a body but a byte order mark (BOM) has been detected; it must be removed at line 0.
+     */
+    public function testFilterBodyNodesWithBOM()
+    {
+        $parser = $this->getParserForFilterBodyNodes();
+        $parser->filterBodyNodes(new Twig_Node_Text(chr(0xEF).chr(0xBB).chr(0xBF), 0));
+    }
+
+    public function testParseIsReentrant()
+    {
+        $twig = new Twig_Environment(null, array(
+            'autoescape' => false,
+            'optimizations' => 0,
+        ));
+        $twig->addTokenParser(new TestTokenParser());
+
+        $parser = new Twig_Parser($twig);
+
+        $parser->parse(new Twig_TokenStream(array(
+            new Twig_Token(Twig_Token::BLOCK_START_TYPE, '', 0),
+            new Twig_Token(Twig_Token::NAME_TYPE, 'test', 0),
+            new Twig_Token(Twig_Token::BLOCK_END_TYPE, '', 0),
+            new Twig_Token(Twig_Token::VAR_START_TYPE, '', 0),
+            new Twig_Token(Twig_Token::NAME_TYPE, 'foo', 0),
+            new Twig_Token(Twig_Token::VAR_END_TYPE, '', 0),
+            new Twig_Token(Twig_Token::EOF_TYPE, '', 0),
+        )));
+
+        $this->assertEquals(null, $parser->getParent());
+    }
+
     protected function getParserForFilterBodyNodes()
     {
         $parser = new TestParser(new Twig_Environment());
@@ -83,5 +132,29 @@ class TestParser extends Twig_Parser
     public function filterBodyNodes(Twig_NodeInterface $node)
     {
         return parent::filterBodyNodes($node);
+    }
+}
+
+class TestTokenParser extends Twig_TokenParser
+{
+    public function parse(Twig_Token $token)
+    {
+        // simulate the parsing of another template right in the middle of the parsing of the current template
+        $this->parser->parse(new Twig_TokenStream(array(
+            new Twig_Token(Twig_Token::BLOCK_START_TYPE, '', 0),
+            new Twig_Token(Twig_Token::NAME_TYPE, 'extends', 0),
+            new Twig_Token(Twig_Token::STRING_TYPE, 'base', 0),
+            new Twig_Token(Twig_Token::BLOCK_END_TYPE, '', 0),
+            new Twig_Token(Twig_Token::EOF_TYPE, '', 0),
+        )));
+
+        $this->parser->getStream()->expect(Twig_Token::BLOCK_END_TYPE);
+
+        return new Twig_Node(array());
+    }
+
+    public function getTag()
+    {
+        return 'test';
     }
 }

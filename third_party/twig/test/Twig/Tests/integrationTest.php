@@ -23,21 +23,24 @@ class Twig_Tests_IntegrationTest extends PHPUnit_Framework_TestCase
 
             $test = file_get_contents($file->getRealpath());
 
-            if (preg_match('/--TEST--\s*(.*?)\s*((?:--TEMPLATE(?:\(.*?\))?--(?:.*))+)\s*--EXCEPTION--\s*(.*)/s', $test, $match)) {
+            if (preg_match('/
+                    --TEST--\s*(.*?)\s*(?:--CONDITION--\s*(.*))?\s*((?:--TEMPLATE(?:\(.*?\))?--(?:.*))+)\s*--EXCEPTION--\s*(.*)/sx', $test, $match)) {
                 $message = $match[1];
-                $exception = $match[3];
-                $templates = $this->parseTemplates($match[2]);
+                $condition = $match[2];
+                $templates = $this->parseTemplates($match[3]);
+                $exception = $match[4];
                 $outputs = array();
-            } elseif (preg_match('/--TEST--\s*(.*?)\s*((?:--TEMPLATE(?:\(.*?\))?--(?:.*?))+)--DATA--.*?--EXPECT--.*/s', $test, $match)) {
+            } elseif (preg_match('/--TEST--\s*(.*?)\s*(?:--CONDITION--\s*(.*))?\s*((?:--TEMPLATE(?:\(.*?\))?--(?:.*?))+)--DATA--.*?--EXPECT--.*/s', $test, $match)) {
                 $message = $match[1];
+                $condition = $match[2];
+                $templates = $this->parseTemplates($match[3]);
                 $exception = false;
-                $templates = $this->parseTemplates($match[2]);
-                preg_match_all('/--DATA--(.*?)--EXPECT--(.*?)(?=\-\-DATA\-\-|$)/s', $test, $outputs, PREG_SET_ORDER);
+                preg_match_all('/--DATA--(.*?)(?:--CONFIG--(.*?))?--EXPECT--(.*?)(?=\-\-DATA\-\-|$)/s', $test, $outputs, PREG_SET_ORDER);
             } else {
                 throw new InvalidArgumentException(sprintf('Test "%s" is not valid.', str_replace($fixturesDir.'/', '', $file)));
             }
 
-            $tests[] = array(str_replace($fixturesDir.'/', '', $file), $message, $templates, $exception, $outputs);
+            $tests[] = array(str_replace($fixturesDir.'/', '', $file), $message, $condition, $templates, $exception, $outputs);
         }
 
         return $tests;
@@ -46,38 +49,50 @@ class Twig_Tests_IntegrationTest extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider getTests
      */
-    public function testIntegration($file, $message, $templates, $exception, $outputs)
+    public function testIntegration($file, $message, $condition, $templates, $exception, $outputs)
     {
-        $loader = new Twig_Loader_Array($templates);
-        $twig = new Twig_Environment($loader, array('cache' => false));
-        $twig->addExtension(new Twig_Extension_Escaper());
-        $twig->addExtension(new TestExtension());
-
-        try {
-            $template = $twig->loadTemplate('index.twig');
-        } catch (Exception $e) {
-            if (false !== $exception) {
-                $this->assertEquals(trim($exception), trim(sprintf('%s: %s', get_class($e), $e->getMessage())));
-
-                return;
+        if ($condition) {
+            eval('$ret = '.$condition.';');
+            if (!$ret) {
+                $this->markTestSkipped($condition);
             }
-
-            if ($e instanceof Twig_Error_Syntax) {
-                $e->setTemplateFile($file);
-
-                throw $e;
-            }
-
-            throw new Twig_Error($e->getMessage().' (in '.$file.')');
         }
 
+        $loader = new Twig_Loader_Array($templates);
+
         foreach ($outputs as $match) {
+            $config = array_merge(array(
+                'cache' => false,
+                'strict_variables' => true,
+            ), $match[2] ? eval($match[2].';') : array());
+            $twig = new Twig_Environment($loader, $config);
+            $twig->addExtension(new TestExtension());
+            $twig->addExtension(new Twig_Extension_Debug());
+
+            try {
+                $template = $twig->loadTemplate('index.twig');
+            } catch (Exception $e) {
+                if (false !== $exception) {
+                    $this->assertEquals(trim($exception), trim(sprintf('%s: %s', get_class($e), $e->getMessage())));
+
+                    return;
+                }
+
+                if ($e instanceof Twig_Error_Syntax) {
+                    $e->setTemplateFile($file);
+
+                    throw $e;
+                }
+
+                throw new Twig_Error($e->getMessage().' (in '.$file.')');
+            }
+
             try {
                 $output = trim($template->render(eval($match[1].';')), "\n ");
             } catch (Exception $e) {
                 $output = trim(sprintf('%s: %s', get_class($e), $e->getMessage()));
             }
-            $expected = trim($match[2], "\n ");
+            $expected = trim($match[3], "\n ");
 
             if ($expected != $output)  {
                 echo 'Compiled template that failed:';
@@ -109,9 +124,12 @@ function test_foo($value = 'foo')
     return $value;
 }
 
-class Foo
+class Foo implements Iterator
 {
     const BAR_NAME = 'bar';
+
+    public $position = 0;
+    public $array = array(1, 2);
 
     public function bar($param1 = null, $param2 = null)
     {
@@ -147,6 +165,31 @@ class Foo
     {
         return strtolower($value);
     }
+
+    public function rewind()
+    {
+        $this->position = 0;
+    }
+
+    public function current()
+    {
+        return $this->array[$this->position];
+    }
+
+    public function key()
+    {
+        return 'a';
+    }
+
+    public function next()
+    {
+        ++$this->position;
+    }
+
+    public function valid()
+    {
+        return isset($this->array[$this->position]);
+    }
 }
 
 class TestTokenParser_☃ extends Twig_TokenParser
@@ -176,19 +219,23 @@ class TestExtension extends Twig_Extension
     public function getFilters()
     {
         return array(
-            '☃' => new Twig_Filter_Method($this, '☃Filter'),
+            '☃'                => new Twig_Filter_Method($this, '☃Filter'),
             'escape_and_nl2br' => new Twig_Filter_Method($this, 'escape_and_nl2br', array('needs_environment' => true, 'is_safe' => array('html'))),
-            'nl2br' => new Twig_Filter_Method($this, 'nl2br', array('pre_escape' => 'html', 'is_safe' => array('html'))),
+            'nl2br'            => new Twig_Filter_Method($this, 'nl2br', array('pre_escape' => 'html', 'is_safe' => array('html'))),
             'escape_something' => new Twig_Filter_Method($this, 'escape_something', array('is_safe' => array('something'))),
+            '*_path'           => new Twig_Filter_Method($this, 'dynamic_path'),
+            '*_foo_*_bar'      => new Twig_Filter_Method($this, 'dynamic_foo'),
         );
     }
 
     public function getFunctions()
     {
         return array(
-            '☃' => new Twig_Function_Method($this, '☃Function'),
-            'safe_br' => new Twig_Function_Method($this, 'br', array('is_safe' => array('html'))),
-            'unsafe_br' => new Twig_Function_Method($this, 'br'),
+            '☃'           => new Twig_Function_Method($this, '☃Function'),
+            'safe_br'     => new Twig_Function_Method($this, 'br', array('is_safe' => array('html'))),
+            'unsafe_br'   => new Twig_Function_Method($this, 'br'),
+            '*_path'      => new Twig_Function_Method($this, 'dynamic_path'),
+            '*_foo_*_bar' => new Twig_Function_Method($this, 'dynamic_foo'),
         );
     }
 
@@ -218,6 +265,16 @@ class TestExtension extends Twig_Extension
         // not secure if $value contains html tags (not only entities)
         // don't use
         return str_replace("\n", "$sep\n", $value);
+    }
+
+    public function dynamic_path($element, $item)
+    {
+        return $element.'/'.$item;
+    }
+
+    public function dynamic_foo($foo, $bar, $item)
+    {
+        return $foo.'/'.$bar.'/'.$item;
     }
 
     public function escape_something($value)

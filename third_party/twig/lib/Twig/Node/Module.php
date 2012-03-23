@@ -57,29 +57,31 @@ class Twig_Node_Module extends Twig_Node
 
         $this->compileIsTraitable($compiler);
 
+        $this->compileDebugInfo($compiler);
+
         $this->compileClassFooter($compiler);
     }
 
     protected function compileGetParent(Twig_Compiler $compiler)
     {
+        if (null === $this->getNode('parent')) {
+            return;
+        }
+
         $compiler
             ->write("protected function doGetParent(array \$context)\n", "{\n")
             ->indent()
             ->write("return ")
         ;
 
-        if (null === $this->getNode('parent')) {
-            $compiler->raw("false");
+        if ($this->getNode('parent') instanceof Twig_Node_Expression_Constant) {
+            $compiler->subcompile($this->getNode('parent'));
         } else {
-            if ($this->getNode('parent') instanceof Twig_Node_Expression_Constant) {
-                $compiler->subcompile($this->getNode('parent'));
-            } else {
-                $compiler
-                    ->raw("\$this->env->resolveTemplate(")
-                    ->subcompile($this->getNode('parent'))
-                    ->raw(")")
-                ;
-            }
+            $compiler
+                ->raw("\$this->env->resolveTemplate(")
+                ->subcompile($this->getNode('parent'))
+                ->raw(")")
+            ;
         }
 
         $compiler
@@ -91,7 +93,6 @@ class Twig_Node_Module extends Twig_Node
 
     protected function compileDisplayBody(Twig_Compiler $compiler)
     {
-        $compiler->write("\$context = array_merge(\$this->env->getGlobals(), \$context);\n\n");
         $compiler->subcompile($this->getNode('body'));
 
         if (null !== $this->getNode('parent')) {
@@ -152,17 +153,25 @@ class Twig_Node_Module extends Twig_Node
             }
 
             $compiler
-                ->write("\$this->blocks = array_merge(\n")
+                ->write("\$this->traits = array_merge(\n")
                 ->indent()
             ;
 
             for ($i = 0; $i < $countTraits; $i++) {
                 $compiler
-                    ->write(sprintf("\$_trait_%s_blocks,\n", $i))
+                    ->write(sprintf("\$_trait_%s_blocks".($i == $countTraits - 1 ? '' : ',')."\n", $i))
                 ;
             }
 
             $compiler
+                ->outdent()
+                ->write(");\n\n")
+            ;
+
+            $compiler
+                ->write("\$this->blocks = array_merge(\n")
+                ->indent()
+                ->write("\$this->traits,\n")
                 ->write("array(\n")
             ;
         } else {
@@ -250,11 +259,21 @@ class Twig_Node_Module extends Twig_Node
         // only contains blocks and use statements.
         $traitable = null === $this->getNode('parent') && 0 === count($this->getNode('macros'));
         if ($traitable) {
-            if (!count($nodes = $this->getNode('body'))) {
-                $nodes = new Twig_Node(array($this->getNode('body')));
+            if ($this->getNode('body') instanceof Twig_Node_Body) {
+                $nodes = $this->getNode('body')->getNode(0);
+            } else {
+                $nodes = $this->getNode('body');
+            }
+
+            if (!count($nodes)) {
+                $nodes = new Twig_Node(array($nodes));
             }
 
             foreach ($nodes as $node) {
+                if (!count($node)) {
+                    continue;
+                }
+
                 if ($node instanceof Twig_Node_Text && ctype_space($node->getAttribute('data'))) {
                     continue;
                 }
@@ -268,10 +287,25 @@ class Twig_Node_Module extends Twig_Node
             }
         }
 
+        if ($traitable) {
+            return;
+        }
+
         $compiler
             ->write("public function isTraitable()\n", "{\n")
             ->indent()
             ->write(sprintf("return %s;\n", $traitable ? 'true' : 'false'))
+            ->outdent()
+            ->write("}\n\n")
+        ;
+    }
+
+    public function compileDebugInfo(Twig_Compiler $compiler)
+    {
+        $compiler
+            ->write("public function getDebugInfo()\n", "{\n")
+            ->indent()
+            ->write(sprintf("return %s;\n", str_replace("\n", '', var_export(array_reverse($compiler->getDebugInfo(), true), true))))
             ->outdent()
             ->write("}\n")
         ;
