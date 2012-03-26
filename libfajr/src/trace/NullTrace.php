@@ -26,19 +26,15 @@ use libfajr\trace\Trace;
  */
 class NullTrace implements Trace
 {
-  public function tlog($text)
+  public function tlog($text, array $tags = null)
   {
   }
 
-  public function tlogData($text)
+  public function tlogVariable($name, $variable, array $tags = null)
   {
   }
 
-  public function tlogVariable($name, $variable)
-  {
-  }
-
-  public function addChild($header = "")
+  public function addChild($message, array $tags = null)
   {
     return $this;
     // TODO(ppershing): is returning $this really safe?

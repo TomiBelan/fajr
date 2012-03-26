@@ -164,9 +164,9 @@ class BinaryFileTrace implements Trace
    * Construct a FileTrace
    * @param Timer $timer timer to measure time with
    * @param EntryStream|resource $output file resource handle to write to
-   * @param string $header header text to be displayed
+   * @param string $message header text to be displayed
    */
-  public function __construct(Timer $timer, $output, $header = "", $parent = 0)
+  public function __construct(Timer $timer, $output, $message, $tags, $parent = 0)
   {
     if ($output instanceof EntryStream) {
       $this->stream = $output;
@@ -178,56 +178,49 @@ class BinaryFileTrace implements Trace
     $this->constructTime = microtime(true);
     $this->timer = $timer;
     
-    $this->id = $this->writeEntry($header, null);
+    $this->id = $this->writeEntry($this->parentId, $message, null, $tags);
   }
 
   /**
    * Log an event
    * @param string $text text to be displayed
+   * @param array $tags
    */
-  public function tlog($text)
+  public function tlog($text, array $tags = null)
   {
     Preconditions::checkIsString($text, '$text should be string');
-    $this->writeEntry($text, null);
-  }
-
-  /**
-   * Log data
-   * @param string $text text to be displayed as is
-   */
-  public function tlogData($text)
-  {
-    Preconditions::checkIsString($text, '$text should be string');
-    $this->writeEntry('Long data', $text);
+    $this->writeEntry($this->id, $text, null, $tags);
   }
 
   /**
    * Log contents of a variable
    * @param string $name name of the variable (without dollar sign)
    * @param mixed $variable contents of the variable to be dumped
+   * @param array $tags
    */
-  public function tlogVariable($name, $variable)
+  public function tlogVariable($name, $variable, array $tags = null)
   {
-    $this->writeEntry($name, $variable);
+    $this->writeEntry($this->id, $name, $variable, $tags);
   }
 
   /**
    * Create a new BinaryFileTrace
-   * @param string $header text to use as header
+   * @param string $message text to use as header
+   * @param array $tags
    * @returns BinaryFileTrace child trace object
    */
-  public function addChild($header = "")
+  public function addChild($message, array $tags = null)
   {
-    Preconditions::checkIsString($header, '$header should be string');
+    Preconditions::checkIsString($message, '$header should be string');
     return new BinaryFileTrace($this->timer, $this->stream,
-                         $header, $this->id);
+                         $message, $tags, $this->id);
   }
 
   /**
    * Writes information about current Trace event
    *
    */
-  private function writeEntry($logMsg, $userData)
+  private function writeEntry($parent, $logMsg, $userData, $tags)
   {
     Preconditions::checkIsString($logMsg);
     
@@ -249,11 +242,15 @@ class BinaryFileTrace implements Trace
       'line' => $line,
     );
     
+    if ($tags != null) {
+      $traceInfo = array_merge($tags, $traceInfo);
+    }
+    
     $serialized = $this->stream->serialize($logMsg);
     $serialized .= $this->stream->serialize($traceInfo);
     $serialized .= $this->stream->serialize($userData);
     
-    $id = $this->stream->writeEntry(EntryStream::ENTRY_TRACE, $this->parentId,
+    $id = $this->stream->writeEntry(EntryStream::ENTRY_TRACE, $parent,
         $serialized);
     
     return $id;

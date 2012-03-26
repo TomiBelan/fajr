@@ -7,6 +7,8 @@ import pygtk
 pygtk.require('2.0')
 import gtk
 import pango
+import gio
+import os.path
 
 try:
 	import gtksourceview2
@@ -66,11 +68,64 @@ class TraceView(object):
 		hpane.add2(vpane)
 		hpane.set_position(450)
 		hpane.show()
-		self.window.add(hpane)
+		self.trace_list = gtk.TreeView()
+		self.trace_list.append_column(gtk.TreeViewColumn('Filename', gtk.CellRendererText(), text=0))
+		self.trace_list_store = gtk.ListStore(str, str)
+		self.trace_list.set_model(self.trace_list_store)
+		self.trace_list.get_selection().connect('changed', self.trace_list_sel_changed)
+		self.trace_list.show()
+		self.trace_list_view = gtk.ScrolledWindow()
+		self.trace_list_view.add(self.trace_list)
+		self.trace_list_view.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+		hpane2 = gtk.HPaned()
+		hpane2.add1(self.trace_list_view)
+		hpane2.add2(hpane)
+		hpane2.show()
+		self.window.add(hpane2)
 		self.window.set_default_size(800, 600)
 		self.window.set_title('Trace viewer')
 		self.window.show()
 		self.current_entry = None
+		self.trace_list_set = set()
+
+	def trace_list_sel_changed(self, selection, *args):
+		model, it = selection.get_selected()
+		if it == None:
+			return
+		filename = model.get_value(it, 1)
+		with open(filename, 'rb') as f:
+			self.loadtrace(f)
+
+	def tracelist_add(self, base, path):
+		if path in self.trace_list_set:
+			return
+		if not os.path.isfile(path):
+			return
+		# Check if it is a trace file
+		try:
+			with open(path, 'rb') as from_file:
+				for entry in trace.entry_stream(from_file):
+					break
+		except trace.DecodeError:
+			return
+		self.trace_list_store.append([base, path])
+		self.trace_list_set.add(path)
+
+	def directory_changed(self, monitor, file1, file2, evt_type, *args):
+		if evt_type == gio.FILE_MONITOR_EVENT_CREATED:
+			path = file1.get_path()
+			base = file1.get_basename()
+			self.tracelist_add(base, path)
+
+	def open_directory(self, path):
+		self.trace_list_view.show()
+		files = os.listdir(path)
+		files.sort(key=lambda x: os.path.getmtime(os.path.join(path, x)))
+		for name in files:
+			self.tracelist_add(name, os.path.join(path, name))
+		d = gio.File(path)
+		self.monitor = d.monitor_directory(gio.FILE_MONITOR_NONE, None)
+		self.monitor.connect('changed', self.directory_changed)
 	
 	def convert_text(self, text):
 		try:
@@ -176,8 +231,11 @@ if __name__ == '__main__':
 	import sys
 	trace_view = TraceView()
 	if len(sys.argv) == 2:
-		with open(sys.argv[1], 'rb') as f:
-			trace_view.loadtrace(f)
+		if os.path.isdir(sys.argv[1]):
+			trace_view.open_directory(sys.argv[1])
+		else:
+			with open(sys.argv[1], 'rb') as f:
+				trace_view.loadtrace(f)
 	else:
 		trace_view.loadtrace(sys.stdin)
 	gtk.main()
