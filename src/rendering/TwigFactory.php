@@ -42,7 +42,7 @@ class TwigFactory {
       $config = FajrConfigLoader::getConfiguration();
       $options = array(
         'base_template_class' => '\fajr\rendering\Template',
-        'cache' => ($config->get(FajrConfigOptions::USE_TEMPLATE_CACHE) ?
+        'cache' => ($config->get(FajrConfigOptions::USE_CACHE) ?
           $config->getDirectory(FajrConfigOptions::PATH_TO_TEMPLATE_CACHE) :
           false),
         'strict_variables' => true

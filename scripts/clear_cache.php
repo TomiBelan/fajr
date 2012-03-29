@@ -1,6 +1,7 @@
 #!/usr/bin/php
 <?php
 use fajr\config\FajrConfigLoader;
+use fajr\config\FajrConfigOptions;
 
 // register our autoloader
 require_once (__DIR__ . '/../libfajr/src/libfajr.php');
@@ -15,8 +16,8 @@ if (!FajrConfigLoader::isConfigured()) {
 
 $config = FajrConfigLoader::getConfiguration();
 
-if (!$config->get('Template.Cache')) {
-  echo 'Info: Template cache je vypnuta, nema zmysel ju mazat'. "\n";
+if (!$config->get(FajrConfigOptions::USE_CACHE)) {
+  echo 'Info: Cache je vypnuta, nema zmysel ju mazat'. "\n";
   return;
 }
 
@@ -34,7 +35,13 @@ function clearDirectory($path) {
   }
 }
 
-$path = $config->getDirectory('Template.Cache.Path');
-echo 'Info: Template cache je ' . $path . "\n";
+// Kazdy podtyp cache chceme mazat zvlast, kedze moze byt aj v inom adresari
+// Nakoniec vyprazdnime aj hlavny cache adresar
 
+$path = $config->getDirectory(FajrConfigOptions::PATH_TO_TEMPLATE_CACHE);
+echo 'Info: Mazem template cache: ' . $path . "\n";
+clearDirectory($path);
+
+$path = $config->getDirectory(FajrConfigOptions::PATH_TO_CACHE);
+echo 'Info: Mazem zvysok cache: ' . $path . "\n";
 clearDirectory($path);
