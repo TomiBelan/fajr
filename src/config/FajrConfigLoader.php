@@ -85,6 +85,10 @@ class FajrConfigLoader
     return (self::$config !== null);
   }
 
+  /**
+   *
+   * @return \fajr\config\FajrConfig
+   */
   public static function getConfiguration()
   {
     return self::$config;
