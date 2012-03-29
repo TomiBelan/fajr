@@ -22,6 +22,10 @@ if (!$config->get(FajrConfigOptions::USE_CACHE)) {
 }
 
 function clearDirectory($path) {
+  if (!is_dir($path)) {
+    echo 'Info: ' . $path . ' nie je adresar/neexistuje.' . "\n";
+    return;
+  }
   foreach (new DirectoryIterator($path) as $fileInfo) {
     if (!$fileInfo->isDot() && ($fileInfo->isFile() || $fileInfo->isDir())) {
       if ($fileInfo->isDir()) {
