@@ -55,18 +55,6 @@ class FajrUtils
     return self::basePath() . $file . $query;
   }
 
-  public static function pathInfo()
-  {
-    if (!isset($_SERVER['PATH_INFO'])) {
-      return '';
-    }
-    $path = $_SERVER['PATH_INFO'];
-    if (substr_compare($path, '/', 0, 1) == 0) {
-      $path = substr($path, 1);
-    }
-    return $path;
-  }
-
   /**
    * @returns bool whether the current connection is secured
    */
