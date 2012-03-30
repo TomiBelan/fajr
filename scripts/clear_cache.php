@@ -46,6 +46,10 @@ $path = $config->getDirectory(FajrConfigOptions::PATH_TO_TEMPLATE_CACHE);
 echo 'Info: Mazem template cache: ' . $path . "\n";
 clearDirectory($path);
 
+$path = $config->getDirectory(FajrConfigOptions::PATH_TO_ROUTER_CACHE);
+echo 'Info: Mazem route cache: ' . $path . "\n";
+clearDirectory($path);
+
 $path = $config->getDirectory(FajrConfigOptions::PATH_TO_CACHE);
 echo 'Info: Mazem zvysok cache: ' . $path . "\n";
 clearDirectory($path);

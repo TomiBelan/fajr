@@ -115,6 +115,12 @@ return array(
    * (absolútna, alebo relatívna k adresáru Cache.Path)
    */
   //'Template.Cache.Path'=>'./twig',
+  
+  /*
+   * Cache na skompilované routy
+   * (absolútna, alebo relatívna k adresáru Cache.Path)
+   */
+  //'Router.Cache.Path'=>'./router',
 
   /*
    * Defaultný skin pre Fajr.

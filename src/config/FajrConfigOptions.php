@@ -45,6 +45,7 @@ class FajrConfigOptions {
   const USE_CACHE = 'Cache.Enabled';
   const PATH_TO_CACHE = 'Cache.Path';
   const PATH_TO_TEMPLATE_CACHE = 'Template.Cache.Path';
+  const PATH_TO_ROUTER_CACHE = 'Router.Cache.Path';
   const TEMPLATE_SKINS = 'Template.Skin.Skins';
   const TEMPLATE_DEFAULT_SKIN = 'Template.Skin.Default';
   const IS_DEVEL = 'Features.Devel';
@@ -145,6 +146,11 @@ class FajrConfigOptions {
 
       self::PATH_TO_TEMPLATE_CACHE =>
         array('defaultValue' => './twig',
+              'relativeTo' => self::PATH_TO_CACHE,
+              'validator' => $pathValidator),
+      
+      self::PATH_TO_ROUTER_CACHE =>
+        array('defaultValue' => './router',
               'relativeTo' => self::PATH_TO_CACHE,
               'validator' => $pathValidator),
 
