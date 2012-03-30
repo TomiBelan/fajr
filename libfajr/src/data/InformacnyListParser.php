@@ -223,7 +223,10 @@ class InformacnyListParser
     //ziskanie nazvu skoly, jedina vec co chcem ziskat co sa nenachadza v tabulke
     $b = $domWholeHtml->getElementsByTagName("b");
     $trace->tlog("Finding first element with tag name 'b'");
-    $this->spracujB($trace, $b->item(0));
+    $bb = $b->item(0);
+    if ($bb !== null) {
+      $this->spracujB($trace, $bb);
+    }
 
     $trNodes = $domWholeHtml->getElementsByTagName("tr");
     $trace->tlog("Getting all elements with tag name 'tr'");

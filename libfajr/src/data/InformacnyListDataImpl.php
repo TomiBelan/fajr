@@ -39,6 +39,9 @@ class InformacnyListDataImpl implements InformacnyListData
    */
   public function getAttribute($id)
   {
+    if ($this->list === null) {
+      return false;
+    }
     foreach ($this->list as $attribute) {
       if ($attribute['id'] == $id) {
         return $attribute;
