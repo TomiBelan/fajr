@@ -107,7 +107,7 @@ class DisplayManager
       header('Content-type: application/json');
     }
 
-    $templateName = 'pages/' . $response->getTemplate() . '.' . $format;
+    $templateName = 'pages/' . $response->getTemplate() . '.' . $format . '.twig';
     $template = $twig->loadTemplate($templateName);
 
     $output = $template->render($response->getData());

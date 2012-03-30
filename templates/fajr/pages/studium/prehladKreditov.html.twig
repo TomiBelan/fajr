@@ -1,0 +1,51 @@
+{##
+ # TODO: description
+ #
+ # @copyright  Copyright (c) 2010-2011 The Fajr authors (see AUTHORS).
+ #             Use of this source code is governed by a MIT license that can be
+ #             found in the LICENSE file in the project root directory.
+ # @author     TODO
+ #}
+{% extends "layout/studium.html.twig" %}
+{% block title %}Prehľad kreditov{% endblock %}
+{% block tabcontent %}
+{% import "macros/decorators.html.twig" as decorators %}
+{% import "macros/studium.html.twig" as studiumMacros %}
+{% import "macros/table.html.twig" as table %}
+{{ parent() }}
+{% set head %}
+  {{ table.column("Ak. rok", "sortable-text favour-reverse") }}
+  {{ table.column("Semester", "sortable-text favour-reverse") }}
+  {{ table.column("Názov predmetu", "sortable-text") }}
+  {{ table.column("Kredit predmetu", "sortable-numeric") }}
+  {{ table.column("Klasifikačný stupeň", "sortable-text") }}
+  {{ table.column("Dátum hodnotenia", "sortable-date-dmy") }}
+  {{ table.column("Termín", "sortable-text") }}
+  {{ table.column("Známka popis", "sortable-text") }}
+{% endset %}
+
+{% set body %}
+  {% for row in predmety %}
+    {% if row.semester == 'L' %}
+      {% set rowClass = 'leto' %}
+    {% elseif row.semester == 'Z' %}
+      {% set rowClass = 'zima' %}
+    {% else %}
+      {% set rowClass = 'rok' %}
+    {% endif %}
+    {{ table.row(rowClass) }}
+      <td>{{ row.akRok }}</td>
+      <td>{{ row.semester }}</td>
+      <td>{{ row.nazov }}</td>
+      <td>{{ row.kredit }}</td>
+      <td>{{ row.znamka }}</td>
+      <td>{{ row.datum }}</td>
+      <td>{{ row.termin }}</td>
+      <td>{{ row.znamkaPopis }}</td>
+    {{ table.endrow() }}
+  {% endfor %}
+{% endset %}
+
+{{ decorators.table(none, head, body, none, predmety|length == 0) }}
+
+{% endblock %}

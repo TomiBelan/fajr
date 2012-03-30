@@ -1,0 +1,79 @@
+{##
+ # TODO: description
+ #
+ # @copyright  Copyright (c) 2010-2012 The Fajr authors (see AUTHORS).
+ #             Use of this source code is governed by a MIT license that can be
+ #             found in the LICENSE file in the project root directory.
+ # @author     TODO
+ #}
+{% import "macros/decorators.html.twig" as decorators %}
+{% import "macros/table.html.twig" as table %}
+
+{% set id = unique_id('collapsible') %}
+
+<p id="p_{{ id }}">
+Aktuálne zvolené štúdium{% if zapisnyListObj %} a zápisný list{% endif %}:
+{{ studiumObj.studijnyProgramPopis }}
+({{ studiumObj.studijnyProgramSkratka }})
+{%- if zapisnyListObj  %} {{ zapisnyListObj.popisAkadRok }}{% endif %}.
+</p>
+
+<div id="{{ id }}" class="studium-a-zapisny-list">
+
+{# --------------------- ZOZNAM STUDII -------------------------------#}
+
+{% set head %}
+  {{ table.column("študijný program", "sortable-text") }}
+  {{ table.column("číslo programu", "sortable-numeric") }}
+  {{ table.column("ročník", "sortable-numeric") }}
+  {{ table.column("rok štúdia", "sortable-numeric") }}
+  {{ table.column("dĺžka v semestroch", "sortable-numeric") }}
+  {{ table.column("začiatok štúdia", "sortable-date-dmy") }}
+  {{ table.column("koniec štúdia", "sortable-date-dmy") }}
+  {{ table.column("doplňujúce údaje", "sortable-text") }}
+{% endset %}
+
+{% set body %}
+  {% for row in zoznamStudii.data %}
+    {{ table.row(none, row.index == studium) }}
+      <td><a href="{{ current_path({'studium': row.index}) }}">{{ row.studijnyProgramPopis }} ({{ row.studijnyProgramSkratka }})</a></td>
+      <td>{{ row.studijnyProgramIdProgramCRS }}</td>
+      <td>{{ row.rokDoporuceny }}</a></td>
+      <td>{{ row.rokStudia }}</td>
+      <td>{{ row.studijnyProgramDlzka }}</td>
+      <td>{{ row.zaciatokStudia }}</td>
+      <td>{{ row.koniecStudia }}</td>
+      <td>{{ row.studijnyProgramDoplnUdaje }}</td>
+    {{ table.endrow() }}
+  {% endfor %}
+{% endset %}
+
+<h2>Zoznam štúdií</h2>
+{{ decorators.table(none, head, body) }}
+
+{# --------------------- ZOZNAM ZAPISNYCH LISTOV -------------------#}
+
+{% set head %}
+  {{ table.column("akademicky rok", "sortable-text") }}
+  {{ table.column("ročník", "sortable-numeric") }}
+  {{ table.column("študijný program", "sortable-text") }}
+  {{ table.column("dátum zápisu", "sortable-date-dmy") }}
+{% endset %}
+
+{% set body %}
+  {% for row in zapisneListy.data %}
+    {{ table.row(none, row.index == zapisnyList) }}
+      <td><a href="{{ current_path({'studium': studium, 'list': row.index}) }}">{{ row.popisAkadRok }}</a></td>
+      <td>{{ row.rokRocnik }}</td>
+      <td>{{ row.studProgramPopis }} ({{ row.studProgramSkratka }})</td>
+      <td>{{ row.datumZapisu }}</td>
+    {{ table.endrow() }}
+  {% endfor %}
+{% endset %}
+
+<h2>Zoznam zápisných listov</h2>
+{{ decorators.table(none, head, body) }}
+
+<hr />
+
+</div>

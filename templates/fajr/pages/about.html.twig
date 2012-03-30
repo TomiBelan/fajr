@@ -1,0 +1,50 @@
+{##
+ # Displays terms of use.
+ #
+ # @copyright  Copyright (c) 2011-2012 The Fajr authors (see AUTHORS).
+ #             Use of this source code is governed by a MIT license that can be
+ #             found in the LICENSE file in the project root directory.
+ # @author     Martin Sucha <anty.sk+fajr@gmail.com>
+ #}
+{% extends "layout/main.html.twig" %}
+{% block title %}O aplikácii{% endblock %}
+{% block content %}
+<div class="textPage">
+  <p>
+  Snahou miniaplikácie FAJR je poskytovať najčastejšie používané funkcie
+    AIS2 a to jednoducho, rýchlo,
+    bez zbytočných klikaní a vo všetkých webových prehliadačoch.
+  </p>
+  
+  <p>
+  Práve sa pozeráte na Fajr verzie {{ version.versionNumber }}.
+  Na vývoji kódu a dokumentácie tejto aplikácie sa podieľali (v abecednom poradí):
+  </p>
+  <ul>
+    <li>Tomi Belan</li>
+    <li>Michal Hozza</li>
+    <li>Martin Králik</li>
+    <li>Jakub Marek</li>
+    <li>Peter Perešíni</li>
+    <li>Kamila Součková</li>
+    <li>Martin Sucha</li>
+    <li>Ivan Trančík</li>
+  </ul>
+  
+  <p>Tiež by sme osobitne chceli poďakovať všetkým tým, ktorí tento
+     projekt podporujú a/alebo pomohli s ďaľšími vecami súvisiacimi
+     s vývojom a prevádzkou tejto aplikácie.
+  </p>
+  
+  <p>Fajr používa aj produkty nasledovných projektov:</p>
+  <ul>
+    <li><a href="http://www.prototypejs.org/">Prototype</a></li>
+    <li><a href="http://www.blueprintcss.org/">Blueprint</a></li>
+    <li><a href="http://www.frequency-decoder.com/2006/09/16/unobtrusive-table-sort-script-revisited">Unobtrusive Table Sort Script</a></li>
+    <li><a href="http://www.famfamfam.com/lab/icons/silk/">Silk icons</a></li>
+    <li><a href="http://www.twig-project.org/">Twig</a></li>
+  </ul>
+  
+  <p class="noprint"><a href="{{ path('homepage') }}">Späť na hlavnú stránku</a></p>
+</div>
+{% endblock %}

@@ -41,7 +41,7 @@ class Response
   private $template = null;
   
   /** @var string output format name*/
-  private $format = 'xhtml';
+  private $format = 'html';
 
   /** SkinConfig skin configuration */
   private $skin = null;
