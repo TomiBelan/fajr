@@ -157,8 +157,8 @@ class HttpInputParameters implements InvocationParameters
     $_post = $_POST;
 
     // budeme pouzivat uz len Input
-    unset($_GET);
-    unset($_POST);
+    $_GET = array();
+    $_POST = array();
 
     $this->_get = $this->_prepare_array($_get, $this->allowed_get);
     $this->_post = $this->_prepare_array($_post, $this->allowed_post);
