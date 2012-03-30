@@ -28,7 +28,7 @@
   {{ table.column("Prihlás", "") }}
 {% endset %}
 
-{% macro riadok(row, prihlas, studium, zapisnyList, action) %}
+{% macro riadok(row, prihlas, studium, zapisnyList) %}
   {% set link = path('studium_zoznam_skusok', {
                    'studium': studium,
                    'list': zapisnyList,
@@ -83,7 +83,7 @@
       {% else %}
         {% set prihlas="Nedá sa, dôvod neznámy" %}
       {% endif %}
-      {{ _self.riadok(row, prihlas, studium, zapisnyList, action) }}
+      {{ _self.riadok(row, prihlas, studium, zapisnyList) }}
     {{ table.endrow() }}
   {% endfor %}
 {% endset %}

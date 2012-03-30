@@ -28,7 +28,7 @@
 
 {% endset %}
 
-{% macro riadok(row, odhlas, studium, zapisnyList, action) %}
+{% macro riadok(row, odhlas, studium, zapisnyList) %}
   {% set link = path('studium_moje_skusky', {
                    'studium': studium,
                    'list': zapisnyList,
@@ -76,7 +76,7 @@
         {% set class="terminodhlaseny" %}
         {% set odhlas="Si odhlásený. Ak chceš, opäť sa prihlás." %}
       {% endif %}
-      {{ _self.riadok(row, odhlas, studium, zapisnyList, action) }}
+      {{ _self.riadok(row, odhlas, studium, zapisnyList) }}
     {{ table.endrow() }}
   {% endfor %}
 {% endset %}
@@ -96,7 +96,7 @@
 {% set body %}
   {% for row in terminyOld %}
     {{ table.row(none, (termin != none) and (row.index == termin)) }}
-      {{ _self.riadok(row, "Skúška už bola.", studium, zapisnyList, action) }}
+      {{ _self.riadok(row, "Skúška už bola.", studium, zapisnyList) }}
     {{ table.endrow() }}
   {% endfor %}
 {% endset %}

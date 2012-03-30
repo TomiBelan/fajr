@@ -277,7 +277,6 @@ class Fajr {
 
     $controller = DispatchController::getInstance();
 
-    $response->set("action", $action);
     try {
       $controller->invokeAction($trace, $action, $this->context);
     }

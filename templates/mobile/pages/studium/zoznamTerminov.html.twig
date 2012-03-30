@@ -15,7 +15,7 @@
 {{ parent() }}
 {% set tabContent %}
 
-{% macro tabulkaTermin(row, prihlas, studium, zapisnyList, action) %}
+{% macro tabulkaTermin(row, prihlas, studium, zapisnyList) %}
     {% set link = path('studium_zoznam_skusok', {
                      'studium': studium,
                      'list': zapisnyList,
@@ -78,7 +78,7 @@
         {% else %}
           {% set prihlas="Nedá sa, dôvod neznámy" %}
         {% endif %}
-        {{ _self.tabulkaTermin(row, prihlas, studium, zapisnyList, action) }}      
+        {{ _self.tabulkaTermin(row, prihlas, studium, zapisnyList) }}
     {% endfor %}
   {% endset %}
 

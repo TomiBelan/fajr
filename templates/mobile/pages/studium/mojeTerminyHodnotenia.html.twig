@@ -15,7 +15,7 @@
 {{ parent() }}
 {% set tabContent %} 
 
-  {% macro tabulkaSkuska(row, odhlas, studium, zapisnyList, action) %}
+  {% macro tabulkaSkuska(row, odhlas, studium, zapisnyList) %}
     {% set link = path('studium_moje_skusky', {
                      'studium': studium,
                      'list': zapisnyList,
@@ -73,7 +73,7 @@
           {% set class="terminodhlaseny" %}
           {% set odhlas="Si odhlásený. Ak chceš, opäť sa prihlás." %}
         {% endif %}
-        {{ _self.tabulkaSkuska(row,  odhlas, studium, zapisnyList, action) }}      
+        {{ _self.tabulkaSkuska(row,  odhlas, studium, zapisnyList) }}
     {% endfor %}
   {% endset %}  
 
@@ -91,7 +91,7 @@
 
   {% set body %}
     {% for row in terminyOld %}      
-        {{ _self.tabulkaSkuska(row, "Skúška už bola.", studium, zapisnyList, action) }}      
+        {{ _self.tabulkaSkuska(row, "Skúška už bola.", studium, zapisnyList) }}
     {% endfor %}
   {% endset %}
 
