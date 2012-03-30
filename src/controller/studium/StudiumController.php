@@ -28,6 +28,7 @@ use fajr\Response;
 use fajr\Sorter;
 use fajr\util\FajrUtils;
 use fajr\LoginManager;
+use fajr\Router;
 use fajr\BackendProvider;
 use fajr\exceptions\AuthenticationRequiredException;
 use libfajr\exceptions\ParseException;
@@ -46,7 +47,10 @@ class StudiumController extends BaseController
   public static function getInstance()
   {
     $backendFactory = BackendProvider::getInstance();
-    return new StudiumController($backendFactory->newVSES017Factory(), $backendFactory->getServerTime(), LoginManager::getInstance());
+    return new StudiumController($backendFactory->newVSES017Factory(),
+        $backendFactory->getServerTime(),
+        LoginManager::getInstance(),
+        Router::getInstance());
   }
 
   // @input
@@ -65,8 +69,12 @@ class StudiumController extends BaseController
   private $actionInfo;
   
   private $loginManager;
+  
+  /** @var Router */
+  private $router;
 
-  public function __construct(VSES017\StudiumFactory $factory, $serverTime, LoginManager $loginManager)
+  public function __construct(VSES017\StudiumFactory $factory, $serverTime,
+      LoginManager $loginManager, Router $router)
   {
     $this->factory = $factory;
     $this->serverTime = $serverTime;
@@ -77,6 +85,7 @@ class StudiumController extends BaseController
                               'PrehladKreditov' => array('tabName' => 'PrehladKreditov', 'requiresZapisnyList' => false),
                               );
     $this->loginManager = $loginManager;
+    $this->router = $router;
   }
 
   /**
@@ -303,9 +312,8 @@ class StudiumController extends BaseController
       throw new Exception('Z termínu sa nepodarilo odhlásiť.');
     }
 
-    $response->redirect(array('action' => 'studium.MojeTerminyHodnotenia',
-                              'studium' => $this->studium,
-                              'list' => $this->zapisnyList));
+    $response->redirect($this->router->generateUrl('studium_moje_skusky',
+        array('studium' => $this->studium, 'list' => $this->zapisnyList), true));
   }
 
   /**
@@ -499,9 +507,8 @@ class StudiumController extends BaseController
       throw new Exception('Na skúšku sa nepodarilo prihlásiť.');
     }
 
-    $response->redirect(array('action' => 'studium.MojeTerminyHodnotenia',
-                              'studium' => $this->studium,
-                              'list' => $this->zapisnyList));
+    $response->redirect($this->router->generateUrl('studium_moje_skusky',
+        array('studium' => $this->studium, 'list' => $this->zapisnyList), true));
   }
 
 

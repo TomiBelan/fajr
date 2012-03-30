@@ -14,7 +14,8 @@
 namespace fajr\rendering;
 
 use Twig_Extension;
-use fajr\rendering\tags\UniqueTokenParser;
+use Twig_Function_Method;
+use fajr\Router;
 
 /**
  * Provides Fajr customizations for the Twig templating engine
@@ -25,6 +26,16 @@ use fajr\rendering\tags\UniqueTokenParser;
  */
 class FajrExtension extends Twig_Extension
 {
+  /** @var int */
+  private $nextUniqueId;
+  /** @var Router */
+  private $router;
+  
+  function __construct(Router $router)
+  {
+    $this->router = $router;
+  }
+
   /**
    * Return an extension name
    * @returns string extension name
@@ -34,17 +45,30 @@ class FajrExtension extends Twig_Extension
     return 'fajr';
   }
 
-  /**
-   * Returns the token parser instances to add to the existing list.
-   *
-   * @returns array An array of Twig_TokenParser instances
-   */
-  public function getTokenParsers()
+  public function getFunctions()
   {
-    return array(new UniqueTokenParser(),
-                 new tags\URLTokenParser(),
-                );
+    return array(
+      'unique_id' => new Twig_Function_Method($this, 'generateUniqueId'),
+      'path' => new Twig_Function_Method($this, 'generatePath'),
+      'current_path' => new Twig_Function_Method($this, 'generateCurrentPath'),
+    );
+  }
+  
+  /**
+   * Generate a new id unique for the output
+   * @param string|null $type
+   * @return string the new unique id optionally prefixed with $type
+   */
+  public function generateUniqueId($type = null)
+  {
+    return ($type === null ? '' : $type) . ($this->nextUniqueId++);
   }
 
+  public function generatePath($name, $parameters = array(), $absolute = false) {
+    return $this->router->generateUrl($name, $parameters, $absolute);
+  }
 
+  public function generateCurrentPath($parameters = array(), $absolute = false) {
+    return $this->router->generateUrlForCurrentPage($parameters, $absolute);
+  }
 }

@@ -16,11 +16,11 @@
 {% set tabContent %}
 
 {% macro tabulkaTermin(row, prihlas, studium, zapisnyList, action) %}
-    {% url link for {'action': action,
+    {% set link = path('studium_zoznam_skusok', {
                      'studium': studium,
                      'list': zapisnyList,
                      'predmet': row.predmetIndex,
-                     'termin': row.index} %}
+                     'termin': row.index}) %}
     {% import "macros/decorators.xhtml" as decorators %} 
     {% set title %}
       {{decorators.span(row.predmet,"table_box_title")}}
@@ -49,9 +49,8 @@
   {% set body %}
     {% for row in terminy %}      
         {% if row.mozeSaPrihlasit <= 0 %} {# moze sa prihlasit #}
-          {% url form_action for {'action': 'studium.PrihlasNaSkusku',
-                             'studium': studium,
-                             'list': zapisnyList} %}
+          {% set form_action = path('studium_prihlas_na_skusku', {'studium': studium,
+                             'list': zapisnyList}) %}
           {% set prihlas %}
             {# TODO(anty): update after those checks are moved to the model #}
             {% if row.mozeSaPrihlasit == constant("fajr\\controller\\studium\\MozePrihlasitNaTerminHelper::PRIHLASIT_MOZE_ZNAMKA") %}

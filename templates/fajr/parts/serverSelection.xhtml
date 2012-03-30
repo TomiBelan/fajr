@@ -8,10 +8,9 @@
  #}
 {% if availableServers|length > 1 %}
 <div id="serverSelect">
-  <form id="serverSelectForm" method="get" action="index.php">
+  <form id="serverSelectForm" method="get" action="{{ path('login_screen') }}">
     <fieldset>
       <legend>Zmeň AIS2 Server<br/>na ktorý sa fajr pripája:</legend>
-      <input type="hidden" name="action" value="login.LoginScreen" />
       <select name="serverName"
         onChange="$('serverSelectForm').submit();">
         {% for key,item in availableServers  %}

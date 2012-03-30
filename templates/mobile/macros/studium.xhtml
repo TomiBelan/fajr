@@ -59,18 +59,14 @@
   ##}
 {% macro studiumTabs(content, selectedTab, studium, zapisnyList) %}
   {% import "macros/decorators.xhtml" as decorators %}
-  {% url terminyLink for     {'action': 'studium.MojeTerminyHodnotenia',
-                              'studium': studium,
-                              'list': zapisnyList} %}
-  {% url zapisLink   for     {'action': 'studium.ZoznamTerminov',
-                              'studium': studium,
-                              'list': zapisnyList} %}
-  {% url zapisnyListLink for {'action': 'studium.ZapisanePredmety',
-                              'studium': studium,
-                              'list': zapisnyList} %}
-  {% url hodnoteniaLink for  {'action': 'studium.Hodnotenia',
-                              'studium': studium,
-                              'list': zapisnyList} %}
+  {% set terminyLink = path('studium_moje_skusky', {'studium': studium,
+                              'list': zapisnyList}) %}
+  {% set zapisLink   = path('studium_zoznam_skusok', {'studium': studium,
+                              'list': zapisnyList}) %}
+  {% set zapisnyListLink = path('studium_zapisane_predmety', {'studium': studium,
+                              'list': zapisnyList}) %}
+  {% set hodnoteniaLink = path('studium_hodnotenia', {'studium': studium,
+                              'list': zapisnyList}) %}
   {{ decorators.tabs(content, 
       {'TerminyHodnotenia': {'title': 'Moje skúšky',
                               'url': terminyLink},

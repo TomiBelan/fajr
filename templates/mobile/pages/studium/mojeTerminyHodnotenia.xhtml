@@ -16,10 +16,10 @@
 {% set tabContent %} 
 
   {% macro tabulkaSkuska(row, odhlas, studium, zapisnyList, action) %}
-    {% url link for {'action': action,
+    {% set link = path('studium_moje_skusky', {
                      'studium': studium,
                      'list': zapisnyList,
-                     'termin': row.index} %}
+                     'termin': row.index}) %}
     {% import "macros/decorators.xhtml" as decorators %} 
     {% set title %}
       {{decorators.span(row.predmetNazov~" - "~row.dat,"table_box_title")}}
@@ -51,9 +51,9 @@
     {% for row in terminyActive %}      
         {% if row.mozeOdhlasit %}
           {% set class="terminmozeodhlasit" %}
-          {% url formAction for {'action': 'studium.OdhlasZoSkusky',
-                                 'studium': studium,
-                                 'list': zapisnyList} %}
+          {% set formAction = path('studium_odhlas_zo_skusky',
+                                  {'studium': studium,
+                                   'list': zapisnyList}) %}
           {% set odhlas %}
             <form method="post" action="{{ formAction }}">
               <div>

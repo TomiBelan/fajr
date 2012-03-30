@@ -8,12 +8,11 @@
  #}
 <div id="demoLoginBox" class="loginBoxDiv">
   {# Cosign proxy needs GET method! #}
-  <form method="get" action="fajr.php">
+  <form method="get" action="{{ path('login') }}">
     <fieldset class="login-box">
       <legend>Prihlásenie do {{ currentServer.serverName }} </legend>
       <input type="hidden" name="serverName" value="{{ currentServer.serverName }}" />
       <input type="hidden" name="loginType" value="nologin" />
-      <input type="hidden" name="action" value="login.Login" />
       <div>
           Nemáš prístup do AISu? Alebo len nechceš brať mačku vo vreci? Pozri si ako vyzerá fajr
           aj bez nutnosti prihlásiť sa!

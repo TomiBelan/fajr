@@ -9,7 +9,7 @@
 {% import "macros/decorators.xhtml" as decorators %}
 {% import "macros/table.xhtml" as table %}
 
-{% unique collapsible id %}
+{% set id = unique_id('collapsible') %}
 
 <p id="p_{{ id }}">
 Aktuálne zvolené štúdium{% if zapisnyListObj %} a zápisný list{% endif %}:
@@ -36,8 +36,7 @@ Aktuálne zvolené štúdium{% if zapisnyListObj %} a zápisný list{% endif %}:
 {% set body %}
   {% for row in zoznamStudii.data %}
     {{ table.row(none, row.index == studium) }}
-      {% url link for {'action': action, 'studium': row.index} %}
-      <td><a href="{{ link }}">{{ row.studijnyProgramPopis }} ({{ row.studijnyProgramSkratka }})</a></td>
+      <td><a href="{{ current_path({'studium': row.index}) }}">{{ row.studijnyProgramPopis }} ({{ row.studijnyProgramSkratka }})</a></td>
       <td>{{ row.studijnyProgramIdProgramCRS }}</td>
       <td>{{ row.rokDoporuceny }}</a></td>
       <td>{{ row.rokStudia }}</td>
@@ -64,8 +63,7 @@ Aktuálne zvolené štúdium{% if zapisnyListObj %} a zápisný list{% endif %}:
 {% set body %}
   {% for row in zapisneListy.data %}
     {{ table.row(none, row.index == zapisnyList) }}
-      {% url link for {'action': action, 'studium': studium, 'list': row.index} %}
-      <td><a href="{{ link }}">{{ row.popisAkadRok }}</a></td>
+      <td><a href="{{ current_path({'studium': studium, 'list': row.index}) }}">{{ row.popisAkadRok }}</a></td>
       <td>{{ row.rokRocnik }}</td>
       <td>{{ row.studProgramPopis }} ({{ row.studProgramSkratka }})</td>
       <td>{{ row.datumZapisu }}</td>

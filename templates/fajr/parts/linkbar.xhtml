@@ -23,13 +23,11 @@
    #}
   <div class='linkbarRight'>
     {% if loggedIn %}
-      {% url logoutUrl for {'action': 'login.Logout', '_file': 'index.php'} %}
-      {% url settingsUrl for {'action': 'userSettings.Settings'} %}
       {% if aisUserName is defined %}<nobr>{{ aisUserName }}</nobr>&nbsp;|&nbsp;{% endif %}<a 
         {% if developmentVersion %}
-        href="{{ settingsUrl }}">Nastavenia</a>&nbsp;|&nbsp;<a
+        href="{{ path('settings') }}">Nastavenia</a>&nbsp;|&nbsp;<a
         {% endif %}
-        href="{{ logoutUrl }}">Odhlásiť</a>
+        href="{{ path('logout') }}">Odhlásiť</a>
     {% else %}
       Neprihlásený
     {% endif %}

@@ -25,8 +25,7 @@
   <body>
     <div class="container">
       {% include "parts/linkbar.xhtml" %}
-      {% url mainPage for {'_file': 'index.php'} %}
-      <h1 class="logo"><a class="logo" href="{{ mainPage }}">FAJR</a>: {{ block('title') }}</h1>
+      <h1 class="logo"><a class="logo" href="{{ path('homepage') }}">FAJR</a>: {{ block('title') }}</h1>
       <div id="mainContent">
       {% block warnings %}
         {% include "parts/warnings.xhtml" %}
@@ -39,8 +38,7 @@
         </div>
         {% block footer %}{% endblock %}
         <div>
-          {% url about for {'action': 'static.About', '_file': 'index.php'} %}
-          Copyright 2010,2011 Kolektív autorov. <a href="{{ about }}">O aplikácii</a>
+          Copyright 2010,2011 Kolektív autorov. <a href="{{ path('about') }}">O aplikácii</a>
         </div>
       </div>
       {% if trace %}

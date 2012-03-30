@@ -43,9 +43,7 @@
   {{ _self.recursiveException(exception, showStackTrace) }}
 </div>
   <div class="prepend-1">
-    {% url mainPage for {} %}
-    {% url logout for {'action': 'login.Logout', '_file': 'index.php'} %}
-    <a href="{{ mainPage }}">Späť na hlavnú stránku</a>
-    <a href="{{ logout }}">Odhlásiť</a>
+    <a href="{{ path('homepage') }}">Späť na hlavnú stránku</a>
+    <a href="{{ path('logout') }}">Odhlásiť</a>
   </div>
 {% endblock %}

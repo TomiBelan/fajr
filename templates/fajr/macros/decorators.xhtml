@@ -16,8 +16,7 @@
  # @param bool $collapsed ma byt defaultne skryty?
  #}
 {% macro collapsible(title, content, collapsed) %}
-  {% unique collapsible id %}
-  <div class="collapsible{% if collapsed %} collapsed{% endif %}" id="{{ id }}">
+  <div class="collapsible{% if collapsed %} collapsed{% endif %}" id="{{ unique_id('collapsible') }}">
     <div class="collapsibleheader">
       {{ title|raw }}
     </div>
@@ -41,11 +40,10 @@
   {% if empty %}
     <font color="red"> Dáta pre túto tabuľku neboli nájdené.</font><hr class="space" />
   {% else %}
-    {% unique table id %}
     {% if class != "" %}
       {% set class=" "+class %}
     {% endif %}
-    <table id="{{ id }}" class="colstyle-sorting{{ class }}">
+    <table id="{{ unique_id('table') }}" class="colstyle-sorting{{ class }}">
       <thead>
         <tr>
           {{ head|raw }}

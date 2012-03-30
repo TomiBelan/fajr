@@ -15,10 +15,9 @@
  #}
 {% macro settingsTabs(content, selectedTab) %}
   {% import "macros/decorators.xhtml" as decorators %}
-  {% url changeSkinLink for {'action': 'userSettings.Skin'} %}
   {{ decorators.tabs(content,
       {'Skin': { 'title': 'Zmeň skin',
-                 'url': changeSkinLink }
+                 'url': path('settings_skin') }
       }, selectedTab) }}
 {% endmacro %}
 

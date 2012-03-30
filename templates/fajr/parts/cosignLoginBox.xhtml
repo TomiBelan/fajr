@@ -11,12 +11,11 @@
  # cookie login box
  #}
 <div id="cosignCookieLoginBox" class="loginBoxDiv">
-  <form method="post" action="index.php">
+  <form method="post" action="{{ path('login') }}">
     <fieldset class="login-box">
       <legend>Prihlásenie cez cookie do <br/>{{ currentServer.serverName }} </legend>
       <input type="hidden" name="serverName" value="{{ currentServer.serverName }}" />
       <input type="hidden" name="loginType" value="cosigncookie" />
-      <input type="hidden" name="action" value="login.Login" />
       <div>
       bezpečne sa
       <a href="https://login.uniba.sk/?{{ currentServer.cosignCookieName|url_encode }}&amp;https://{{ currentServer.serverName|url_encode }}/ais/login.do?"

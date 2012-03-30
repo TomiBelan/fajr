@@ -24,6 +24,7 @@ use libfajr\login\AIS2PasswordLogin;
 use libfajr\login\AIS2CosignLogin;
 use libfajr\login\NoLogin;
 use fajr\Request;
+use fajr\Router;
 use fajr\util\FajrUtils;
 use sfStorage;
 
@@ -37,7 +38,8 @@ class LoginManager
   {
     if (!isset(self::$instance)) {
       self::$instance = new LoginManager(SessionStorageProvider::getInstance(),
-          Request::getInstance(), Response::getInstance(), LazyServerConnection::getInstance());
+          Request::getInstance(), Response::getInstance(),
+          LazyServerConnection::getInstance(), Router::getInstance());
     }
     return self::$instance;
   }
@@ -53,14 +55,18 @@ class LoginManager
    */
   private $cachedLoggedIn;
   private $connection;
+  
+  /** @var Router */
+  private $router;
 
   public function __construct(sfStorage $session, Request $request, Response $response,
-      AIS2ServerConnection $connection)
+      AIS2ServerConnection $connection, Router $router)
   {
     $this->session = $session;
     $this->request = $request;
     $this->response = $response;
     $this->connection = $connection;
+    $this->router = $router;
   }
 
   public function isLoggedIn()
@@ -116,7 +122,7 @@ class LoginManager
     $this->destroySession();
 
     if ($login === null || !$login->logout($this->connection)) {
-      $this->response->redirect(array(), 'index.php');
+      $this->response->redirect($this->router->generateUrl('homepage', array(), true));
       return false;
     }
 
@@ -127,7 +133,7 @@ class LoginManager
         $this->response->clearCookie($_SERVER[ 'COSIGN_SERVICE' ], '/', '');
       }
     } else {
-      $this->response->redirect(array(), 'index.php');
+      $this->response->redirect($this->router->generateUrl('homepage'), array(), true);
     }
   }
 
@@ -144,7 +150,7 @@ class LoginManager
     $this->session->write('login/login.class', $login);
     $this->session->write('server', $serverConfig);
 
-    $this->response->redirect();
+    $this->response->redirect($this->router->generateUrl('homepage', array(), true));
   }
 
   private function assertSecurity($condition, $message)

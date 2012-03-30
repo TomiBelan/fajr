@@ -13,6 +13,12 @@
 namespace fajr\rendering;
 
 use Twig_Environment;
+use Twig_Extension_Escaper;
+use Twig_Loader_Filesystem;
+use Twig_Function_Function;
+use fajr\rendering\FajrExtension;
+use fajr\config\FajrConfig;
+use fajr\Router;
 use libfajr\base\Preconditions;
 use fajr\config\SkinConfig;
 use fajr\Response;
@@ -40,25 +46,38 @@ class DisplayManager
       if (!isset($skins, $skinName)) {
         throw new RuntimeException("Default skin is not present!");
       }
-      self::$instance = new DisplayManager(TwigFactory::getInstance(), $skins[$skinName]);
+      $twigOptions = array(
+        'cache' => ($config->get(FajrConfigOptions::USE_CACHE) ?
+          $config->getDirectory(FajrConfigOptions::PATH_TO_TEMPLATE_CACHE) :
+          false),
+        'strict_variables' => true
+      );
+      
+      $router = Router::getInstance();
+      
+      self::$instance = new DisplayManager($twigOptions, $skins[$skinName], $router);
     }
     return self::$instance;
   }
 
-  /** @var TwigFactory */
-  private $twig;
+  /** @var array */
+  private $twigOptions;
   /** @var SkinConfig */
   private $defaultSkin;
+  /** @var Router */
+  private $router;
 
   /**
    * Construct a DisplayManager using Twig_Environment
    * @param Twig_Environment $twig
    * @param SkinConfig skin for which we are going to render templates.
    */
-  public function __construct(TwigFactory $twigFactory, SkinConfig $defaultSkin)
+  public function __construct(array $twigOptions, SkinConfig $defaultSkin,
+      Router $router)
   {
-    $this->twigFactory = $twigFactory;
+    $this->twigOptions = $twigOptions;
     $this->defaultSkin = $defaultSkin;
+    $this->router = $router;
   }
 
   /**
@@ -76,7 +95,11 @@ class DisplayManager
     } else {
       $skin = $this->defaultSkin;
     }
-    $twig = $this->twigFactory->provideTwigForSkin($skin);
+    
+    $loader = new Twig_Loader_Filesystem($skin->getAllPaths());
+    $twig = new Twig_Environment($loader, $this->twigOptions);
+    $twig->addExtension(new Twig_Extension_Escaper());
+    $twig->addExtension(new FajrExtension($this->router));
     
     $format = $response->getFormat();
     

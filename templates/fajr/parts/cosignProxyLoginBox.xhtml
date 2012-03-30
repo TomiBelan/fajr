@@ -8,12 +8,11 @@
  #}
 <div id="cosignProxyLoginBox" class="loginBoxDiv">
   {# Cosign proxy needs GET method! #}
-  <form method="get" action="fajr.php">
+  <form method="get" action="{{ path('login') }}">
     <fieldset class="login-box">
       <legend>Prihlásenie do {{ currentServer.serverName }} </legend>
       <input type="hidden" name="serverName" value="{{ currentServer.serverName }}" />
       <input type="hidden" name="loginType" value="cosignproxy" />
-      <input type="hidden" name="action" value="login.Login" />
       <div>
         
         <button type="submit" name="submit" class="big">

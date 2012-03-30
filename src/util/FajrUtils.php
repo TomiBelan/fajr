@@ -35,26 +35,6 @@ class FajrUtils
     return realpath(__DIR__ . "/../..");
   }
 
-  public static function buildUrl($params, $file=null)
-  {
-    if ($file === null) {
-      if (!empty($params['_file'])) {
-        $file = $params['_file'];
-        unset($params['_file']);
-      }
-      else {
-        $file = 'fajr.php';
-      }
-    }
-
-    $query = http_build_query($params);
-    if (strlen($query) > 0) {
-      $query = '?' . $query;
-    }
-
-    return self::basePath() . $file . $query;
-  }
-
   /**
    * @returns bool whether the current connection is secured
    */

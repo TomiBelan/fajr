@@ -29,10 +29,10 @@
 {% endset %}
 
 {% macro riadok(row, odhlas, studium, zapisnyList, action) %}
-  {% url link for {'action': action,
+  {% set link = path('studium_moje_skusky', {
                    'studium': studium,
                    'list': zapisnyList,
-                   'termin': row.index} %}
+                   'termin': row.index}) %}
   <td>{{ row.predmetNazov }}</td>
   <td>{{ row.dat }}</td>
   <td>{{ row.cas }}</td>
@@ -54,9 +54,9 @@
     {{ table.row(none, (termin != none) and (row.index == termin)) }}
       {% if row.mozeOdhlasit %}
         {% set class="terminmozeodhlasit" %}
-        {% url formAction for {'action': 'studium.OdhlasZoSkusky',
-                               'studium': studium,
-                               'list': zapisnyList} %}
+        {% set formAction = path('studium_odhlas_zo_skusky',
+                                {'studium': studium,
+                                 'list': zapisnyList}) %}
         {% set odhlas %}
           <form method="post" action="{{ formAction }}">
             <div>

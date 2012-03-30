@@ -45,7 +45,6 @@
     <li><a href="http://www.twig-project.org/">Twig</a></li>
   </ul>
   
-  {% url mainPage for {'_file': 'index.php'} %}
-  <p class="noprint"><a href="{{ mainPage }}">Späť na hlavnú stránku</a></p>
+  <p class="noprint"><a href="{{ path('homepage') }}">Späť na hlavnú stránku</a></p>
 </div>
 {% endblock %}

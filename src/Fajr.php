@@ -59,6 +59,11 @@ class Fajr {
    * @var ServerManager
    */
   private $serverManager;
+  
+  /**
+   * @var Router
+   */
+  private $router;
 
   /**
    * Constructor.
@@ -67,6 +72,7 @@ class Fajr {
   {
     $this->config = $config;
     $this->serverManager = ServerManager::getInstance();
+    $this->router = Router::getInstance();
   }
 
   /**
@@ -203,8 +209,9 @@ class Fajr {
 
   public function runLogic(Trace $trace)
   {
-    $action = $this->context->getRequest()->getParameter('action',
-                                           'studium.MojeTerminyHodnotenia');
+    $params = $this->router->routeCurrentRequest();
+    $action = $params['_action'];
+    
     $session = $this->context->getSessionStorage();
     $loginManager = LoginManager::getInstance();
     // If we are going to log in, we need a clean session.
@@ -231,7 +238,7 @@ class Fajr {
       }
       catch (ReloginFailedException $ex) {
         $loginManager->destroySession();
-        $response->redirect(array('action' => 'login.LoginScreen'), 'index.php');
+        $response->redirect($this->router->generateUrl('login_screen'));
         return;
       }
     }
@@ -275,7 +282,7 @@ class Fajr {
       $controller->invokeAction($trace, $action, $this->context);
     }
     catch (AuthenticationRequiredException $ex) {
-      $response->redirect(array('action' => 'login.LoginScreen'), 'index.php');
+      $response->redirect($this->router->generateUrl('login_screen'));
     }
     $response->set('statistics', Statistics::getInstance());
   }

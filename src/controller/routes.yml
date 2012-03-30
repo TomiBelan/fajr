@@ -1,0 +1,69 @@
+## Konfiguracia routera
+---
+homepage:
+    pattern: /
+    defaults: { _action: 'studium.MojeTerminyHodnotenia' }
+
+predmety_informacny_list:
+    pattern: /predmety/informacny-list
+    defaults: { _action: 'predmety.InformacnyList' }
+
+studium_hodnotenia:
+    pattern: /studium/hodnotenia
+    defaults: { _action: 'studium.Hodnotenia' }
+
+studium_moje_skusky:
+    pattern: /studium/moje-skusky
+    defaults: { _action: 'studium.MojeTerminyHodnotenia' }
+
+studium_odhlas_zo_skusky:
+    pattern: /studium/odhlas-zo-skusky
+    defaults: { _action: 'studium.OdhlasZoSkusky' }
+    
+studium_prihlas_na_skusku:
+    pattern: /studium/prihlas-na-skusku
+    defaults: { _action: 'studium.PrihlasNaSkusku' }
+
+studium_prehlad_kreditov:
+    pattern: /studium/prehlad-kreditov
+    defaults: { _action: 'studium.PrehladKreditov' }
+
+studium_prehlad_kreditov:
+    pattern: /studium/prehlad-kreditov
+    defaults: { _action: 'studium.PrehladKreditov' }
+
+studium_zapisane_predmety:
+    pattern: /studium/zapisane-predmety
+    defaults: { _action: 'studium.ZapisanePredmety' }
+
+studium_zoznam_skusok:
+    pattern: /studium/zoznam-skusok
+    defaults: { _action: 'studium.ZoznamTerminov' }
+
+login:
+    pattern: /login
+    defaults: { _action: 'login.Login' }
+    
+login_screen:
+    pattern: /login/screen
+    defaults: { _action: 'login.LoginScreen' }
+
+logout:
+    pattern: /logout
+    defaults: { _action: 'login.Logout' }
+
+settings:
+    pattern: /nastavenia
+    defaults: { _action: 'userSettings.Settings' }
+
+settings_skin:
+    pattern: /nastavenia
+    defaults: { _action: 'userSettings.Skin' }
+
+terms_of_use:
+    pattern: /podmienky-pouzivania
+    defaults: { _action: 'static.TermsOfUse' }
+
+about:
+    pattern: /o-aplikacii
+    defaults: { _action: 'static.About' }

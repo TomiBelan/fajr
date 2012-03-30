@@ -29,11 +29,11 @@
 {% endset %}
 
 {% macro riadok(row, prihlas, studium, zapisnyList, action) %}
-  {% url link for {'action': action,
+  {% set link = path('studium_zoznam_skusok', {
                    'studium': studium,
                    'list': zapisnyList,
                    'predmet': row.predmetIndex,
-                   'termin': row.index} %}
+                   'termin': row.index}) %}
   <td>{{ row.predmet }}</td>
   <td>{{ row.dat }}</td>
   <td>{{ row.cas }}</td>
@@ -54,9 +54,8 @@
     {{ table.row(none, (termin != none) and (row.index == termin)
                         and (row.index == termin) and (row.predmetIndex == predmet)) }}
       {% if row.mozeSaPrihlasit <= 0 %} {# moze sa prihlasit #}
-        {% url form_action for {'action': 'studium.PrihlasNaSkusku',
-                           'studium': studium,
-                           'list': zapisnyList} %}
+        {% set form_action = path('studium_prihlas_na_skusku', {'studium': studium,
+                           'list': zapisnyList}) %}
         {% set prihlas %}
           {# TODO(anty): update after those checks are moved to the model #}
           {% if row.mozeSaPrihlasit == constant("fajr\\controller\\studium\\MozePrihlasitNaTerminHelper::PRIHLASIT_MOZE_ZNAMKA") %}

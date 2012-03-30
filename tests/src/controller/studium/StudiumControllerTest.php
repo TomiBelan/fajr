@@ -61,8 +61,9 @@ class StudiumControllerTest extends PHPUnit_Framework_TestCase
     $this->loginManager->expects($this->any())
                        ->method('isLoggedIn')
                        ->will($this->returnValue(true));
+    $this->router = $this->getMock('\fajr\Router', array(), array(), '', false);
 
-    $this->controller = new StudiumController($factory, $time, $this->loginManager);
+    $this->controller = new StudiumController($factory, $time, $this->loginManager, $this->router);
 
     $this->storage->write('ais/aisApps', array(AIS2ApplicationEnum::ADMINISTRACIA_STUDIA));
   }
