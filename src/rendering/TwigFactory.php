@@ -17,7 +17,7 @@ namespace fajr\rendering;
 use Twig_Environment;
 use Twig_Extension_Escaper;
 use Twig_Loader_Filesystem;
-use fajr\rendering\Extension;
+use fajr\rendering\FajrExtension;
 use fajr\config\SkinConfig;
 use fajr\config\FajrConfig;
 use fajr\config\FajrConfigLoader;
@@ -47,7 +47,8 @@ class TwigFactory {
           false),
         'strict_variables' => true
       );
-      $extensions = array(new Twig_Extension_Escaper(), new Extension());
+      $fajrExtension = new FajrExtension();
+      $extensions = array(new Twig_Extension_Escaper(), $fajrExtension);
       self::$instance = new TwigFactory($options, $extensions);
     }
     return self::$instance;

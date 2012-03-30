@@ -23,7 +23,7 @@ use fajr\rendering\tags\UniqueTokenParser;
  * @subpackage Rendering
  * @author     Martin Sucha <anty.sk@gmail.com>
  */
-class Extension extends Twig_Extension
+class FajrExtension extends Twig_Extension
 {
   /**
    * Return an extension name
