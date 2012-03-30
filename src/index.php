@@ -90,6 +90,10 @@ use Symfony\Component\ClassLoader\UniversalClassLoader;
 
 $loader = new UniversalClassLoader();
 
+$loader->registerNamespaces(array(
+  'Symfony' => __DIR__.'/../third_party',
+));
+
 $loader->registerPrefixes(array(
     'Twig_'  => __DIR__.'/../third_party/twig/lib',
 ));
