@@ -38,7 +38,7 @@ use fajr\config\FajrConfigOptions;
 use fajr\ServerManager;
 use fajr\rendering\DisplayManager;
 use libfajr\exceptions\ReloginFailedException;
-
+use fajr\controller\Controller;
 
 /**
  * This is "main()" of the fajr. It instantiates all neccessary
@@ -211,6 +211,7 @@ class Fajr {
   {
     $params = $this->router->routeCurrentRequest();
     $action = $params['_action'];
+    $controllerClass = $params['_controller'];
     
     $session = $this->context->getSessionStorage();
     $loginManager = LoginManager::getInstance();
@@ -218,7 +219,7 @@ class Fajr {
     // This needs to be done before a connection
     // is created, because we pass cookie file name
     // that contains session_id into AIS2CurlConnection
-    if ($action == 'user.Login') {
+    if ($action == 'Login') {
       $loginManager->destroySession();
     }
 
@@ -275,10 +276,14 @@ class Fajr {
       $response->set('aisVersionIncompatible', null);
     }
 
-    $controller = DispatchController::getInstance();
+    $controller = call_user_func(array($controllerClass, 'getInstance'));
+    if (!($controller instanceof Controller)) {
+      throw new Exception('Class "' . $controllerClass . '" is not a controller');
+    }
 
     try {
-      $controller->invokeAction($trace, $action, $this->context);
+      $subTrace = $trace->addChild('Action ' . $controllerClass . '->' . $action);
+      $controller->invokeAction($subTrace, $action, $this->context);
     }
     catch (AuthenticationRequiredException $ex) {
       $response->redirect($this->router->generateUrl('login_screen'));

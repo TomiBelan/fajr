@@ -6,64 +6,96 @@
 ---
 homepage:
     pattern: /
-    defaults: { _action: 'studium.MojeTerminyHodnotenia' }
+    defaults:
+      _action: 'MojeTerminyHodnotenia'
+      _controller: '\fajr\controller\studium\StudiumController'
 
 predmety_informacny_list:
     pattern: /predmety/informacny-list
-    defaults: { _action: 'predmety.InformacnyList' }
+    defaults:
+      _action: 'InformacnyList'
+      _controller: '\fajr\controller\predmety\PredmetyController'
 
 studium_hodnotenia:
     pattern: /studium/hodnotenia
-    defaults: { _action: 'studium.Hodnotenia' }
+    defaults:
+      _action: 'Hodnotenia'
+      _controller: '\fajr\controller\studium\StudiumController'
 
 studium_moje_skusky:
     pattern: /studium/moje-skusky
-    defaults: { _action: 'studium.MojeTerminyHodnotenia' }
+    defaults:
+      _action: 'MojeTerminyHodnotenia'
+      _controller: '\fajr\controller\studium\StudiumController'
 
 studium_odhlas_zo_skusky:
     pattern: /studium/odhlas-zo-skusky
-    defaults: { _action: 'studium.OdhlasZoSkusky' }
+    defaults:
+      _action: 'OdhlasZoSkusky'
+      _controller: '\fajr\controller\studium\StudiumController'
     
 studium_prihlas_na_skusku:
     pattern: /studium/prihlas-na-skusku
-    defaults: { _action: 'studium.PrihlasNaSkusku' }
+    defaults:
+      _action: 'PrihlasNaSkusku'
+      _controller: '\fajr\controller\studium\StudiumController'
 
 studium_prehlad_kreditov:
     pattern: /studium/prehlad-kreditov
-    defaults: { _action: 'studium.PrehladKreditov' }
+    defaults:
+      _action: 'PrehladKreditov'
+      _controller: '\fajr\controller\studium\StudiumController'
 
 studium_zapisane_predmety:
     pattern: /studium/zapisane-predmety
-    defaults: { _action: 'studium.ZapisanePredmety' }
+    defaults:
+      _action: 'ZapisanePredmety'
+      _controller: '\fajr\controller\studium\StudiumController'
 
 studium_zoznam_skusok:
     pattern: /studium/zoznam-skusok
-    defaults: { _action: 'studium.ZoznamTerminov' }
+    defaults:
+      _action: 'ZoznamTerminov'
+      _controller: '\fajr\controller\studium\StudiumController'
 
 login:
     pattern: /login
-    defaults: { _action: 'login.Login' }
+    defaults:
+      _action: 'Login'
+      _controller: '\fajr\controller\user\LoginController'
     
 login_screen:
     pattern: /uvod
-    defaults: { _action: 'login.LoginScreen' }
+    defaults:
+      _action: 'LoginScreen'
+      _controller: '\fajr\controller\user\LoginController'
 
 logout:
     pattern: /logout
-    defaults: { _action: 'login.Logout' }
+    defaults:
+      _action: 'Logout'
+      _controller: '\fajr\controller\user\LoginController'
 
 settings:
     pattern: /nastavenia
-    defaults: { _action: 'userSettings.Settings' }
+    defaults:
+      _action: 'Settings'
+      _controller: '\fajr\controller\user\UserSettingsController'
 
 settings_skin:
     pattern: /nastavenia/vzhlad
-    defaults: { _action: 'userSettings.Skin' }
+    defaults:
+      _action: 'Skin'
+      _controller: '\fajr\controller\user\UserSettingsController'
 
 terms_of_use:
     pattern: /podmienky-pouzivania
-    defaults: { _action: 'static.TermsOfUse' }
+    defaults:
+      _action: 'TermsOfUse'
+      _controller: '\fajr\controller\StaticController'
 
 about:
     pattern: /o-aplikacii
-    defaults: { _action: 'static.About' }
+    defaults:
+      _action: 'About'
+      _controller: '\fajr\controller\StaticController'
