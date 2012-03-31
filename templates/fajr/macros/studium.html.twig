@@ -58,26 +58,21 @@
  #}
 {% macro studiumTabs(content, selectedTab, studium, zapisnyList) %}
   {% import "macros/decorators.html.twig" as decorators %}
-  {% set terminyLink = path('studium_moje_skusky', {'studium': studium,
-                              'list': zapisnyList}) %}
-  {% set zapisLink   = path('studium_zoznam_skusok', {'studium': studium,
-                              'list': zapisnyList}) %}
-  {% set zapisnyListLink = path('studium_zapisane_predmety', {'studium': studium,
-                              'list': zapisnyList}) %}
-  {% set hodnoteniaLink = path('studium_hodnotenia', {'studium': studium,
-                              'list': zapisnyList}) %}
-  {% set prehladKreditovLink = path('studium_prehlad_kreditov', {'studium': studium,
-                                   'list': zapisnyList}) %}
   {{ decorators.tabs(content, 
       {'TerminyHodnotenia': {'title': 'Moje skúšky',
-                              'url': terminyLink},
+                              'url': path('studium_moje_skusky',
+                                  {'studium': studium, 'list': zapisnyList})},
        'ZapisSkusok':       {'title': 'Prihlásenie na skúšky',
-                             'url': zapisLink},
+                             'url': path('studium_zoznam_skusok',
+                                  {'studium': studium, 'list': zapisnyList})},
        'ZapisnyList':       {'title': 'Zápisný list',
-                             'url': zapisnyListLink},
+                             'url': path('studium_zapisane_predmety',
+                                  {'studium': studium, 'list': zapisnyList})},
        'Hodnotenia':        {'title': 'Hodnotenia/Priemery',
-                             'url': hodnoteniaLink},
+                             'url': path('studium_hodnotenia',
+                                  {'studium': studium, 'list': zapisnyList})},
        'PrehladKreditov':   {'title': 'Prehľad kreditov',
-                             'url': prehladKreditovLink}
+                             'url': path('studium_prehlad_kreditov',
+                                  {'studium': studium, 'list': zapisnyList})}
       }, selectedTab) }}
 {% endmacro %}

@@ -16,10 +16,6 @@
 {% set tabContent %} 
 
   {% macro tabulkaSkuska(row, odhlas, studium, zapisnyList) %}
-    {% set link = path('studium_moje_skusky', {
-                     'studium': studium,
-                     'list': zapisnyList,
-                     'termin': row.index}) %}
     {% import "macros/decorators.html.twig" as decorators %} 
     {% set title %}
       {{decorators.span(row.predmetNazov~" - "~row.dat,"table_box_title")}}
@@ -27,7 +23,6 @@
     {% set content %}
     <div class="table_box">
       <ul class="table_box">     
-        {#{ decorators.riadok("Predmet:", "<a href="~link~">"~row.predmetNazov~"</a>") }#}
         {{ decorators.riadok("Čas:", row.cas) }}
         {{ decorators.riadok("Dátum:", row.dat) }}
         {{ decorators.riadok("Miestnosť:", row.miestnosti) }}
@@ -39,7 +34,10 @@
         {{ decorators.riadok("Odhlasovanie:", row.odhlasovanie) }}
         {{ decorators.riadok("Odhlás:", odhlas) }}
         {{ decorators.riadok("Známka:", row.znamka) }}
-        <li><a href={{link}} class="last">Zoznam prihlásených</a></li>
+        <li><a href={{ path('studium_moje_skusky', {
+                          'studium': studium,
+                          'list': zapisnyList,
+                          'termin': row.index}) }} class="last">Zoznam prihlásených</a></li>
       </ul>      
     </div>
     {% endset %}      
@@ -51,11 +49,10 @@
     {% for row in terminyActive %}      
         {% if row.mozeOdhlasit %}
           {% set class="terminmozeodhlasit" %}
-          {% set formAction = path('studium_odhlas_zo_skusky',
-                                  {'studium': studium,
-                                   'list': zapisnyList}) %}
           {% set odhlas %}
-            <form method="post" action="{{ formAction }}">
+            <form method="post" action="{{ path('studium_odhlas_zo_skusky',
+                                                {'studium': studium,
+                                                'list': zapisnyList}) }}">
               <div>
                 <input type="hidden" name="odhlasIndex" value="{{ row.index }}" />
                 <input type="hidden" name="hash" value="{{ row.hashNaOdhlasenie }}"/>

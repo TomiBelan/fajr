@@ -29,19 +29,20 @@
 {% endset %}
 
 {% macro riadok(row, prihlas, studium, zapisnyList) %}
-  {% set link = path('studium_zoznam_skusok', {
-                   'studium': studium,
-                   'list': zapisnyList,
-                   'predmet': row.predmetIndex,
-                   'termin': row.index}) %}
   <td>{{ row.predmet }}</td>
   <td>{{ row.dat }}</td>
   <td>{{ row.cas }}</td>
   <td>{{ row.miestnosti }}</td>
   <td>{{ row.hodnotiaci }}</td>
   <td>{{ row.pocetPrihlasenych }}{% if not row.maxPocet is empty %}/{{ row.maxPocet }}{% endif %}
-      {% if row.pocetPrihlasenych > 0 %}<a href="{{ link }}"
-      title="Zoznam prihlásených študentov na {{ row.predmet }} {{ row.dat }} {{ row.cas }}">zoznam</a>{% endif %}
+      {% if row.pocetPrihlasenych > 0 -%}
+        <a href="{{ path('studium_zoznam_skusok', {
+                      'studium': studium,
+                      'list': zapisnyList,
+                      'predmet': row.predmetIndex,
+                      'termin': row.index}) }}"
+        title="Zoznam prihlásených študentov na {{ row.predmet }} {{ row.dat }} {{ row.cas }}">zoznam</a>
+      {%- endif %}
   </td>
   <td>{{ row.poznamka }}</td>
   <td>{{ row.prihlasovanie }}</td>
@@ -54,14 +55,13 @@
     {{ table.row(none, (termin != none) and (row.index == termin)
                         and (row.index == termin) and (row.predmetIndex == predmet)) }}
       {% if row.mozeSaPrihlasit <= 0 %} {# moze sa prihlasit #}
-        {% set form_action = path('studium_prihlas_na_skusku', {'studium': studium,
-                           'list': zapisnyList}) %}
         {% set prihlas %}
           {# TODO(anty): update after those checks are moved to the model #}
           {% if row.mozeSaPrihlasit == constant("fajr\\controller\\studium\\MozePrihlasitNaTerminHelper::PRIHLASIT_MOZE_ZNAMKA") %}
             Už máš zapísané "{{ row.znamka }}"
           {% endif %}
-          <form method='post' action='{{ form_action }}'>
+          <form method="post" action="{{ path('studium_prihlas_na_skusku',
+                                {'studium': studium, 'list': zapisnyList}) }}">
             <div>
               <input type="hidden" name="prihlasPredmetIndex"
                      value="{{ row.predmetIndex }}" />

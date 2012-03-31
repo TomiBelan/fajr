@@ -29,18 +29,19 @@
 {% endset %}
 
 {% macro riadok(row, odhlas, studium, zapisnyList) %}
-  {% set link = path('studium_moje_skusky', {
-                   'studium': studium,
-                   'list': zapisnyList,
-                   'termin': row.index}) %}
   <td>{{ row.predmetNazov }}</td>
   <td>{{ row.dat }}</td>
   <td>{{ row.cas }}</td>
   <td>{{ row.miestnosti }}</td>
   <td>{{ row.hodnotiaci }}</td>
   <td>{{ row.pocetPrihlasenych }}{% if not row.maxPocet is empty %}/{{ row.maxPocet }}{% endif %}
-      {% if row.pocetPrihlasenych > 0 %}<a href="{{ link }}"
-      title="Zoznam prihlásených študentov na {{ row.predmetNazov }} {{ row.dat }} {{ row.cas }}">zoznam</a>{% endif %}
+      {% if row.pocetPrihlasenych > 0 -%}
+        <a href="{{ path('studium_moje_skusky', {
+                    'studium': studium,
+                    'list': zapisnyList,
+                    'termin': row.index}) }}"
+        title="Zoznam prihlásených študentov na {{ row.predmetNazov }} {{ row.dat }} {{ row.cas }}">zoznam</a>
+      {%- endif %}
   </td>
   <td>{{ row.poznamka }}</td>
   <td>{{ row.prihlasovanie }}</td>
@@ -54,11 +55,10 @@
     {{ table.row(none, (termin != none) and (row.index == termin)) }}
       {% if row.mozeOdhlasit %}
         {% set class="terminmozeodhlasit" %}
-        {% set formAction = path('studium_odhlas_zo_skusky',
-                                {'studium': studium,
-                                 'list': zapisnyList}) %}
         {% set odhlas %}
-          <form method="post" action="{{ formAction }}">
+          <form method="post" action="{{ path('studium_odhlas_zo_skusky',
+                                          {'studium': studium,
+                                          'list': zapisnyList}) }}">
             <div>
               <input type="hidden" name="odhlasIndex" value="{{ row.index }}" />
               <input type="hidden" name="hash" value="{{ row.hashNaOdhlasenie }}"/>
