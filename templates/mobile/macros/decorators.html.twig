@@ -16,7 +16,7 @@
  # @param bool $collapsed ma byt defaultne skryty?
  #}
 {% macro collapsible(title, content, collapsed) %}
-  {% set id = unique_id('collapsible') %}
+  {% set id = 'collapsible' ~ unique_id() %}
   <div class="collapsible" id="{{ id }}">
     <div class="collapsibleheader togglevisibility" onclick="toggleVisibility('{{ id }}')">
       {{ title|raw }}
@@ -49,7 +49,7 @@
     {% if class != "" %}
       {% set class=" "+class %}
     {% endif %}
-    <table id="{{ unique_id('table') }}" class="colstyle-sorting{{ class }}">
+    <table id="table{{ unique_id() }}" class="colstyle-sorting{{ class }}">
       <thead>
         <tr>
           {{ head|raw }}

@@ -9,7 +9,7 @@
 {% import "macros/decorators.html.twig" as decorators %}
 {% import "macros/table.html.twig" as table %}
 
-{% set id = unique_id('collapsible') %}
+{% set id = 'collapsible' ~ unique_id() %}
 
 <p id="p_{{ id }}">
 Aktuálne zvolené štúdium{% if zapisnyListObj %} a zápisný list{% endif %}:

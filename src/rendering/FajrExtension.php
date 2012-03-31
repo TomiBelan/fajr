@@ -59,9 +59,9 @@ class FajrExtension extends Twig_Extension
    * @param string|null $type
    * @return string the new unique id optionally prefixed with $type
    */
-  public function generateUniqueId($type = null)
+  public function generateUniqueId()
   {
-    return ($type === null ? '' : $type) . ($this->nextUniqueId++);
+    return $this->nextUniqueId++;
   }
 
   public function generatePath($name, $parameters = array(), $absolute = false) {
