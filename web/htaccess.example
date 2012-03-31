@@ -1,20 +1,24 @@
+# Priklad .htaccess suboru pre testovanie fajr-u
+# Note: na produkcnom serveri nechceme pouzivat .htaccess
+# pretoze rewritovanie dobre nefuguje s cosignom ak
+# je vramci Directory alebo .htaccess
+
 DirectoryIndex index.php
 
 <IfModule rewrite_module>
 	RewriteEngine On
+	
+	# Ak je fajr v podadresari, treba nastavit
+	#RewriteBase /cesta
 
 	# presmerovanie na https
-	RewriteCond %{HTTPS} off
-	RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [QSA,R,L]
+	#RewriteCond %{HTTPS} off
+	#RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [QSA,R,L]
 
-  # preskoc cosignovsky location handler
-  #RewriteCond %{REQUEST_URI} !=/cosign/valid
-	# existujuce adresare nechaj tak
-	#RewriteCond %{REQUEST_FILENAME} !-d
-	# takisto subory
-	#RewriteCond %{REQUEST_FILENAME} !-f
-  # / neprepisuj
-  #RewriteCond %{REQUEST_URI} !=/
-	# prepis /nieco na fajr.php/nieco
-	#RewriteRule (.*) fajr.php/$1
+	# presmerovanie kvoli krajsim URL-kam
+	RewriteCond %{REQUEST_URI} !=/cosign/valid
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_URI} !=/
+	RewriteRule ^(.*)$ index.php/$1
 </IfModule>
