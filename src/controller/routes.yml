@@ -32,10 +32,6 @@ studium_prehlad_kreditov:
     pattern: /studium/prehlad-kreditov
     defaults: { _action: 'studium.PrehladKreditov' }
 
-studium_prehlad_kreditov:
-    pattern: /studium/prehlad-kreditov
-    defaults: { _action: 'studium.PrehladKreditov' }
-
 studium_zapisane_predmety:
     pattern: /studium/zapisane-predmety
     defaults: { _action: 'studium.ZapisanePredmety' }
@@ -61,7 +57,7 @@ settings:
     defaults: { _action: 'userSettings.Settings' }
 
 settings_skin:
-    pattern: /nastavenia
+    pattern: /nastavenia/vzhlad
     defaults: { _action: 'userSettings.Skin' }
 
 terms_of_use:
