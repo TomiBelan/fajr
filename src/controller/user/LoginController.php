@@ -2,7 +2,7 @@
 /**
  * Contains controller for login/logout
  *
- * @copyright  Copyright (c) 2011 The Fajr authors (see AUTHORS).
+ * @copyright  Copyright (c) 2011-2012 The Fajr authors (see AUTHORS).
  *             Use of this source code is governed by a MIT license that can be
  *             found in the LICENSE file in the project root directory.
  *
@@ -28,6 +28,9 @@ use fajr\config\FajrConfigLoader;
 use fajr\settings\SkinSettings;
 use fajr\LoginManager;
 use fajr\ServerManager;
+use sfSessionStorage;
+use fajr\SessionStorageProvider;
+use fajr\Router;
 
 /**
  * Controller for login/logout
@@ -41,7 +44,9 @@ class LoginController extends BaseController
   /* TODO document */
   public static function getInstance()
   {
-    return new LoginController(FajrConfigLoader::getConfiguration(), LoginManager::getInstance(), ServerManager::getInstance());
+    return new LoginController(FajrConfigLoader::getConfiguration(),
+        LoginManager::getInstance(), ServerManager::getInstance(),
+        SessionStorageProvider::getInstance(), Router::getInstance());
   }
 
   /** @var FajrConfig */
@@ -52,23 +57,34 @@ class LoginController extends BaseController
   
   /** @var ServerManager */
   private $serverManager;
+  
+  /** @var Router */
+  private $router;
+  
+  /** @var sfSessionStorage */
+  private $session;
 
   public function __construct(FajrConfig $config, LoginManager $loginManager,
-      ServerManager $serverManager)
+      ServerManager $serverManager, sfSessionStorage $session, Router $router)
   {
     $this->config = $config;
     $this->loginManager = $loginManager;
     $this->serverManager = $serverManager;
+    $this->session = $session;
+    $this->router = $router;
   }
 
   public function runLogin(Trace $trace, Context $context)
   {
-    $request = $context->getRequest();
     $response = $context->getResponse();
     $server = $this->serverManager->getActiveServer();
 
     try {
       $this->loginManager->login($trace->addChild("Logging in..."), $server);
+      // Ak sa niekedy odoberie nasledovny redirect,
+      // treba mat na pamati, ze login() moze skoncit s true, false, alebo
+      // vynimkou
+      $response->redirect($this->router->generateUrl('homepage', array(), true));
     } catch (LoginException $e) {
       $this->setException($e);
       try {
@@ -103,7 +119,18 @@ class LoginController extends BaseController
   
   public function runLogout(Trace $trace, Context $context)
   {
-    $this->loginManager->logout();
+    $response = $context->getResponse();
+    $result = $this->loginManager->logout();
+    $server = $this->session->read('server');
+    if ($result && $server->getLoginType() == 'cosignproxy') {
+      // Redirect na hlavnu odhlasovaciu stranku univerzity
+      $response->redirect(CosignProxyLogin::COSIGN_LOGOUT);
+      if (isset($_SERVER[ 'COSIGN_SERVICE' ])) {
+        $response->clearCookie($_SERVER[ 'COSIGN_SERVICE' ], '/', '');
+      }
+    } else {
+      $response->redirect($this->router->generateUrl('homepage'), array(), true);
+    }
   }
 
 }

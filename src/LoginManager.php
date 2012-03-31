@@ -24,7 +24,6 @@ use libfajr\login\AIS2PasswordLogin;
 use libfajr\login\AIS2CosignLogin;
 use libfajr\login\NoLogin;
 use fajr\Request;
-use fajr\Router;
 use fajr\util\FajrUtils;
 use sfStorage;
 
@@ -39,7 +38,7 @@ class LoginManager
     if (!isset(self::$instance)) {
       self::$instance = new LoginManager(SessionStorageProvider::getInstance(),
           Request::getInstance(), Response::getInstance(),
-          LazyServerConnection::getInstance(), Router::getInstance());
+          LazyServerConnection::getInstance());
     }
     return self::$instance;
   }
@@ -55,18 +54,14 @@ class LoginManager
    */
   private $cachedLoggedIn;
   private $connection;
-  
-  /** @var Router */
-  private $router;
 
   public function __construct(sfStorage $session, Request $request, Response $response,
-      AIS2ServerConnection $connection, Router $router)
+      AIS2ServerConnection $connection)
   {
     $this->session = $session;
     $this->request = $request;
     $this->response = $response;
     $this->connection = $connection;
-    $this->router = $router;
   }
 
   public function isLoggedIn()
@@ -113,7 +108,6 @@ class LoginManager
   {
     $this->cachedLoggedIn = null;
     $login = $this->session->read('login/login.class');
-    $server = $this->session->read('server');
     
     // Destroy the session before requesting AIS logout page
     // to be sure that we logout properly in case the connection
@@ -122,19 +116,10 @@ class LoginManager
     $this->destroySession();
 
     if ($login === null || !$login->logout($this->connection)) {
-      $this->response->redirect($this->router->generateUrl('homepage', array(), true));
       return false;
     }
-
-    if ($server->getLoginType() == 'cosignproxy') {
-      // Redirect na hlavnu odhlasovaciu stranku univerzity
-      $this->response->redirect(CosignProxyLogin::COSIGN_LOGOUT);
-      if (isset($_SERVER[ 'COSIGN_SERVICE' ])) {
-        $this->response->clearCookie($_SERVER[ 'COSIGN_SERVICE' ], '/', '');
-      }
-    } else {
-      $this->response->redirect($this->router->generateUrl('homepage'), array(), true);
-    }
+    
+    return true;
   }
 
   public function login(Trace $trace, ServerConfig $serverConfig)
@@ -150,7 +135,7 @@ class LoginManager
     $this->session->write('login/login.class', $login);
     $this->session->write('server', $serverConfig);
 
-    $this->response->redirect($this->router->generateUrl('homepage', array(), true));
+    return true;
   }
 
   private function assertSecurity($condition, $message)
