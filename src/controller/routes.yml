@@ -49,7 +49,7 @@ login:
     defaults: { _action: 'login.Login' }
     
 login_screen:
-    pattern: /login/screen
+    pattern: /uvod
     defaults: { _action: 'login.LoginScreen' }
 
 logout:
