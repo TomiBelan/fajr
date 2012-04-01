@@ -1,7 +1,7 @@
 <?php
 /**
  * Holds configuration options for FajrConfig
- * @copyright  Copyright (c) 2011 The Fajr authors (see AUTHORS).
+ * @copyright  Copyright (c) 2011-2012 The Fajr authors (see AUTHORS).
  *             Use of this source code is governed by a MIT license that can be
  *             found in the LICENSE file in the project root directory.
  *
@@ -42,8 +42,10 @@ class FajrConfigOptions {
   const STRICT_TRANSPORT_SECURITY = 'SSL.StrictRequire';
   const USER_AGENT = 'Connection.UserAgent';
   const PATH_TO_TEMPLATES = 'Template.Directory';
-  const USE_TEMPLATE_CACHE = 'Template.Cache';
+  const USE_CACHE = 'Cache.Enabled';
+  const PATH_TO_CACHE = 'Cache.Path';
   const PATH_TO_TEMPLATE_CACHE = 'Template.Cache.Path';
+  const PATH_TO_ROUTER_CACHE = 'Router.Cache.Path';
   const TEMPLATE_SKINS = 'Template.Skin.Skins';
   const TEMPLATE_DEFAULT_SKIN = 'Template.Skin.Default';
   const IS_DEVEL = 'Features.Devel';
@@ -133,13 +135,23 @@ class FajrConfigOptions {
         array('defaultValue' => './templates',
               'validator' => $pathValidator),
 
-      self::USE_TEMPLATE_CACHE =>
+      self::USE_CACHE =>
         array('defaultValue' => false,
               'validator' => $booleanValidator),
+      
+      self::PATH_TO_CACHE =>
+        array('defaultValue' => './cache',
+              'relativeTo' => self::PATH_TO_TEMP,
+              'validator' => $pathValidator),
 
       self::PATH_TO_TEMPLATE_CACHE =>
-        array('defaultValue' => './twig_cache',
-              'relativeTo' => 'Path.Temporary',
+        array('defaultValue' => './twig',
+              'relativeTo' => self::PATH_TO_CACHE,
+              'validator' => $pathValidator),
+      
+      self::PATH_TO_ROUTER_CACHE =>
+        array('defaultValue' => './router',
+              'relativeTo' => self::PATH_TO_CACHE,
               'validator' => $pathValidator),
 
       self::TEMPLATE_SKINS =>

@@ -2,7 +2,7 @@
 /**
  * Parameters passed by ?query part.
  *
- * @copyright  Copyright (c) 2010,2011 The Fajr authors (see AUTHORS).
+ * @copyright  Copyright (c) 2010-2012 The Fajr authors (see AUTHORS).
  *             Use of this source code is governed by a MIT license that can be
  *             found in the LICENSE file in the project root directory.
  *
@@ -157,8 +157,8 @@ class HttpInputParameters implements InvocationParameters
     $_post = $_POST;
 
     // budeme pouzivat uz len Input
-    unset($_GET);
-    unset($_POST);
+    $_GET = array();
+    $_POST = array();
 
     $this->_get = $this->_prepare_array($_get, $this->allowed_get);
     $this->_post = $this->_prepare_array($_post, $this->allowed_post);

@@ -2,7 +2,7 @@
 /**
  * Bootstraps the whole application.
  *
- * @copyright  Copyright (c) 2010, 2011 The Fajr authors (see AUTHORS).
+ * @copyright  Copyright (c) 2010-2012 The Fajr authors (see AUTHORS).
  *             Use of this source code is governed by a MIT license that can be
  *             found in the LICENSE file in the project root directory.
  *
@@ -16,7 +16,6 @@ namespace fajr;
 use libfajr\base\SystemTimer;
 use Loader;
 use sfStorageAutoloader;
-use Twig_Autoloader;
 use Exception;
 use fajr\util\FajrUtils;
 use fajr\config\FajrConfig;
@@ -85,10 +84,21 @@ mb_internal_encoding("UTF-8");
 require_once '../third_party/symfony_storage/sfStorageAutoloader.php';
 sfStorageAutoloader::register();
 
-// register Twig autoloader
-require_once '../third_party/twig/lib/Twig/Autoloader.php';
-Twig_Autoloader::register();
+require_once __DIR__.'/../third_party/Symfony/Component/ClassLoader/UniversalClassLoader.php';
 
+use Symfony\Component\ClassLoader\UniversalClassLoader;
+
+$loader = new UniversalClassLoader();
+
+$loader->registerNamespaces(array(
+  'Symfony' => __DIR__.'/../third_party',
+));
+
+$loader->registerPrefixes(array(
+    'Twig_'  => __DIR__.'/../third_party/twig/lib',
+));
+
+$loader->register();
 // register our autoloader as last
 require_once '../libfajr/src/libfajr.php';
 Loader::register();

@@ -2,7 +2,7 @@
 /**
  * Tento súbor obsahuje objekt reprezentujúci odpoveď
  *
- * @copyright  Copyright (c) 2010, 2011 The Fajr authors (see AUTHORS).
+ * @copyright  Copyright (c) 2010-2012 The Fajr authors (see AUTHORS).
  *             Use of this source code is governed by a MIT license that can be
  *             found in the LICENSE file in the project root directory.
  *
@@ -41,7 +41,7 @@ class Response
   private $template = null;
   
   /** @var string output format name*/
-  private $format = 'xhtml';
+  private $format = 'html';
 
   /** SkinConfig skin configuration */
   private $skin = null;
@@ -128,25 +128,16 @@ class Response
    *
    * Note that this will not end script execution!
    *
-   * @param array|string $target array query params or absolute url as string
+   * @param string $url absolute url as string
    * @param string $file file to which redirect
    * @todo set http response code to 302/303.
    *
    * @returns void
    */
-  public function redirect($target = array(), $file = 'fajr.php')
+  public function redirect($url)
   {
-    Preconditions::check(is_array($target) || is_string($target),
-        '$target needs to be array or string');
-    if (is_array($target)) {
-      $url = FajrUtils::buildUrl($target, $file);
-    }
-    else if (is_string($target)) {
-      $url = $target;
-    }
-    else {
-      assert(false);
-    }
+    Preconditions::checkIsString($url, '$url needs to be string');
+    
     // Note: It is tempting to end script execution here.
     // However, it is not wise. Calling exit() will start
     // php shutdown phase and according to manual

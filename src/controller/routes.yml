@@ -1,0 +1,95 @@
+## Copyright (c) 2012 The Fajr authors (see AUTHORS).
+## Use of this source code is governed by a MIT license that can be
+## found in the LICENSE file in the project root directory.
+##
+## Konfiguracia routera
+---
+homepage:
+    pattern: /
+    defaults:
+      _action: 'LoginScreen'
+      _controller: '\fajr\controller\user\LoginController'
+
+predmety_informacny_list:
+    pattern: /predmety/informacny-list
+    defaults:
+      _action: 'InformacnyList'
+      _controller: '\fajr\controller\predmety\PredmetyController'
+
+studium_hodnotenia:
+    pattern: /studium/hodnotenia
+    defaults:
+      _action: 'Hodnotenia'
+      _controller: '\fajr\controller\studium\StudiumController'
+
+studium_moje_skusky:
+    pattern: /studium/moje-skusky
+    defaults:
+      _action: 'MojeTerminyHodnotenia'
+      _controller: '\fajr\controller\studium\StudiumController'
+
+studium_odhlas_zo_skusky:
+    pattern: /studium/odhlas-zo-skusky
+    defaults:
+      _action: 'OdhlasZoSkusky'
+      _controller: '\fajr\controller\studium\StudiumController'
+    
+studium_prihlas_na_skusku:
+    pattern: /studium/prihlas-na-skusku
+    defaults:
+      _action: 'PrihlasNaSkusku'
+      _controller: '\fajr\controller\studium\StudiumController'
+
+studium_prehlad_kreditov:
+    pattern: /studium/prehlad-kreditov
+    defaults:
+      _action: 'PrehladKreditov'
+      _controller: '\fajr\controller\studium\StudiumController'
+
+studium_zapisane_predmety:
+    pattern: /studium/zapisane-predmety
+    defaults:
+      _action: 'ZapisanePredmety'
+      _controller: '\fajr\controller\studium\StudiumController'
+
+studium_zoznam_skusok:
+    pattern: /studium/zoznam-skusok
+    defaults:
+      _action: 'ZoznamTerminov'
+      _controller: '\fajr\controller\studium\StudiumController'
+
+login:
+    pattern: /login
+    defaults:
+      _action: 'Login'
+      _controller: '\fajr\controller\user\LoginController'
+    
+logout:
+    pattern: /logout
+    defaults:
+      _action: 'Logout'
+      _controller: '\fajr\controller\user\LoginController'
+
+settings:
+    pattern: /nastavenia
+    defaults:
+      _action: 'Settings'
+      _controller: '\fajr\controller\user\UserSettingsController'
+
+settings_skin:
+    pattern: /nastavenia/vzhlad
+    defaults:
+      _action: 'Skin'
+      _controller: '\fajr\controller\user\UserSettingsController'
+
+terms_of_use:
+    pattern: /podmienky-pouzivania
+    defaults:
+      _action: 'TermsOfUse'
+      _controller: '\fajr\controller\StaticController'
+
+about:
+    pattern: /o-aplikacii
+    defaults:
+      _action: 'About'
+      _controller: '\fajr\controller\StaticController'

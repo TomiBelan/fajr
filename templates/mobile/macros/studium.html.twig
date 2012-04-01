@@ -1,0 +1,76 @@
+{##
+ # Contains macros for 'studium' pages.
+ #
+ # @copyright  Copyright (c) 2010-2012 The Fajr authors (see AUTHORS).
+ #             Use of this source code is governed by a MIT license that can be
+ #             found in the LICENSE file in the project root directory.
+ # @author     TODO
+ #}
+
+{##
+ # Vypise tabulku so zoznamom prihlasenych na skusku
+ # @param DataTable(Prihlaseni) $prihlaseni
+ #}
+
+{% macro zoznamPrihlasenych(prihlaseni) %}
+  {% import "macros/decorators.html.twig" as decorators %}
+  {% import "macros/table.html.twig" as table %}
+
+  {% if prihlaseni %}    
+    {%set body %}
+      {% for row in prihlaseni %}        
+        {% set title %}     
+          {{decorators.span(row.plneMeno,"table_box_title")}}
+        {% endset %}
+
+        {% set content %}
+          <div class="table_box">
+            <ul class="table_box">
+              {{ decorators.riadok("Dátum prihlásenia:",row.datumPrihlas) }}
+              {{ decorators.riadok("Skratka študijného programu:",row.skratka) }}
+              {{ decorators.riadok("Ročník:",row.rocnik) }}
+            </ul>      
+          </div>        
+        {% endset %}
+        {{ decorators.collapsible(title, content, true) }}
+      {% endfor %}
+    {%endset %}
+
+    {% set title %}
+      <h2>Zoznam prihlásených na vybratý termín</h2>
+    {% endset %}
+
+    {% set tableHTML %}
+    {{ decorators.printbox(body, prihlaseni|length == 0) }}
+    {% endset %}
+
+    {{ decorators.collapsible(title, tableHTML, false) }}
+
+  {% endif %}
+
+{% endmacro %}
+
+{##
+  # Vypise taby k casti o studiu
+  # @param string $content obsah aktualneho tabu
+  # @param string $selectedTab aktivny tab
+  # @param int $studium id studia
+  # @param int $zapisnyList id zapisneho listu
+  ##}
+{% macro studiumTabs(content, selectedTab, studium, zapisnyList) %}
+  {% import "macros/decorators.html.twig" as decorators %}
+  {{ decorators.tabs(content, 
+      {'TerminyHodnotenia': {'title': 'Moje skúšky',
+                             'url': path('studium_moje_skusky',
+                                  {'studium': studium, 'list': zapisnyList})},
+       'ZapisSkusok':       {'title': 'Prihlásenie na skúšky',
+                             'url': path('studium_zoznam_skusok',
+                                  {'studium': studium, 'list': zapisnyList})},
+       'ZapisnyList':       {'title': 'Zápisný list',
+                             'url': path('studium_zapisane_predmety',
+                                  {'studium': studium, 'list': zapisnyList})},
+       'Hodnotenia':        {'title': 'Hodnotenia/Priemery',
+                             'url': path('studium_hodnotenia',
+                                  {'studium': studium, 'list': zapisnyList})}
+      }, selectedTab,"menu") }}
+{% endmacro %}

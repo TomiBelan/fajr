@@ -1,0 +1,32 @@
+{##
+ # Displays server selection form.
+ #
+ # @copyright  Copyright (c) 2010-2012 The Fajr authors (see AUTHORS).
+ #             Use of this source code is governed by a MIT license that can be
+ #             found in the LICENSE file in the project root directory.
+ # @author     TODO
+ #}
+{% if availableServers|length > 1 %}
+<div id="serverSelect">
+  <form id="serverSelectForm" method="get" action="{{ path('homepage') }}">
+    <fieldset>
+      <legend>Zmeň AIS2 Server<br/>na ktorý sa fajr pripája:</legend>
+      <select name="serverName"
+        onChange="$('serverSelectForm').submit();">
+        {% for key,item in availableServers  %}
+          {% if item == currentServer %}
+            {% set selected='selected' %}
+          {% else %}
+            {% set selected='' %}
+          {% endif %}
+            <option {{ selected }} value="{{ key }}">{{ item.serverName }}</option>
+        {% endfor %}
+      </select>
+      <button type="submit">
+{# <img alt="" src="images/third_party/silk/key_go.png"/> #}
+        Zmeň server
+      </button>
+    </fieldset>
+  </form>
+</div>
+{% endif %}

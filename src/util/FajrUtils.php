@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * @copyright  Copyright (c) 2010 The Fajr authors (see AUTHORS).
+ * @copyright  Copyright (c) 2010-2012 The Fajr authors (see AUTHORS).
  *             Use of this source code is governed by a MIT license that can be
  *             found in the LICENSE file in the project root directory.
  *
@@ -33,38 +33,6 @@ class FajrUtils
 {
   public static function getProjectRootDirectory() {
     return realpath(__DIR__ . "/../..");
-  }
-
-  public static function buildUrl($params, $file=null)
-  {
-    if ($file === null) {
-      if (!empty($params['_file'])) {
-        $file = $params['_file'];
-        unset($params['_file']);
-      }
-      else {
-        $file = 'fajr.php';
-      }
-    }
-
-    $query = http_build_query($params);
-    if (strlen($query) > 0) {
-      $query = '?' . $query;
-    }
-
-    return self::basePath() . $file . $query;
-  }
-
-  public static function pathInfo()
-  {
-    if (!isset($_SERVER['PATH_INFO'])) {
-      return '';
-    }
-    $path = $_SERVER['PATH_INFO'];
-    if (substr_compare($path, '/', 0, 1) == 0) {
-      $path = substr($path, 1);
-    }
-    return $path;
   }
 
   /**

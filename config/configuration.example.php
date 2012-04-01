@@ -1,5 +1,5 @@
 <?php
-// Copyright (c) 2010, 2011 The Fajr authors (see AUTHORS).
+// Copyright (c) 2010-2012 The Fajr authors (see AUTHORS).
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file in the project root directory.
 
@@ -98,17 +98,29 @@ return array(
   //'Template.Directory'=>'./templates',
 
   /*
-   * Má sa použiť cache na skompilované templaty?
-   * Upozornenie: Cache na templaty je po každom update
+   * Má sa použiť cache?
+   * Upozornenie: Cache je po každom update
    * fajru treba vymazať!
    */
-  //'Template.Cache'=>false,
+  'Cache.Enabled'=>false,
 
   /*
-   * Cache na skompilované templaty
+   * Cache
    * (absolútna, alebo relatívna k adresáru Path.Temporary)
    */
-  //'Template.Cache.Path'=>'./twig_cache',
+  //'Cache.Path'=>'./cache',
+  
+  /*
+   * Cache na skompilované templaty
+   * (absolútna, alebo relatívna k adresáru Cache.Path)
+   */
+  //'Template.Cache.Path'=>'./twig',
+  
+  /*
+   * Cache na skompilované routy
+   * (absolútna, alebo relatívna k adresáru Cache.Path)
+   */
+  //'Router.Cache.Path'=>'./router',
 
   /*
    * Defaultný skin pre Fajr.

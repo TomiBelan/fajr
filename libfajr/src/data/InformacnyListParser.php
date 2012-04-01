@@ -3,7 +3,7 @@
 /**
  * Contains implementation of parsing of information lists.
  *
- * @copyright  Copyright (c) 2010, 2011 The Fajr authors (see AUTHORS).
+ * @copyright  Copyright (c) 2010-2012 The Fajr authors (see AUTHORS).
  *             Use of this source code is governed by a MIT license that can be
  *             found in the LICENSE file in the project root directory.
  *
@@ -223,7 +223,10 @@ class InformacnyListParser
     //ziskanie nazvu skoly, jedina vec co chcem ziskat co sa nenachadza v tabulke
     $b = $domWholeHtml->getElementsByTagName("b");
     $trace->tlog("Finding first element with tag name 'b'");
-    $this->spracujB($trace, $b->item(0));
+    $bb = $b->item(0);
+    if ($bb !== null) {
+      $this->spracujB($trace, $bb);
+    }
 
     $trNodes = $domWholeHtml->getElementsByTagName("tr");
     $trace->tlog("Getting all elements with tag name 'tr'");
