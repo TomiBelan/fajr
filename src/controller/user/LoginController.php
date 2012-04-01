@@ -99,6 +99,12 @@ class LoginController extends BaseController
   {
     $server = $this->serverManager->getActiveServer();
     $response = $context->getResponse();
+
+    if ($this->loginManager->isLoggedIn()) {
+      $response->redirect($this->router->generateUrl('studium_moje_skusky'));
+      return;
+    }
+
     switch ($server->getLoginType()) {
         case 'password':
           $response->setTemplate('welcome');

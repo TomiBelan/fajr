@@ -7,8 +7,8 @@
 homepage:
     pattern: /
     defaults:
-      _action: 'MojeTerminyHodnotenia'
-      _controller: '\fajr\controller\studium\StudiumController'
+      _action: 'LoginScreen'
+      _controller: '\fajr\controller\user\LoginController'
 
 predmety_informacny_list:
     pattern: /predmety/informacny-list
@@ -64,12 +64,6 @@ login:
       _action: 'Login'
       _controller: '\fajr\controller\user\LoginController'
     
-login_screen:
-    pattern: /uvod
-    defaults:
-      _action: 'LoginScreen'
-      _controller: '\fajr\controller\user\LoginController'
-
 logout:
     pattern: /logout
     defaults:

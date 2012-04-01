@@ -239,7 +239,7 @@ class Fajr {
       }
       catch (ReloginFailedException $ex) {
         $loginManager->destroySession();
-        $response->redirect($this->router->generateUrl('login_screen'));
+        $response->redirect($this->router->generateUrl('homepage'));
         return;
       }
     }
@@ -286,7 +286,7 @@ class Fajr {
       $controller->invokeAction($subTrace, $action, $this->context);
     }
     catch (AuthenticationRequiredException $ex) {
-      $response->redirect($this->router->generateUrl('login_screen'));
+      $response->redirect($this->router->generateUrl('homepage'));
     }
     $response->set('statistics', Statistics::getInstance());
   }
