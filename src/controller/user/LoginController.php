@@ -131,7 +131,10 @@ class LoginController extends BaseController
     $result = $this->loginManager->logout();
     if ($result && $server->getLoginType() == 'cosignproxy') {
       // Redirect na hlavnu odhlasovaciu stranku univerzity
-      $response->redirect(CosignProxyLogin::COSIGN_LOGOUT);
+      $redirectUrl = CosignProxyLogin::COSIGN_LOGOUT;
+      $redirectUrl .= '?';
+      $redirectUrl .= $this->router->generateUrl('homepage', array(), true);
+      $response->redirect($redirectUrl);
       if (isset($_SERVER[ 'COSIGN_SERVICE' ])) {
         $response->clearCookie($_SERVER[ 'COSIGN_SERVICE' ], '/', '');
       }
