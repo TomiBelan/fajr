@@ -31,6 +31,7 @@ use fajr\ServerManager;
 use sfSessionStorage;
 use fajr\SessionStorageProvider;
 use fajr\Router;
+use libfajr\login\CosignProxyLogin;
 
 /**
  * Controller for login/logout
