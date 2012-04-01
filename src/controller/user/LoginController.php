@@ -126,8 +126,8 @@ class LoginController extends BaseController
   public function runLogout(Trace $trace, Context $context)
   {
     $response = $context->getResponse();
-    $result = $this->loginManager->logout();
     $server = $this->session->read('server');
+    $result = $this->loginManager->logout();
     if ($result && $server->getLoginType() == 'cosignproxy') {
       // Redirect na hlavnu odhlasovaciu stranku univerzity
       $response->redirect(CosignProxyLogin::COSIGN_LOGOUT);
