@@ -26,12 +26,12 @@
   {% set content %}
   <div class="table_box">                    
     <ul class="table_box">             
-      {{ decorators.riadok("Semester:",row.semester) }}
-      {{ decorators.riadok("Kredit:",row.kredit) }}
-      {{ decorators.riadok("Známka:",row.znamka) }}
-      {{ decorators.riadok("Dátum hodnotenia:",row.datum) }}
-      {{ decorators.riadok("Termín:",row.termin) }}
-      {{ decorators.riadok("Známka popis:",row.znamkaPopis) }}
+      {{ decorators.riadok("Semester:", row.semester|escape) }}
+      {{ decorators.riadok("Kredit:", row.kredit|escape) }}
+      {{ decorators.riadok("Známka:", row.znamka|escape) }}
+      {{ decorators.riadok("Dátum hodnotenia:", row.datum|escape) }}
+      {{ decorators.riadok("Termín:", row.termin|escape) }}
+      {{ decorators.riadok("Známka popis:", row.znamkaPopis|escape) }}
     </ul>      
   </div>
   {% endset %}      
@@ -89,16 +89,16 @@
     {% set content %}
     <div class="table_box">                    
       <ul class="table_box">             
-        {{ decorators.riadok("Akademický rok: ",row.priemerInfoPopisAkadRok) }}
-        {{ decorators.riadok("Názov priemeru: ",row.priemerNazov) }}
-        {{ decorators.riadok("Kód semestra: ",row.priemerInfoKodSemester) }}
-        {{ decorators.riadok("Získaný kredit: ",row.ziskanyKredit) }}
-        {{ decorators.riadok("Celkový počet predmetov: ",row.pocetPredmetov) }}
-        {{ decorators.riadok("Počet neabsolvovaných predmetov: ",row.pocetNeabs) }}
-        {{ decorators.riadok("Študijný priemer",row.studPriemer) }}
-        {{ decorators.riadok("Vážený priemer",row.vazPriemer) }}
-        {{ decorators.riadok("Priemer na koľký pokus",row.pokusyPriemer) }}
-        {{ decorators.riadok("Dátum výpočtu priemeru",row.priemerInfoDatum) }}
+        {{ decorators.riadok("Akademický rok: ", row.priemerInfoPopisAkadRok|escape) }}
+        {{ decorators.riadok("Názov priemeru: ", row.priemerNazov|escape) }}
+        {{ decorators.riadok("Kód semestra: ", row.priemerInfoKodSemester|escape) }}
+        {{ decorators.riadok("Získaný kredit: ", row.ziskanyKredit|escape) }}
+        {{ decorators.riadok("Celkový počet predmetov: ", row.pocetPredmetov|escape) }}
+        {{ decorators.riadok("Počet neabsolvovaných predmetov: ", row.pocetNeabs|escape) }}
+        {{ decorators.riadok("Študijný priemer", row.studPriemer|escape) }}
+        {{ decorators.riadok("Vážený priemer", row.vazPriemer|escape) }}
+        {{ decorators.riadok("Priemer na koľký pokus", row.pokusyPriemer|escape) }}
+        {{ decorators.riadok("Dátum výpočtu priemeru", row.priemerInfoDatum|escape) }}
       </ul>      
     </div>
     {% endset %}      

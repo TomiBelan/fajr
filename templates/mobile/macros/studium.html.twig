@@ -20,15 +20,15 @@
     {%set body %}
       {% for row in prihlaseni %}        
         {% set title %}     
-          {{decorators.span(row.plneMeno,"table_box_title")}}
+          {{decorators.span(row.plneMeno|escape,"table_box_title")}}
         {% endset %}
 
         {% set content %}
           <div class="table_box">
             <ul class="table_box">
-              {{ decorators.riadok("Dátum prihlásenia:",row.datumPrihlas) }}
-              {{ decorators.riadok("Skratka študijného programu:",row.skratka) }}
-              {{ decorators.riadok("Ročník:",row.rocnik) }}
+              {{ decorators.riadok("Dátum prihlásenia:",row.datumPrihlas|escape) }}
+              {{ decorators.riadok("Skratka študijného programu:",row.skratka|escape) }}
+              {{ decorators.riadok("Ročník:",row.rocnik|escape) }}
             </ul>      
           </div>        
         {% endset %}

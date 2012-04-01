@@ -18,20 +18,20 @@
 {% macro tabulkaTermin(row, prihlas, studium, zapisnyList) %}
     {% import "macros/decorators.html.twig" as decorators %} 
     {% set title %}
-      {{decorators.span(row.predmet,"table_box_title")}}
+      {{decorators.span(row.predmet|escape,"table_box_title")}}
     {% endset %}
     {% set content %}
     <div class="table_box">
       <ul class="table_box">     
-        {{ decorators.riadok("Čas:",row.cas) }}
-        {{ decorators.riadok("Dátum:",row.dat) }}
-        {{ decorators.riadok("Miestnosť:",row.miestnosti) }}
-        {{ decorators.riadok("Hodnotiaci:",row.hodnotiaci) }}
-        {{ decorators.riadok("Počet prihlásených:",row.pocetPrihlasenych) }}
-        {{ decorators.riadok("Maximálny počet:",row.maxPocet) }}
-        {{ decorators.riadok("Poznámka:",row.poznamka) }}
-        {{ decorators.riadok("Prihlasovanie:",row.prihlasovanie) }}
-        {{ decorators.riadok("Odhlasovanie:",row.odhlasovanie) }}
+        {{ decorators.riadok("Čas:",row.cas|escape) }}
+        {{ decorators.riadok("Dátum:",row.dat|escape) }}
+        {{ decorators.riadok("Miestnosť:",row.miestnosti|escape) }}
+        {{ decorators.riadok("Hodnotiaci:",row.hodnotiaci|escape) }}
+        {{ decorators.riadok("Počet prihlásených:",row.pocetPrihlasenych|escape) }}
+        {{ decorators.riadok("Maximálny počet:",row.maxPocet|escape) }}
+        {{ decorators.riadok("Poznámka:",row.poznamka|escape) }}
+        {{ decorators.riadok("Prihlasovanie:",row.prihlasovanie|escape) }}
+        {{ decorators.riadok("Odhlasovanie:",row.odhlasovanie|escape) }}
         {{ decorators.riadok("Prihlás:", prihlas|raw) }}
         <li><a href="{{ path('studium_zoznam_skusok', {
                      'studium': studium,

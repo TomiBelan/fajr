@@ -66,5 +66,5 @@
     </div>
   {% endset %}
   {% import "macros/decorators.html.twig" as decorators %}
-  {{ decorators.collapsible(trace.header, content, true) }}
+  {{ decorators.collapsible(trace.header|escape, content, true) }}
 {% endmacro %}

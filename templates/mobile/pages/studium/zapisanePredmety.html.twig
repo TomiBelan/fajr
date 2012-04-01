@@ -18,15 +18,15 @@
 {% macro tabulkaPredmety(row) %}    
     {% import "macros/decorators.html.twig" as decorators %} 
     {% set title %}
-      {{decorators.span(row.nazov,"table_box_title")}}
+      {{decorators.span(row.nazov|escape,"table_box_title")}}
     {% endset %}
     {% set content %}
     <div class="table_box">
       <ul class="table_box">
-        {{ decorators.riadok("Semester:",row.kodSemester) }}
-        {{ decorators.riadok("Kredit:",row.kredit) }}
-        {{ decorators.riadok("Kód typu výučby:",row.kodTypVyucby) }}
-        {{ decorators.riadok("Skratka:",row.skratka) }}
+        {{ decorators.riadok("Semester:",row.kodSemester|escape) }}
+        {{ decorators.riadok("Kredit:",row.kredit|escape) }}
+        {{ decorators.riadok("Kód typu výučby:",row.kodTypVyucby|escape) }}
+        {{ decorators.riadok("Skratka:",row.skratka|escape) }}
       </ul>      
     </div>
     {% endset %}      
