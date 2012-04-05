@@ -10,28 +10,30 @@
 {% block title %}Hodnotenia a priemery{% endblock %}
 {% block application_content %}
 {% import "macros/decorators.html.twig" as decorators %}
+{% import "macros/mobile_decorators.html.twig" as mobile_decorators %}
 {% import "macros/studium.html.twig" as studiumMacros %}
 {% import "macros/table.html.twig" as table %}
 {{ parent() }}
 
 {% macro tabulkaHodnotenie(row) %}    
-  {% import "macros/decorators.html.twig" as decorators %} 
+  {% import "macros/decorators.html.twig" as decorators %}
+  {% import "macros/mobile_decorators.html.twig" as mobile_decorators %}
   {% set title_text %}
     {{row.nazov}} {%if row.znamka %} - {{row.znamka}}{%endif%}    
   {% endset %}
   {% set title %}
-    {{ decorators.span(title_text,"table_box_title")}}
+    {{ mobile_decorators.span(title_text,"table_box_title")}}
   {% endset %}
   
   {% set content %}
   <div class="table_box">                    
     <ul class="table_box">             
-      {{ decorators.riadok("Semester:", row.semester|escape) }}
-      {{ decorators.riadok("Kredit:", row.kredit|escape) }}
-      {{ decorators.riadok("Známka:", row.znamka|escape) }}
-      {{ decorators.riadok("Dátum hodnotenia:", row.datum|escape) }}
-      {{ decorators.riadok("Termín:", row.termin|escape) }}
-      {{ decorators.riadok("Známka popis:", row.znamkaPopis|escape) }}
+      {{ mobile_decorators.riadok("Semester:", row.semester|escape) }}
+      {{ mobile_decorators.riadok("Kredit:", row.kredit|escape) }}
+      {{ mobile_decorators.riadok("Známka:", row.znamka|escape) }}
+      {{ mobile_decorators.riadok("Dátum hodnotenia:", row.datum|escape) }}
+      {{ mobile_decorators.riadok("Termín:", row.termin|escape) }}
+      {{ mobile_decorators.riadok("Známka popis:", row.znamkaPopis|escape) }}
     </ul>      
   </div>
   {% endset %}      
@@ -77,28 +79,29 @@
   {# ---------------- Priemery ------------------------ #}
 
   {% macro tabulkaPriemer(row) %}    
-    {% import "macros/decorators.html.twig" as decorators %} 
+    {% import "macros/decorators.html.twig" as decorators %}
+    {% import "macros/mobile_decorators.html.twig" as mobile_decorators %}
     {% set title_text %}
       {{row.priemerInfoPopisAkadRok}} {{row.priemerNazov}} {%if row.priemerInfoKodSemester %} ({{row.priemerInfoKodSemester}}){%endif%} 
       {{row.priemerInfoDatum}} - {{row.studPriemer}}  
     {% endset %}
     {% set title %}
-      {{ decorators.span(title_text,"table_box_title")}}
+      {{ mobile_decorators.span(title_text,"table_box_title")}}
     {% endset %}
     
     {% set content %}
     <div class="table_box">                    
       <ul class="table_box">             
-        {{ decorators.riadok("Akademický rok: ", row.priemerInfoPopisAkadRok|escape) }}
-        {{ decorators.riadok("Názov priemeru: ", row.priemerNazov|escape) }}
-        {{ decorators.riadok("Kód semestra: ", row.priemerInfoKodSemester|escape) }}
-        {{ decorators.riadok("Získaný kredit: ", row.ziskanyKredit|escape) }}
-        {{ decorators.riadok("Celkový počet predmetov: ", row.pocetPredmetov|escape) }}
-        {{ decorators.riadok("Počet neabsolvovaných predmetov: ", row.pocetNeabs|escape) }}
-        {{ decorators.riadok("Študijný priemer", row.studPriemer|escape) }}
-        {{ decorators.riadok("Vážený priemer", row.vazPriemer|escape) }}
-        {{ decorators.riadok("Priemer na koľký pokus", row.pokusyPriemer|escape) }}
-        {{ decorators.riadok("Dátum výpočtu priemeru", row.priemerInfoDatum|escape) }}
+        {{ mobile_decorators.riadok("Akademický rok: ", row.priemerInfoPopisAkadRok|escape) }}
+        {{ mobile_decorators.riadok("Názov priemeru: ", row.priemerNazov|escape) }}
+        {{ mobile_decorators.riadok("Kód semestra: ", row.priemerInfoKodSemester|escape) }}
+        {{ mobile_decorators.riadok("Získaný kredit: ", row.ziskanyKredit|escape) }}
+        {{ mobile_decorators.riadok("Celkový počet predmetov: ", row.pocetPredmetov|escape) }}
+        {{ mobile_decorators.riadok("Počet neabsolvovaných predmetov: ", row.pocetNeabs|escape) }}
+        {{ mobile_decorators.riadok("Študijný priemer", row.studPriemer|escape) }}
+        {{ mobile_decorators.riadok("Vážený priemer", row.vazPriemer|escape) }}
+        {{ mobile_decorators.riadok("Priemer na koľký pokus", row.pokusyPriemer|escape) }}
+        {{ mobile_decorators.riadok("Dátum výpočtu priemeru", row.priemerInfoDatum|escape) }}
       </ul>      
     </div>
     {% endset %}      
@@ -126,7 +129,7 @@
 
   {% set content %}
     Nasledovné priemery sú prebraté z AISu, čiže to (ne)funguje presne rovnako:    
-    {{ decorators.printbox(body, priemery|length == 0) }}
+    {{ mobile_decorators.printbox(body, priemery|length == 0) }}
     {% if priemeryCalculator.hasPriemer %}
       <p><br />
         Nasledovné vážené študijné priemery sú počítané Fajrom priebežne z tabuľky

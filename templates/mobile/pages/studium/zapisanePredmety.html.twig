@@ -11,22 +11,24 @@
 {% block title %}Zápisný list{% endblock %}
 {% block application_content %}
 {% import "macros/decorators.html.twig" as decorators %}
+{% import "macros/mobile_decorators.html.twig" as mobile_decorators %}
 {% import "macros/studium.html.twig" as studiumMacros %}
 {% import "macros/table.html.twig" as table %}
 {{ parent() }}
 
 {% macro tabulkaPredmety(row) %}    
-    {% import "macros/decorators.html.twig" as decorators %} 
+    {% import "macros/decorators.html.twig" as decorators %}
+    {% import "macros/mobile_decorators.html.twig" as mobile_decorators %}
     {% set title %}
-      {{decorators.span(row.nazov|escape,"table_box_title")}}
+      {{mobile_decorators.span(row.nazov|escape,"table_box_title")}}
     {% endset %}
     {% set content %}
     <div class="table_box">
       <ul class="table_box">
-        {{ decorators.riadok("Semester:",row.kodSemester|escape) }}
-        {{ decorators.riadok("Kredit:",row.kredit|escape) }}
-        {{ decorators.riadok("Kód typu výučby:",row.kodTypVyucby|escape) }}
-        {{ decorators.riadok("Skratka:",row.skratka|escape) }}
+        {{ mobile_decorators.riadok("Semester:",row.kodSemester|escape) }}
+        {{ mobile_decorators.riadok("Kredit:",row.kredit|escape) }}
+        {{ mobile_decorators.riadok("Kód typu výučby:",row.kodTypVyucby|escape) }}
+        {{ mobile_decorators.riadok("Skratka:",row.skratka|escape) }}
       </ul>      
     </div>
     {% endset %}      
@@ -46,7 +48,7 @@
  
   {% set content %}
   
-    {{ decorators.printbox(body, predmetyZapisnehoListu|length == 0) }}
+    {{ mobile_decorators.printbox(body, predmetyZapisnehoListu|length == 0) }}
   {% endset %}
   {{ decorators.collapsible("<h2>Zima:</h2>", content, false) }}
   
@@ -61,7 +63,7 @@
   
   {% set content %}
   
-    {{ decorators.printbox(body, predmetyZapisnehoListu|length == 0) }}
+    {{ mobile_decorators.printbox(body, predmetyZapisnehoListu|length == 0) }}
   {% endset %}
   {{ decorators.collapsible("<h2>Leto:</h2>", content, false) }}
 
@@ -74,7 +76,7 @@
   #}{% endset %}  
 
   {% set content %}  
-    {{ decorators.printbox(body, predmetyZapisnehoListu|length == 0) }}
+    {{ mobile_decorators.printbox(body, predmetyZapisnehoListu|length == 0) }}
   {% endset %}  
   
   {% if body %}
@@ -92,7 +94,7 @@
             predmetyStatistika.obdobia.leto.kreditovCelkom() }}) kreditov.   
   {% endset %}  
 
-  {{ decorators.span(foot,"foot") }}
+  {{ mobile_decorators.span(foot,"foot") }}
 
 {% endset %}
 
