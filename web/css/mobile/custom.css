@@ -26,19 +26,19 @@ hr {
 
 h1 {
   margin: 0.5ex;
-  font-size: 250%;
+  font-size: 200%;
 }
 
 h1.logo {
   background: #333;
   color: white;
   margin: 0;
-  padding: 0.5ex;
+  padding: 0.5ex 0;
 }
 
 a.logo {
-  padding-left: 64px;
-  background: transparent url("../../images/logo.png") 16px 50% no-repeat;
+  padding-left: 32px;
+  background: transparent url("../../images/logo.png") 0 50% no-repeat;
   min-height: 32px;
   color: white;
 }
@@ -293,10 +293,3 @@ div.linkbarRight
     padding:0;
     
 }*/
-
-a.logo
-{
-  font-size:32px;    
-  margin:0;
-  padding-left:47px;
-}
