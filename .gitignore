@@ -1,6 +1,8 @@
 # all
 *.pyc
 *.swp
+*~
+*.bkp
 
 # /
 /.htaccess
@@ -24,3 +26,5 @@
 
 # /web/
 /web/.htaccess
+
+/templates/mobile_bkp

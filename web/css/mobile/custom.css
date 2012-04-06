@@ -293,3 +293,13 @@ div.linkbarRight
     padding:0;
     
 }*/
+
+.back_button
+{
+  background-image:url("../../images/mobile/gray-left-arrow.png");
+  background-repeat:no-repeat;
+  background-position:8px 0;
+  padding-left:32px;
+  text-decoration:none;
+  height:32px;
+}
