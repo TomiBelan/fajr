@@ -238,6 +238,8 @@ li.table_box
 ul.table_box
 {
   list-style-type:none;
+  padding:0;
+  margin:0;
 }
 
 span.table_box_title
@@ -284,13 +286,13 @@ div.linkbarRight
   color:red;
 }
 
-h1.logo
+/*h1.logo
 {
     font-size:200%;
     margin:0;
     padding:0;
     
-}
+}*/
 
 a.logo
 {
