@@ -21,6 +21,7 @@ use libfajr\base\DisableEvilCallsObject;
 use libfajr\base\Preconditions;
 use sfStorage;
 use fajr\SessionStorageProvider;
+use Exception;
 
 class SkinSettings extends DisableEvilCallsObject {
   /** key under which are skin settings in storage */
