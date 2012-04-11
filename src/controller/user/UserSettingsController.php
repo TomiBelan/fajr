@@ -23,10 +23,7 @@ use fajr\Request;
 use fajr\Response;
 use fajr\util\FajrUtils;
 use sfStorage;
-use fajr\config\FajrConfig;
-use fajr\config\FajrConfigLoader;
 use fajr\settings\SkinSettings;
-use fajr\SessionStorageProvider;
 use fajr\LoginManager;
 use fajr\exceptions\AuthenticationRequiredException;
 
@@ -39,22 +36,22 @@ use fajr\exceptions\AuthenticationRequiredException;
  */
 class UserSettingsController extends BaseController
 {
-  private $settingsStorage;
-  private $config;
+  /** @var SkinSettings */
+  private $skinSettings;
+  
   /** @var LoginManager */
   private $loginManager;
   
   public static function getInstance()
   {
-    return new UserSettingsController(SessionStorageProvider::getInstance(),
-        FajrConfigLoader::getConfiguration(), LoginManager::getInstance());
+    return new UserSettingsController(SkinSettings::getInstance(),
+        LoginManager::getInstance());
   }
 
-  public function __construct(sfStorage $settingsStorage, FajrConfig $config,
+  public function __construct(SkinSettings $skinSettings,
       LoginManager $loginManager)
   {
-    $this->settingsStorage = $settingsStorage;
-    $this->config = $config;
+    $this->skinSettings = $skinSettings;
     $this->loginManager = $loginManager;
   }
 
@@ -71,7 +68,6 @@ class UserSettingsController extends BaseController
 
   public function runSettings(Trace $trace, Context $context)
   {
-    $request = $context->getRequest();
     $response = $context->getResponse();
 
     $response->setTemplate('settings/settings');
@@ -81,17 +77,16 @@ class UserSettingsController extends BaseController
   {
     $request = $context->getRequest();
     $response = $context->getResponse();
-    $skinSettings = new SkinSettings($this->config, $this->settingsStorage);
-
+    
     // set skin
     if ($request->getParameter('skinSelect')) {
-      $skinSettings->setUserSkinName($request->getParameter('skinSelect'));
+      $this->skinSettings->setUserSkinName($request->getParameter('skinSelect'));
       // apply the skin for current request(user skin may be applied before this function)
-      $response->setSkin($skinSettings->getUserSkin());
+      $response->setSkin($this->skinSettings->getUserSkin());
     }
 
-    $response->set('availableSkins', $skinSettings->getAvailableSkins());
-    $response->set('currentSkin', $skinSettings->getUserSkinName());
+    $response->set('availableSkins', $this->skinSettings->getAvailableSkins());
+    $response->set('currentSkin', $this->skinSettings->getUserSkinName());
 
     $response->setTemplate('settings/skin');
   }

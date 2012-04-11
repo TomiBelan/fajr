@@ -58,6 +58,7 @@ class HttpInputParameters implements InvocationParameters
         'cosignCookie' => new StringValidator(),
         'loginType' => new StringValidator(),
         'serverName' => new StringValidator(),
+        'skinSelect' => new StringValidator(),
       );
       self::$instance = new HttpInputParameters($allowed_get, $allowed_post);
       self::$instance->prepare();

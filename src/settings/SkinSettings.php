@@ -2,7 +2,7 @@
 /**
  * Contains controller managing user preferences.
  *
- * @copyright  Copyright (c) 2011 The Fajr authors (see AUTHORS).
+ * @copyright  Copyright (c) 2011,2012 The Fajr authors (see AUTHORS).
  *             Use of this source code is governed by a MIT license that can be
  *             found in the LICENSE file in the project root directory.
  *
@@ -15,14 +15,31 @@ namespace fajr\settings;
 
 use fajr\config\FajrConfig;
 use fajr\config\FajrConfigOptions;
+use fajr\config\FajrConfigLoader;
 use fajr\config\SkinConfig;
 use libfajr\base\DisableEvilCallsObject;
 use libfajr\base\Preconditions;
 use sfStorage;
+use fajr\SessionStorageProvider;
 
 class SkinSettings extends DisableEvilCallsObject {
   /** key under which are skin settings in storage */
   const SETTINGS_SKIN_NAME_KEY = '/settings/skin/name';
+  
+  /** @var SkinSettings $instance */
+  private static $instance;
+
+  /** Return an instance of SkinSettings
+   * @return SkinSettings
+   */
+  public static function getInstance()
+  {
+    if (!isset(self::$instance)) {
+      self::$instance = new SkinSettings(FajrConfigLoader::getConfiguration(),
+          SessionStorageProvider::getInstance());
+    }
+    return self::$instance;
+  }
 
   /** @var array(SkinConfig) list of all available skins */
   private $skins;

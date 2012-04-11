@@ -39,6 +39,7 @@ use fajr\ServerManager;
 use fajr\rendering\DisplayManager;
 use libfajr\exceptions\ReloginFailedException;
 use fajr\controller\Controller;
+use fajr\settings\SkinSettings;
 
 /**
  * This is "main()" of the fajr. It instantiates all neccessary
@@ -171,6 +172,8 @@ class Fajr {
    */
   private function setResponseFields(Request $request, Response $response)
   {
+    $response->setSkin(SkinSettings::getInstance()->getUserSkin());
+    
     // https://developer.mozilla.org/en/The_X-FRAME-OPTIONS_response_header
     $response->setHeader('X-Frame-Options', 'DENY');
     if (FajrUtils::isHTTPS()) {
