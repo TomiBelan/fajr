@@ -14,21 +14,22 @@
 
 {% macro zoznamPrihlasenych(prihlaseni) %}
   {% import "macros/decorators.html.twig" as decorators %}
+  {% import "macros/mobile_decorators.html.twig" as mobile_decorators %}
   {% import "macros/table.html.twig" as table %}
 
   {% if prihlaseni %}    
     {%set body %}
       {% for row in prihlaseni %}        
         {% set title %}     
-          {{decorators.span(row.plneMeno|escape,"table_box_title")}}
+          {{mobile_decorators.span(row.plneMeno|escape,"table_box_title")}}
         {% endset %}
 
         {% set content %}
           <div class="table_box">
             <ul class="table_box">
-              {{ decorators.riadok("Dátum prihlásenia:",row.datumPrihlas|escape) }}
-              {{ decorators.riadok("Skratka študijného programu:",row.skratka|escape) }}
-              {{ decorators.riadok("Ročník:",row.rocnik|escape) }}
+              {{ mobile_decorators.riadok("Dátum prihlásenia:",row.datumPrihlas|escape) }}
+              {{ mobile_decorators.riadok("Skratka študijného programu:",row.skratka|escape) }}
+              {{ mobile_decorators.riadok("Ročník:",row.rocnik|escape) }}
             </ul>      
           </div>        
         {% endset %}
@@ -41,7 +42,7 @@
     {% endset %}
 
     {% set tableHTML %}
-    {{ decorators.printbox(body, prihlaseni|length == 0) }}
+    {{ mobile_decorators.printbox(body, prihlaseni|length == 0) }}
     {% endset %}
 
     {{ decorators.collapsible(title, tableHTML, false) }}
@@ -71,6 +72,8 @@
                                   {'studium': studium, 'list': zapisnyList})},
        'Hodnotenia':        {'title': 'Hodnotenia/Priemery',
                              'url': path('studium_hodnotenia',
-                                  {'studium': studium, 'list': zapisnyList})}
+                                  {'studium': studium, 'list': zapisnyList})},                
+        'Odhlasit':        {'title': 'Odhlásiť',
+                             'url': path('logout')}
       }, selectedTab,"menu") }}
 {% endmacro %}

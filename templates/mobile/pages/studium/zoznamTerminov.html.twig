@@ -8,31 +8,34 @@
  #}
 {% extends "layout/studium.html.twig" %}
 {% block title %}Prihlásenie na skúšky{% endblock %}
+{% block heading %}Prihlásenie na skúšky{% endblock %}
 {% block application_content %}
 {% import "macros/decorators.html.twig" as decorators %}
+{% import "macros/mobile_decorators.html.twig" as mobile_decorators %}
 {% import "macros/table.html.twig" as table %}
 {% import "macros/studium.html.twig" as studiumMacros %}
 {{ parent() }}
 {% set tabContent %}
 
 {% macro tabulkaTermin(row, prihlas, studium, zapisnyList) %}
-    {% import "macros/decorators.html.twig" as decorators %} 
+    {% import "macros/decorators.html.twig" as decorators %}
+    {% import "macros/mobile_decorators.html.twig" as mobile_decorators %}
     {% set title %}
-      {{decorators.span(row.predmet|escape,"table_box_title")}}
+      {{mobile_decorators.span(row.predmet|escape,"table_box_title")}}
     {% endset %}
     {% set content %}
     <div class="table_box">
       <ul class="table_box">     
-        {{ decorators.riadok("Čas:",row.cas|escape) }}
-        {{ decorators.riadok("Dátum:",row.dat|escape) }}
-        {{ decorators.riadok("Miestnosť:",row.miestnosti|escape) }}
-        {{ decorators.riadok("Hodnotiaci:",row.hodnotiaci|escape) }}
-        {{ decorators.riadok("Počet prihlásených:",row.pocetPrihlasenych|escape) }}
-        {{ decorators.riadok("Maximálny počet:",row.maxPocet|escape) }}
-        {{ decorators.riadok("Poznámka:",row.poznamka|escape) }}
-        {{ decorators.riadok("Prihlasovanie:",row.prihlasovanie|escape) }}
-        {{ decorators.riadok("Odhlasovanie:",row.odhlasovanie|escape) }}
-        {{ decorators.riadok("Prihlás:", prihlas|raw) }}
+        {{ mobile_decorators.riadok("Čas:",row.cas|escape) }}
+        {{ mobile_decorators.riadok("Dátum:",row.dat|escape) }}
+        {{ mobile_decorators.riadok("Miestnosť:",row.miestnosti|escape) }}
+        {{ mobile_decorators.riadok("Hodnotiaci:",row.hodnotiaci|escape) }}
+        {{ mobile_decorators.riadok("Počet prihlásených:",row.pocetPrihlasenych|escape) }}
+        {{ mobile_decorators.riadok("Maximálny počet:",row.maxPocet|escape) }}
+        {{ mobile_decorators.riadok("Poznámka:",row.poznamka|escape) }}
+        {{ mobile_decorators.riadok("Prihlasovanie:",row.prihlasovanie|escape) }}
+        {{ mobile_decorators.riadok("Odhlasovanie:",row.odhlasovanie|escape) }}
+        {{ mobile_decorators.riadok("Prihlás:", prihlas|raw) }}
         <li><a href="{{ path('studium_zoznam_skusok', {
                      'studium': studium,
                      'list': zapisnyList,
@@ -85,7 +88,7 @@
   {% endset %}
 
   {% set tableHTML %}
-  {{ decorators.printbox(body, terminy|length == 0) }}
+  {{ mobile_decorators.printbox(body, terminy|length == 0) }}
   {% endset %}
 
   {{ decorators.collapsible(title, tableHTML, false) }}

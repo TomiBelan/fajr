@@ -1,0 +1,33 @@
+{##
+ # Fajr default (login) page.
+ #
+ # @copyright  Copyright (c) 2010-2011 The Fajr authors (see AUTHORS).
+ #             Use of this source code is governed by a MIT license that can be
+ #             found in the LICENSE file in the project root directory.
+ # @author     TODO
+ #}
+{% extends "layout/main.html.twig" %}
+{% block title %}Vitajte{% endblock %}
+
+{% block head %}
+  {{ parent() }}
+  <meta name="Description" content="Fajr je alternatívny frontend pre AIS2 &mdash;
+        webová aplikácia poskytujúca jeho najčastejšie funkcie a to jednoducho, rýchlo,
+        bez zbytočných klikaní a na všetkých browseroch." />
+{% endblock %}
+{% block heading %}<a class="logo" href="{{ path('homepage') }}">FAJR</a>{% endblock %}
+
+{% block content %}
+{% import "macros/utils.html.twig" as utils %}
+<div>
+
+{% block loginBox %}
+  {# loginBox #}
+  {% include "parts/passwordLoginBox.html.twig" %}
+{% endblock %}
+
+{# server selection #}
+{% include "parts/serverSelection.html.twig" %}
+
+</div>
+{% endblock %}
