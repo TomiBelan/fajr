@@ -172,7 +172,11 @@ class Fajr {
    */
   private function setResponseFields(Request $request, Response $response)
   {
-    $response->setSkin(SkinSettings::getInstance()->getUserSkin());
+    $skinSettings = SkinSettings::getInstance();
+    if ($request->isMobileBrowser()) {
+      $skinSettings->setDefaultSkinName('mobile');
+    }
+    $response->setSkin($skinSettings->getUserSkin());
     
     // https://developer.mozilla.org/en/The_X-FRAME-OPTIONS_response_header
     $response->setHeader('X-Frame-Options', 'DENY');

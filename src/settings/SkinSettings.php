@@ -94,6 +94,14 @@ class SkinSettings extends DisableEvilCallsObject {
   {
     return $this->defaultSkinName;
   }
+  
+  public function setDefaultSkinName($name)
+  {
+    if (!in_array($name, array_keys($this->skins))) {
+      throw new Exception("Neexistujúci skin!");
+    }
+    $this->defaultSkinName = $name;
+  }
 
   /**
    * @param string $name name of the skin to retrieve
