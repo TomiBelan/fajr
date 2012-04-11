@@ -159,6 +159,11 @@ class Response
     Preconditions::checkIsString($value, '$value must be string');
     header($name.': '.$value);
   }
+  
+  public function setNotFoundStatusCode()
+  {
+    header("HTTP/1.0 404 Not Found");
+  }
 
   /**
    * Nastavi Strict-Transport-Security header.

@@ -40,6 +40,7 @@ use fajr\rendering\DisplayManager;
 use libfajr\exceptions\ReloginFailedException;
 use fajr\controller\Controller;
 use fajr\settings\SkinSettings;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 /**
  * This is "main()" of the fajr. It instantiates all neccessary
@@ -216,7 +217,16 @@ class Fajr {
 
   public function runLogic(Trace $trace)
   {
-    $params = $this->router->routeCurrentRequest();
+    $response = $this->context->getResponse();
+    
+    try {
+      $params = $this->router->routeCurrentRequest();
+    }
+    catch (ResourceNotFoundException $e) {
+      $response->setNotFoundStatusCode();
+      $response->setTemplate('notfound');
+      return;
+    }
     $action = $params['_action'];
     $controllerClass = $params['_controller'];
     
@@ -236,8 +246,6 @@ class Fajr {
         new AIS2ServerUrlMap($server->getServerName()));
     $connService = LazyServerConnection::getInstance();
     $connService->setReal($serverConnection);
-
-    $response = $this->context->getResponse();
     
     $loggedIn = $loginManager->isLoggedIn($serverConnection);
     if (!$loggedIn) {

@@ -1,0 +1,23 @@
+{##
+ # Displays 404 not found page
+ #
+ # @copyright  Copyright (c) 2012 The Fajr authors (see AUTHORS).
+ #             Use of this source code is governed by a MIT license that can be
+ #             found in the LICENSE file in the project root directory.
+ # @author     TODO
+ #}
+{% extends "layout/application.html.twig" %}
+{% block title %}Chyba 404{% endblock %}
+
+{% block content %}
+<div class="error">
+  <h2>Stránka nenájdená</h2>
+  
+  <p>Stránka na tejto URL neexisuje. Prosím skontrolujte adresu, ak ste ju zadávali ručne.</p>
+
+</div>
+  <div class="prepend-1">
+    <a href="{{ path('homepage') }}">Späť na hlavnú stránku</a>
+    <a href="{{ path('logout') }}">Odhlásiť</a>
+  </div>
+{% endblock %}
