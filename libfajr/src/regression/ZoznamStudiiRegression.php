@@ -47,10 +47,15 @@ class ZoznamStudiiRegression
           15 => 'priznak',
           16 => 'studijnyProgramSkratkaAkreditOJ',
           17 => 'rokStudia',
-          18 => 'idEvi',
-          19 => 'modifikator',
-          20 => 'poslModif',
-          21 => 'nespoplatneRoky',
+          18 => 'rokyStudiaStupen',
+          19 => 'idEvi',
+          20 => 'modifikator',
+          21 => 'poslModif',
+          22 => 'nespoplatneRoky',
+          23 => 'rokyStudiaProgram',
+          24 => 'stupenRoky',
+          25 => 'programRoky',
+          26 => 'cisloDiplomuIIst',
           );
   }
 }

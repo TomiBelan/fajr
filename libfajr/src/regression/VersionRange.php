@@ -33,7 +33,7 @@ class VersionRange
    */
   public static function getMinVersion()
   {
-    return new AIS2Version(2, 3, 31, 58);
+    return new AIS2Version(2, 3, 43, 37);
   }
 
   /**
@@ -44,7 +44,7 @@ class VersionRange
    */
   public static function getMaxVersion()
   {
-    return new AIS2Version(2, 3, 32, 41);
+    return new AIS2Version(2, 3, 43, 37);
   }
 
 }

@@ -51,6 +51,8 @@ class ZoznamZapisnychListovRegression
           19 => 'poslModif',
           20 => 'uzatvorenyZS',
           21 => 'nespoplatneRoky',
+          22 => 'rokyStudiaStupen',
+          23 => 'potvrdenieVysledky',
           );
   }
 }

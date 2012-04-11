@@ -36,6 +36,9 @@ class PrihlaseniNaTerminRegression
           4 => 'plneMeno',
           5 => 'rocnik',
           6 => 'kruzok',
+          7 => 'liveID',
+          8 => 'email',
+          9 => 'prerekvizity',
           );
   }
 }

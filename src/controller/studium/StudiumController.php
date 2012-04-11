@@ -481,7 +481,7 @@ class StudiumController extends BaseController
 
     $terminy = $terminyDialog->getZoznamTerminov($childTrace);
     FajrUtils::warnWrongTableStructure($trace, $response, 'zoznam mojich terminov',
-        regression\MojeTerminyRegression::get(),
+        regression\MojeTerminyRegression::getPrihlasovanie(),
         $terminy->getTableDefinition());
 
     $terminyData = $terminy->getData();
