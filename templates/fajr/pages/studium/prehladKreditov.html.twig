@@ -45,7 +45,24 @@
     {{ table.endrow() }}
   {% endfor %}
 {% endset %}
+      
+{% set foot %}
+  {{ table.row(none, false) }}
+    <td></td>
+    <td></td>
+    <td>Celkom {{ predmetyStatistika.obdobia.rok.predmetovCelkom() }} predmetov
+    </td>
+    <td>{{ predmetyStatistika.obdobia.rok.kreditovCelkom() }}</td>
+    <td>{% if predmetyStatistika.obdobia.rok.hasPriemer -%}
+        <abbr title="Váž. priemer z doteraz ohodnotených predmetov (neoficálny)"
+              >{{ predmetyStatistika.obdobia.rok.vazenyPriemer(false) }}</abbr>
+      {%- endif %}</td>
+    <td></td>
+    <td></td>
+    <td></td>
+  {{ table.endrow() }}
+{% endset %}
 
-{{ decorators.table(none, head, body, none, predmety|length == 0) }}
+{{ decorators.table(none, head, body, foot, predmety|length == 0) }}
 
 {% endblock %}

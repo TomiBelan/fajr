@@ -220,8 +220,18 @@ class StudiumController extends BaseController
     $predmetyData = $hodnoteniaData = Sorter::sort($predmety->getData(),
           array("akRok"=>1, "semester"=>-1, "nazov"=>1));
     
+    $priemeryCalculator = new PriemeryCalculator();
+    
+    foreach ($predmetyData as $predmetyRow) {
+      $semester = $predmetyRow['semester'] == 'L' ?
+          PriemeryCalculator::SEMESTER_LETNY : PriemeryCalculator::SEMESTER_ZIMNY;
+      $znamka = $predmetyRow['znamka'];
+      $priemeryCalculator->add($semester, $znamka, $predmetyRow[PredmetyFields::KREDIT]);
+    }
+    
     $response->set('currentTab', 'PrehladKreditov');
     $response->set('predmety', $predmetyData);
+    $response->set('predmetyStatistika', $priemeryCalculator);
     $response->setTemplate('studium/prehladKreditov');
   }
 
