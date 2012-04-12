@@ -179,6 +179,11 @@ class Fajr {
     }
     $response->setSkin($skinSettings->getUserSkin());
     
+    $referrer = $request->getHeader('Referer');
+    if (preg_match('#^https?://fajr.dcs.fmph.uniba.sk#', $referrer) === 1) {
+      $response->addWarning(array('type' => 'pageMoved'));
+    }
+    
     // https://developer.mozilla.org/en/The_X-FRAME-OPTIONS_response_header
     $response->setHeader('X-Frame-Options', 'DENY');
     if (FajrUtils::isHTTPS()) {

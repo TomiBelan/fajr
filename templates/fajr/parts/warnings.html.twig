@@ -64,9 +64,17 @@
         Fajr nemusí fungovať správne: Štruktúra tabuľky {{ warning.tableName }}
         získaná z AISu je neočakávaná, pravdepodobne sa zmenilo niečo v AISe.
       {% endset %}
+      {{ _self.addWarning(warningMessage) }}
+    {% elseif warning.type == "pageMoved" %}
+        <div class="warningBanner">
+          <strong class="important">Fajr sa presťahoval na novú adresu.</strong><br />
+          <p>Boli ste presmerovaní zo starej adresy na novú. Prosím aktualizujte si záložky v prehliadači.
+             Nová adresa je <a href="{{ path('homepage', {}, true) }}">{{ path('homepage', {}, true) }}</a>
+          </p>
+        </div>
     {% else %}
       {% set warningMessage %} Neznáma chyba {% endset %}
+      {{ _self.addWarning(warningMessage) }}
     {% endif %}
-    {{ _self.addWarning(warningMessage) }}
   {% endfor %}
 {% endif %}

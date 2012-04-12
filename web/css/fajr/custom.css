@@ -193,3 +193,9 @@ p.intabs {
   margin-bottom: 0.8ex;
   margin-top: 2ex;
 }
+
+strong.important {
+  font-size: 200%;
+  font-weight: bold;
+  line-height: 200%;
+}
