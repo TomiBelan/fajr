@@ -180,7 +180,12 @@ class Fajr {
     $response->setSkin($skinSettings->getUserSkin());
     
     $referrer = $request->getHeader('Referer');
-    if (preg_match('#^https?://fajr.dcs.fmph.uniba.sk#', $referrer) === 1) {
+    $pageMovedCookie = isset($_COOKIE['FajrPageMoved']);
+    if ($pageMovedCookie) {
+      $response->clearCookie('FajrPageMoved');
+    }
+    $pageMovedReferer = preg_match('#^https?://fajr.dcs.fmph.uniba.sk#', $referrer) === 1;
+    if ($pageMovedCookie || $pageMovedReferer) {
       $response->addWarning(array('type' => 'pageMoved'));
     }
     
