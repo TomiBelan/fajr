@@ -182,7 +182,7 @@ class Fajr {
     $referrer = $request->getHeader('Referer');
     $pageMovedCookie = isset($_COOKIE['FajrPageMoved']);
     if ($pageMovedCookie) {
-      $response->clearCookie('FajrPageMoved',null,null,false);
+      $response->clearCookie('FajrPageMoved','/','fajr.fmph.uniba.sk',false);
     }
     $pageMovedReferer = preg_match('#^https?://fajr.dcs.fmph.uniba.sk#', $referrer) === 1;
     if ($pageMovedCookie || $pageMovedReferer) {
