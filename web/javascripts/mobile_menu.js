@@ -2,7 +2,7 @@ function showMenu()
 {
   $$('.tab_header')[0].show();
   $$('.tab_content')[0].hide();
-  $$('h1')[0].innerHTML = '<a class="logo" href="#">FAJR</a>';
+  $$('h1')[0].innerHTML = $('fajrhomelink').innerHTML; //vid studium mobile template
 }
 
 document.observe('dom:loaded', function() {  
