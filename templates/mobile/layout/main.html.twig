@@ -27,7 +27,7 @@
   </head>
   <body>
     <div class="container">      
-      <h1 class="logo">{% block heading %}{% endblock %}</h1>
+      <h1 class="logo">{% block heading %}{{ block('title') }}{% endblock %}</h1>
       <div id="mainContent">
       {#{% block warnings %}
         {% include "parts/warnings.html.twig" %}

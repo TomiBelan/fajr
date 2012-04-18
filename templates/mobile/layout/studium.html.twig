@@ -7,4 +7,15 @@
  # @author     Michal Hozza
  #}
 {% extends "layout/application.html.twig" %}
+{% block head %}
+{{parent()}}
+<script type="text/javascript" src="javascripts/mobile_menu.js"></script>
+{% endblock %}
+
+{% block content %}
+<div style="display:none;" id="fajrhomelink"><a class="logo" href="{{ path('homepage') }}">FAJR</a></div>
+{{parent()}}
+{% endblock %}
+
+
 {# zrusenie vyberu studia a zapisneho listu #}
