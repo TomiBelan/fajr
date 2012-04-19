@@ -173,11 +173,12 @@ class Fajr {
    */
   private function setResponseFields(Request $request, Response $response)
   {
+    $displayManager = DisplayManager::getInstance();
     $skinSettings = SkinSettings::getInstance();
     if ($request->isMobileBrowser()) {
       $skinSettings->setDefaultSkinName('mobile');
     }
-    $response->setSkin($skinSettings->getUserSkin());
+    $displayManager->setSkin($skinSettings->getUserSkin());
     
     $referrer = $request->getHeader('Referer');
     $pageMovedCookie = isset($_COOKIE['FajrPageMoved']);

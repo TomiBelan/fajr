@@ -26,6 +26,7 @@ use sfStorage;
 use fajr\settings\SkinSettings;
 use fajr\LoginManager;
 use fajr\exceptions\AuthenticationRequiredException;
+use fajr\rendering\DisplayManager;
 
 /**
  * Controller, which manages user settings.
@@ -42,17 +43,21 @@ class UserSettingsController extends BaseController
   /** @var LoginManager */
   private $loginManager;
   
+  /** @var DisplayManager */
+  private $displayManager;
+  
   public static function getInstance()
   {
     return new UserSettingsController(SkinSettings::getInstance(),
-        LoginManager::getInstance());
+        LoginManager::getInstance(), DisplayManager::getInstance());
   }
 
   public function __construct(SkinSettings $skinSettings,
-      LoginManager $loginManager)
+      LoginManager $loginManager, DisplayManager $displayManager)
   {
     $this->skinSettings = $skinSettings;
     $this->loginManager = $loginManager;
+    $this->displayManager = $displayManager;
   }
 
   public function invokeAction(Trace $trace, $action, Context $context)
@@ -82,7 +87,7 @@ class UserSettingsController extends BaseController
     if ($request->getParameter('skinSelect')) {
       $this->skinSettings->setUserSkinName($request->getParameter('skinSelect'));
       // apply the skin for current request(user skin may be applied before this function)
-      $response->setSkin($this->skinSettings->getUserSkin());
+      $this->displayManager->setSkin($this->skinSettings->getUserSkin());
     }
 
     $response->set('availableSkins', $this->skinSettings->getAvailableSkins());

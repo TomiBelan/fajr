@@ -13,7 +13,6 @@
  */
 namespace fajr;
 
-use fajr\config\SkinConfig;
 use libfajr\base\Preconditions;
 use fajr\util\FajrUtils;
 
@@ -42,9 +41,6 @@ class Response
   
   /** @var string output format name*/
   private $format = 'html';
-
-  /** SkinConfig skin configuration */
-  private $skin = null;
 
   protected $data = array('warnings' => array());
 
@@ -111,16 +107,6 @@ class Response
   public function addWarning($message)
   {
     $this->data['warnings'][] = $message;
-  }
-
-  public function setSkin(SkinConfig $skin)
-  {
-    $this->skin = $skin;
-  }
-
-  public function getSkin()
-  {
-    return $this->skin;
   }
 
   /**
