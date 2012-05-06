@@ -35,6 +35,7 @@ use libfajr\exceptions\ParseException;
 use fajr\rendering\DisplayManager;
 use fajr\Warnings;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use fajr\SessionStorageProvider;
 
 fields::autoload();
 
@@ -54,7 +55,7 @@ class StudiumController extends BaseController
         $backendFactory->getServerTime(),
         LoginManager::getInstance(),
         DisplayManager::getInstance(), Router::getInstance(),
-        Warnings::getInstance());
+        Warnings::getInstance(), SessionStorageProvider::getInstance());
   }
 
   // @input
@@ -76,12 +77,15 @@ class StudiumController extends BaseController
   
   private $templateParams;
   
-  /** Warnings */
+  /** @var Warnings */
   private $warnings;
+  
+  /** @var \sfSessionStorage */
+  private $session;
 
   public function __construct(VSES017\StudiumFactory $factory, $serverTime,
       LoginManager $loginManager, DisplayManager $displayManager, Router $router,
-      Warnings $warnings)
+      Warnings $warnings, \sfSessionStorage $session)
   {
     parent::__construct($displayManager, $router);
     $this->factory = $factory;
@@ -95,6 +99,7 @@ class StudiumController extends BaseController
     $this->loginManager = $loginManager;
     $this->templateParams = array();
     $this->warnings = $warnings;
+    $this->session = $session;
   }
 
   /**
@@ -105,9 +110,9 @@ class StudiumController extends BaseController
    *
    * @param Trace $trace trace object
    * @param string $action action name
-   * @param Context $context fajr context
+   * @param Request $request incoming request
    */
-  public function invokeAction(Trace $trace, $action, Context $context)
+  public function invokeAction(Trace $trace, $action, Request $request)
   {
     Preconditions::checkIsString($action);
     
@@ -115,12 +120,9 @@ class StudiumController extends BaseController
       throw new AuthenticationRequiredException();
     }
 
-    $request = $context->getRequest();
-    $session = $context->getSessionStorage();
     Preconditions::checkNotNull($request);
-    Preconditions::checkNotNull($session);
     // check access to application
-    $apps = $session->read('ais/aisApps');
+    $apps = $this->session->read('ais/aisApps');
     if (!is_array($apps)) {
       throw new Exception("Interná chyba - zoznam AIS aplikácii je nekorektný.");
     }
@@ -205,10 +207,10 @@ class StudiumController extends BaseController
       }
     }
 
-    return parent::invokeAction($trace, $action, $context);
+    return parent::invokeAction($trace, $action, $request);
   }
   
-  public function runPrehladKreditov(Trace $trace, Context $context) {
+  public function runPrehladKreditov(Trace $trace, Request $request) {
     
     $prehladKreditovDialog = $this->administraciaStudiaScreen->
         getPrehladKreditovDialog($trace, $this->studium);
@@ -243,9 +245,9 @@ class StudiumController extends BaseController
    * Akcia pre hodnotenia a priemery
    *
    * @param Trace $trace trace object
-   * @param Context $context
+   * @param Request $request
    */
-  public function runHodnotenia(Trace $trace, Context $context) {
+  public function runHodnotenia(Trace $trace, Request $request) {
     $priemeryCalculator = new PriemeryCalculator();
     
     $hodnotenia = $this->hodnoteniaScreen->getHodnotenia($trace->addChild('get hodnotenia'));
@@ -284,11 +286,10 @@ class StudiumController extends BaseController
    * Akcia ktora odhlasi cloveka z danej skusky
    *
    * @param Trace $trace trace object
-   * @param Context $context
+   * @param Request $request
    */
-  public function runOdhlasZoSkusky(Trace $trace, Context $context) {
+  public function runOdhlasZoSkusky(Trace $trace, Request $request) {
 
-    $request = $context->getRequest();
     if ($this->terminyHodnoteniaScreen == null) {
       return $this->renderResponse('studium/terminyHodnoteniaNedostupne',
           $this->templateParams);
@@ -332,9 +333,8 @@ class StudiumController extends BaseController
    * @param Trace $trace trace object
    * @param Request $request request from browser
    */
-  public function runMojeTerminyHodnotenia(Trace $trace, Context $context) {
+  public function runMojeTerminyHodnotenia(Trace $trace, Request $request) {
 
-    $request = $context->getRequest();
     $this->templateParams['currentTab'] = 'TerminyHodnotenia';
     
     if ($this->terminyHodnoteniaScreen == null) {
@@ -415,9 +415,9 @@ class StudiumController extends BaseController
    * Akcia ktora zobrazi predmety zapisane danym clovekom
    *
    * @param Trace $trace trace object
-   * @param Context $context
+   * @param Request $request
    */
-  public function runZapisanePredmety(Trace $trace, Context $context) {
+  public function runZapisanePredmety(Trace $trace, Request $request) {
     $this->templateParams['currentTab'] = 'ZapisnyList';
     
     if ($this->terminyHodnoteniaScreen == null) {
@@ -451,12 +451,10 @@ class StudiumController extends BaseController
    * Akcia ktora sa pokusi prihlasit cloveka na danu skusku
    *
    * @param Trace $trace trace object
-   * @param Context $context
+   * @param Request $request
    */
-  public function runPrihlasNaSkusku(Trace $trace, Context $context)
+  public function runPrihlasNaSkusku(Trace $trace, Request $request)
   {
-    $request = $context->getRequest();
-    
     if ($this->terminyHodnoteniaScreen == null) {
       return $this->renderResponse('studium/terminyHodnoteniaNedostupne',
           $this->templateParams);
@@ -521,11 +519,9 @@ class StudiumController extends BaseController
    * Akcia ktora zobrazi terminy, na ktore je mozne potencialne sa prihlasit.
    *
    * @param Trace $trace trace object
-   * @param Context $context
+   * @param Request $request
    */
-  public function runZoznamTerminov(Trace $trace, Context $context) {
-    $request = $context->getRequest();
-    
+  public function runZoznamTerminov(Trace $trace, Request $request) {
     $this->templateParams['currentTab'] = 'ZapisSkusok';
     
     if ($this->terminyHodnoteniaScreen == null) {

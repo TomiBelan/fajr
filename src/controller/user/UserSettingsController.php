@@ -14,7 +14,6 @@
 namespace fajr\controller\user;
 
 use Exception;
-use fajr\Context;
 use fajr\controller\BaseController;
 use libfajr\AIS2Utils;
 use libfajr\base\Preconditions;
@@ -58,7 +57,7 @@ class UserSettingsController extends BaseController
     $this->loginManager = $loginManager;
   }
 
-  public function invokeAction(Trace $trace, $action, Context $context)
+  public function invokeAction(Trace $trace, $action, Request $request)
   {
     Preconditions::checkIsString($action);
 
@@ -66,18 +65,16 @@ class UserSettingsController extends BaseController
       throw new AuthenticationRequiredException();
     }
 
-    return parent::invokeAction($trace, $action, $context);
+    return parent::invokeAction($trace, $action, $request);
   }
 
-  public function runSettings(Trace $trace, Context $context)
+  public function runSettings(Trace $trace, Request $request)
   {
     return $this->renderResponse('settings/settings');
   }
 
-  public function runSkin(Trace $trace, Context $context)
+  public function runSkin(Trace $trace, Request $request)
   {
-    $request = $context->getRequest();
-    
     // set skin
     if ($request->getParameter('skinSelect')) {
       $this->skinSettings->setUserSkinName($request->getParameter('skinSelect'));

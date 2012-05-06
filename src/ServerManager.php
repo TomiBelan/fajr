@@ -34,7 +34,7 @@ class ServerManager
   {
     if (!isset(self::$instance)) {
       self::$instance = new ServerManager(SessionStorageProvider::getInstance(),
-          Context::getInstance(), FajrConfigLoader::getConfiguration());
+          Request::getInstance(), FajrConfigLoader::getConfiguration());
     }
     return self::$instance;
   }
@@ -45,10 +45,10 @@ class ServerManager
   /** @var FajrConfig */
   private $config;
 
-  public function __construct(sfStorage $session, Context $context, FajrConfig $config)
+  public function __construct(sfStorage $session, Request $request, FajrConfig $config)
   {
     $this->session = $session;
-    $this->request = $context->getRequest();
+    $this->request = $request;
     $this->config = $config;
   }
   

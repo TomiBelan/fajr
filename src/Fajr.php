@@ -54,9 +54,9 @@ use fajr\Warnings;
 class Fajr {
 
   /**
-   * @var Context $context application context
+   * @var Request $request incoming request
    */
-  private $context;
+  private $request;
 
   /**
    * @var ServerManager
@@ -88,15 +88,7 @@ class Fajr {
    * Set an exception to be displayed.
    * @param Exception $ex
    */
-  private function renderExceptionResponse(Exception $ex) {
-    if ($this->context == null) {
-      // May happen if exception occured before or in context
-      // instantiation. We don't know how to handle the
-      // exception in this case, so just pass it to the
-      // outer exception handler
-      throw $ex;
-    }
-    
+  private function renderExceptionResponse(Exception $ex) {    
     // Note: We can't store function arguments from
     // stacktrace for template rendering, because
     // it can hold cyclic dependency to Context
@@ -129,9 +121,9 @@ class Fajr {
     $response = null;
     try {
       $trace = TraceProvider::getInstance();
-      $this->context = Context::getInstance();
+      $this->request = Request::getInstance();
 
-      $this->setResponseFields($this->context->getRequest());
+      $this->setResponseFields($this->request);
       $response = $this->runLogic($trace);
     } catch (SecurityException $e) {
       $this->logSecurityException($e);
@@ -243,7 +235,7 @@ class Fajr {
     $action = $params['_action'];
     $controllerClass = $params['_controller'];
     
-    $session = $this->context->getSessionStorage();
+    $session = SessionStorageProvider::getInstance();
     $loginManager = LoginManager::getInstance();
     // If we are going to log in, we need a clean session.
     // This needs to be done before a connection
@@ -307,7 +299,7 @@ class Fajr {
 
     try {
       $subTrace = $trace->addChild('Action ' . $controllerClass . '->' . $action);
-      return $controller->invokeAction($subTrace, $action, $this->context);
+      return $controller->invokeAction($subTrace, $action, $this->request);
     }
     catch (AuthenticationRequiredException $ex) {
       return new \Symfony\Component\HttpFoundation\RedirectResponse($this->router->generateUrl('homepage'));

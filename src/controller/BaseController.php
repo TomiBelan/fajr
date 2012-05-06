@@ -84,9 +84,9 @@ abstract class BaseController extends DisableEvilCallsObject implements Controll
    *
    * @param Trace $trace trace object
    * @param string $action action name
-   * @param Context $context fajr context
+   * @param Request $request incoming request
    */
-  public function invokeAction(Trace $trace, $action, Context $context)
+  public function invokeAction(Trace $trace, $action, Request $request)
   {
     Preconditions::checkIsString($action);
     Preconditions::checkMatchesPattern('@^[A-Z][a-zA-Z]*$@', $action,
@@ -121,7 +121,7 @@ abstract class BaseController extends DisableEvilCallsObject implements Controll
       throw new Exception('Action method '.$methodName.' is destructor');
     }
 
-    return $method->invoke($this, $trace, $context);
+    return $method->invoke($this, $trace, $request);
   }
 
 }

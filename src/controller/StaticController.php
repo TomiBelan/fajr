@@ -14,7 +14,6 @@
 namespace fajr\controller;
 
 use Exception;
-use fajr\Context;
 use fajr\controller\BaseController;
 use libfajr\base\Preconditions;
 use libfajr\trace\Trace;
@@ -41,12 +40,12 @@ class StaticController extends BaseController
     parent::__construct($displayManager, $router);
   }
   
-  public function runTermsOfUse(Trace $trace, Context $context)
+  public function runTermsOfUse(Trace $trace, Request $request)
   {
     return $this->renderResponse('termsOfUse');
   }
   
-  public function runAbout(Trace $trace, Context $context)
+  public function runAbout(Trace $trace, Request $request)
   {
     return $this->renderResponse('about');
   }

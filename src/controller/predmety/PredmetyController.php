@@ -69,27 +69,22 @@ class PredmetyController extends BaseController
    *
    * @param Trace $trace trace object
    * @param string $action action name
-   * @param Context $context fajr context
+   * @param Request $request incoming request
    */
-  public function invokeAction(Trace $trace, $action, Context $context)
+  public function invokeAction(Trace $trace, $action, Request $request)
   {
     Preconditions::checkIsString($action);
-
-    $request = $context->getRequest();
-    $session = $context->getSessionStorage();
     Preconditions::checkNotNull($request);
-    Preconditions::checkNotNull($session);
+    
     $screenFactory = $this->factory;
     $register = $screenFactory->newRegisterPredmetovScreen($trace);
     
     $this->registerPredmetovScreen = $register;
 
-    return parent::invokeAction($trace, $action, $context);
+    return parent::invokeAction($trace, $action, $request);
   }
 
-  public function runInformacnyList(Trace $trace, Context $context) {
-    $request = $context->getRequest();
-    
+  public function runInformacnyList(Trace $trace, Request $request) {
     $searchCode = $request->getParameter('code');
     $format = $request->getParameter('format');
 

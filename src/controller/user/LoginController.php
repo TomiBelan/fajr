@@ -14,7 +14,6 @@
 namespace fajr\controller\user;
 
 use Exception;
-use fajr\Context;
 use fajr\controller\BaseController;
 use libfajr\AIS2Utils;
 use libfajr\base\Preconditions;
@@ -75,7 +74,7 @@ class LoginController extends BaseController
     $this->session = $session;
   }
 
-  public function runLogin(Trace $trace, Context $context)
+  public function runLogin(Trace $trace, Request $request)
   {
     $server = $this->serverManager->getActiveServer();
 
@@ -95,7 +94,7 @@ class LoginController extends BaseController
     }
   }
   
-  public function runLoginScreen(Trace $trace, Context $context)
+  public function runLoginScreen(Trace $trace, Request $request)
   {
     $server = $this->serverManager->getActiveServer();
 
@@ -117,7 +116,7 @@ class LoginController extends BaseController
       }
   }
   
-  public function runLogout(Trace $trace, Context $context)
+  public function runLogout(Trace $trace, Request $request)
   {
     $server = $this->session->read('server');
     $result = $this->loginManager->logout();
