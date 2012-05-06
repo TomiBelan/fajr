@@ -20,13 +20,13 @@ use libfajr\AIS2Utils;
 use libfajr\base\Preconditions;
 use libfajr\trace\Trace;
 use fajr\Request;
-use fajr\Response;
 use fajr\util\FajrUtils;
 use sfStorage;
 use fajr\settings\SkinSettings;
 use fajr\LoginManager;
 use fajr\exceptions\AuthenticationRequiredException;
 use fajr\rendering\DisplayManager;
+use fajr\Router;
 
 /**
  * Controller, which manages user settings.
@@ -43,9 +43,6 @@ class UserSettingsController extends BaseController
   /** @var LoginManager */
   private $loginManager;
   
-  /** @var DisplayManager */
-  private $displayManager;
-  
   public static function getInstance()
   {
     return new UserSettingsController(SkinSettings::getInstance(),
@@ -53,11 +50,12 @@ class UserSettingsController extends BaseController
   }
 
   public function __construct(SkinSettings $skinSettings,
-      LoginManager $loginManager, DisplayManager $displayManager)
+      LoginManager $loginManager, DisplayManager $displayManager,
+      Router $router)
   {
+    parent::__construct($displayManager, $router);
     $this->skinSettings = $skinSettings;
     $this->loginManager = $loginManager;
-    $this->displayManager = $displayManager;
   }
 
   public function invokeAction(Trace $trace, $action, Context $context)
@@ -68,20 +66,17 @@ class UserSettingsController extends BaseController
       throw new AuthenticationRequiredException();
     }
 
-    parent::invokeAction($trace, $action, $context);
+    return parent::invokeAction($trace, $action, $context);
   }
 
   public function runSettings(Trace $trace, Context $context)
   {
-    $response = $context->getResponse();
-
-    $response->setTemplate('settings/settings');
+    return $this->renderResponse('settings/settings');
   }
 
   public function runSkin(Trace $trace, Context $context)
   {
     $request = $context->getRequest();
-    $response = $context->getResponse();
     
     // set skin
     if ($request->getParameter('skinSelect')) {
@@ -90,9 +85,11 @@ class UserSettingsController extends BaseController
       $this->displayManager->setSkin($this->skinSettings->getUserSkin());
     }
 
-    $response->set('availableSkins', $this->skinSettings->getAvailableSkins());
-    $response->set('currentSkin', $this->skinSettings->getUserSkinName());
+    $params = array(
+      'availableSkins' => $this->skinSettings->getAvailableSkins(),
+      'currentSkin' => $this->skinSettings->getUserSkinName(),
+    );
 
-    $response->setTemplate('settings/skin');
+    return $this->renderResponse('settings/skin', $params);
   }
 }

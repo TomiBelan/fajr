@@ -35,7 +35,6 @@ class Context
     if (!isset(self::$instance)) {
       self::$instance = new Context();
       self::$instance->setRequest(Request::getInstance());
-      self::$instance->setResponse(Response::getInstance());
       self::$instance->setSessionStorage(SessionStorageProvider::getInstance());
     }
     return self::$instance;
@@ -43,9 +42,6 @@ class Context
 
   /** var Request */
   private $request;
-
-  /** var Response */
-  private $response;
 
   /** var sfStorage*/
   private $session;
@@ -68,24 +64,6 @@ class Context
   public function setRequest($request)
   {
     $this->request = $request;
-  }
-
-  /**
-   * Get a Response for this context
-   * @returns Response
-   */
-  public function getResponse()
-  {
-    return $this->response;
-  }
-
-  /**
-   * Set a Response for this context
-   * @param Response $response 
-   */
-  public function setResponse($response)
-  {
-    $this->response = $response;
   }
 
   /**

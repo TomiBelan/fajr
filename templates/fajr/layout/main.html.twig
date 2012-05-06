@@ -8,7 +8,6 @@
  #}
 <!DOCTYPE html>
 <html lang="{{ language }}">
-  {% import "macros/trace.html.twig" as traceGen %}
   <head>
     {% block head %}
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -41,11 +40,6 @@
           Copyright 2010,2011 Kolektív autorov. <a href="{{ path('about') }}">O aplikácii</a>
         </div>
       </div>
-      {% if trace %}
-        <div class="span-24">
-          {{ traceGen.trace(trace) }}
-        </div>
-      {% endif %}
     </div>
     {% include 'parts/analytics.html.twig' %}
   </body>

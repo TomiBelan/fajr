@@ -32,6 +32,9 @@ use fajr\Router;
 use fajr\BackendProvider;
 use fajr\exceptions\AuthenticationRequiredException;
 use libfajr\exceptions\ParseException;
+use fajr\rendering\DisplayManager;
+use fajr\Warnings;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 fields::autoload();
 
@@ -50,7 +53,8 @@ class StudiumController extends BaseController
     return new StudiumController($backendFactory->newVSES017Factory(),
         $backendFactory->getServerTime(),
         LoginManager::getInstance(),
-        Router::getInstance());
+        DisplayManager::getInstance(), Router::getInstance(),
+        Warnings::getInstance());
   }
 
   // @input
@@ -70,12 +74,16 @@ class StudiumController extends BaseController
   
   private $loginManager;
   
-  /** @var Router */
-  private $router;
+  private $templateParams;
+  
+  /** Warnings */
+  private $warnings;
 
   public function __construct(VSES017\StudiumFactory $factory, $serverTime,
-      LoginManager $loginManager, Router $router)
+      LoginManager $loginManager, DisplayManager $displayManager, Router $router,
+      Warnings $warnings)
   {
+    parent::__construct($displayManager, $router);
     $this->factory = $factory;
     $this->serverTime = $serverTime;
     $this->actionInfo = array('MojeTerminyHodnotenia' => array('tabName' => 'TerminyHodnotenia', 'requiresZapisnyList' => true),
@@ -85,7 +93,8 @@ class StudiumController extends BaseController
                               'PrehladKreditov' => array('tabName' => 'PrehladKreditov', 'requiresZapisnyList' => false),
                               );
     $this->loginManager = $loginManager;
-    $this->router = $router;
+    $this->templateParams = array();
+    $this->warnings = $warnings;
   }
 
   /**
@@ -107,10 +116,8 @@ class StudiumController extends BaseController
     }
 
     $request = $context->getRequest();
-    $response = $context->getResponse();
     $session = $context->getSessionStorage();
     Preconditions::checkNotNull($request);
-    Preconditions::checkNotNull($response);
     Preconditions::checkNotNull($session);
     // check access to application
     $apps = $session->read('ais/aisApps');
@@ -119,8 +126,7 @@ class StudiumController extends BaseController
     }
     if (!in_array(AIS2ApplicationEnum::ADMINISTRACIA_STUDIA,
                   $apps)) {
-      $response->setTemplate('studium/notAvailable');
-      return;
+      return $this->renderResponse('studium/notAvailable');
     }
 
     $screenFactory = $this->factory;
@@ -137,11 +143,11 @@ class StudiumController extends BaseController
                                       $trace->addChild('getZapisneListy'),
                                       $this->studium);
 
-    FajrUtils::warnWrongTableStructure($trace, $response, 'zoznam studii',
+    $this->warnings->warnWrongTableStructure($trace, 'zoznam studii',
         regression\ZoznamStudiiRegression::get(),
         $this->zoznamStudii->getTableDefinition());
 
-    FajrUtils::warnWrongTableStructure($trace, $response, 'zoznam zapisnych listov',
+    $this->warnings->warnWrongTableStructure($trace, 'zoznam zapisnych listov',
         regression\ZoznamZapisnychListovRegression::get(),
         $this->zapisneListy->getTableDefinition());
 
@@ -150,7 +156,7 @@ class StudiumController extends BaseController
       $this->zapisnyList = null;
       $this->terminyHodnoteniaScreen = null;
       $this->hodnoteniaScreen = null;
-      $response->set('zapisnyListObj', null);
+      $this->templateParams['zapisnyListObj'] = null;
     }
     else {
       $this->zapisnyList = $request->getParameter('list');
@@ -160,7 +166,7 @@ class StudiumController extends BaseController
         $this->zapisnyList = $lastList['index'];
       }
       $this->zapisnyList = intval($this->zapisnyList);
-      $response->set('zapisnyListObj', $zapisneListyData[$this->zapisnyList]);
+      $this->templateParams['zapisnyListObj'] = $zapisneListyData[$this->zapisnyList];
 
       try {
         $this->terminyHodnoteniaScreen = $screenFactory->newTerminyHodnoteniaScreen(
@@ -181,30 +187,28 @@ class StudiumController extends BaseController
                 VSES017\AdministraciaStudiaScreen::ACTION_HODNOTENIA_PRIEMERY));
     }
 
-    $response->set('currentTab', '');
-    $response->set('zoznamStudii', $this->zoznamStudii);
-    $response->set('studium', $this->studium);
+    $this->templateParams['currentTab'] = '';
+    $this->templateParams['zoznamStudii'] = $this->zoznamStudii;
+    $this->templateParams['studium'] = $this->studium;
     // TODO(anty): refactor
     $zoznamStudiiData = $this->zoznamStudii->getData();
-    $response->set('studiumObj', $zoznamStudiiData[$this->studium]);
-    $response->set('zapisneListy', $this->zapisneListy);
-    $response->set('zapisnyList', $this->zapisnyList);
+    $this->templateParams['studiumObj'] = $zoznamStudiiData[$this->studium];
+    $this->templateParams['zapisneListy'] = $this->zapisneListy;
+    $this->templateParams['zapisnyList'] = $this->zapisnyList;
     // TODO(anty): refactor
 
     if (array_key_exists($action, $this->actionInfo)) {
       $info = $this->actionInfo[$action];
       if ($info['requiresZapisnyList'] && $this->zapisnyList === null) {
-        $response->set('activeTab', $info['tabName']);
-        $response->setTemplate('studium/chybaZapisnyList');
-        return;
+        $this->templateParams['activeTab'] = $info['tabName'];
+        return $this->renderResponse('studium/chybaZapisnyList', $this->templateParams);
       }
     }
 
-    parent::invokeAction($trace, $action, $context);
+    return parent::invokeAction($trace, $action, $context);
   }
   
   public function runPrehladKreditov(Trace $trace, Context $context) {
-    $response = $context->getResponse();
     
     $prehladKreditovDialog = $this->administraciaStudiaScreen->
         getPrehladKreditovDialog($trace, $this->studium);
@@ -213,7 +217,7 @@ class StudiumController extends BaseController
     
     $prehladKreditovDialog->closeIfNeeded($trace);
     
-    FajrUtils::warnWrongTableStructure($trace, $response, 'prehlad kreditov',
+    $this->warnings->warnWrongTableStructure($trace, 'prehlad kreditov',
         regression\PrehladKreditovRegression::get(),
         $predmety->getTableDefinition());
     
@@ -229,10 +233,10 @@ class StudiumController extends BaseController
       $priemeryCalculator->add($semester, $znamka, $predmetyRow[PredmetyFields::KREDIT]);
     }
     
-    $response->set('currentTab', 'PrehladKreditov');
-    $response->set('predmety', $predmetyData);
-    $response->set('predmetyStatistika', $priemeryCalculator);
-    $response->setTemplate('studium/prehladKreditov');
+    $this->templateParams['currentTab'] = 'PrehladKreditov';
+    $this->templateParams['predmety'] = $predmetyData;
+    $this->templateParams['predmetyStatistika'] = $priemeryCalculator;
+    return $this->renderResponse('studium/prehladKreditov', $this->templateParams);
   }
 
   /**
@@ -243,12 +247,10 @@ class StudiumController extends BaseController
    */
   public function runHodnotenia(Trace $trace, Context $context) {
     $priemeryCalculator = new PriemeryCalculator();
-    $request = $context->getRequest();
-    $response = $context->getResponse();
-
+    
     $hodnotenia = $this->hodnoteniaScreen->getHodnotenia($trace->addChild('get hodnotenia'));
 
-    FajrUtils::warnWrongTableStructure($trace, $response, 'hodnotenia',
+    $this->warnings->warnWrongTableStructure($trace, 'hodnotenia',
         regression\HodnoteniaRegression::get(),
         $hodnotenia->getTableDefinition());
 
@@ -266,15 +268,15 @@ class StudiumController extends BaseController
 
     $priemery = $this->hodnoteniaScreen->getPriemery($trace->addChild('get priemery'));
 
-    FajrUtils::warnWrongTableStructure($trace, $response, 'priemery',
+    $this->warnings->warnWrongTableStructure($trace, 'priemery',
         regression\PriemeryRegression::get(),
         $priemery->getTableDefinition());
 
-    $response->set('currentTab', 'Hodnotenia');
-    $response->set('hodnotenia', $hodnoteniaData);
-    $response->set('priemery', $priemery->getData());
-    $response->set('priemeryCalculator', $priemeryCalculator);
-    $response->setTemplate('studium/hodnotenia');
+    $this->templateParams['currentTab'] = 'Hodnotenia';
+    $this->templateParams['hodnotenia'] = $hodnoteniaData;
+    $this->templateParams['priemery'] = $priemery->getData();
+    $this->templateParams['priemeryCalculator'] = $priemeryCalculator;
+    return $this->renderResponse('studium/hodnotenia', $this->templateParams);
   }
 
 
@@ -287,18 +289,16 @@ class StudiumController extends BaseController
   public function runOdhlasZoSkusky(Trace $trace, Context $context) {
 
     $request = $context->getRequest();
-    $response = $context->getResponse();
-    
     if ($this->terminyHodnoteniaScreen == null) {
-      $response->setTemplate('studium/terminyHodnoteniaNedostupne');
-      return;
+      return $this->renderResponse('studium/terminyHodnoteniaNedostupne',
+          $this->templateParams);
     }
 
     $terminIndex = $request->getParameter("odhlasIndex");
 
     $terminy = $this->terminyHodnoteniaScreen
         ->getTerminyHodnotenia($trace->addChild('get terminy hodnotenia '));
-    FajrUtils::warnWrongTableStructure($trace, $response, 'moje terminy',
+    $this->warnings->warnWrongTableStructure($trace, 'moje terminy',
         regression\MojeTerminyRegression::get(),
         $terminy->getTableDefinition());
 
@@ -322,7 +322,7 @@ class StudiumController extends BaseController
       throw new Exception('Z termínu sa nepodarilo odhlásiť.');
     }
 
-    $response->redirect($this->router->generateUrl('studium_moje_skusky',
+    return new RedirectResponse($this->generateUrl('studium_moje_skusky',
         array('studium' => $this->studium, 'list' => $this->zapisnyList), true));
   }
 
@@ -331,30 +331,28 @@ class StudiumController extends BaseController
    *
    * @param Trace $trace trace object
    * @param Request $request request from browser
-   * @param Response $response response information
    */
   public function runMojeTerminyHodnotenia(Trace $trace, Context $context) {
 
     $request = $context->getRequest();
-    $response = $context->getResponse();
-    $response->set('currentTab', 'TerminyHodnotenia');
+    $this->templateParams['currentTab'] = 'TerminyHodnotenia';
     
     if ($this->terminyHodnoteniaScreen == null) {
-      $response->setTemplate('studium/terminyHodnoteniaNedostupne');
-      return;
+      return $this->renderResponse('studium/terminyHodnoteniaNedostupne',
+          $this->templateParams);
     }
 
     $termin = $request->getParameter('termin');
 
     $terminyHodnotenia = $this->terminyHodnoteniaScreen->getTerminyHodnotenia(
         $trace->addChild("get terminy hodnotenia"));
-    FajrUtils::warnWrongTableStructure($trace, $response, 'moje terminy hodnotenia',
+    $this->warnings->warnWrongTableStructure($trace, 'moje terminy hodnotenia',
         regression\MojeTerminyRegression::get(),
         $terminyHodnotenia->getTableDefinition());
 
     $hodnotenia = $this->hodnoteniaScreen->getHodnotenia(
         $trace->addChild("get hodnotenia"));
-    FajrUtils::warnWrongTableStructure($trace, $response, 'hodnotenia',
+    $this->warnings->warnWrongTableStructure($trace, 'hodnotenia',
         regression\HodnoteniaRegression::get(),
         $hodnotenia->getTableDefinition());
 
@@ -394,22 +392,23 @@ class StudiumController extends BaseController
       }
     }
 
-    $response->set('prihlaseni', null);
+    $this->templateParams['prihlaseni'] = null;
     if ($request->getParameter('termin') !== '') {
       $prihlaseni = $this->terminyHodnoteniaScreen->
             getZoznamPrihlasenychDialog($trace, $termin)->
               getZoznamPrihlasenych($trace);
-      FajrUtils::warnWrongTableStructure($trace, $response, 'prihlaseni na termin',
+      $this->warnings->warnWrongTableStructure($trace, 'prihlaseni na termin',
           regression\PrihlaseniNaTerminRegression::get(),
           $prihlaseni->getTableDefinition());
-      $response->set('prihlaseni', $prihlaseni->getData());
+      $this->templateParams['prihlaseni'] = $prihlaseni->getData();
     }
 
-    $response->set('terminyActive', $terminyHodnoteniaActive);
-    $response->set('terminyOld', $terminyHodnoteniaOld);
-    $response->set('termin', $termin);
+    $this->templateParams['terminyActive'] = $terminyHodnoteniaActive;
+    $this->templateParams['terminyOld'] = $terminyHodnoteniaOld;
+    $this->templateParams['termin'] = $termin;
 
-    $response->setTemplate('studium/mojeTerminyHodnotenia');
+    return $this->renderResponse('studium/mojeTerminyHodnotenia',
+        $this->templateParams);
   }
 
   /**
@@ -419,18 +418,15 @@ class StudiumController extends BaseController
    * @param Context $context
    */
   public function runZapisanePredmety(Trace $trace, Context $context) {
-    $request = $context->getRequest();
-    $response = $context->getResponse();
-    
-    $response->set('currentTab', 'ZapisnyList');
+    $this->templateParams['currentTab'] = 'ZapisnyList';
     
     if ($this->terminyHodnoteniaScreen == null) {
-      $response->setTemplate('studium/terminyHodnoteniaNedostupne');
-      return;
+      return $this->renderResponse('studium/terminyHodnoteniaNedostupne',
+          $this->templateParams);
     }
 
     $predmetyZapisnehoListu = $this->terminyHodnoteniaScreen->getPredmetyZapisnehoListu($trace);
-    FajrUtils::warnWrongTableStructure($trace, $response, 'terminy hodnotenia-predmety',
+    $this->warnings->warnWrongTableStructure($trace, 'terminy hodnotenia-predmety',
         regression\ZapisanePredmetyRegression::get(),
         $predmetyZapisnehoListu->getTableDefinition());
 
@@ -445,9 +441,10 @@ class StudiumController extends BaseController
       $priemeryCalculator->add($semester, '', $predmetyRow[PredmetyFields::KREDIT]);
     }
 
-    $response->set('predmetyZapisnehoListu', $predmetyZapisnehoListuData);
-    $response->set('predmetyStatistika', $priemeryCalculator);
-    $response->setTemplate('studium/zapisanePredmety');
+    $this->templateParams['predmetyZapisnehoListu'] = $predmetyZapisnehoListuData;
+    $this->templateParams['predmetyStatistika'] = $priemeryCalculator;
+    return $this->renderResponse('studium/zapisanePredmety',
+        $this->templateParams);
   }
 
   /**
@@ -459,20 +456,18 @@ class StudiumController extends BaseController
   public function runPrihlasNaSkusku(Trace $trace, Context $context)
   {
     $request = $context->getRequest();
-    $response = $context->getResponse();
     
     if ($this->terminyHodnoteniaScreen == null) {
-      $response->setTemplate('studium/terminyHodnoteniaNedostupne');
-      return;
+      return $this->renderResponse('studium/terminyHodnoteniaNedostupne',
+          $this->templateParams);
     }
 
     $predmetIndex = $request->getParameter("prihlasPredmetIndex");
     $terminIndex = $request->getParameter("prihlasTerminIndex");
 
-
     $predmety = $this->terminyHodnoteniaScreen
           ->getPredmetyZapisnehoListu($trace->addChild('Predmety zapisneho listu'));
-    FajrUtils::warnWrongTableStructure($trace, $response, 'terminy hodnotenia - predmety',
+    $this->warnings->warnWrongTableStructure($trace, 'terminy hodnotenia - predmety',
         regression\ZapisanePredmetyRegression::get(),
         $predmety->getTableDefinition());
 
@@ -490,7 +485,7 @@ class StudiumController extends BaseController
         ->getZoznamTerminovDialog($childTrace, $predmetIndex);
 
     $terminy = $terminyDialog->getZoznamTerminov($childTrace);
-    FajrUtils::warnWrongTableStructure($trace, $response, 'zoznam mojich terminov',
+    $this->warnings->warnWrongTableStructure($trace, 'zoznam mojich terminov',
         regression\MojeTerminyRegression::getPrihlasovanie(),
         $terminy->getTableDefinition());
 
@@ -517,7 +512,7 @@ class StudiumController extends BaseController
       throw new Exception('Na skúšku sa nepodarilo prihlásiť.');
     }
 
-    $response->redirect($this->router->generateUrl('studium_moje_skusky',
+    return new RedirectResponse($this->generateUrl('studium_moje_skusky',
         array('studium' => $this->studium, 'list' => $this->zapisnyList), true));
   }
 
@@ -530,22 +525,21 @@ class StudiumController extends BaseController
    */
   public function runZoznamTerminov(Trace $trace, Context $context) {
     $request = $context->getRequest();
-    $response = $context->getResponse();
     
-    $response->set('currentTab', 'ZapisSkusok');
+    $this->templateParams['currentTab'] = 'ZapisSkusok';
     
     if ($this->terminyHodnoteniaScreen == null) {
-      $response->setTemplate('studium/terminyHodnoteniaNedostupne');
-      return;
+      return $this->renderResponse('studium/terminyHodnoteniaNedostupne',
+          $this->templateParams);
     }
 
     $predmetyZapisnehoListu = $this->terminyHodnoteniaScreen->getPredmetyZapisnehoListu($trace);
-    FajrUtils::warnWrongTableStructure($trace, $response, 'terminy hodnotenia - predmety',
+    $this->warnings->warnWrongTableStructure($trace, 'terminy hodnotenia - predmety',
         regression\ZapisanePredmetyRegression::get(),
         $predmetyZapisnehoListu->getTableDefinition());
 
     $hodnotenia = $this->hodnoteniaScreen->getHodnotenia($trace);
-    FajrUtils::warnWrongTableStructure($trace, $response, 'hodnotenia',
+    $this->warnings->warnWrongTableStructure($trace, 'hodnotenia',
         regression\HodnoteniaRegression::get(),
         $hodnotenia->getTableDefinition());
     $hodnoteniaData = array();
@@ -567,7 +561,7 @@ class StudiumController extends BaseController
       $dialog = $this->terminyHodnoteniaScreen->getZoznamTerminovDialog(
           $childTrace, $predmetId);
       $terminy = $dialog->getZoznamTerminov($childTrace);
-      FajrUtils::warnWrongTableStructure($trace, $response, 'zoznam terminov k predmetu ' . $predmet,
+      $this->warnings->warnWrongTableStructure($trace, 'zoznam terminov k predmetu ' . $predmet,
           regression\TerminyKPredmetuRegression::get(),
           $terminy->getTableDefinition());
       // explicitly close this dialog otherwise we will be blocked for next iteration!
@@ -591,23 +585,23 @@ class StudiumController extends BaseController
       }
     }
 
-    $response->set('prihlaseni', null);
+    $this->templateParams['prihlaseni'] = null;
     if ($request->getParameter('termin') !== '' &&
         $request->getParameter('predmet') !== '') {
       $prihlaseni = $this->terminyHodnoteniaScreen->getZoznamTerminovDialog($trace, $request->getParameter('predmet'))
         ->getZoznamPrihlasenychDialog($trace, $request->getParameter('termin'))
         ->getZoznamPrihlasenych($trace);
-      FajrUtils::warnWrongTableStructure($trace, $response, 'zoznam prihlasenych k terminu',
+      $this->warnings->warnWrongTableStructure($trace, 'zoznam prihlasenych k terminu',
           regression\PrihlaseniNaTerminRegression::get(),
           $prihlaseni->getTableDefinition());
-      $response->set('prihlaseni', $prihlaseni->getData());
+      $this->templateParams['prihlaseni'] = $prihlaseni->getData();
     }
 
-    $response->set('predmetyZapisnehoListu', $predmetyZapisnehoListu);
-    $response->set('terminy', $terminyData);
-    $response->set('termin', $request->getParameter('termin'));
-    $response->set('predmet', $request->getParameter('predmet'));
+    $this->templateParams['predmetyZapisnehoListu'] = $predmetyZapisnehoListu;
+    $this->templateParams['terminy'] = $terminyData;
+    $this->templateParams['termin'] = $request->getParameter('termin');
+    $this->templateParams['predmet'] = $request->getParameter('predmet');
 
-    $response->setTemplate('studium/zoznamTerminov');
+    return $this->renderResponse('studium/zoznamTerminov', $this->templateParams);
   }
 }

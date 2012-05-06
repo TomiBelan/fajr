@@ -66,6 +66,9 @@ class DisplayManager
   /** @var Twig_Environment */
   private $twig;
   
+  /** @var array */
+  private $defaultParams = array();
+  
   /**
    * Construct a DisplayManager using Twig_Environment
    * @param Twig_Environment $twig
@@ -80,29 +83,58 @@ class DisplayManager
     $this->twig->setLoader(new Twig_Loader_Filesystem($skin->getAllPaths()));
   }
   
+  public function setDefaultParams(array $params) {
+    $this->defaultParams = array_merge($this->defaultParams, $params);
+  }
+  
   /**
    * Generate a page content
-   *
-   * @param Response $response response data to use to generate output
-   *
-   * @returns string Generated output to be sent to the browser
+   * 
+   * @param string $template name of the template to render
+   * @param array $params parameters to use when generating the template
+   * @param string|null template format to render, if null use html
+   * @return string rendered template output
    */
-  public function display(Response $response)
-  {
-    Preconditions::checkNotNull($response->getTemplate(), "Template not set");
-    
-    $format = $response->getFormat();
-    
-    if ($format == 'json') {
-      header('Content-type: application/json');
+  public function render($template, array $params = array(), $format=null) {
+    Preconditions::checkIsString($template, 'Template name must be string');
+    if ($format == null) {
+      $format = 'html';
     }
-
-    $templateName = 'pages/' . $response->getTemplate() . '.' . $format . '.twig';
+    Preconditions::checkIsString($format, 'Format must be string');
+    
+    $templateName = 'pages/' . $template . '.' . $format . '.twig';
     $template = $this->twig->loadTemplate($templateName);
 
-    $output = $template->render($response->getData());
-
-    return $output;
+    return $template->render(array_merge($this->defaultParams, $params));
+  }
+  
+  /**
+   * Generate a Response
+   * 
+   * @param string $template name of the template to render
+   * @param array $params parameters to use when generating the template
+   * @param string|null response format to render, if null use html
+   * @param int statusCode
+   * @return Symfony\Component\HttpFoundation\Response rendered response
+   */
+  public function renderResponse($template, array $params = array(), $format = null, $statusCode = 200) {
+    Preconditions::checkIsString($template, 'Template name must be string');
+    if ($format == null) {
+      $format = 'html';
+    }
+    Preconditions::checkIsString($format, 'Format must be string');
+    
+    $output = $this->render($template, $params, $format);
+    $response = new \Symfony\Component\HttpFoundation\Response($output, $statusCode);
+    
+    if ($format == 'html') {
+      $response->headers->set('Content-Type', 'text/html');
+    }
+    else if ($format == 'json') {
+      $response->headers->set('Content-Type', 'application/json');
+    }
+    
+    return $response;
   }
 }
 

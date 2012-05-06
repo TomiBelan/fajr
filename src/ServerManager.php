@@ -41,7 +41,7 @@ class ServerManager
 
   private $request;
   private $session;
-  private $response;
+  
   /** @var FajrConfig */
   private $config;
 

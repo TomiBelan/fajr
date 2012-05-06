@@ -19,7 +19,8 @@ use fajr\controller\BaseController;
 use libfajr\base\Preconditions;
 use libfajr\trace\Trace;
 use fajr\Request;
-use fajr\Response;
+use fajr\rendering\DisplayManager;
+use fajr\Router;
 
 /**
  * Controller for displaying static public pages
@@ -32,17 +33,22 @@ class StaticController extends BaseController
 {
   public static function getInstance()
   {
-    return new StaticController();
+    return new StaticController(DisplayManager::getInstance(), Router::getInstance());
+  }
+  
+  public function __construct(DisplayManager $displayManager, Router $router)
+  {
+    parent::__construct($displayManager, $router);
   }
   
   public function runTermsOfUse(Trace $trace, Context $context)
   {
-    $context->getResponse()->setTemplate('termsOfUse');
+    return $this->renderResponse('termsOfUse');
   }
   
   public function runAbout(Trace $trace, Context $context)
   {
-    $context->getResponse()->setTemplate('about');
+    return $this->renderResponse('about');
   }
   
 }
