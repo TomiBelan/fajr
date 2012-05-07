@@ -61,8 +61,9 @@ class StudiumController extends BaseController
   // @input
   private $studium;
   private $zapisnyList;
-
+  
   // @private
+  private $zapisnyListObj;
   private $zoznamStudii;
   private $zapisneListy;
   private $terminyHodnoteniaScreen;
@@ -168,7 +169,8 @@ class StudiumController extends BaseController
         $this->zapisnyList = $lastList['index'];
       }
       $this->zapisnyList = intval($this->zapisnyList);
-      $this->templateParams['zapisnyListObj'] = $zapisneListyData[$this->zapisnyList];
+      $this->zapisnyListObj = $zapisneListyData[$this->zapisnyList];
+      $this->templateParams['zapisnyListObj'] = $this->zapisnyListObj;
 
       try {
         $this->terminyHodnoteniaScreen = $screenFactory->newTerminyHodnoteniaScreen(
@@ -211,6 +213,7 @@ class StudiumController extends BaseController
   }
   
   public function runPrehladKreditov(Trace $trace, Request $request) {
+    $format = $request->getParameter('format', 'html');
     
     $prehladKreditovDialog = $this->administraciaStudiaScreen->
         getPrehladKreditovDialog($trace, $this->studium);
@@ -228,9 +231,17 @@ class StudiumController extends BaseController
     
     $priemeryCalculator = new PriemeryCalculator();
     
-    foreach ($predmetyData as $predmetyRow) {
+    foreach ($predmetyData as &$predmetyRow) {
       $semester = $predmetyRow['semester'] == 'L' ?
           PriemeryCalculator::SEMESTER_LETNY : PriemeryCalculator::SEMESTER_ZIMNY;
+      
+      try {
+        $predmetyRow['timestamp'] = AIS2Utils::parseAISDate($predmetyRow['datum']);
+      }
+      catch (\Exception $e) {
+        $predmetyRow['timestamp'] = null;
+      }
+      
       $znamka = $predmetyRow['znamka'];
       $priemeryCalculator->add($semester, $znamka, $predmetyRow[PredmetyFields::KREDIT]);
     }
@@ -238,7 +249,8 @@ class StudiumController extends BaseController
     $this->templateParams['currentTab'] = 'PrehladKreditov';
     $this->templateParams['predmety'] = $predmetyData;
     $this->templateParams['predmetyStatistika'] = $priemeryCalculator;
-    return $this->renderResponse('studium/prehladKreditov', $this->templateParams);
+    return $this->renderResponse('studium/prehladKreditov', $this->templateParams,
+        ($format == 'xml' ? 'xml' : 'html'));
   }
 
   /**
@@ -248,6 +260,8 @@ class StudiumController extends BaseController
    * @param Request $request
    */
   public function runHodnotenia(Trace $trace, Request $request) {
+    $format = $request->getParameter('format', 'html');
+    
     $priemeryCalculator = new PriemeryCalculator();
     
     $hodnotenia = $this->hodnoteniaScreen->getHodnotenia($trace->addChild('get hodnotenia'));
@@ -259,15 +273,22 @@ class StudiumController extends BaseController
     $hodnoteniaData = Sorter::sort($hodnotenia->getData(),
           array("semester"=>-1, "nazov"=>1));
 
-    foreach($hodnoteniaData as $hodnoteniaRow) {
+    foreach($hodnoteniaData as &$hodnoteniaRow) {
       $semester = $hodnoteniaRow[HodnoteniaFields::SEMESTER] == 'L' ?
           PriemeryCalculator::SEMESTER_LETNY : PriemeryCalculator::SEMESTER_ZIMNY;
+      try {
+        $hodnoteniaRow['timestamp'] = AIS2Utils::parseAISDate($hodnoteniaRow['datum']);
+      }
+      catch (\Exception $e) {
+        $hodnoteniaRow['timestamp'] = null;
+      }
+      $hodnoteniaRow['akRok'] = $this->zapisnyListObj['popisAkadRok'];
 
       $priemeryCalculator->add($semester,
                                $hodnoteniaRow[HodnoteniaFields::ZNAMKA],
                                $hodnoteniaRow[HodnoteniaFields::KREDIT]);
     }
-
+    
     $priemery = $this->hodnoteniaScreen->getPriemery($trace->addChild('get priemery'));
 
     $this->warnings->warnWrongTableStructure($trace, 'priemery',
@@ -278,7 +299,8 @@ class StudiumController extends BaseController
     $this->templateParams['hodnotenia'] = $hodnoteniaData;
     $this->templateParams['priemery'] = $priemery->getData();
     $this->templateParams['priemeryCalculator'] = $priemeryCalculator;
-    return $this->renderResponse('studium/hodnotenia', $this->templateParams);
+    return $this->renderResponse('studium/hodnotenia', $this->templateParams,
+        ($format == 'xml' ? 'xml' : 'html'));
   }
 
 

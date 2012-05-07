@@ -133,6 +133,9 @@ class DisplayManager
     else if ($format == 'json') {
       $response->headers->set('Content-Type', 'application/json');
     }
+    else if ($format == 'xml') {
+      $response->headers->set('Content-Type', 'application/xml');
+    }
     
     return $response;
   }
