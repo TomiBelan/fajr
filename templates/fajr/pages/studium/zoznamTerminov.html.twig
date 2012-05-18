@@ -88,6 +88,19 @@
   {% endfor %}
 {% endset %}
 
+{% if pocetSchovanychPredmetov > 0 %}
+<p>V tabuľke nižšie sú vynechané skúšky k
+  {% if pocetSchovanychPredmetov == 1 %}
+    1 uznanému predmetu.
+  {% else %}
+    {{ pocetSchovanychPredmetov}} uznaným predmetom.
+  {% endif %}
+  <a href="{{ path('studium_zoznam_skusok', {
+                      'studium': studium,
+                      'list': zapisnyList,
+                      'displayFilter': 'none'}) }}">Zobraziť všetky termíny</a>
+</p>
+{% endif %}
 {{ decorators.table(none, head, body, none, terminy|length == 0) }}
 
 {# ---- zoznam prihlasenych --- #}

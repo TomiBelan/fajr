@@ -46,6 +46,7 @@ class HttpInputParameters implements InvocationParameters
         'loginType' => new StringValidator(),
         'serverName' => new StringValidator(),
         'format' => new StringValidator(),
+        'displayFilter' => new StringValidator(),
       );
       $allowed_post = array(
         'prihlasPredmetIndex' => new IntegerValidator(false),

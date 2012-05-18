@@ -172,6 +172,7 @@ class HodnoteniaFields
   const ZNAMKA = 'znamka';
   const KREDIT = 'kredit';
   const SEMESTER = 'semester';
+  const UZNANE = 'uznane';
 }
 
 /* getPredmetyZapisnehoListu()

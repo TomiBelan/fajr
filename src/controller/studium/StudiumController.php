@@ -532,6 +532,8 @@ class StudiumController extends BaseController
     $request = $context->getRequest();
     $response = $context->getResponse();
     
+    $schovajUznane = ($request->getParameter('displayFilter', 'uznane')) === 'uznane';
+    
     $response->set('currentTab', 'ZapisSkusok');
     
     if ($this->terminyHodnoteniaScreen == null) {
@@ -558,10 +560,16 @@ class StudiumController extends BaseController
 
     $terminyData = array();
 
+    $pocetSchovanychPredmetov = 0;
     foreach ($predmetyZapisnehoListu->getData() as $predmetRow) {
       $predmetSkratka = $predmetRow[PredmetyFields::SKRATKA];
       $predmetId = $predmetRow[PredmetyFields::INDEX];
       $predmet = $predmetRow[PredmetyFields::NAZOV];
+      if ($schovajUznane && 
+          $hodnoteniaData[$predmetSkratka][HodnoteniaFields::UZNANE] == 'TRUE') {
+        $pocetSchovanychPredmetov++;
+        continue;
+      }
 
       $childTrace = $trace->addChild('Zoznam terminov k predmetu ' . $predmet);
       $dialog = $this->terminyHodnoteniaScreen->getZoznamTerminovDialog(
@@ -579,7 +587,7 @@ class StudiumController extends BaseController
         $prihlasTerminyRow[PrihlasTerminyFields::PREDMET_INDEX] = $predmetId;
         $prihlasTerminyRow[PrihlasTerminyFields::PREDMET_SKRATKA] = $predmetSkratka;
         $prihlasTerminyRow[PrihlasTerminyFields::ZNAMKA] = $hodnoteniaData[$predmetSkratka][HodnoteniaFields::ZNAMKA];
-
+        
         $prihlasTerminyRow[PrihlasTerminyFields::HASH_PRIHLASENIE] =
             StudiumUtils::hashNaPrihlasenie($predmetSkratka, $row);
 
@@ -607,6 +615,7 @@ class StudiumController extends BaseController
     $response->set('terminy', $terminyData);
     $response->set('termin', $request->getParameter('termin'));
     $response->set('predmet', $request->getParameter('predmet'));
+    $response->set('pocetSchovanychPredmetov', $pocetSchovanychPredmetov);
 
     $response->setTemplate('studium/zoznamTerminov');
   }
