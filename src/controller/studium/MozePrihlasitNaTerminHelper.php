@@ -62,10 +62,17 @@ class MozePrihlasitNaTerminHelper extends DisableEvilCallsObject
       return self::PRIHLASIT_NEMOZE_ZNAMKA;
     }
 
-    $prihlasRange = AIS2Utils::parseAISDateTimeRange(
-        $prihlasTerminyRow[PrihlasTerminyFields::PRIHLASOVANIE_DATUM]);
-    if (!($prihlasRange['od'] < $time && $prihlasRange['do']>$time)) {
-      return self::PRIHLASIT_NEMOZE_CAS;
+    try {
+      $prihlasRange = AIS2Utils::parseAISDateTimeRange(
+          $prihlasTerminyRow[PrihlasTerminyFields::PRIHLASOVANIE_DATUM]);
+      if (!($prihlasRange['od'] < $time && $prihlasRange['do']>$time)) {
+        return self::PRIHLASIT_NEMOZE_CAS;
+      }
+    }
+    catch (\Exception $e) {
+      // ignorujme chybu pri parsovani datumu
+      // lepsie pouzivatelovi umoznit vyskusat sa prihlasit
+      // ako mu to neumoznit napriek tomu, ze by sa mal vediet prihlasit
     }
     if (($prihlasTerminyRow[PrihlasTerminyFields::MAX_POCET] !== '') &&
         ($prihlasTerminyRow[PrihlasTerminyFields::MAX_POCET] <=
