@@ -401,7 +401,16 @@ class StudiumController extends BaseController
         $vevent->setProperty( 'dtend', FajrUtils::datetime2icsdatetime($casSkusky + 4 * 3600), $datetimeFields);
         $vevent->setProperty( 'location', $terminyRow['miestnosti'] );
         $vevent->setProperty( 'summary',  $terminyRow['predmetNazov'] );
-        //$vevent->setProperty( 'uid', TODO uid);
+        // TODO: toto uid je unikatne, len pokial sa nezmeni niektora z vlastnosti skusok
+        // co znamena, ze to nie je uplne OK podla standardu
+        // - sposobi to, ze pridavanie novych skusok bude fungovat OK
+        // ale mazanie/presuvanie nebude fungovat
+        // najlepsie by bolo, ak by sme mali nejake unikatne id-cko skusky priamo z AISu
+        $uid = $casSkusky . '-' . $terminyRow[TerminyFields::PREDMET_SKRATKA];
+        $uid .= '-' . $terminyRow['miestnosti'];
+        $uid .= '@' . $request->getHostName();
+        $uid = str_replace(' ', '-', $uid);
+        $vevent->setProperty( 'uid', $uid);
         $description = 'Prihlasovanie: ' . $terminyRow['prihlasovanie'] . "\r\n";
         $description .= 'Odhlasovanie: ' . $terminyRow['odhlasovanie'] . "\r\n";
         $description .= 'Poznámka: ' . $terminyRow['poznamka'];
