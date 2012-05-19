@@ -545,6 +545,8 @@ class StudiumController extends BaseController
    */
   public function runZoznamTerminov(Trace $trace, Request $request) {
     $this->templateParams['currentTab'] = 'ZapisSkusok';
+
+    $schovajUznane = ($request->getParameter('displayFilter', 'uznane')) === 'uznane';
     
     if ($this->terminyHodnoteniaScreen == null) {
       return $this->renderResponse('studium/terminyHodnoteniaNedostupne',
@@ -570,10 +572,16 @@ class StudiumController extends BaseController
 
     $terminyData = array();
 
+    $pocetSchovanychPredmetov = 0;
     foreach ($predmetyZapisnehoListu->getData() as $predmetRow) {
       $predmetSkratka = $predmetRow[PredmetyFields::SKRATKA];
       $predmetId = $predmetRow[PredmetyFields::INDEX];
       $predmet = $predmetRow[PredmetyFields::NAZOV];
+      if ($schovajUznane && 
+          $hodnoteniaData[$predmetSkratka][HodnoteniaFields::UZNANE] == 'TRUE') {
+        $pocetSchovanychPredmetov++;
+        continue;
+      }
 
       $childTrace = $trace->addChild('Zoznam terminov k predmetu ' . $predmet);
       $dialog = $this->terminyHodnoteniaScreen->getZoznamTerminovDialog(
@@ -591,7 +599,7 @@ class StudiumController extends BaseController
         $prihlasTerminyRow[PrihlasTerminyFields::PREDMET_INDEX] = $predmetId;
         $prihlasTerminyRow[PrihlasTerminyFields::PREDMET_SKRATKA] = $predmetSkratka;
         $prihlasTerminyRow[PrihlasTerminyFields::ZNAMKA] = $hodnoteniaData[$predmetSkratka][HodnoteniaFields::ZNAMKA];
-
+        
         $prihlasTerminyRow[PrihlasTerminyFields::HASH_PRIHLASENIE] =
             StudiumUtils::hashNaPrihlasenie($predmetSkratka, $row);
 
@@ -619,6 +627,7 @@ class StudiumController extends BaseController
     $this->templateParams['terminy'] = $terminyData;
     $this->templateParams['termin'] = $request->getParameter('termin');
     $this->templateParams['predmet'] = $request->getParameter('predmet');
+    $this->templateParams['pocetSchovanychPredmetov'] = $pocetSchovanychPredmetov;
 
     return $this->renderResponse('studium/zoznamTerminov', $this->templateParams);
   }

@@ -34,7 +34,7 @@ class AIS2Utils
       ' (?P<tm_hour>[0-2][0-9]):(?P<tm_min>[0-5][0-9]*)@';
     $datum = StrUtil::matchAll($pattern, $str);
     if (!$datum) {
-      throw new Exception("Chyba pri parsovaní dátumu a času");
+      throw new Exception("Chyba pri parsovaní dátumu a času: " . $str);
     }
     
     return mktime($datum["tm_hour"],$datum["tm_min"],0,

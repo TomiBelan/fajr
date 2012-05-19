@@ -195,7 +195,12 @@ class AIS2TableParser
           }
           assert(false);
         case 'boolean':
-          foreach($element->getElementsByTagName('img') as $img) {
+          foreach ($element->getElementsByTagName('div') as $div) {
+            assert($div->hasAttribute('class'));
+            assert($div->getAttribute('class') === 'booleanCellChecked');
+            return 'TRUE';
+          }
+          foreach ($element->getElementsByTagName('img') as $img) {
             assert($img->hasAttribute('class'));
             assert($img->getAttribute('class') === 'checkedImg');
             return "TRUE";
