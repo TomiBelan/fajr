@@ -19,9 +19,11 @@ class CalendarModel {
   private $endTime;
   private $events;
   
-  public function __construct()
+  public function __construct($now = null)
   {
-    $now = time();
+    if ($now == null) {
+      $now = time();
+    }
     $this->startTime = $this->getStartOfMonth($now);
     $this->endTime = $this->getEndOfMonth($this->offsetDays($now, 31));
     $this->events = array();

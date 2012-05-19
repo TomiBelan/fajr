@@ -371,7 +371,18 @@ class StudiumController extends BaseController
         regression\MojeTerminyRegression::get(),
         $terminyHodnotenia->getTableDefinition());
     
-    $calendar = new \fajr\model\CalendarModel();
+    $calendarDate = time();
+    if ($request->hasParameter('year') && $request->hasParameter('month')) {
+      $month = intval($request->getParameter('month'));
+      $year = intval($request->getParameter('year'));
+      $calendarDate = mktime(0, 0, 0, $month, 1, $year);
+    }
+    
+    $calendar = new \fajr\model\CalendarModel($calendarDate);
+    
+    $info = getdate($calendarDate);
+    $prevMonth = mktime(0, 0, 0, $info['mon'] - 1, 1, $info['year']);
+    $nextMonth = mktime(0, 0, 0, $info['mon'] + 1, 1, $info['year']);
     
     foreach($terminyHodnotenia->getData() as $terminyRow) {
         $casSkusky = AIS2Utils::parseAISDateTime($terminyRow[TerminyFields::DATUM]." ".$terminyRow[TerminyFields::CAS]);
@@ -380,6 +391,8 @@ class StudiumController extends BaseController
     }
     
     $this->templateParams['calendar'] = $calendar;
+    $this->templateParams['prevMonth'] = $prevMonth;
+    $this->templateParams['nextMonth'] = $nextMonth;
     
     return $this->renderResponse('studium/kalendar',
         $this->templateParams);

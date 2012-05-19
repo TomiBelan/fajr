@@ -20,9 +20,14 @@
   <tr>
     <th></th>
     <th colspan="5" class="calendar-range">
-      {{- mesiace[calendar.startTime|date('n')-1] }} {{ calendar.startTime|date('Y') }}
+      <a href="{{ path('studium_kalendar', {'studium': studium, 'list': zapisnyList,
+          'year': prevMonth|date('Y'), 'month': prevMonth|date('n')})}}">« Predošlý</a>
+      {{ mesiace[calendar.startTime|date('n')-1] }} {{ calendar.startTime|date('Y') }}
         - 
-      {{ mesiace[calendar.endTime|date('n')-1] }} {{ calendar.endTime|date('Y') }}</th>
+      {{ mesiace[calendar.endTime|date('n')-1] }} {{ calendar.endTime|date('Y') }}
+        <a href="{{ path('studium_kalendar', {'studium': studium, 'list': zapisnyList,
+          'year': nextMonth|date('Y'), 'month': nextMonth|date('n')})}}">Nasledújúci »</a>
+    </th>
   </tr>
   <tr>
     <th>&nbsp;</th><th>Pondelok</th><th>Utorok</th><th>Streda</th><th>Štvrtok</th><th>Piatok</th>
