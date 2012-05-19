@@ -385,7 +385,7 @@ class StudiumController extends BaseController
             $hodnoteniaRow[HodnoteniaFields::ZNAMKA];
     }
     
-    if ($request->getParameter('format') === 'ical') {
+    if ($request->getParameter('format') === 'ics') {
       $calendar = CalendarProvider::getInstance();
       $calendar->setConfig('unique_id', $request->getHostName());
       $calendar->setProperty( 'METHOD', 'PUBLISH');
