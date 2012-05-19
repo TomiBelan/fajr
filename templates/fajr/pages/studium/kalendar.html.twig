@@ -1,0 +1,51 @@
+{##
+ # TODO: Template pre kalendar
+ #
+ # @copyright  Copyright (c) 2012 The Fajr authors (see AUTHORS).
+ #             Use of this source code is governed by a MIT license that can be
+ #             found in the LICENSE file in the project root directory.
+ # @author     TODO
+ #}
+{% extends "layout/studium.html.twig" %}
+{% block title %}Kalendár{% endblock %}
+{% block tabcontent %}
+{{ parent() }}
+
+{% set mesiace = ['Január', 'Február', 'Marec', 'Apríl', 'Máj', 'Jún', 'Júl',
+  'August', 'September', 'Október', 'November', 'December'] %}
+
+<h2>Kalendár</h2>
+
+<table class="calendar">
+  <tr>
+    <th></th>
+    <th colspan="5" class="calendar-range">
+      {{- mesiace[calendar.startTime|date('n')-1] }} {{ calendar.startTime|date('Y') }}
+        - 
+      {{ mesiace[calendar.endTime|date('n')-1] }} {{ calendar.endTime|date('Y') }}</th>
+  </tr>
+  <tr>
+    <th>&nbsp;</th><th>Pondelok</th><th>Utorok</th><th>Streda</th><th>Štvrtok</th><th>Piatok</th>
+  </tr>
+  {% for week in calendar.weeks %}
+    <tr>
+      <th>{{ week.timestamp|date('W') }}</th>
+      {% for day in week.days %}
+        <td class="calendar-mon-{{ (day.month + 2) % 2 == 1 }}">
+          <span class="calendar-day{% if day.events|length > 0 %} with-items{% endif %}">{{ day.timestamp|date('j') }}</span>
+          {% if day.firstDisplayedDayOfMonth %}
+            {{ mesiace[day.timestamp|date('n')-1] }}
+          {% endif %}
+          {% for termin in day.events %}
+            <div class="calendar-termin">
+              {{ termin.cas }} {{ termin.miestnosti }}<br />
+              {{ termin.predmetNazov}}
+            </div>
+          {% endfor %}
+        </td>
+      {% endfor %}
+    </tr>
+  {% endfor %}
+</table>
+
+{% endblock %}

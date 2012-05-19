@@ -97,3 +97,31 @@ tfoot tr {
   background-color: #B3C9EF;
   font-style: italic;
 }
+
+table.calendar th {
+  background-color: #b3c9ef;
+}
+
+table.calendar td {
+  border: 1px solid #999;
+  width: 20%;
+  background-color: white;
+  height: 4em;
+  vertical-align: top;
+}
+
+table.calendar td.calendar-mon-1 {
+  background-color: #F9F9F9;
+}
+
+table.calendar .calendar-day.with-items {
+  font-weight: bold;
+}
+
+table.calendar .calendar-termin {
+  margin: 0.5ex 0;
+}
+
+table.calendar .calendar-range {
+  text-align: center;
+}

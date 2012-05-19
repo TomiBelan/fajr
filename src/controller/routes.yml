@@ -27,6 +27,12 @@ studium_moje_skusky:
     defaults:
       _action: 'MojeTerminyHodnotenia'
       _controller: '\fajr\controller\studium\StudiumController'
+      
+studium_kalendar:
+    pattern: /studium/kalendar
+    defaults:
+      _action: 'Kalendar'
+      _controller: '\fajr\controller\studium\StudiumController'
 
 studium_odhlas_zo_skusky:
     pattern: /studium/odhlas-zo-skusky

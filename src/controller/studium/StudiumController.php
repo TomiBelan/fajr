@@ -349,6 +349,41 @@ class StudiumController extends BaseController
     return new RedirectResponse($this->generateUrl('studium_moje_skusky',
         array('studium' => $this->studium, 'list' => $this->zapisnyList), true));
   }
+  
+  /**
+   * Akcia pre zobrazenie kalendara
+   *
+   * @param Trace $trace trace object
+   * @param Request $request request from browser
+   */
+  public function runKalendar(Trace $trace, Request $request) {
+
+    $this->templateParams['currentTab'] = 'Kalendar';
+    
+    if ($this->terminyHodnoteniaScreen == null) {
+      return $this->renderResponse('studium/terminyHodnoteniaNedostupne',
+          $this->templateParams);
+    }
+
+    $terminyHodnotenia = $this->terminyHodnoteniaScreen->getTerminyHodnotenia(
+        $trace->addChild("get terminy hodnotenia"));
+    $this->warnings->warnWrongTableStructure($trace, 'moje terminy hodnotenia',
+        regression\MojeTerminyRegression::get(),
+        $terminyHodnotenia->getTableDefinition());
+    
+    $calendar = new \fajr\model\CalendarModel();
+    
+    foreach($terminyHodnotenia->getData() as $terminyRow) {
+        $casSkusky = AIS2Utils::parseAISDateTime($terminyRow[TerminyFields::DATUM]." ".$terminyRow[TerminyFields::CAS]);
+        
+        $calendar->addEvent($casSkusky, $terminyRow);
+    }
+    
+    $this->templateParams['calendar'] = $calendar;
+    
+    return $this->renderResponse('studium/kalendar',
+        $this->templateParams);
+  }
 
   /**
    * Akcia pre zobrazenie mojich terminov hodnotenia
