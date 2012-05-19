@@ -24,16 +24,17 @@ use libfajr\window\AIS2ApplicationEnum;
 use libfajr\window\studium as VSES017;
 use libfajr\regression;
 use fajr\Request;
-use fajr\Response;
 use fajr\Sorter;
 use fajr\util\FajrUtils;
 use fajr\LoginManager;
 use fajr\Router;
 use fajr\BackendProvider;
+use fajr\CalendarProvider;
 use fajr\exceptions\AuthenticationRequiredException;
 use libfajr\exceptions\ParseException;
 use fajr\rendering\DisplayManager;
 use fajr\Warnings;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use fajr\SessionStorageProvider;
 
@@ -382,6 +383,36 @@ class StudiumController extends BaseController
     foreach($hodnotenia->getData() as $hodnoteniaRow) {
       $hodnoteniePredmetu[$hodnoteniaRow[HodnoteniaFields::PREDMET_SKRATKA]] =
             $hodnoteniaRow[HodnoteniaFields::ZNAMKA];
+    }
+    
+    if ($request->getParameter('format') === 'ical') {
+      $calendar = CalendarProvider::getInstance();
+      $calendar->setConfig('unique_id', $request->getHostName());
+      $calendar->setProperty( 'METHOD', 'PUBLISH');
+      $calendar->setProperty( "x-wr-calname", 'Moje termíny hodnotenia' );
+      $calendar->setProperty( "X-WR-CALDESC", "Kalendár skúško vyexportovaný z aplikácie FAJR" );
+      $calendar->setProperty( "X-WR-TIMEZONE", 'Europe/Bratislava' );
+      $datetimeFields = array('TZID=Europe/Bratislava');
+      foreach($terminyHodnotenia->getData() as $terminyRow) {
+        $casSkusky = AIS2Utils::parseAISDateTime($terminyRow[TerminyFields::DATUM]." ".$terminyRow[TerminyFields::CAS]);
+        $vevent = new \vevent();
+        $vevent->setProperty( 'dtstart', FajrUtils::datetime2icsdatetime($casSkusky), $datetimeFields);
+        // koniec dame povedzme 4 hodiny po konci, kedze nevieme kolko skuska trva
+        $vevent->setProperty( 'dtend', FajrUtils::datetime2icsdatetime($casSkusky + 4 * 3600), $datetimeFields);
+        $vevent->setProperty( 'location', $terminyRow['miestnosti'] );
+        $vevent->setProperty( 'summary',  $terminyRow['predmetNazov'] );
+        //$vevent->setProperty( 'uid', TODO uid);
+        $description = 'Prihlasovanie: ' . $terminyRow['prihlasovanie'] . "\r\n";
+        $description .= 'Odhlasovanie: ' . $terminyRow['odhlasovanie'] . "\r\n";
+        $description .= 'Poznámka: ' . $terminyRow['poznamka'];
+        $vevent->setProperty( 'description', $description );
+        $calendar->setComponent ( $vevent );
+      }
+      $response = new Response($calendar->createCalendar());
+      $response->headers->set('Content-Type', 'text/calendar; charset=utf-8');
+      $response->headers->set('Content-Disposition', 'attachment; filename="MojeSkusky.ics"');
+      $response->setMaxAge(10);
+      return $response;
     }
 
     $terminyHodnoteniaActive = array();
