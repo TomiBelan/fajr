@@ -390,7 +390,7 @@ class StudiumController extends BaseController
       $calendar->setConfig('unique_id', $request->getHostName());
       $calendar->setProperty( 'METHOD', 'PUBLISH');
       $calendar->setProperty( "x-wr-calname", 'Moje termíny hodnotenia' );
-      $calendar->setProperty( "X-WR-CALDESC", "Kalendár skúško vyexportovaný z aplikácie FAJR" );
+      $calendar->setProperty( "X-WR-CALDESC", "Kalendár skúšok vyexportovaný z aplikácie FAJR" );
       $calendar->setProperty( "X-WR-TIMEZONE", 'Europe/Bratislava' );
       $datetimeFields = array('TZID=Europe/Bratislava');
       foreach($terminyHodnotenia->getData() as $terminyRow) {
