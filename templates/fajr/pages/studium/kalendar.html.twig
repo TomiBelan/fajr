@@ -37,14 +37,20 @@
       <th>{{ week.timestamp|date('W') }}</th>
       {% for day in week.days %}
         <td class="calendar-mon-{{ (day.month + 2) % 2 == 1 }}">
-          <span class="calendar-day{% if day.events|length > 0 %} with-items{% endif %}">{{ day.timestamp|date('j') }}</span>
-          {% if day.firstDisplayedDayOfMonth %}
-            {{ mesiace[day.timestamp|date('n')-1] }}
-          {% endif %}
+          <div class="calendar-daymonth {% if day.events|length > 0 %} with-items{% endif %}">{{ day.timestamp|date('j') }}
+            {% if day.firstDisplayedDayOfMonth %}
+              {{ mesiace[day.timestamp|date('n')-1] }}
+            {% endif %}
+            &nbsp;
+          </div>
           {% for termin in day.events %}
             <div class="calendar-termin">
-              {{ termin.cas }} {{ termin.miestnosti }}<br />
-              {{ termin.predmetNazov}}
+              <div class="calendar-predmet">{{ termin.predmetNazov}}</div>
+              {{ termin.cas }} {{ termin.miestnosti }}
+              
+              {% if termin.poznamka|length > 0 %}
+                <div class="calendar-poznamka">{{ termin.poznamka }}</div>
+              {% endif %}
             </div>
           {% endfor %}
         </td>

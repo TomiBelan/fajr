@@ -114,14 +114,29 @@ table.calendar td.calendar-mon-1 {
   background-color: #F9F9F9;
 }
 
-table.calendar .calendar-day.with-items {
+table.calendar .calendar-daymonth {
+  float: left;
+}
+
+table.calendar .calendar-daymonth.with-items {
   font-weight: bold;
 }
 
 table.calendar .calendar-termin {
-  margin: 0.5ex 0;
+  margin-bottom: 0.5ex;
 }
 
 table.calendar .calendar-range {
   text-align: center;
+}
+
+table.calendar .calendar-predmet {
+  font-weight: bold;
+  margin-bottom: 0.5ex;
+}
+
+table.calendar .calendar-poznamka {
+  font-style: italic;
+  margin-top: 0.5ex;
+  color: #333;
 }
