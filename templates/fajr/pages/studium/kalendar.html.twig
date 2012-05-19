@@ -59,4 +59,7 @@
   {% endfor %}
 </table>
 
+<a href="{{ path('studium_moje_skusky', {'studium': studium, 'list': zapisnyList,
+  'format': 'ics'}) }}">iCalendar</a>
+
 {% endblock %}
