@@ -199,3 +199,7 @@ strong.important {
   font-weight: bold;
   line-height: 200%;
 }
+
+#calendar-options {
+  margin-bottom: 1em;
+}

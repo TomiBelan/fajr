@@ -37,6 +37,7 @@ use fajr\Warnings;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use fajr\SessionStorageProvider;
+use fajr\model\CalendarModel;
 
 fields::autoload();
 
@@ -378,7 +379,13 @@ class StudiumController extends BaseController
       $calendarDate = mktime(0, 0, 0, $month, 1, $year);
     }
     
-    $calendar = new \fajr\model\CalendarModel($calendarDate);
+    $calendarMode = CalendarModel::MODE_WORKWEEK;
+    $mode = $request->getParameter('mode');
+    if ($mode == 'week') {
+      $calendarMode = CalendarModel::MODE_WEEK;
+    }
+    
+    $calendar = new CalendarModel($calendarDate, $calendarMode);
     
     $info = getdate($calendarDate);
     $prevMonth = mktime(0, 0, 0, $info['mon'] - 1, 1, $info['year']);

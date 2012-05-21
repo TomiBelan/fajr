@@ -14,21 +14,31 @@ namespace fajr\model;
 
 class CalendarModel {
   
+  const MODE_WORKWEEK = 'workweek';
+  const MODE_WEEK = 'week';
+  
   private $startOfWeekDay = 1; // monday
   private $startTime;
   private $endTime;
   private $events;
+  private $mode;
   
-  public function __construct($now = null)
+  public function __construct($now = null, $mode = self::MODE_WEEK)
   {
     if ($now == null) {
       $now = time();
     }
     $this->startTime = $this->getStartOfMonth($now);
     $this->endTime = $this->getEndOfMonth($this->offsetDays($now, 31));
+    $this->mode = $mode;
     $this->events = array();
   }
   
+  public function getMode()
+  {
+    return $this->mode;
+  }
+
   public function getStartTime()
   {
     return $this->startTime;
@@ -78,6 +88,14 @@ class CalendarModel {
     return $timestamp + $days * 86400;
   }
   
+  public function getWeekDayCount()
+  {
+    if ($this->mode == self::MODE_WORKWEEK) {
+      return 5;
+    }
+    return 7;
+  }
+  
   /**
    * Calculate how many months there is a difference between two dates.
    * @return 0 if same months, 1 if a is the month before b, etc.
@@ -109,12 +127,16 @@ class CalendarModel {
   public function getWeeks()
   {
     $start = $this->getStartOfWeek($this->startTime);
+    if ($this->offsetDays($start, $this->getWeekDayCount()) <= $this->startTime) {
+      // zaciatok intervalu, ktory spada do prveho tyzdna nie je zobrazeny
+      $start = $this->offsetDays($start, 7);
+    }
     $end = $this->getStartOfWeek($this->endTime);
     $weeks = array();
     $prevMonth = -2;
     for ($week = $start; $week <= $end; $week = $this->offsetDays($week, 7)) {
       $days = array();
-      for ($dayIndex = 0; $dayIndex < 5; $dayIndex++) {
+      for ($dayIndex = 0; $dayIndex < $this->getWeekDayCount(); $dayIndex++) {
         $day = $this->offsetDays($week, $dayIndex);
         $monthIndex = $this->monthDiff($this->startTime, $day);
         $firstDisplayedDayOfMonth = false;

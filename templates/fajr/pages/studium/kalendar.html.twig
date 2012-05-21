@@ -16,21 +16,40 @@
 
 <h2>Kalendár</h2>
 
-<table class="calendar">
+
+<form method="GET" action="{{ path('studium_kalendar') }}">
+  <input type="hidden" name="year" value="{{ calendar.startTime|date('Y') }}" />
+  <input type="hidden" name="month" value="{{ calendar.startTime|date('n') }}" />
+  <div id="calendar-options">  
+    Zobrazenie:<br />
+    <input type="radio" name="mode" value="workweek" {% if calendar.mode == 'workweek' %}checked="checked"{% endif %}/>
+    <label for="calendar-mode-workweek">Pracovný týždeň</label><br />
+    <input type="radio" name="mode" id="calendar-mode-week" value="week" {% if calendar.mode == 'week' %}checked="checked"{% endif %}/>
+    <label for="calendar-mode-week">Týždeň</label><br />
+    <button type="submit">Zmeniť</button>
+  </div>
+</form>
+
+<table class="calendar calendar-mode-{{ calendar.mode }}">
   <tr>
     <th></th>
-    <th colspan="5" class="calendar-range">
+    <th colspan="{{ calendar.weekDayCount }}" class="calendar-range">
       <a href="{{ path('studium_kalendar', {'studium': studium, 'list': zapisnyList,
-          'year': prevMonth|date('Y'), 'month': prevMonth|date('n')})}}">« Predošlý</a>
+          'year': prevMonth|date('Y'), 'month': prevMonth|date('n'),
+          'mode': calendar.mode})}}">« Predošlý</a>
       {{ mesiace[calendar.startTime|date('n')-1] }} {{ calendar.startTime|date('Y') }}
         - 
       {{ mesiace[calendar.endTime|date('n')-1] }} {{ calendar.endTime|date('Y') }}
         <a href="{{ path('studium_kalendar', {'studium': studium, 'list': zapisnyList,
-          'year': nextMonth|date('Y'), 'month': nextMonth|date('n')})}}">Nasledújúci »</a>
+          'year': nextMonth|date('Y'), 'month': nextMonth|date('n'),
+          'mode': calendar.mode})}}">Nasledújúci »</a>
     </th>
   </tr>
   <tr>
     <th>&nbsp;</th><th>Pondelok</th><th>Utorok</th><th>Streda</th><th>Štvrtok</th><th>Piatok</th>
+    {% if calendar.mode == 'week' %}
+      <th>Sobota</th><th>Nedeľa</th>
+    {% endif %}
   </tr>
   {% for week in calendar.weeks %}
     <tr>
