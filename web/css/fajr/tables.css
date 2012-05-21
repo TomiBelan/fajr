@@ -140,3 +140,7 @@ table.calendar .calendar-poznamka {
   margin-top: 0.5ex;
   color: #333;
 }
+
+table.calendar .calendar-today {
+  background-color: #FFFFD0;
+}

@@ -134,6 +134,7 @@ class CalendarModel {
     $end = $this->getStartOfWeek($this->endTime);
     $weeks = array();
     $prevMonth = -2;
+    $today = $this->getStartOfDay(time());
     for ($week = $start; $week <= $end; $week = $this->offsetDays($week, 7)) {
       $days = array();
       for ($dayIndex = 0; $dayIndex < $this->getWeekDayCount(); $dayIndex++) {
@@ -146,7 +147,9 @@ class CalendarModel {
         }
         $dayInfo = array('timestamp' => $day,
           'month' => $monthIndex,
-          'firstDisplayedDayOfMonth' => $firstDisplayedDayOfMonth);
+          'firstDisplayedDayOfMonth' => $firstDisplayedDayOfMonth,
+          'today' => ($day == $today),
+        );
         if (isset($this->events[$day])) {
           $dayInfo['events'] = $this->events[$day];
         }
