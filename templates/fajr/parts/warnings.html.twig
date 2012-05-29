@@ -58,7 +58,7 @@
  # Generic warnings added to request
  #}
 {% if warnings %}
-  {% for warning in warnings %}
+  {% for warning in warnings.all %}
     {% if warning.type == "unexpectedTableStructure" %}
       {% set warningMessage %}
         Fajr nemusí fungovať správne: Štruktúra tabuľky {{ warning.tableName }}
