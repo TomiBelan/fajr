@@ -29,7 +29,7 @@ class CalendarModel {
       $now = time();
     }
     $this->startTime = $this->getStartOfMonth($now);
-    $this->endTime = $this->getEndOfMonth($this->offsetDays($now, 31));
+    $this->endTime = $this->getEndOfMonth($this->offsetMonths($this->startTime, 1));
     $this->mode = $mode;
     $this->events = array();
   }
@@ -86,6 +86,12 @@ class CalendarModel {
   public function offsetDays($timestamp, $days)
   {
     return $timestamp + $days * 86400;
+  }
+  
+  private function offsetMonths($timestamp, $months)
+  {
+    $info = getdate($timestamp);
+    return mktime(0, 0, 0, $info['mon'] + $months, $info['mday'], $info['year']);
   }
   
   public function getWeekDayCount()
