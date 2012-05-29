@@ -55,7 +55,8 @@
     <tr>
       <th>{{ week.timestamp|date('W') }}</th>
       {% for day in week.days %}
-        <td class="calendar-mon-{{ (day.month + 2) % 2 == 1 }}{% if day.today %} calendar-today{% endif %}">
+        <td class="calendar-mon-{{ (day.month + 2) % 2 == 1 }}{% if day.today %} calendar-today{% endif %}
+            {% if day.past %} calendar-past{% endif %}">
           <div class="calendar-daymonth {% if day.events|length > 0 %} with-items{% endif %}">{{ day.timestamp|date('j') }}
             {% if day.firstDisplayedDayOfMonth %}
               {{ mesiace[day.timestamp|date('n')-1] }}

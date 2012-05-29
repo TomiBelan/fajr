@@ -149,6 +149,8 @@ class CalendarModel {
           'month' => $monthIndex,
           'firstDisplayedDayOfMonth' => $firstDisplayedDayOfMonth,
           'today' => ($day == $today),
+          'past' => ($day < $today),
+          'future' => ($day > $today),
         );
         if (isset($this->events[$day])) {
           $dayInfo['events'] = $this->events[$day];

@@ -144,3 +144,19 @@ table.calendar .calendar-poznamka {
 table.calendar .calendar-today {
   background-color: #FFFFD0;
 }
+
+table.calendar .calendar-past {
+  color: #666;
+}
+
+table.calendar .calendar-past .calendar-poznamka {
+  color: #666;
+}
+
+table.calendar .calendar-past:hover {
+  color: black;
+}
+
+table.calendar .calendar-past:hover .calendar-poznamka {
+  color: #333;
+}
