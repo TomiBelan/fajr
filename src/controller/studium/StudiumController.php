@@ -392,6 +392,9 @@ class StudiumController extends BaseController
     $nextMonth = mktime(0, 0, 0, $info['mon'] + 1, 1, $info['year']);
     
     foreach($terminyHodnotenia->getData() as $terminyRow) {
+        if ($terminyRow[TerminyFields::JE_PRIHLASENY] !== 'TRUE') {
+          continue;
+        }
         $casSkusky = AIS2Utils::parseAISDateTime($terminyRow[TerminyFields::DATUM]." ".$terminyRow[TerminyFields::CAS]);
         
         $calendar->addEvent($casSkusky, $terminyRow);
