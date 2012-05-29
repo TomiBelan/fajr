@@ -394,6 +394,9 @@ class StudiumController extends BaseController
       $calendar->setProperty( "X-WR-TIMEZONE", 'Europe/Bratislava' );
       $datetimeFields = array('TZID=Europe/Bratislava');
       foreach($terminyHodnotenia->getData() as $terminyRow) {
+        if ($terminyRow[TerminyFields::JE_PRIHLASENY] !== 'TRUE') {
+          continue;
+        }
         $casSkusky = AIS2Utils::parseAISDateTime($terminyRow[TerminyFields::DATUM]." ".$terminyRow[TerminyFields::CAS]);
         $vevent = new \vevent();
         $vevent->setProperty( 'dtstart', FajrUtils::datetime2icsdatetime($casSkusky), $datetimeFields);
