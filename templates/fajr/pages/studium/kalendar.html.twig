@@ -16,19 +16,13 @@
 
 <h2>Kalendár</h2>
 
-
-<form method="GET" action="{{ path('studium_kalendar') }}">
-  <input type="hidden" name="year" value="{{ calendar.startTime|date('Y') }}" />
-  <input type="hidden" name="month" value="{{ calendar.startTime|date('n') }}" />
-  <div id="calendar-options">  
-    Zobrazenie:<br />
-    <input type="radio" name="mode" value="workweek" {% if calendar.mode == 'workweek' %}checked="checked"{% endif %}/>
-    <label for="calendar-mode-workweek">Pracovný týždeň</label><br />
-    <input type="radio" name="mode" id="calendar-mode-week" value="week" {% if calendar.mode == 'week' %}checked="checked"{% endif %}/>
-    <label for="calendar-mode-week">Týždeň</label><br />
-    <button type="submit">Zmeniť</button>
-  </div>
-</form>
+<div id="calendar-options">
+  <a href="{{ path('studium_kalendar', {
+    'month': calendar.startTime|date('n'),
+    'year': calendar.startTime|date('Y'),
+    'mode': calendar.mode == 'week'?'workweek':'week'
+  }) }}">Zobraziť kalendár {{ calendar.mode == 'week'?'bez víkendov':'s víkendami' }}</a>
+</div>
 
 <table class="calendar calendar-mode-{{ calendar.mode }}">
   <tr>
