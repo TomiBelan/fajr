@@ -14,6 +14,7 @@ namespace fajr;
 
 use libfajr\trace\Trace;
 use libfajr\base\Preconditions;
+use fajr\util\FajrUtils;
 
 class Warnings
 {
@@ -57,7 +58,7 @@ class Warnings
       
       $child = $trace->addChild("Differences in data table " . $tableName);
       list($del, $both, $ins) =
-        self::compareArrays($expectedDefinition, $definition);
+        FajrUtils::compareArrays($expectedDefinition, $definition);
       $child->tlogVariable('deleted', $del);
       $child->tlogVariable('unchanged', $both);
       $child->tlogVariable('inserted', $ins);
