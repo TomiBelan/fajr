@@ -97,3 +97,66 @@ tfoot tr {
   background-color: #B3C9EF;
   font-style: italic;
 }
+
+table.calendar th {
+  background-color: #b3c9ef;
+}
+
+table.calendar td {
+  border: 1px solid #999;
+  width: 20%;
+  background-color: white;
+  height: 4em;
+  vertical-align: top;
+}
+
+table.calendar td.calendar-mon-1 {
+  background-color: #F9F9F9;
+}
+
+table.calendar .calendar-daymonth {
+  float: left;
+}
+
+table.calendar .calendar-daymonth.with-items {
+  font-weight: bold;
+}
+
+table.calendar .calendar-termin {
+  margin-bottom: 0.5ex;
+}
+
+table.calendar .calendar-range {
+  text-align: center;
+}
+
+table.calendar .calendar-predmet {
+  font-weight: bold;
+  margin-bottom: 0.5ex;
+}
+
+table.calendar .calendar-poznamka {
+  font-style: italic;
+  margin-top: 0.5ex;
+  color: #333;
+}
+
+table.calendar .calendar-today {
+  background-color: #FFFFD0;
+}
+
+table.calendar .calendar-past {
+  color: #666;
+}
+
+table.calendar .calendar-past .calendar-poznamka {
+  color: #666;
+}
+
+table.calendar .calendar-past:hover {
+  color: black;
+}
+
+table.calendar .calendar-past:hover .calendar-poznamka {
+  color: #333;
+}

@@ -1,0 +1,86 @@
+{##
+ # TODO: Template pre kalendar
+ #
+ # @copyright  Copyright (c) 2012 The Fajr authors (see AUTHORS).
+ #             Use of this source code is governed by a MIT license that can be
+ #             found in the LICENSE file in the project root directory.
+ # @author     TODO
+ #}
+{% extends "layout/studium.html.twig" %}
+{% block title %}Kalendár{% endblock %}
+{% block tabcontent %}
+{{ parent() }}
+
+{% set mesiace = ['Január', 'Február', 'Marec', 'Apríl', 'Máj', 'Jún', 'Júl',
+  'August', 'September', 'Október', 'November', 'December'] %}
+
+<h2>Kalendár</h2>
+
+<p>Kalendár zobrazuje skúšky, na ktoré si zapísaný/á. Tiež sa dá (resp. jeho
+  <a href="{{ path('studium_moje_skusky', {'studium': studium, 'list': zapisnyList,
+  'format': 'ics'}) }}">iCalendar</a> verzia) nahrať
+  do rôznych kalendárových aplikácií ako Outlook, Lightning, Google Calendar a podobne.
+</p>
+
+<div id="calendar-options">
+  <a href="{{ path('studium_kalendar', {
+    'month': calendar.startTime|date('n'),
+    'year': calendar.startTime|date('Y'),
+    'mode': calendar.mode == 'week'?'workweek':'week'
+  }) }}">Zobraziť kalendár {{ calendar.mode == 'week'?'bez víkendov':'s víkendami' }}</a>
+</div>
+
+<table class="calendar calendar-mode-{{ calendar.mode }}">
+  <tr>
+    <th></th>
+    <th colspan="{{ calendar.weekDayCount }}" class="calendar-range">
+      <a href="{{ path('studium_kalendar', {'studium': studium, 'list': zapisnyList,
+          'year': prevMonth|date('Y'), 'month': prevMonth|date('n'),
+          'mode': calendar.mode})}}">« Predošlý</a>
+      {{ mesiace[calendar.startTime|date('n')-1] }} {{ calendar.startTime|date('Y') }}
+        - 
+      {{ mesiace[calendar.endTime|date('n')-1] }} {{ calendar.endTime|date('Y') }}
+        <a href="{{ path('studium_kalendar', {'studium': studium, 'list': zapisnyList,
+          'year': nextMonth|date('Y'), 'month': nextMonth|date('n'),
+          'mode': calendar.mode})}}">Nasledújúci »</a>
+    </th>
+  </tr>
+  <tr>
+    <th>&nbsp;</th><th>Pondelok</th><th>Utorok</th><th>Streda</th><th>Štvrtok</th><th>Piatok</th>
+    {% if calendar.mode == 'week' %}
+      <th>Sobota</th><th>Nedeľa</th>
+    {% endif %}
+  </tr>
+  {% for week in calendar.weeks %}
+    <tr>
+      <th>{{ week.timestamp|date('W') }}</th>
+      {% for day in week.days %}
+        <td class="calendar-mon-{{ (day.month + 2) % 2 == 1 }}{% if day.today %} calendar-today{% endif %}
+            {% if day.past %} calendar-past{% endif %}">
+          <div class="calendar-daymonth {% if day.events|length > 0 %} with-items{% endif %}">{{ day.timestamp|date('j') }}
+            {% if day.firstDisplayedDayOfMonth %}
+              {{ mesiace[day.timestamp|date('n')-1] }}
+            {% endif %}
+            {% if day.today %}(dnes){% endif %}
+            &nbsp;
+          </div>
+          {% for termin in day.events %}
+            <div class="calendar-termin">
+              <div class="calendar-predmet">{{ termin.predmetNazov}}</div>
+              {{ termin.cas }} {{ termin.miestnosti }}
+              
+              {% if termin.poznamka|length > 0 %}
+                <div class="calendar-poznamka">{{ termin.poznamka }}</div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </td>
+      {% endfor %}
+    </tr>
+  {% endfor %}
+</table>
+
+<a href="{{ path('studium_moje_skusky', {'studium': studium, 'list': zapisnyList,
+  'format': 'ics'}) }}">iCalendar</a>
+
+{% endblock %}

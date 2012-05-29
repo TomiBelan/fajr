@@ -3,7 +3,7 @@
 body {
   font-size: 80%;
   background: #f9f9f9;
-  min-width: 70em;
+  min-width: 80em;
 }
 
 .increase-line-height {
@@ -198,4 +198,8 @@ strong.important {
   font-size: 200%;
   font-weight: bold;
   line-height: 200%;
+}
+
+#calendar-options {
+  margin-bottom: 1em;
 }

@@ -37,6 +37,7 @@ use fajr\Warnings;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use fajr\SessionStorageProvider;
+use fajr\model\CalendarModel;
 
 fields::autoload();
 
@@ -348,6 +349,63 @@ class StudiumController extends BaseController
 
     return new RedirectResponse($this->generateUrl('studium_moje_skusky',
         array('studium' => $this->studium, 'list' => $this->zapisnyList), true));
+  }
+  
+  /**
+   * Akcia pre zobrazenie kalendara
+   *
+   * @param Trace $trace trace object
+   * @param Request $request request from browser
+   */
+  public function runKalendar(Trace $trace, Request $request) {
+
+    $this->templateParams['currentTab'] = 'Kalendar';
+    
+    if ($this->terminyHodnoteniaScreen == null) {
+      return $this->renderResponse('studium/terminyHodnoteniaNedostupne',
+          $this->templateParams);
+    }
+
+    $terminyHodnotenia = $this->terminyHodnoteniaScreen->getTerminyHodnotenia(
+        $trace->addChild("get terminy hodnotenia"));
+    $this->warnings->warnWrongTableStructure($trace, 'moje terminy hodnotenia',
+        regression\MojeTerminyRegression::get(),
+        $terminyHodnotenia->getTableDefinition());
+    
+    $calendarDate = time();
+    if ($request->hasParameter('year') && $request->hasParameter('month')) {
+      $month = intval($request->getParameter('month'));
+      $year = intval($request->getParameter('year'));
+      $calendarDate = mktime(0, 0, 0, $month, 1, $year);
+    }
+    
+    $calendarMode = CalendarModel::MODE_WORKWEEK;
+    $mode = $request->getParameter('mode');
+    if ($mode == 'week') {
+      $calendarMode = CalendarModel::MODE_WEEK;
+    }
+    
+    $calendar = new CalendarModel($calendarDate, $calendarMode);
+    
+    $info = getdate($calendarDate);
+    $prevMonth = mktime(0, 0, 0, $info['mon'] - 1, 1, $info['year']);
+    $nextMonth = mktime(0, 0, 0, $info['mon'] + 1, 1, $info['year']);
+    
+    foreach($terminyHodnotenia->getData() as $terminyRow) {
+        if ($terminyRow[TerminyFields::JE_PRIHLASENY] !== 'TRUE') {
+          continue;
+        }
+        $casSkusky = AIS2Utils::parseAISDateTime($terminyRow[TerminyFields::DATUM]." ".$terminyRow[TerminyFields::CAS]);
+        
+        $calendar->addEvent($casSkusky, $terminyRow);
+    }
+    
+    $this->templateParams['calendar'] = $calendar;
+    $this->templateParams['prevMonth'] = $prevMonth;
+    $this->templateParams['nextMonth'] = $nextMonth;
+    
+    return $this->renderResponse('studium/kalendar',
+        $this->templateParams);
   }
 
   /**
