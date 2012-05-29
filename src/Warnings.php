@@ -15,6 +15,8 @@ namespace fajr;
 use libfajr\trace\Trace;
 use libfajr\base\Preconditions;
 use fajr\util\FajrUtils;
+use fajr\config\FajrConfigLoader;
+use fajr\config\FajrConfigOptions;
 
 class Warnings
 {
@@ -26,6 +28,12 @@ class Warnings
   {
     if (!isset(self::$instance)) {
       self::$instance = new Warnings();
+      $config = FajrConfigLoader::getConfiguration();
+      $configWarnings = $config->get(FajrConfigOptions::WARNINGS);
+      foreach ($configWarnings as $warning) {
+        self::$instance->addWarning(array('type' => 'raw',
+          'message' => $warning));
+      }
     }
     return self::$instance;
   }

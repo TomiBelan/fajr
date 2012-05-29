@@ -56,6 +56,7 @@ class FajrConfigOptions {
   const BACKEND_FAKE = 'fake';
   /** Unique instance ID on a given server, used e.g. for naming session cookies */
   const INSTANCE_NAME = 'Instance.Name';
+  const WARNINGS = 'Warnings';
 
   /**
    * Return description of configuration parameters
@@ -186,6 +187,9 @@ class FajrConfigOptions {
       self::INSTANCE_NAME =>
           array('defaultValue' => 'fajr',
                 'validator' => $stringValidator),
+      
+      self::WARNINGS =>
+          array('defaultValue' => array()),
     );
 
     return $parameterDescription;

@@ -207,4 +207,11 @@ return array(
    * 
    */
   // 'Backend' => 'libfajr',
+  
+  /*
+   * Warningy, ktore sa maju zobrazit. (Zoznam HTML stringov)
+   */
+  'Warnings' => array(
+    
+  ),
 );

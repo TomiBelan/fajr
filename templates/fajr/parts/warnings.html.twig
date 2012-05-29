@@ -72,6 +72,8 @@
              Nová adresa je <a href="{{ path('homepage', {}, true) }}">{{ path('homepage', {}, true) }}</a>
           </p>
         </div>
+    {% elseif warning.type == 'raw' %}
+        {{ _self.addWarning(warning.message) }}
     {% else %}
       {% set warningMessage %} Neznáma chyba {% endset %}
       {{ _self.addWarning(warningMessage) }}
