@@ -55,7 +55,7 @@ class CalendarModel {
     if (!isset($this->events[$day])) {
       $this->events[$day] = array();
     }
-    $this->events[$day][] = $data;
+    $this->events[$day][$timestamp] = $data;
   }
   
   private function getStartOfDay($timestamp)
@@ -159,6 +159,8 @@ class CalendarModel {
           'future' => ($day > $today),
         );
         if (isset($this->events[$day])) {
+          // Sort the events according to timestamp
+          ksort($this->events[$day]);
           $dayInfo['events'] = $this->events[$day];
         }
         else {
