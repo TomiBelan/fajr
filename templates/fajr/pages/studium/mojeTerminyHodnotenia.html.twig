@@ -13,6 +13,10 @@
 {% import "macros/table.html.twig" as table %}
 {% import "macros/studium.html.twig" as studiumMacros %}
 {{ parent() }}
+
+<p>Zapísané skúšky na stiahnutie: <a href="{{ path('studium_moje_skusky', {'studium': studium, 'list': zapisnyList,
+  'format': 'ics'}) }}">iCalendar</a></p>
+
 {% set head %}
   {{ table.column("predmet", "sortable-text") }}
   {{ table.column("dátum", "sortable-date-dmy") }}
@@ -87,8 +91,6 @@
 
 {% set tableHTML %}
 {{ decorators.table(none, head, body, none, terminyActive|length == 0) }}
-  <a href="{{ path('studium_moje_skusky', {'studium': studium, 'list': zapisnyList,
-  'format': 'ics'}) }}">iCalendar</a>
 {% endset %}
 
 {{ decorators.collapsible(title, tableHTML, false) }}
