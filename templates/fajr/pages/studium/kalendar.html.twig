@@ -16,6 +16,12 @@
 
 <h2>Kalendár</h2>
 
+<p>Kalendár zobrazuje skúšky, na ktoré si zapísaný/á. Tiež sa dá (resp. jeho
+  <a href="{{ path('studium_moje_skusky', {'studium': studium, 'list': zapisnyList,
+  'format': 'ics'}) }}">iCalendar</a> verzia) nahrať
+  do rôznych kalendárových aplikácií ako Outlook, Lightning, Google Calendar a podobne.
+</p>
+
 <div id="calendar-options">
   <a href="{{ path('studium_kalendar', {
     'month': calendar.startTime|date('n'),
