@@ -22,6 +22,8 @@ use libfajr\trace\Trace;
 use fajr\Request;
 use fajr\Response;
 use ReflectionMethod;
+use fajr\rendering\DisplayManager;
+use fajr\Router;
 
 /**
  * Base class for controllers
@@ -33,6 +35,46 @@ use ReflectionMethod;
 abstract class BaseController extends DisableEvilCallsObject implements Controller
 {
  
+  /** @var DisplayManager */
+  protected $displayManager;
+  
+  /** @var Router */
+  protected $router;
+  
+  function __construct(DisplayManager $displayManager, Router $router)
+  {
+    $this->displayManager = $displayManager;
+    $this->router = $router;
+  }
+
+  /**
+   * Generate a Response
+   * 
+   * @param string $template name of the template to render
+   * @param array $params parameters to use when generating the template
+   * @param string|null response format to render, if null use html
+   * @param int statusCode
+   * @return Symfony\Component\HttpFoundation\Response rendered response
+   */
+  public function renderResponse($template, array $params=array(), $format = null, $statusCode = 200)
+  {
+    return $this->displayManager->renderResponse($template, $params, $format, $statusCode);
+  }
+  
+  
+  /**
+   * Generate a URL for a page with the given route
+   * @param string $name name of the route
+   * @param array $parameters parameters to use
+   * @param boolean $absolute if true, absolute URL is generated
+   * @return string the generated URL 
+   * @throws RouteNotFoundException if route doesn't exist
+   */
+  public function generateUrl($name, $parameters=array(), $absolute=false)
+  {
+    return $this->router->generateUrl($name, $parameters, $absolute);
+  }
+  
   /**
    * Invoke an action given its name
    *
@@ -42,9 +84,9 @@ abstract class BaseController extends DisableEvilCallsObject implements Controll
    *
    * @param Trace $trace trace object
    * @param string $action action name
-   * @param Context $context fajr context
+   * @param Request $request incoming request
    */
-  public function invokeAction(Trace $trace, $action, Context $context)
+  public function invokeAction(Trace $trace, $action, Request $request)
   {
     Preconditions::checkIsString($action);
     Preconditions::checkMatchesPattern('@^[A-Z][a-zA-Z]*$@', $action,
@@ -79,7 +121,7 @@ abstract class BaseController extends DisableEvilCallsObject implements Controll
       throw new Exception('Action method '.$methodName.' is destructor');
     }
 
-    $method->invoke($this, $trace, $context);
+    return $method->invoke($this, $trace, $request);
   }
 
 }

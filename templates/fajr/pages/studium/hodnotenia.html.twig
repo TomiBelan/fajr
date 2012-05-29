@@ -71,6 +71,8 @@
 
 {% set tableHTML %}
 {{ decorators.table(none, head, body, foot, hodnotenia|length == 0) }}
+<a href="{{ path('studium_hodnotenia', {'studium': studium, 'list': zapisnyList,
+  'format': 'xml'}) }}">XML</a>
 {% endset %}
 
 {{ decorators.collapsible(title, tableHTML, false) }}

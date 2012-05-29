@@ -42,6 +42,24 @@ class AIS2Utils
   }
   
   /**
+   * predpokladame AIS format datumu, t.j.
+   * vo formate "11.01.2010"
+   */
+  public static function parseAISDate($str)
+  {
+    // Pozn. strptime() nefunguje na windowse, preto pouzijeme regex
+    $pattern =
+      '@(?P<tm_mday>[0-3][0-9])\.(?P<tm_mon>[0-1][0-9])\.(?P<tm_year>20[0-9][0-9])@';
+    $datum = StrUtil::matchAll($pattern, $str);
+    if (!$datum) {
+      throw new Exception("Chyba pri parsovaní dátumu");
+    }
+    
+    return mktime(0, 0, 0,
+        $datum["tm_mon"], $datum["tm_mday"], $datum["tm_year"]);
+  }
+  
+  /**
    *
    * @param str predpokladame range v 2 moznych standardnych ais formatoch
    *    - "do [datum a cas]"

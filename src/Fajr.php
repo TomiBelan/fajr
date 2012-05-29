@@ -41,6 +41,7 @@ use libfajr\exceptions\ReloginFailedException;
 use fajr\controller\Controller;
 use fajr\settings\SkinSettings;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use fajr\Warnings;
 
 /**
  * This is "main()" of the fajr. It instantiates all neccessary
@@ -53,9 +54,9 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 class Fajr {
 
   /**
-   * @var Context $context application context
+   * @var Request $request incoming request
    */
-  private $context;
+  private $request;
 
   /**
    * @var ServerManager
@@ -66,6 +67,11 @@ class Fajr {
    * @var Router
    */
   private $router;
+  
+  /**
+   * @var DisplayManager
+   */
+  private $displayManager;
 
   /**
    * Constructor.
@@ -75,33 +81,25 @@ class Fajr {
     $this->config = $config;
     $this->serverManager = ServerManager::getInstance();
     $this->router = Router::getInstance();
+    $this->displayManager = DisplayManager::getInstance();
   }
 
   /**
    * Set an exception to be displayed.
    * @param Exception $ex
    */
-  private function setException(Exception $ex) {
-    if ($this->context == null) {
-      // May happen if exception occured before or in context
-      // instantiation. We don't know how to handle the
-      // exception in this case, so just pass it to the
-      // outer exception handler
-      throw $ex;
-    }
-    $response = $this->context->getResponse();
-
-    // Note: We can't store function agruments from
+  private function renderExceptionResponse(Exception $ex) {    
+    // Note: We can't store function arguments from
     // stacktrace for template rendering, because
     // it can hold cyclic dependency to Context
     // and thus makes order of destruction unpredictable.
     $info = FajrUtils::extractExceptionInfo($ex);
-    $response->set('exception', $info);
-
-    $response->set('showStackTrace',
-                   $this->config->get('Debug.Exception.ShowStacktrace'));
+    $params = array(
+      'exception' => $info,
+      'showStackTrace' => $this->config->get('Debug.Exception.ShowStacktrace'),
+    );
     
-    $response->setTemplate('exception');
+    return $this->displayManager->renderResponse('exception', $params, null, 500);
   }
 
   /**
@@ -113,19 +111,6 @@ class Fajr {
     
   }
 
-  public function render(Response $response)
-  {
-    try {
-      $displayManager = DisplayManager::getInstance();
-      echo $displayManager->display($response);
-    } catch (Exception $e) {
-      throw new Exception('Chyba pri renderovaní template '.
-          $response->getTemplate().':' .$e->getMessage(),
-                          null, $e);
-    }
-  }
-
-
   /**
    * Runs the whole logic. It is fajr's main()
    *
@@ -133,12 +118,13 @@ class Fajr {
    */
   public function run()
   {
+    $response = null;
     try {
       $trace = TraceProvider::getInstance();
-      $this->context = Context::getInstance();
+      $this->request = Request::getInstance();
 
-      $this->setResponseFields($this->context->getRequest(), $this->context->getResponse());
-      $this->runLogic($trace);
+      $this->setResponseFields($this->request);
+      $response = $this->runLogic($trace);
     } catch (SecurityException $e) {
       $this->logSecurityException($e);
       if (!$this->config->get('Debug.Exception.ShowStacktrace')) {
@@ -147,100 +133,109 @@ class Fajr {
         die($e);
       }
     } catch (Exception $e) {
-      $this->setException($e);
+      $response = $this->renderExceptionResponse($e);
       // Note: We MUST unset this exception, because it's
       // stacktrace holds cyclic references to context
       // and therefore the order of destruction of all objects 
       // is really random.
       unset($e);
     }
-
-    if ($trace !== null) {
-      $trace->tlog("everything done, rendering template");
-
-      if ($trace instanceof \libfajr\trace\ArrayTrace) {
-        $this->context->getResponse()->set('trace', $trace);
-      } else {
-        $this->context->getResponse()->set('trace', null);
-      }
+    
+    if ($response == null) {
+      $response = new \Symfony\Component\HttpFoundation\Response('Response missing', 500);
+      $response->headers->set('Content-Type', 'text/html;charset=UTF-8');
     }
 
-    $this->render($this->context->getResponse());
+    if ($trace !== null) {
+      $trace->tlog("everything done");
+    }
+    
+    $this->adjustResponse($response);
+    $response->prepare(\Symfony\Component\HttpFoundation\Request::createFromGlobals());
+    $response->send();
   }
 
   /**
-   * Sets common template fields.
+   * Sets dafault template fields.
+   * TODO: set as twig globals?
    */
-  private function setResponseFields(Request $request, Response $response)
+  private function setResponseFields(Request $request)
   {
     $skinSettings = SkinSettings::getInstance();
     if ($request->isMobileBrowser()) {
       $skinSettings->setDefaultSkinName('mobile');
     }
-    $response->setSkin($skinSettings->getUserSkin());
+    $this->displayManager->setSkin($skinSettings->getUserSkin());
+    
+    $params = array();
     
     $referrer = $request->getHeader('Referer');
     $pageMovedCookie = isset($_COOKIE['FajrPageMoved']);
-    if ($pageMovedCookie) {
-      $response->clearCookie('FajrPageMoved','/','fajr.fmph.uniba.sk',false);
-    }
     $pageMovedReferer = preg_match('#^https?://fajr.dcs.fmph.uniba.sk#', $referrer) === 1;
     if ($pageMovedCookie || $pageMovedReferer) {
-      $response->addWarning(array('type' => 'pageMoved'));
-    }
-    
-    // https://developer.mozilla.org/en/The_X-FRAME-OPTIONS_response_header
-    $response->setHeader('X-Frame-Options', 'DENY');
-    if (FajrUtils::isHTTPS()) {
-      $hstsExpireTime = $this->config->get(FajrConfigOptions::STRICT_TRANSPORT_SECURITY);
-      if ($hstsExpireTime !== null && $hstsExpireTime > 0) {
-        $response->setStrictTransportSecurity($hstsExpireTime);
-      }
+      Warnings::getInstance()->addWarning(array('type' => 'pageMoved'));
     }
 
-    $response->set('version', new Version());
-    $response->set('banner_debug', $this->config->get(FajrConfigOptions::DEBUG_BANNER));
+    $params['version'] = new Version();
+    $params['banner_debug'] = $this->config->get(FajrConfigOptions::DEBUG_BANNER);
     if ($request->isDoNotTrack()) {
-      $response->set('google_analytics', null);
+      $params['google_analytics'] = null;
     }
     else {
-      $response->set('google_analytics',
-                   $this->config->get(FajrConfigOptions::GOOGLE_ANALYTICS_ACCOUNT));
+      $params['google_analytics'] = 
+                   $this->config->get(FajrConfigOptions::GOOGLE_ANALYTICS_ACCOUNT);
     }
-    $response->set('base', FajrUtils::basePath());
-    $response->set('language', 'sk');
+    $params['base'] = FajrUtils::basePath();
+    $params['language'] = 'sk';
 
-    $response->set('availableServers', array());
-    $response->set('currentServer', array('isBeta'=>false, 'instanceName'=>'Chyba'));
+    $params['availableServers'] = array();
+    $params['currentServer'] = array('isBeta'=>false, 'instanceName'=>'Chyba');
 
     $server = $this->serverManager->getActiveServer();
     $serverList = $this->config->get(FajrConfigOptions::AIS_SERVERLIST);
-    $response->set('availableServers', $serverList);
-    $response->set('currentServer', $server);
-    $response->set('backendType', $this->config->get(FajrConfigOptions::BACKEND));
+    $params['availableServers'] = $serverList;
+    $params['currentServer'] = $server;
+    $params['backendType'] = $this->config->get(FajrConfigOptions::BACKEND);
 
-    $response->set('aisVersion', null);
-    $response->set('aisVersionIncompatible', false);
-    $response->set('loggedIn', false);
-    $response->set('developmentVersion', $this->config->get(FajrConfigOptions::IS_DEVEL));
+    $params['aisVersion'] = null;
+    $params['aisVersionIncompatible'] = false;
+    $params['loggedIn'] = false;
+    $params['developmentVersion'] = $this->config->get(FajrConfigOptions::IS_DEVEL);
+    
+    $params['statistics'] = Statistics::getInstance();
+    $params['warnings'] = Warnings::getInstance();
+    
+    $this->displayManager->setDefaultParams($params);
+  }
+  
+  private function adjustResponse(\Symfony\Component\HttpFoundation\Response $response) {
+    $pageMovedCookie = isset($_COOKIE['FajrPageMoved']);
+    if ($pageMovedCookie) {
+      $response->headers->clearCookie('FajrPageMoved','/','fajr.fmph.uniba.sk');
+    }
+    
+    // https://developer.mozilla.org/en/The_X-FRAME-OPTIONS_response_header
+    $response->headers->set('X-Frame-Options', 'DENY');
+    if (FajrUtils::isHTTPS()) {
+      $hstsExpireTime = $this->config->get(FajrConfigOptions::STRICT_TRANSPORT_SECURITY);
+      if ($hstsExpireTime !== null && intval($hstsExpireTime) > 0) {
+        $response->headers->set('Strict-Transport-Security', 'max-age='.intval($hstsExpireTime));
+      }
+    }
   }
 
   public function runLogic(Trace $trace)
   {
-    $response = $this->context->getResponse();
-    
     try {
       $params = $this->router->routeCurrentRequest();
     }
     catch (ResourceNotFoundException $e) {
-      $response->setNotFoundStatusCode();
-      $response->setTemplate('notfound');
-      return;
+      return $this->displayManager->renderResponse('notfound', array(), 'html', 404);
     }
     $action = $params['_action'];
     $controllerClass = $params['_controller'];
     
-    $session = $this->context->getSessionStorage();
+    $session = SessionStorageProvider::getInstance();
     $loginManager = LoginManager::getInstance();
     // If we are going to log in, we need a clean session.
     // This needs to be done before a connection
@@ -264,11 +259,10 @@ class Fajr {
       }
       catch (ReloginFailedException $ex) {
         $loginManager->destroySession();
-        $response->redirect($this->router->generateUrl('homepage'));
-        return;
+        return new \Symfony\Component\HttpFoundation\RedirectResponse($this->router->generateUrl('homepage'));
       }
     }
-    $response->set('loggedIn', $loggedIn);
+    $this->displayManager->setDefaultParams(array('loggedIn' => $loggedIn));
     
     if ($loggedIn) {
       $backendFactory = BackendProvider::getInstance();
@@ -278,10 +272,11 @@ class Fajr {
         $aisVersion = $mainScreen->getAisVersion($trace->addChild('Get AIS version'));
         $session->write('ais/aisVersion', $aisVersion);
       }
-      $response->set('aisVersion', $aisVersion);
-      $response->set('aisVersionIncompatible',
+      $this->displayManager->setDefaultParams(array(
+        'aisVersion' => $aisVersion,
+        'aisVersionIncompatible' =>
         !($aisVersion >= regression\VersionRange::getMinVersion() &&
-          $aisVersion <= regression\VersionRange::getMaxVersion()));
+          $aisVersion <= regression\VersionRange::getMaxVersion())));
 
       if (($aisApps = $session->read('ais/aisApps')) == null) {
         $aisModules = array('SP', 'LZ', 'ES', 'ST', 'RH', 'UB', 'AS', 'RP');
@@ -294,11 +289,7 @@ class Fajr {
         $userName = $mainScreen->getFullUserName($trace->addChild('Get user name'));
         $session->write('ais/aisUserName', $userName);
       }
-      $response->set('aisUserName', $userName);
-    }
-    else {
-      $response->set('aisVersion', null);
-      $response->set('aisVersionIncompatible', null);
+      $this->displayManager->setDefaultParams(array('aisUserName' => $userName));
     }
 
     $controller = call_user_func(array($controllerClass, 'getInstance'));
@@ -308,11 +299,10 @@ class Fajr {
 
     try {
       $subTrace = $trace->addChild('Action ' . $controllerClass . '->' . $action);
-      $controller->invokeAction($subTrace, $action, $this->context);
+      return $controller->invokeAction($subTrace, $action, $this->request);
     }
     catch (AuthenticationRequiredException $ex) {
-      $response->redirect($this->router->generateUrl('homepage'));
+      return new \Symfony\Component\HttpFoundation\RedirectResponse($this->router->generateUrl('homepage'));
     }
-    $response->set('statistics', Statistics::getInstance());
   }
 }

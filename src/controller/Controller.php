@@ -13,11 +13,11 @@
  */
 namespace fajr\controller;
 
-use fajr\Context;
+use fajr\Request;
 use libfajr\trace\Trace;
 
 /**
- * Provides Fajr template customizations for the Twig templating engine
+ * Interface which all controllers implement
  *
  * @package    Fajr
  * @subpackage Controller
@@ -31,8 +31,8 @@ interface Controller
    *
    * @param Trace   $trace
    * @param string  $action name of action to invoke
-   * @param Context $context fajr context
+   * @param Request $request incoming request
    */
-  public function invokeAction(Trace $trace, $action, Context $context);
+  public function invokeAction(Trace $trace, $action, Request $context);
 
 }

@@ -1,0 +1,29 @@
+{##
+ # XML verzia hodnoteni
+ #
+ # @copyright  Copyright (c) 2012 The Fajr authors (see AUTHORS).
+ #             Use of this source code is governed by a MIT license that can be
+ #             found in the LICENSE file in the project root directory.
+ # @author     Martin Sucha
+ #}
+<?xml version="1.0" encoding="UTF-8" ?>
+<hodnotenia>
+  {% for row in hodnotenia %}
+    <hodnotenie>
+      <akademicky-rok>{{ row.akRok }}</akademicky-rok>
+      <semester>{{ row.semester }}</semester>
+      <predmet>
+        <nazov>{{ row.nazov }}</nazov>
+        <kod>{{ row.skratka }}</kod>
+        <kredity>{{ row.kredit }}</kredity>
+        <rozsah>{{ row.rozsah }}</rozsah>
+      </predmet>
+      <uznane>{{ row.uznane }}</uznane>
+      <termin>
+        <datum{% if row.timestamp is not empty %} timestamp="{{ row.timestamp }}"{% endif %}>{{ row.datum }}</datum>
+        <typ>{{ row.termin }}</typ>
+      </termin>
+      <znamka>{{ row.znamka }}</znamka>
+    </hodnotenie>
+  {% endfor %}
+</hodnotenia>

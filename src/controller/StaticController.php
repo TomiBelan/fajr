@@ -14,12 +14,12 @@
 namespace fajr\controller;
 
 use Exception;
-use fajr\Context;
 use fajr\controller\BaseController;
 use libfajr\base\Preconditions;
 use libfajr\trace\Trace;
 use fajr\Request;
-use fajr\Response;
+use fajr\rendering\DisplayManager;
+use fajr\Router;
 
 /**
  * Controller for displaying static public pages
@@ -32,17 +32,22 @@ class StaticController extends BaseController
 {
   public static function getInstance()
   {
-    return new StaticController();
+    return new StaticController(DisplayManager::getInstance(), Router::getInstance());
   }
   
-  public function runTermsOfUse(Trace $trace, Context $context)
+  public function __construct(DisplayManager $displayManager, Router $router)
   {
-    $context->getResponse()->setTemplate('termsOfUse');
+    parent::__construct($displayManager, $router);
   }
   
-  public function runAbout(Trace $trace, Context $context)
+  public function runTermsOfUse(Trace $trace, Request $request)
   {
-    $context->getResponse()->setTemplate('about');
+    return $this->renderResponse('termsOfUse');
+  }
+  
+  public function runAbout(Trace $trace, Request $request)
+  {
+    return $this->renderResponse('about');
   }
   
 }

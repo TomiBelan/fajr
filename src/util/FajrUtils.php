@@ -190,25 +190,7 @@ class FajrUtils
     }
   }
 
-  public static function warnWrongTableStructure(Trace $trace, $response, $tableName,
-      array $expectedDefinition, array $definition) {
-    Preconditions::checkIsString($tableName);
-    if ($expectedDefinition != $definition) {
-      $message = array('type' => 'unexpectedTableStructure',
-                       'tableName' => $tableName);
-      $response->addWarning($message);
-      
-      $child = $trace->addChild("Differences in data table " . $tableName);
-      list($del, $both, $ins) =
-        self::compareArrays($expectedDefinition, $definition);
-      $child->tlogVariable('deleted', $del);
-      $child->tlogVariable('unchanged', $both);
-      $child->tlogVariable('inserted', $ins);
-      $child->tlogVariable('expectedDefinition', $expectedDefinition);
-      $child->tlogVariable('definition', $definition);
-      
-    }
-  }
+  
 
   /**
    * Compare values of old and new array of strings and return an array
@@ -291,5 +273,22 @@ class FajrUtils
       $info['previous'] = self::extractExceptionInfo($ex->getPrevious());
     }
     return $info;
+  }
+  
+  public static function datetime2icsdatetime($datetime=null)
+  {
+    if ($datetime == null) {
+        $datetime = time();
+    }
+
+    $timeinfo = getdate($datetime);
+    return array(
+        'year'=>$timeinfo['year'],
+        'month'=>$timeinfo['mon'],
+        'day'=>$timeinfo['mday'],
+        'hour'=>$timeinfo['hours'],
+        'min'=>$timeinfo['minutes'],
+        'sec'=>$timeinfo['seconds']
+    );
   }
 }

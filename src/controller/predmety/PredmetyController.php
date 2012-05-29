@@ -28,6 +28,8 @@ use fajr\Sorter;
 use fajr\BackendProvider;
 use fajr\util\FajrUtils;
 use libfajr\data\InformacnyListParser;
+use fajr\Router;
+use fajr\rendering\DisplayManager;
 
 /**
  * Controller, ktory sa stara o register predmetov
@@ -41,7 +43,8 @@ class PredmetyController extends BaseController
   public static function getInstance()
   {
     $backendFactory = BackendProvider::getInstance();
-    return new PredmetyController($backendFactory->newVSST060Factory(), $backendFactory->getServerTime());
+    return new PredmetyController($backendFactory->newVSST060Factory(), $backendFactory->getServerTime(),
+        DisplayManager::getInstance(), Router::getInstance());
   }
 
   // @private
@@ -50,8 +53,10 @@ class PredmetyController extends BaseController
   private $factory;
   private $serverTime;
 
-  public function __construct(VSST060\PredmetyFactory $factory, $serverTime)
+  public function __construct(VSST060\PredmetyFactory $factory, $serverTime,
+      DisplayManager $displayManager, Router $router)
   {
+    parent::__construct($displayManager, $router);
     $this->factory = $factory;
     $this->serverTime = $serverTime;
   }
@@ -64,30 +69,22 @@ class PredmetyController extends BaseController
    *
    * @param Trace $trace trace object
    * @param string $action action name
-   * @param Context $context fajr context
+   * @param Request $request incoming request
    */
-  public function invokeAction(Trace $trace, $action, Context $context)
+  public function invokeAction(Trace $trace, $action, Request $request)
   {
     Preconditions::checkIsString($action);
-
-    $request = $context->getRequest();
-    $response = $context->getResponse();
-    $session = $context->getSessionStorage();
     Preconditions::checkNotNull($request);
-    Preconditions::checkNotNull($response);
-    Preconditions::checkNotNull($session);
+    
     $screenFactory = $this->factory;
     $register = $screenFactory->newRegisterPredmetovScreen($trace);
     
     $this->registerPredmetovScreen = $register;
 
-    parent::invokeAction($trace, $action, $context);
+    return parent::invokeAction($trace, $action, $request);
   }
 
-  public function runInformacnyList(Trace $trace, Context $context) {
-    $request = $context->getRequest();
-    $response = $context->getResponse();
-
+  public function runInformacnyList(Trace $trace, Request $request) {
     $searchCode = $request->getParameter('code');
     $format = $request->getParameter('format');
 
@@ -97,11 +94,10 @@ class PredmetyController extends BaseController
     
     $ip = new InformacnyListParser();
     $list = $ip->parse($trace, $content);
-
-    $response->setTemplate('predmety/informacnyList');
-    if ($format == 'json') $response->setFormat('json');
-    $response->set('list', $list->getAllAttributes());
-    $response->set('code', $searchCode);
+    
+    $params = array();
+    $params['list'] = $list->getAllAttributes();
+    $params['code'] = $searchCode;
     $name = $list->getAttribute('nazov');
     $code = $list->getAttribute('kod');
     if ($code === false) {
@@ -116,6 +112,9 @@ class PredmetyController extends BaseController
     else {
       $name = $name['values'][0];
     }
-    $response->set('subjectName', $name);
+    $params['subjectName'] = $name;
+    
+    return $this->renderResponse('predmety/informacnyList', $params,
+        ($format == 'json' ? 'json' : 'html'));
   }
 }

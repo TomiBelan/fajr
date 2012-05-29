@@ -64,5 +64,7 @@
 {% endset %}
 
 {{ decorators.table(none, head, body, foot, predmety|length == 0) }}
+<a href="{{ path('studium_prehlad_kreditov', {'studium': studium, 'list': zapisnyList,
+  'format': 'xml'}) }}">XML</a>
 
 {% endblock %}

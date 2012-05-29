@@ -37,7 +37,7 @@ class LoginManager
   {
     if (!isset(self::$instance)) {
       self::$instance = new LoginManager(SessionStorageProvider::getInstance(),
-          Request::getInstance(), Response::getInstance(),
+          Request::getInstance(),
           LazyServerConnection::getInstance());
     }
     return self::$instance;
@@ -45,7 +45,6 @@ class LoginManager
 
   private $request;
   private $session;
-  private $response;
   
   /**
    * Pretoze sa mozme pytat na isLoggedIn() viackrat, cachujeme tuto hodnotu
@@ -55,12 +54,11 @@ class LoginManager
   private $cachedLoggedIn;
   private $connection;
 
-  public function __construct(sfStorage $session, Request $request, Response $response,
+  public function __construct(sfStorage $session, Request $request,
       AIS2ServerConnection $connection)
   {
     $this->session = $session;
     $this->request = $request;
-    $this->response = $response;
     $this->connection = $connection;
   }
 
