@@ -94,6 +94,7 @@ class Statistics
    */
   public function getRequestCount()
   {
+    if ($this->finalStats === null) return 0;
     return $this->finalStats->getRequestCount();
   }
 
@@ -102,6 +103,7 @@ class Statistics
    */
   public function getDecodedByteCount()
   {
+    if ($this->finalStats === null) return 0;
     return $this->finalStats->getDownloadedBytes();
   }
 
@@ -110,6 +112,7 @@ class Statistics
    */
   public function getDownloadedByteCount()
   {
+    if ($this->rawStats === null) return 0;
     return $this->rawStats->getDownloadedBytes();
   }
 
@@ -126,6 +129,7 @@ class Statistics
    */
   public function getTotalRequestTime()
   {
+    if ($this->finalStats === null) return 0;
     return $this->finalStats->getTotalTime();
   }
 
