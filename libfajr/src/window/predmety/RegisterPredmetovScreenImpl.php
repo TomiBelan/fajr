@@ -59,8 +59,14 @@ class RegisterPredmetovScreenImpl extends AIS2AbstractScreen
     $data = $this->executor->doRequest(
         $trace->addChild("Requesting data:"),
         array('compName' => 'zobrazitPredmetyAction',
-              'embObj' => array('skratkaPredmetuTextField' => array(
+              'embObj' => array(
+                'skratkaPredmetuTextField' => array(
                   'text' => $kodPredmetu,
+                ),
+                'akRokComboBox' => array(
+                  'dataView' => array(
+                    'selectedIndexes' => 0, // Vyberme najnovsi ak rok, TODO: moznost urcit rucne
+                  ),
                 ),
               ),
             ));
@@ -91,7 +97,7 @@ class RegisterPredmetovScreenImpl extends AIS2AbstractScreen
               'embObj' => array('typZostavyComboBox' => array(
                   'dataView' => array(
                     'selectedIndexes' => 1,
-                  ),
+                  ),                  
                   'editMode' => 'false',
                 ),
               ),
