@@ -71,11 +71,12 @@ class AdministraciaStudiaScreenImpl extends AIS2AbstractScreen
     $data = $this->executor->doRequest(
         $trace->addChild("Requesting data:"),
         array('compName' => 'nacitatDataAction',
-              'embObj' => array(
-                'objName' => 'studiaTable',
-                'dataView' => array(
-                  'activeIndex' => $studiumIndex,
-                  'selectedIndexes' => $studiumIndex,
+              'embObj' => array('studiaTable' => array(
+                  'dataView' => array(
+                    'activeIndex' => $studiumIndex,
+                    'selectedIndexes' => $studiumIndex,
+                  ),
+                  'editMode' => 'false',
                 ),
               ),
             ));
@@ -101,11 +102,12 @@ class AdministraciaStudiaScreenImpl extends AIS2AbstractScreen
       $response = $this->executor->doRequest(
           $trace->addChild("Requesting data:"),
           array('compName' => $action,
-                'embObj' => array(
-                  'objName' => 'zapisneListyTable',
-                  'dataView' => array(
-                    'activeIndex' => $zapisnyListIndex,
-                    'selectedIndexes' => $zapisnyListIndex,
+                'embObj' => array('zapisneListyTable' => array(
+                    'dataView' => array(
+                      'activeIndex' => $zapisnyListIndex,
+                      'selectedIndexes' => $zapisnyListIndex,
+                    ),
+                    'editMode' => 'false',
                   ),
                 ),
               ));

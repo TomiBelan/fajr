@@ -59,11 +59,12 @@ class TerminyDialogImpl extends AIS2AbstractDialog
     $data = $this->executor->doRequest($trace, array(
       'compName' => 'enterAction',
       'eventClass' => 'avc.ui.event.AVCActionEvent',
-      'embObj' => array(
-        'objName' => 'zoznamTerminovTable',
-        'dataView' => array(
-          'activeIndex' => $terminIndex,
-          'selectedIndexes' => $terminIndex,
+      'embObj' => array('zoznamTerminovTable' => array(
+          'dataView' => array(
+            'activeIndex' => $terminIndex,
+            'selectedIndexes' => $terminIndex,
+          ),
+          'editMode' => 'false',
         ),
       ),
     ));

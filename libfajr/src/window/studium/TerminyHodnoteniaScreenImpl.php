@@ -59,10 +59,11 @@ class TerminyHodnoteniaScreenImpl extends AIS2AbstractScreen
     $data = $this->executor->doRequest($trace,
       array('eventClass' => 'avc.ui.event.AVCActionEvent',
         'compName' => 'filterAction',
-        'embObj' => array(
-          'objName' => 'semesterComboBox',
-          'dataView' => array(
-            'selectedIndexes' => 0,
+        'embObj' => array('semesterComboBox' => array(
+            'dataView' => array(
+              'selectedIndexes' => 0,
+            ),
+            'editMode' => 'false',
           ),
         ),
     ));
@@ -77,10 +78,11 @@ class TerminyHodnoteniaScreenImpl extends AIS2AbstractScreen
     $data = $this->executor->doRequest($trace,
       array('eventClass' => 'avc.ui.event.AVCActionEvent',
         'compName' => 'zobrazitTerminyAction',
-        'embObj' => array(
-          'objName' => 'zobrazitTerminyComboBox',
-          'dataView' => array(
-            'selectedIndexes' => 0,
+        'embObj' => array('zobrazitTerminyComboBox' => array(
+            'dataView' => array(
+              'selectedIndexes' => 0,
+            ),
+            'editMode' => 'false',
           ),
         ),
     ));
@@ -115,11 +117,12 @@ class TerminyHodnoteniaScreenImpl extends AIS2AbstractScreen
     $data = $this->executor->doRequest($trace, array(
       'compName' => 'odstranitTerminAction',
       'eventClass' => 'avc.ui.event.AVCActionEvent',
-      'embObj' => array(
-        'objName' => 'terminyTable',
-        'dataView' => array(
-          'activeIndex' => $terminIndex,
-          'selectedIndexes' => $terminIndex,
+      'embObj' => array('terminyTable' => array(
+          'dataView' => array(
+            'activeIndex' => $terminIndex,
+            'selectedIndexes' => $terminIndex,
+          ),
+          'editMode' => 'false',
         ),
       ),
     ));

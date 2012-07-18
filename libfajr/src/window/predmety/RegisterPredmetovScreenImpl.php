@@ -59,9 +59,9 @@ class RegisterPredmetovScreenImpl extends AIS2AbstractScreen
     $data = $this->executor->doRequest(
         $trace->addChild("Requesting data:"),
         array('compName' => 'zobrazitPredmetyAction',
-              'embObj' => array(
-                'objName' => 'skratkaPredmetuTextField',
-                'text' => $kodPredmetu
+              'embObj' => array('skratkaPredmetuTextField' => array(
+                  'text' => $kodPredmetu,
+                ),
               ),
             ));
     $table = $this->parser->createTableFromHtml($trace->addChild("Parsing table"),
@@ -88,10 +88,11 @@ class RegisterPredmetovScreenImpl extends AIS2AbstractScreen
         $trace->addChild("Requesting data:"),
         array('compName' => 'enterAction',
               'dlgName' => 'CM024_InformListVyberMoznostiDlg1',
-              'embObj' => array(
-                'objName' => 'typZostavyComboBox',
-                'dataView' => array(
-                  'selectedIndexes' => 1,
+              'embObj' => array('typZostavyComboBox' => array(
+                  'dataView' => array(
+                    'selectedIndexes' => 1,
+                  ),
+                  'editMode' => 'false',
                 ),
               ),
             ));

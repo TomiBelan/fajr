@@ -71,11 +71,12 @@ class DialogRequestExecutor extends DisableEvilCallsObject
                     );
     
     if ($this->data->embObjName !== null) {
-      $options['embObj'] = array(
-        'objName' => $this->data->embObjName,
-        'dataView' => array(
-          'activeIndex' =>  $this->data->index,
-          'selectedIndexes' => $this->data->index,
+      $options['embObj'] = array($this->data->embObjName => array(
+          'dataView' => array(
+            'activeIndex' =>  $this->data->index,
+            'selectedIndexes' => $this->data->index,
+          ),
+          'editMode' => 'false',
         ),
       );
     }
