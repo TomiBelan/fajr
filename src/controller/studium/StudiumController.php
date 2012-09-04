@@ -177,9 +177,9 @@ class StudiumController extends BaseController
       try {
         $this->terminyHodnoteniaScreen = $screenFactory->newTerminyHodnoteniaScreen(
                 $trace,
-                $adminStudia->getZapisnyListIdFromZapisnyListIndex($trace, $this->zapisnyList,
+                $adminStudia->getParamNameFromZapisnyListIndex($trace, $this->zapisnyList,
                     VSES017\AdministraciaStudiaScreen::ACTION_TERMINY_HODNOTENIA),
-                $adminStudia->getStudiumIdFromZapisnyListIndex($trace, $this->zapisnyList,
+                $adminStudia->getParamNameFromZapisnyListIndex($trace, $this->zapisnyList,
                     VSES017\AdministraciaStudiaScreen::ACTION_TERMINY_HODNOTENIA));
       } catch (ParseException $e) {
         $this->terminyHodnoteniaScreen = null;
@@ -189,7 +189,7 @@ class StudiumController extends BaseController
       // objekty, ktore v konstruktore robia requesty
       $this->hodnoteniaScreen = $screenFactory->newHodnoteniaPriemeryScreen(
             $trace,
-            $adminStudia->getZapisnyListIdFromZapisnyListIndex($trace, $this->zapisnyList,
+            $adminStudia->getParamNameFromZapisnyListIndex($trace, $this->zapisnyList,
                 VSES017\AdministraciaStudiaScreen::ACTION_HODNOTENIA_PRIEMERY));
     }
 

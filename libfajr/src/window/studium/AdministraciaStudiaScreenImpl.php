@@ -38,12 +38,9 @@ use libfajr\exceptions\ParseException;
 class AdministraciaStudiaScreenImpl extends AIS2AbstractScreen
     implements AdministraciaStudiaScreen
 {
-  // TODO(ppershing): use named pattern here
-  const APP_LOCATION_PATTERN = '@webui\(\)\.startApp\("([^"]+)","([^"]+)"\);@';
-  const ID_PATTERN = '@(?:&idZapisnyList\=(?P<idZapisnyList>[0-9]*))(?:&idStudium\=(?P<idStudium>[0-9]*))?@';
+  const APP_LOCATION_PATTERN = '@webui\(\)\.startApp\("(?P<name>[^"]+)","(?P<params>[^"]+)"\);@';
+  const PARAM_NAME_PATTERN = '@(?:&paramName=(?P<paramName>[A-Za-z0-9]*))@';
   
-  protected $idCache = array();
-
   /**
    * @var AIS2TableParser
    */
@@ -84,61 +81,42 @@ class AdministraciaStudiaScreenImpl extends AIS2AbstractScreen
         $data, 'VSES017_StudentZapisneListyDlg0_zapisneListyTable_dataView');
   }
 
-  public function getZapisnyListIdFromZapisnyListIndex(Trace $trace, $zapisnyListIndex, $action)
-  {
-    return $this->getIdFromZapisnyListIndex($trace, $zapisnyListIndex, 'idZapisnyList', $action);
-  }
-
-  public function getStudiumIdFromZapisnyListIndex(Trace $trace, $zapisnyListIndex, $action)
-  {
-    return $this->getIdFromZapisnyListIndex($trace, $zapisnyListIndex, 'idStudium', $action);
-  }
-
-  protected function getIdFromZapisnyListIndex(Trace $trace, $zapisnyListIndex, $idType, $action)
+  public function getParamNameFromZapisnyListIndex(Trace $trace, $zapisnyListIndex, $action)
   {
     $this->openIfNotAlready($trace);
-    if (empty($this->idCache[$zapisnyListIndex]) || empty($this->idCache[$zapisnyListIndex][$idType]))
-    {
-      $response = $this->executor->doRequest(
-          $trace->addChild("Requesting data:"),
-          array('compName' => $action,
-                'embObj' => array('zapisneListyTable' => array(
-                    'dataView' => array(
-                      'activeIndex' => $zapisnyListIndex,
-                      'selectedIndexes' => $zapisnyListIndex,
-                    ),
-                    'editMode' => 'false',
-                  ),
-                ),
-              ));
 
-      try {
-        $data = $this->parseIdFromZapisnyListIndexFromResponse($response);
-      }
-      catch (ParseException $ex) {
-        throw new ParseException("Nepodarilo sa zistiť $idType pre akciu $action: " . $ex->getMessage(), null, $ex);
-      }
-      if (empty($this->idCache[$zapisnyListIndex])) {
-        $this->idCache[$zapisnyListIndex] = array();
-      }
-      $this->idCache[$zapisnyListIndex] = array_merge($this->idCache[$zapisnyListIndex], $data);
-    } else {
-      $trace->tlogVariable("data from cache", $this->idCache[$zapisnyListIndex][$idType]);
+    $response = $this->executor->doRequest(
+        $trace->addChild("Requesting data:"),
+        array('compName' => $action,
+              'embObj' => array('zapisneListyTable' => array(
+                  'dataView' => array(
+                    'activeIndex' => $zapisnyListIndex,
+                    'selectedIndexes' => $zapisnyListIndex,
+                  ),
+                  'editMode' => 'false',
+                ),
+              ),
+            ));
+
+    try {
+      return $this->parseParamNameFromResponse($response);
     }
-    return $this->idCache[$zapisnyListIndex][$idType];
+    catch (ParseException $ex) {
+      throw new ParseException("Nepodarilo sa zistiť paramName pre akciu $action: " . $ex->getMessage(), null, $ex);
+    }
   }
 
-  public function parseIdFromZapisnyListIndexFromResponse($response)
+  private function parseParamNameFromResponse($response)
   {
-      $data = StrUtil::matchAll(self::APP_LOCATION_PATTERN, $response);
+      $data = StrUtil::match(self::APP_LOCATION_PATTERN, $response, 'params');
       if ($data === false) {
         throw new ParseException("Location of APP_PATTERN failed.");
       };
-      $data = StrUtil::matchAll(self::ID_PATTERN, $data[2]);
+      $data = StrUtil::match(self::PARAM_NAME_PATTERN, $data, 'paramName');
       if ($data === false) {
         throw new ParseException("Parsing of ids from zapisnyListIndex failed.");
       }
-      return MiscUtil::removeIntegerIndexesFromArray($data);
+      return $data;
   }
   
   public function getPrehladKreditovDialog(Trace $trace, $studiumIndex)
