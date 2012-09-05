@@ -40,12 +40,12 @@ class HodnoteniaPriemeryScreenImpl extends AIS2AbstractScreen
   private $parser;
 
   public function __construct(Trace $trace, ScreenRequestExecutor $executor,
-      AIS2TableParser $parser, $idZapisnyList)
+      AIS2TableParser $parser, $paramName)
   {
     $data = new ScreenData();
     $data->appClassName = 'ais.gui.vs.es.VSES212App';
     $data->additionalParams = array('kodAplikacie' => 'VSES212',
-        'idZapisnyList' => $idZapisnyList);
+        'paramName' => $paramName);
     parent::__construct($trace, $executor, $data);
     $this->parser = $parser;
   }

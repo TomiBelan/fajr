@@ -30,9 +30,7 @@ interface AdministraciaStudiaScreen extends LazyDialog
    */
   public function getZapisneListy(Trace $trace, $studiumIndex);
 
-  public function getZapisnyListIdFromZapisnyListIndex(Trace $trace, $zapisnyListIndex, $action);
-
-  public function getStudiumIdFromZapisnyListIndex(Trace $trace, $zapisnyListIndex, $action);
+  public function getParamNameFromZapisnyListIndex(Trace $trace, $zapisnyListIndex, $action);
   
   public function getPrehladKreditovDialog(Trace $trace, $studiumIndex);
 }

@@ -32,12 +32,16 @@ class StrUtil {
    * the full match is example:something and this
    * function returns "something"
    *
+   * If you specify the third parameter,
+   * it will try to return submatch with given name.
+   *
    * @param string $pattern perl-like pattern with 1 sub-match
    * @param string $haystack
+   * @param string|null $name name of submatch
    *
    * @returns string sub-match or false on failure
    */
-  public static function match($pattern, $haystack)
+  public static function match($pattern, $haystack, $name = null)
   {
     Preconditions::checkIsString($pattern);
     Preconditions::checkIsString($haystack);
@@ -45,8 +49,12 @@ class StrUtil {
     if (!preg_match($pattern, $haystack, $matches)) {
       return false;
     }
-    assert(isset($matches[1]));
-    return $matches[1];
+    $index = 1;
+    if ($name !== null) {
+      $index = $name;
+    }
+    assert(isset($matches[$index]));
+    return $matches[$index];
   }
 
   /**
