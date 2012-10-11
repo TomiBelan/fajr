@@ -122,7 +122,7 @@ class FajrConfigOptions {
         array('defaultValue' => null),
 
       self::REQUIRE_SSL =>
-        array('defaultValue' => true,
+        array('defaultValue' => false,
               'validator' => $booleanValidator),
 
       self::STRICT_TRANSPORT_SECURITY =>

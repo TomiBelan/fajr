@@ -76,10 +76,10 @@ return array(
    * Pri vypnutí voľby dôjde k uvoľneniu politiky cookies (vypne sa príznak
    * secure), aby sessions fungovali aj cez nezabezpečené spojenie.
    *
-   * Vypnutie SSL.Require sa na produkčnej inštalácii neodporúča!
+   * Na produkčnej inštancii nezabudnite nastaviť true!
    */
-  //'SSL.Require'=>true,
-  
+  //'SSL.Require'=>false,
+
   /*
    * Pri nastaveni na nenulove cislo, zapina HTTP Strict Transport Security
    * Cislo udava pocet sekund kolko plati tato hlavicka
