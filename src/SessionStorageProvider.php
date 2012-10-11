@@ -42,16 +42,10 @@ class SessionStorageProvider
       $options = array(
         'session_cookie_lifetime' => $lifeTimeSec,
         'session_cookie_path' => '/',
-        'session_cookie_domain' => '.' . $_SERVER['HTTP_HOST'],
         'session_cookie_secure' => $config->get(FajrConfigOptions::REQUIRE_SSL),
         'session_cookie_httponly' => true,
         'session_name' => $config->get(FajrConfigOptions::INSTANCE_NAME) . '_session_id',
       );
-
-      // this will render fajr usable when running on localhost
-      if ($_SERVER['HTTP_HOST'] == 'localhost') {
-        unset($options['session_cookie_domain']);
-      }
 
       // cache expire, server
       ini_set('session.gc_maxlifetime', $lifeTimeSec);
