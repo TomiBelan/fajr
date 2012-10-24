@@ -8,10 +8,10 @@ array (
     3 => '09.12.2010 10:15:42',
     4 => 'Pišta Hufnágel',
     5 => '2',
-	6 => '2INF1',
-	7 => '879',
-	8 => 'phufnagel@uniba.sk',
-	9 => '',
+    6 => '2INF1',
+    7 => '879',
+    8 => 'phufnagel@uniba.sk',
+    9 => '',
   ),
   1 => 
   array (
@@ -21,9 +21,9 @@ array (
     3 => '09.12.2010 20:45:24',
     4 => 'Bc. Janko Hraško',
     5 => '3',
-	6 => '3mAIN2',
-	7 => '127',
-	8 => 'jhrasko@uniba.sk',
-	9 => '',
+    6 => '3mAIN2',
+    7 => '127',
+    8 => 'jhrasko@uniba.sk',
+    9 => '',
   ),
 );
