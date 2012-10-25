@@ -1,14 +1,17 @@
 return
 array (
   0 => 
-  array (
+ array (
     0 => 'Ignác',
     1 => 'Mráz',
     2 => 'INF',
     3 => '09.12.2010 10:15:42',
     4 => 'Ignác Mráz',
     5 => '2',
-    6 => '',
+    6 => '2INF2',
+    7 => '555',
+    8 => 'imraz@uniba.sk',
+    9 => '',
   ),
   1 => 
   array (
@@ -18,6 +21,22 @@ array (
     3 => '09.12.2010 20:45:24',
     4 => 'Bc. Juraj Strelený',
     5 => '3',
-    6 => '',
+    6 => '3mINF2',
+    7 => '111',
+    8 => 'jstreleny@uniba.sk',
+    9 => '',
+  ),
+  2 => 
+  array (
+    0 => 'Jaroslav',
+    1 => 'Járay',
+    2 => 'FYZ',
+    3 => '09.12.2010 10:15:42',
+    4 => 'Jaroslav Járay',
+    5 => '2',
+    6 => '2FYZ4',
+    7 => '876',
+    8 => 'jjaray@uniba.sk',
+    9 => '',
   ),
 );
