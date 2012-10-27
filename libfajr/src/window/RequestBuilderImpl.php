@@ -69,7 +69,11 @@ class RequestBuilderImpl implements RequestBuilder
   public function getAppInitializationUrl(ScreenData $data)
   {
     $url = $this->server->getWebUiServletUrl();
-    $params = array('appClassName' => $data->appClassName);
+    $params = array(
+      'appClassName' => $data->appClassName,
+      // tento parameter zaruci, ze nam AIS vrati aj tie tabulkove stlpce, ktore si user rucne skryl
+      'fajr' => 'A',
+    );
     if ($data->additionalParams !== null) {
       $params += $data->additionalParams;
     }
