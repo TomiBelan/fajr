@@ -48,7 +48,7 @@ class RequestBuilderImpl implements RequestBuilder
     if ($formName !== null) {
       $params['form'] = $formName;
     }
-    return $url . '?' . http_build_query($params, '', '&');
+    return $url . '?' . http_build_query($params);
   }
 
   /**
@@ -63,7 +63,7 @@ class RequestBuilderImpl implements RequestBuilder
     if (!empty($query['file'])) {
       $url .= $query['file'];
     }
-    return $url . '?' . http_build_query($query, '', '&');
+    return $url . '?' . http_build_query($query);
   }
 
   public function getAppInitializationUrl(ScreenData $data)
@@ -78,7 +78,7 @@ class RequestBuilderImpl implements RequestBuilder
       $params += $data->additionalParams;
     }
 
-    return $url .= '?' . http_build_query($params, '', '&');
+    return $url .= '?' . http_build_query($params);
   }
 
   /**
