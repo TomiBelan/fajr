@@ -1,7 +1,6 @@
 return array(
   'mozePrihlasit' => true,
   'mozeOdhlasit' => true,
-  'jePrihlaseny' => false,
   'prihlasenyData' =>
       array (
           0 => '<<WILL BE REPLACED>>',
