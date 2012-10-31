@@ -39,23 +39,23 @@ class StudiumFactoryImpl implements StudiumFactory
     return new VSES017\AdministraciaStudiaScreenImpl($trace, $executor, $parser);
   }
 
-  public function newTerminyHodnoteniaScreen(Trace $trace, $idZapisnyList, $idStudium)
+  public function newTerminyHodnoteniaScreen(Trace $trace, $paramName)
   {
     $requestBuilder = new RequestBuilderImpl($this->connection->getUrlMap());
     $executor = new ScreenRequestExecutorImpl($requestBuilder,
         $this->connection->getSimpleConnection());
     $parser = new AIS2TableParser();
     return new VSES017\TerminyHodnoteniaScreenImpl(
-        $trace, $executor, $parser, $idZapisnyList, $idStudium);
+        $trace, $executor, $parser, $paramName);
   }
 
-  public function newHodnoteniaPriemeryScreen(Trace $trace, $idZapisnyList)
+  public function newHodnoteniaPriemeryScreen(Trace $trace, $paramName)
   {
     $requestBuilder = new RequestBuilderImpl($this->connection->getUrlMap());
     $executor = new ScreenRequestExecutorImpl($requestBuilder,
         $this->connection->getSimpleConnection());
     $parser = new AIS2TableParser();
     return new VSES017\HodnoteniaPriemeryScreenImpl(
-        $trace, $executor, $parser, $idZapisnyList);
+        $trace, $executor, $parser, $paramName);
   }
 }

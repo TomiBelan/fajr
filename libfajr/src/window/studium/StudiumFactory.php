@@ -28,16 +28,15 @@ interface StudiumFactory
   public function newAdministraciaStudiaScreen(Trace $trace);
 
   /**
-   * @param $idZapisnyList id (nie index) zapisneho listu
-   * @param $idStudium id (nie index) studia
+   * @param $paramName id AISoveho parameter bagu
    * @returns TerminyHodnoteniaScreen
    */
-  public function newTerminyHodnoteniaScreen(Trace $trace, $idZapisnyList, $idStudium);
+  public function newTerminyHodnoteniaScreen(Trace $trace, $paramName);
 
   /**
-   * @param $idZapisnyList id (nie index) zapisneho listu
+   * @param $paramName id AISoveho parameter bagu
    *
    * @returns HodnoteniaPriemeryScreen
    */
-  public function newHodnoteniaPriemeryScreen(Trace $trace, $idZapisnyList);
+  public function newHodnoteniaPriemeryScreen(Trace $trace, $paramName);
 }

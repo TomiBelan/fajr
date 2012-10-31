@@ -34,16 +34,18 @@ class StudiumFakeFactoryImpl implements StudiumFactory
         new FakeRequestExecutor($this->storage, array()));
   }
 
-  public function newTerminyHodnoteniaScreen(Trace $trace, $idZapisnyList, $idStudium)
+  public function newTerminyHodnoteniaScreen(Trace $trace, $paramName)
   {
+    // v fake TerminyHodnotenia screen pouzivame $paramName ako id zapisneho listu
     return new VSES017fake\FakeTerminyHodnoteniaScreenImpl($trace,
-        new FakeRequestExecutor($this->storage, array()), $idZapisnyList);
+        new FakeRequestExecutor($this->storage, array()), $paramName);
   }
 
-  public function newHodnoteniaPriemeryScreen(Trace $trace, $idZapisnyList)
+  public function newHodnoteniaPriemeryScreen(Trace $trace, $paramName)
   {
+    // v fake HodnoteniaPriemery screen pouzivame $paramName ako id zapisneho listu
     return new VSES017fake\FakeHodnoteniaPriemeryScreenImpl($trace,
         new FakeRequestExecutor($this->storage, array()),
-        $idZapisnyList);
+        $paramName);
   }
 }
