@@ -53,6 +53,7 @@ class FakeTerminyDialogImpl extends FakeAbstractDialog
   }
 
   const MOJE_TERMINY_ZNAMKA = 12;
+  const POCET_LUDI_TERMIN = 5;
 
   public function prihlasNaTermin(Trace $trace, $terminIndex)
   {
@@ -77,6 +78,7 @@ class FakeTerminyDialogImpl extends FakeAbstractDialog
       throw new Exception("Na daný termín si už prihlásený.");
     }
     $info['jePrihlaseny'] = true;
+    $info['prihlasenyData'][self::POCET_LUDI_TERMIN]++;
     $this->executor->writeTable(array('termin' => $terminIndex), 'prihlas', $info);
 
 

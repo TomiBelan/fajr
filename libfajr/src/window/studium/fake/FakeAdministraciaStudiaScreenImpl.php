@@ -86,6 +86,10 @@ class FakeAdministraciaStudiaScreenImpl extends FakeAbstractScreen
     assert(isset($data[$zapisnyListIndex]));
     return $data[$zapisnyListIndex];
   }
+
+  public function getParamNameFromZapisnyListIndex(Trace $trace, $zapisnyListIndex, $action){
+    return $this->getZapisnyListIdFromZapisnyListIndex($trace, $zapisnyListIndex, $action);
+  }
   
   public function getPrehladKreditovDialog(Trace $trace, $studiumIndex)
   {

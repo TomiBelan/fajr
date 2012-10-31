@@ -36,6 +36,8 @@ class FakeTerminyHodnoteniaScreenImpl extends FakeAbstractScreen
     implements TerminyHodnoteniaScreen
 {
 
+  const POCET_LUDI_TERMIN = 5;
+
   public function __construct(Trace $trace, FakeRequestExecutor $executor, $idZapisnyList)
   {
     parent::__construct($trace, $executor->spawnChild(array('list' => $idZapisnyList)));
@@ -133,6 +135,7 @@ class FakeTerminyHodnoteniaScreenImpl extends FakeAbstractScreen
     }
 
     $info['jePrihlaseny'] = false;
+    $info['prihlasenyData'][self::POCET_LUDI_TERMIN]--;
     $this->executor->writeTable(
         array('predmet' => $indexy[0],
               'termin' => $indexy[1],
