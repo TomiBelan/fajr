@@ -63,11 +63,6 @@ class FakeAdministraciaStudiaScreenImpl extends FakeAbstractScreen
     return $data[$this->studiumIndex];
   }
 
-  public function getStudiumIdFromZapisnyListIndex(Trace $trace, $zapisnyListIndex, $action)
-  {
-    return $this->getStudiumIdFromIndex($this->studiumIndex);
-  }
-
   public function getZapisneListy(Trace $trace, $studiumIndex)
   {
     $this->studiumIndex = $studiumIndex;
@@ -77,18 +72,13 @@ class FakeAdministraciaStudiaScreenImpl extends FakeAbstractScreen
     return new DataTableImpl(ZoznamZapisnychListovRegression::get(), $data);
   }
 
-  public function getZapisnyListIdFromZapisnyListIndex(Trace $trace, $zapisnyListIndex, $action)
-  {
+  public function getParamNameFromZapisnyListIndex(Trace $trace, $zapisnyListIndex, $action){
     $data =
       $this->executor->readTable(
           array('studium' => $this->getStudiumIdFromIndex($this->studiumIndex)),
           'zoznamZapisnychListovId');
     assert(isset($data[$zapisnyListIndex]));
     return $data[$zapisnyListIndex];
-  }
-
-  public function getParamNameFromZapisnyListIndex(Trace $trace, $zapisnyListIndex, $action){
-    return $this->getZapisnyListIdFromZapisnyListIndex($trace, $zapisnyListIndex, $action);
   }
   
   public function getPrehladKreditovDialog(Trace $trace, $studiumIndex)
