@@ -44,12 +44,11 @@ class RequestBuilderImpl implements RequestBuilder
   public function getRequestUrl($appId, $formName = null)
   {
     $url = $this->server->getWebUiServletUrl();
-    // TODO(ppershing): use url builder here!
-    $url .= '?appId=' . $appId;
+    $params = array('appId' => $appId);
     if ($formName !== null) {
-      $url .= '&form='.$formName;
+      $params['form'] = $formName;
     }
-    return $url;
+    return $url . '?' . http_build_query($params);
   }
 
   /**
@@ -64,21 +63,22 @@ class RequestBuilderImpl implements RequestBuilder
     if (!empty($query['file'])) {
       $url .= $query['file'];
     }
-    $url .= '?' . http_build_query($query);
-    return $url;
+    return $url . '?' . http_build_query($query);
   }
 
   public function getAppInitializationUrl(ScreenData $data)
   {
     $url = $this->server->getWebUiServletUrl();
-    // TODO(ppershing): use url builder here!
-    $url .= '?appClassName=' . $data->appClassName;
+    $params = array(
+      'appClassName' => $data->appClassName,
+      // tento parameter zaruci, ze nam AIS vrati aj tie tabulkove stlpce, ktore si user rucne skryl
+      'fajr' => 'A',
+    );
     if ($data->additionalParams !== null) {
-      foreach ($data->additionalParams as $key => $value) {
-        $url .= '&' . $key . '=' . $value;
-      }
+      $params += $data->additionalParams;
     }
-    return $url;
+
+    return $url .= '?' . http_build_query($params);
   }
 
   /**
