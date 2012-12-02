@@ -178,8 +178,6 @@ class StudiumController extends BaseController
         $this->terminyHodnoteniaScreen = $screenFactory->newTerminyHodnoteniaScreen(
                 $trace,
                 $adminStudia->getParamNameFromZapisnyListIndex($trace, $this->zapisnyList,
-                    VSES017\AdministraciaStudiaScreen::ACTION_TERMINY_HODNOTENIA),
-                $adminStudia->getParamNameFromZapisnyListIndex($trace, $this->zapisnyList,
                     VSES017\AdministraciaStudiaScreen::ACTION_TERMINY_HODNOTENIA));
       } catch (ParseException $e) {
         $this->terminyHodnoteniaScreen = null;
