@@ -130,21 +130,28 @@ return array(
   /*
    * Konfigurácia skinov
    *
-    'Template.Skin.Skins' =>
-      array('noskin' => new SkinConfig(
-              array(
-                'name' => 'noskin',
-                'internal' => true,
-                'path' => '',
+   */
+  'Template.Skin.Skins' =>
+    array('noskin' => new SkinConfig(
+            array(
+              'name' => 'noskin',
+              'internal' => true,
+              'path' => '',
+            )),
+          'fajr' => new SkinConfig(
+            array(
+              'name' => 'default',
+              'path' => 'fajr',
+              'parent' => 'noskin',
               )),
-            'fajr' => new SkinConfig(
-              array(
-                'name' => 'default',
-                'path' => 'fajr',
-                'parent' => 'noskin',
-                ))
-            ),
-    */
+          'mobile' => new SkinConfig(
+            array(
+              'name' => 'mobile',
+              'path' => 'mobile',
+              'parent' => 'fajr',
+              ))
+          ),
+  
 
   /*
    * Názov defaultného servera (viď zoznam serverov)
