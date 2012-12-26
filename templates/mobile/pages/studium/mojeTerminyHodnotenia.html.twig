@@ -34,7 +34,7 @@
         {{ mobile_decorators.riadok("Poznámka:", row.poznamka|escape) }}
         {{ mobile_decorators.riadok("Prihlasovanie:", row.prihlasovanie|escape) }}
         {{ mobile_decorators.riadok("Odhlasovanie:", row.odhlasovanie|escape) }}
-        {{ mobile_decorators.riadok("Odhlás:", odhlas|escape) }}
+        {{ mobile_decorators.riadok("Odhlás:", odhlas) }}
         {{ mobile_decorators.riadok("Známka:", row.znamka|escape) }}
         <li><a href={{ path('studium_moje_skusky', {
                           'studium': studium,
