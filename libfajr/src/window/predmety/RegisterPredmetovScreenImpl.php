@@ -24,6 +24,7 @@ use libfajr\window\ScreenRequestExecutor;
 use libfajr\window\DialogData;
 use libfajr\window\ScreenData;
 use libfajr\data\AIS2TableParser;
+use libfajr\data\AIS2ComboBoxParser;
 use libfajr\util\StrUtil;
 use libfajr\util\MiscUtil;
 use libfajr\exceptions\ParseException;
@@ -43,19 +44,42 @@ class RegisterPredmetovScreenImpl extends AIS2AbstractScreen
    * @var AIS2TableParser
    */
   private $parser;
+  
+  /**
+   * @var AIS2ComboBoxParser
+   */
+  private $cbParser;
 
-  public function __construct(Trace $trace, ScreenRequestExecutor $executor, AIS2TableParser $parser)
+  public function __construct(Trace $trace, ScreenRequestExecutor $executor,
+      AIS2TableParser $parser, AIS2ComboBoxParser $cbParser)
   {
     $data = new ScreenData();
     $data->appClassName = 'ais.gui.vs.st.VSST060App';
     $data->additionalParams = array('kodAplikacie' => 'VSST060');
     parent::__construct($trace, $executor, $data);
     $this->parser = $parser;
+    $this->cbParser = $cbParser;
   }
 
-  public function getInformacnyList(Trace $trace, $kodPredmetu)
+  public function getInformacnyList(Trace $trace, $kodPredmetu, $akRok=null)
   {
     $this->openIfNotAlready($trace);
+    // TODO(anty): moze sa tu robit aj tento request? (t.j. ten pri otvoreni okna???)
+    $response = $this->executor->requestContent($trace->addChild("get content"));
+    $options = $this->cbParser->getOptionsFromHtml($trace, $response, 'akRokComboBox');
+    
+    // zistime, ktory je aktualny akademicky rok (nemusi byt nutne najnovsi)
+    // default je prvy v tabulke
+    $akRokIndex = 0;
+    if ($akRok !== null) {
+      foreach ($options as $k => $v) {
+        $akRokIndex = array_search($akRok, $options);
+        if ($akRokIndex === false) {
+          throw new \Exception("Zadaný akad. rok sa v zozname nenachádza");
+        }
+      }
+    }
+    
     $data = $this->executor->doRequest(
         $trace->addChild("Requesting data:"),
         array('compName' => 'zobrazitPredmetyAction',
@@ -65,7 +89,7 @@ class RegisterPredmetovScreenImpl extends AIS2AbstractScreen
                 ),
                 'akRokComboBox' => array(
                   'dataView' => array(
-                    'selectedIndexes' => 0, // Vyberme najnovsi ak rok, TODO: moznost urcit rucne
+                    'selectedIndexes' => $akRokIndex,
                   ),
                 ),
               ),

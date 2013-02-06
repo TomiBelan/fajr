@@ -5,7 +5,6 @@
 
 /**
  * Base class for HTML parsing classes.
- * TODO(anty): Refactor into AIS2Dom class which will be used as instance instead
  *
  * @package    Libfajr
  * @subpackage Data
@@ -31,6 +30,7 @@ use libfajr\util\StrUtil;
  * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  *
  * TODO(ppershing): document methods
+ * TODO(anty): Refactor into AIS2Dom class which will be used as instance instead
  */
 class AIS2HTMLParser
 {
