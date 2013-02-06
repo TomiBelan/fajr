@@ -19,6 +19,7 @@ use libfajr\window\RequestBuilderImpl;
 use libfajr\window\ScreenRequestExecutorImpl;
 use libfajr\data\AIS2TableParser;
 use libfajr\connection\AIS2ServerConnection;
+use libfajr\data\AIS2ComboBoxParser;
 
 class PredmetyFactoryImpl implements PredmetyFactory
 {
@@ -35,6 +36,8 @@ class PredmetyFactoryImpl implements PredmetyFactory
     $executor = new ScreenRequestExecutorImpl($requestBuilder,
         $this->connection->getSimpleConnection());
     $parser = new AIS2TableParser();
-    return new VSST060\RegisterPredmetovScreenImpl($trace, $executor, $parser);
+    $cbParser = new AIS2ComboBoxParser();
+    return new VSST060\RegisterPredmetovScreenImpl($trace, $executor, $parser,
+        $cbParser);
   }
 }

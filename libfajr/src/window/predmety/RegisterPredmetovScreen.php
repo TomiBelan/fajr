@@ -20,5 +20,5 @@ interface RegisterPredmetovScreen extends LazyDialog
   /**
    * @returns string
    */
-  public function getInformacnyList(Trace $trace, $kodPredmetu);
+  public function getInformacnyList(Trace $trace, $kodPredmetu, $akRok=null);
 }

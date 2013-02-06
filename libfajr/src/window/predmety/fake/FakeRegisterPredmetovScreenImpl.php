@@ -37,7 +37,7 @@ class FakeRegisterPredmetovScreenImpl extends FakeAbstractScreen
    */
   private $parser;
 
-  public function getInformacnyList(Trace $trace, $kodPredmetu)
+  public function getInformacnyList(Trace $trace, $kodPredmetu, $akRok=null)
   {
     // TODO to be implemented
     return "<html>to be implemented</html>";
