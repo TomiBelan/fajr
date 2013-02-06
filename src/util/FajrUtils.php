@@ -291,4 +291,27 @@ class FajrUtils
         'sec'=>$timeinfo['seconds']
     );
   }
+  
+  /**
+   * Get the academic year
+   * @param int $splitAt Month to be considered start of the academic year
+   *                      as number (1-12) defaults to 8 (August).
+   * @param int $date Unix timestamp to use when determining academic year.
+   *                   When ommited or null, the current system date is used.
+   * @return string
+   */
+  public function getAcademicYear($splitAt=8, $date=null)
+  {
+    if ($date === null) {
+      $date = time();
+    }
+    
+    $rok = intval(date('Y', $date));
+    $mesiac = intval(date('m', $date));
+    if ($mesiac < $splitAt) {
+      // ak je mesiac maly, este berieme akad.rok zacinajuci v predoslom roku
+      $rok -= 1;
+    }
+    return sprintf('%04d/%04d', $rok, $rok + 1);
+  }
 }
