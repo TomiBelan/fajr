@@ -167,8 +167,21 @@ class StudiumController extends BaseController
       $this->zapisnyList = $request->getParameter('list');
 
       if ($this->zapisnyList === '') {
-        $lastList = end($zapisneListyData);
-        $this->zapisnyList = $lastList['index'];
+        // Ak nemame nastaveny zapisny list, zobreme aktualny
+        // ak nenajdeme aktualny, zoberme posledny v zozname
+        $aktualnyAkadRok = FajrUtils::getAcademicYear();
+        $this->zapisnyList = null;
+        foreach ($zapisneListyData as $zapList) {
+          if ($zapList['popisAkadRok'] == $aktualnyAkadRok) {
+            $this->zapisnyList = $zapList['index'];
+          }
+        }
+        
+        // nenasli sme
+        if ($this->zapisnyList === null) {
+          $lastList = end($zapisneListyData);
+          $this->zapisnyList = $lastList['index'];
+        }
       }
       $this->zapisnyList = intval($this->zapisnyList);
       $this->zapisnyListObj = $zapisneListyData[$this->zapisnyList];

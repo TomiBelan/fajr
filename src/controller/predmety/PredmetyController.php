@@ -91,15 +91,7 @@ class PredmetyController extends BaseController
     Preconditions::check(!empty($searchCode), "Nezadaný kód predmetu!");
 
     // Zistime aktualny akad rok.
-    // Pre ucely zobrazovania je rozdelenie medzi jul-august
-    $rok = intval(date('Y'));
-    $mesiac = intval(date('m'));
-    if ($m < 8) {
-      // ak je mesiac maly, este berieme akad.rok zacinajuci v predoslom roku
-      $rok -= 1;
-    }
-    $akadRok = sprintf('%04d/%04d', $rok, $rok + 1);
-    
+    $akadRok = FajrUtils::getAcademicYear();
     $content = $this->registerPredmetovScreen->getInformacnyList($trace, $searchCode, $akadRok);
     
     $ip = new InformacnyListParser();
