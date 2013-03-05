@@ -60,9 +60,9 @@ class AIS2TableParser extends AIS2HTMLParser
           foreach ($element->getElementsByTagName('img') as $img) {
             assert($img->hasAttribute('src'));
             $src = $img->getAttribute('src');
-            if (preg_match('@checked.gif@', $src)) return "TRUE";
-            if (preg_match('@removeFlag.gif@', $src)) return "FALSE";
-            assert(false);
+            if (preg_match('@checked\.(?:gif|png)@', $src)) return "TRUE";
+            if (preg_match('@removeFlag\.(?:gif|png)@', $src)) return "FALSE";
+            throw new \Exception("Neznámy názov obrázku pre logickú hodnotu: " . $src);
           }
           assert(false);
         case 'boolean':

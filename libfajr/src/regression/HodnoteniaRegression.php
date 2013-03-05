@@ -48,8 +48,9 @@ class HodnoteniaRegression
           16 => 'dovezene',
           17 => 'mozePrihlasit',
           18 => 'popisSposUkon',
-          19 => 'rozsah',
-          20 => 'priebHodn',
+          19 => 'canAdd',
+          20 => 'rozsah',
+          21 => 'priebHodn',
           );
   }
 }

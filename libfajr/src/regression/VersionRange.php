@@ -44,7 +44,7 @@ class VersionRange
    */
   public static function getMaxVersion()
   {
-    return new AIS2Version(2, 3, 43, 47);
+    return new AIS2Version(2, 4, 102, 16);
   }
 
 }
