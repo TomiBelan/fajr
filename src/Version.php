@@ -2,7 +2,7 @@
 /**
  * Contains information about version of fajr.
  *
- * @copyright  Copyright (c) 2010, 2011, 2012 The Fajr authors (see AUTHORS).
+ * @copyright  Copyright (c) 2010, 2011, 2012, 2013 The Fajr authors (see AUTHORS).
  *             Use of this source code is governed by a MIT license that can be
  *             found in the LICENSE file in the project root directory.
  *
@@ -23,7 +23,7 @@ namespace fajr;
 class Version
 {
   /** @var string current version number */
-  private static $version = '0.5.2';
+  private static $version = '0.5.3';
 
   /** @var array basic changelog information */
   private static $changelog = array (
@@ -46,6 +46,7 @@ class Version
       array('2011-12-20', '0.5.0', 'Refaktoring, vylepšený vzhľad, ...'),
       array('2012-04-18', '0.5.1', 'Refaktoring, mobilný template, ...'),
       array('2012-05-29', '0.5.2', 'Kalendár, exporty a drobné vylepšenia.'),
+      array('2013-03-05', '0.5.3', 'Bugfixy.'),
     );
 
   /** @var int how many entries from changelog we want to show */
