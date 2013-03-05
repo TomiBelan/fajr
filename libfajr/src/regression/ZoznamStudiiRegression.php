@@ -56,6 +56,7 @@ class ZoznamStudiiRegression
           24 => 'stupenRoky',
           25 => 'programRoky',
           26 => 'cisloDiplomuIIst',
+          27 => 'studijnyProgramIdProgramCRS2',
           );
   }
 }

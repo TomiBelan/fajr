@@ -53,6 +53,8 @@ class ZoznamZapisnychListovRegression
           21 => 'nespoplatneRoky',
           22 => 'rokyStudiaStupen',
           23 => 'potvrdenieVysledky',
+          24 => 'studProgramIdProgramCRS2',
+          25 => 'ez',
           );
   }
 }

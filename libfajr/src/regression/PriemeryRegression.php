@@ -58,6 +58,7 @@ class PriemeryRegression
           26 => 'priemerInfoPopisAkadRokOd',
           27 => 'priemerInfoDatum1HodnOd',
           28 => 'priemerInfoDatum2HodnOd',
+          29 => 'priemerPocitatNeabsABC',
           );
   }
 }
