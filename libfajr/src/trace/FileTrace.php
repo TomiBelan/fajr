@@ -12,7 +12,7 @@
  * @filesource
  */
 
-namespace libfajr\Trace;
+namespace libfajr\trace;
 use libfajr\trace\Trace;
 use libfajr\base\Timer;
 use libfajr\util\CodeSnippet;
