@@ -50,6 +50,29 @@ class AIS2TableParser extends AIS2HTMLParser
     return new DataTableImpl($headers, $data);
   }
 
+  /**
+   * 
+   * Pre otestovanie DataTable
+   *
+   */
+  public function createTableFromHtml2(Trace $trace, $aisResponseHtml, $dataViewName)
+  {
+    Preconditions::checkIsString($aisResponseHtml);
+    Preconditions::checkIsString($dataViewName);
+    $html = $this->fixProblematicTags($trace->addChild("Fixing html for better DOM parsing."),
+                                                       $aisResponseHtml);
+    $domWholeHtml = $this->createDomFromHtml($trace, $html);
+    $element = $this->findEnclosingElement($trace, $domWholeHtml, $dataViewName);
+    $dom = new DOMDocument();
+    $dom->appendChild($dom->importNode($element, true));
+    // ok, now we have restricted document
+    $headers = $this->getTableDefinition($trace->addChild("Get table definition"), $dom);
+    $data = $this->getTableData($trace->addChild("Get table data"), $dom);
+    $result['definitions'] = $headers;
+    $result['data'] = $data;
+    return $result;
+  }
+
   public function getCellContent(DOMElement $element)
   {
     // special fix for checkboxes
