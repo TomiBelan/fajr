@@ -8,6 +8,8 @@
 /.htaccess
 /report
 /version_info.php
+/vendor
+/composer.phar
 
 # /config/
 /config/configuration.php

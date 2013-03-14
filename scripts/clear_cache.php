@@ -8,10 +8,8 @@ use fajr\config\FajrConfigLoader;
 use fajr\config\FajrConfigOptions;
 
 // register our autoloader
-require_once (__DIR__ . '/../libfajr/src/libfajr/libfajr.php');
-Loader::register();
-Loader::searchForClasses(__DIR__ . '/../src', true);
-Loader::searchForClasses(__DIR__ . '/../libfajr/src', true);
+
+require_once __DIR__ . '/../vendor/autoload.php';
 
 if (!FajrConfigLoader::isConfigured()) {
   echo 'Chyba: Fajr nie je nakonfigurovany'. "\n";
