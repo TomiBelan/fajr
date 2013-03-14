@@ -10,14 +10,6 @@
  * @filesource
  */
 
-/* Bootstrap autoloaders */
-
-require_once __DIR__ . '/../third_party/symfony_storage/sfStorageAutoloader.php';
-sfStorageAutoloader::register();
-
-require_once __DIR__ . '/../third_party/twig/lib/Twig/Autoloader.php';
-Twig_Autoloader::register();
-
 require_once __DIR__ . '/../vendor/autoload.php';
 
 ini_set('error_reporting', E_ALL | E_STRICT);
