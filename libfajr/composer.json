@@ -1,0 +1,8 @@
+{
+    "name": "svt/libfajr",
+    "description": "Functions for connecting to AIS2",
+    "license": "MIT",
+    "autoload": {
+        "psr-0": { "libfajr": "src/" }
+    }
+}
