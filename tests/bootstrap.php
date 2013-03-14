@@ -18,7 +18,7 @@ sfStorageAutoloader::register();
 require_once __DIR__ . '/../third_party/twig/lib/Twig/Autoloader.php';
 Twig_Autoloader::register();
 
-require_once __DIR__ . '/../libfajr/src/libfajr.php';
+require_once __DIR__ . '/../libfajr/src/libfajr/libfajr.php';
 Loader::register();
 Loader::searchForClasses(__DIR__.'/../src', true);
 Loader::searchForClasses(__DIR__.'/../libfajr/src', true);
