@@ -1,0 +1,13 @@
+{
+    "name": "svt/fajr",
+    "description": "Alternative frontend for AiS2",
+    "autoload": {
+        "classmap": ["src/", "libfajr/src/"]
+    },
+    "require": {
+        "php": ">=5.3.3",
+        "ext-mbstring": "*",
+        "ext-curl": "*"
+    },
+    "minimum-stability": "alpha"
+}

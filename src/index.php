@@ -99,13 +99,8 @@ $loader->registerPrefixes(array(
 ));
 
 $loader->register();
-// register our autoloader as last
-require_once '../libfajr/src/libfajr.php';
-Loader::register();
-Loader::searchForClasses(dirname(__FILE__), true);
-Loader::searchForClasses('../libfajr/src', true);
-// TODO(ppershing): move this to libfajr/Loader.php as that is the right place for it
-require_once '../libfajr/src/Assert.php';
+
+require_once __DIR__ . '/../vendor/autoload.php';
 
 // is there configuration.php file present?
 if (!FajrConfigLoader::isConfigured()) {
