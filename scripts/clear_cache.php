@@ -8,7 +8,6 @@ use fajr\config\FajrConfigLoader;
 use fajr\config\FajrConfigOptions;
 
 // register our autoloader
-
 require_once __DIR__ . '/../vendor/autoload.php';
 
 if (!FajrConfigLoader::isConfigured()) {
