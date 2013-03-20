@@ -1,0 +1,18 @@
+{
+    "name": "svt/fajr",
+    "description": "Alternative frontend for AiS2",
+    "autoload": {
+        "classmap": ["src/", "libfajr/src/", "third_party/symfony_storage/lib/"]
+    },
+    "require": {
+        "php": ">=5.3.3",
+        "twig/twig": "~1.6",
+        "symfony/config": "2.1.*",
+        "symfony/routing": "2.1.*",
+        "symfony/http-foundation": "2.1.*",
+        "symfony/yaml": "2.1.*",
+        "ext-mbstring": "*",
+        "ext-curl": "*"
+    },
+    "minimum-stability": "alpha"
+}

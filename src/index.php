@@ -80,32 +80,7 @@ error_reporting(E_ALL | E_STRICT);
 date_default_timezone_set('Europe/Bratislava');
 mb_internal_encoding("UTF-8");
 
-// register Symfony Storage autoloader
-require_once '../third_party/symfony_storage/sfStorageAutoloader.php';
-sfStorageAutoloader::register();
-
-require_once __DIR__.'/../third_party/Symfony/Component/ClassLoader/UniversalClassLoader.php';
-
-use Symfony\Component\ClassLoader\UniversalClassLoader;
-
-$loader = new UniversalClassLoader();
-
-$loader->registerNamespaces(array(
-  'Symfony' => __DIR__.'/../third_party',
-));
-
-$loader->registerPrefixes(array(
-    'Twig_'  => __DIR__.'/../third_party/twig/lib',
-));
-
-$loader->register();
-// register our autoloader as last
-require_once '../libfajr/src/libfajr.php';
-Loader::register();
-Loader::searchForClasses(dirname(__FILE__), true);
-Loader::searchForClasses('../libfajr/src', true);
-// TODO(ppershing): move this to libfajr/Loader.php as that is the right place for it
-require_once '../libfajr/src/Assert.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 // is there configuration.php file present?
 if (!FajrConfigLoader::isConfigured()) {

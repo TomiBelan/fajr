@@ -10,18 +10,8 @@
  * @filesource
  */
 
-/* Bootstrap autoloaders */
+require_once __DIR__ . '/../vendor/autoload.php';
 
-require_once __DIR__ . '/../third_party/symfony_storage/sfStorageAutoloader.php';
-sfStorageAutoloader::register();
-
-require_once __DIR__ . '/../third_party/twig/lib/Twig/Autoloader.php';
-Twig_Autoloader::register();
-
-require_once __DIR__ . '/../libfajr/src/libfajr.php';
-Loader::register();
-Loader::searchForClasses(__DIR__.'/../src', true);
-Loader::searchForClasses(__DIR__.'/../libfajr/src', true);
 ini_set('error_reporting', E_ALL | E_STRICT);
 
 /* Prepare report directory */
