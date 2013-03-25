@@ -1,27 +1,20 @@
 <?php
-// Copyright (c) 2010 The Fajr authors (see AUTHORS).
+// Copyright (c) 2013 The Fajr authors (see AUTHORS).
 // Use of this source code is governed by a MIT license that can be
 // found in the LICENSE file in the project root directory.
 
-/**
- * Tento súbor obsahuje objekt zaobaľujúci tabuľku dát.
- *
- * @package    Libfajr
- * @author     Peter Perešíni <ppershing+fajr@gmail.com>
- * @filesource
- */
 namespace libfajr\data;
 
 use libfajr\data\AIS2TableParser;
+use libfajr\data\ComponentInterface;
 use libfajr\trace\Trace;
 
 /**
  * Trieda zastrešujúca tabuľku dát.
  *
  * @package    Libfajr
- * @author     Peter Perešíni <ppershing+fajr@gmail.com>
  */
-class DataTable implements SimpleDataTable
+class DataTable implements ComponentInterface
 {
   /**
    * Definícia stĺpcov tabuľky
@@ -36,55 +29,45 @@ class DataTable implements SimpleDataTable
   private $data = null;
 
   /**
-   * Riadky tabuľky ktoré sa zmenili
+   * Selected rows
    * @var array(integer)
    */
-  private $change = null;
+  private $selectedRows = null;
 
   /**
-   * Konštruktor, z aisResponseHTML vyrobí tabuľku,
-   * identifikovanú cez $dataViewName
-   * @param Trace    $trace            na vedenie logu
-   * @param string $aisResponseHtml    HTML odpoved z aisu
-   * @param string $dataViewName       názov tabuľky ktorú chceme načítať
-   */
-  public function __construct(Trace $trace, $aisResponseHtml, $dataViewName)
-  {
-    $this->loadTable($trace, $aisResponseHtml, $dataViewName);
-  }
-
-  /**
-   * Načíta tabuľlku z aisResponseHtml
+   * Create a Table and set a definitions
    *
+   * @param string $dataViewNama name of Table which we want to store here
    */
-  public function loadTable(Trace $trace, $aisResponseHtml, $dataViewName)
+  public function __construct($dataViewName)
   {
-    $parser = new AIS2TableParser();
-    $data = $parser->createTableFromHtml2($trace, $aisResponseHtml, $dataViewName);
     $this->definition = $data['definitions'];
-    assert(is_array($data['data']));
-    $this->data = array();
-    foreach ($data['data'] as $rowKey=>$tableRow) {
-      $myRow = array();
-      $myRow['index'] = $rowKey;
-      assert(count($this->definition) == count($tableRow));
-
-      foreach($tableRow as $key=>$value) {
-        assert(is_numeric($key));
-        assert(isset($this->definition[$key]));
-        $myRow[$this->definition[$key]] = $value;
-      }
-
-      $this->data[$rowKey] = $myRow;
-
-    }
-    
   }
 
   /**
-   * Vráti riadky tabuľky.
+   * Initialize Table from aisResponseHtml
    *
-   * @returns array(array(string=>string)) riadky tabuľky
+   * @param DOMDocument $aisResponseHtml AIS2 html parsed reply
+   */
+  public function initComponentFromResponse($aisResponseHtml)
+  {
+   
+  }
+
+  /**
+   * Update Table from aisResponseHtml
+   *
+   * @param DOMDocument $aisResponseHtml AIS2 html parsed reply
+   */
+  public function updateComponentFromResponse($aisResponseHtml)
+  {
+  
+  }
+
+  /**
+   * Return data in Table
+   *
+   * @returns array(array(string=>string)) all rows of Table
    */
   public function getData()
   {
@@ -92,9 +75,9 @@ class DataTable implements SimpleDataTable
   }
 
   /**
-   * Vráti definíciu stĺpcov použitú a pri parsovaní.
+   * Return Table definitions.
    *
-   * @returns array(string) názvy stĺpcov.
+   * @returns array(string) columns names.
    */
   public function getTableDefinition()
   {
@@ -102,44 +85,50 @@ class DataTable implements SimpleDataTable
   }
 
   /**
-   * Vráti definíciu stĺpcov použitú pri parsovaní.
+   * Return one record from table
    *
-   * @param integer $num číslo riadku ktoré chceme
-   * @returns array(string) dáta v riadku $data[$num].
+   * @param integer $index number of row, which we want to get
+   * @returns array(string) data in row $data[$num].
    */
-  public function getRow($num)
+  public function getRow($index)
   {
-    return $this->data[$num];
+    return $this->data[$index];
   }
 
   /**
-   * Zmení jeden riadok v tabuľke a zaregistruje zmenu
-   *
-   * @param integer $num číslo riadku ktorý chceme zmeniť
-   * @param array(string=>string) jeden riadok z tabulky ktorým nahradíme pôvodný
-   */
-  public function setRow($num, $row)
-  {
-    assert(count($row) != count($this->definition));
-    $this->change[] = $num;
-
-    $this->data[$num] = $row;
-  }
-
-  /**
-   * Vráti riadky tabuľky ktoré sa zmenili, a zmenu už nepovažuje za zmenu
+   * Returns rows which were selected
    *
    * @return array(array(string=>string))
    */
-  public function getChange()
+  public function getStateChanges()
   {
     $result = null;
 
-    foreach($this->change as $key){
-      $result[] = $data[$key];
+    foreach($this->change as $index){
+      $result[] = $data[$index];
     }
     
     $this->change = null;
     return $result;
+  }
+
+ /**
+   * Select one record of table
+   *
+   * @param integer $index number of row, which we want to select
+   */
+  public function selectRow($index)
+  {
+    return $this->selectedRows[$index] = $index;
+  }
+
+  /**
+   * Unselect one record of table
+   *
+   * @param integer $index number of row, which we want to unselect
+   */
+  public function unselectRow($index)
+  {
+    unset($this->selectedRows[$index]);
   }
 }
