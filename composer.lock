@@ -1,5 +1,5 @@
 {
-    "hash": "b744abdb9b1b22f46266da82f2c2a4b8",
+    "hash": "1ebd9da57de8fd72024b3af779a20f15",
     "packages": [
         {
             "name": "symfony/config",
@@ -232,15 +232,32 @@
         }
     ],
     "packages-dev": [
-
+        {
+            "name": "svt/linters",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fmfi-svt/linters.git",
+                "reference": "7b2890406163d6f47c426f23952b5bd786d10ed9"
+            },
+            "require": {
+                "php": ">=5.2"
+            },
+            "type": "library",
+            "license": [
+                "MIT"
+            ],
+            "description": "Collection of useful linters.",
+            "time": "2013-03-25 11:46:48"
+        }
     ],
     "aliases": [
 
     ],
     "minimum-stability": "alpha",
-    "stability-flags": [
-
-    ],
+    "stability-flags": {
+        "svt/linters": 20
+    },
     "platform": {
         "php": ">=5.3.3",
         "ext-mbstring": "*",
