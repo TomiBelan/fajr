@@ -96,19 +96,18 @@ class DataTable implements ComponentInterface
   }
 
   /**
-   * Returns rows which were selected
+   * Returns ids of rows which were selected
    *
-   * @return array(array(string=>string))
+   * @return array(string)
    */
   public function getStateChanges()
   {
-    $result = null;
+    $result = array();
 
     foreach($this->change as $index){
-      $result[] = $data[$index];
+      $result[] = $data[$index]['id'];
     }
     
-    $this->change = null;
     return $result;
   }
 
@@ -117,18 +116,18 @@ class DataTable implements ComponentInterface
    *
    * @param integer $index number of row, which we want to select
    */
-  public function selectRow($index)
+  public function selectSingleRow($index)
   {
-    return $this->selectedRows[$index] = $index;
+    $this->selectedRows = array();
+    $this->selectedRows = $index;
   }
 
   /**
-   * Unselect one record of table
+   * Unselect actually selected row
    *
-   * @param integer $index number of row, which we want to unselect
    */
-  public function unselectRow($index)
+  public function clearSelection()
   {
-    unset($this->selectedRows[$index]);
+    $this->change = array();
   }
 }

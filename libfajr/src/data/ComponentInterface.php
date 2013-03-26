@@ -9,21 +9,21 @@ interface ComponentInterface {
   /**
    * Initialize a component
    *
-   * @param DOMDocument $aisResponseHtml AIS2 html parsed reply
+   * @param DOMDocument $aisResponse AIS2 html parsed reply
    */
-  public function initComponentFromResponse($aisResponseHtml);
+  public function initComponentFromResponse(DOMDocument $aisResponseHtml);
 
   /**
    * Update component if there is some change
    *
-   * @param DOMDocument $aisResponseHtml AIS2 html parsed reply
+   * @param DOMDocument $aisResponse AIS2 html parsed reply
    */
-  public function updateComponentFromResponse($aisResponseHtml);
+  public function updateComponentFromResponse(DOMDocument $aisResponse);
 
   /**
    * Return the changes in component
    *
-   * @return return different type of data
+   * @returns array(string) returns ids of what was changed.
    */
   public function getStateChanges();
 }
