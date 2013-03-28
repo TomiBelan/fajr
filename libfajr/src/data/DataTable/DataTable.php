@@ -17,10 +17,22 @@ use libfajr\trace\Trace;
 class DataTable implements ComponentInterface
 {
   /**
+   * Name of the table in aisHTMLCode
+   * @var string
+   */
+  private $dataViewName = null;
+
+  /**
    * Definícia stĺpcov tabuľky
    * @var array(string)
    */
   private $definition = null;
+
+  /**
+   * Definition which the table must have
+   * @var array(string)
+   */
+  private $controlDefinition = null;
 
   /**
    * Samotné dáta poparsované pri konštrukcii objektu.
@@ -35,39 +47,34 @@ class DataTable implements ComponentInterface
   private $selectedRows = null;
 
   /**
-   * Create a Table and set a definitions
+   * Create a Table and set its idName and definition
    *
-   * @param string $dataViewNama name of Table which we want to store here
+   * @param string $dataViewName name of Table which we want to store here
+   * @param array(string) $definition name of columns which table must have
+   *                                  if not defined, no control on that will
+   *                                  be done during updating the table and 
+   *                                  definition will load from aisHTMLCode.
    */
-  public function __construct($dataViewName)
+  public function __construct($dataViewName, $definition = null)
   {
-    $this->definition = $data['definitions'];
+    $this->dataViewName = $dataViewName;
+    $this->controlDefinition = $definition;
   }
 
   /**
-   * Initialize Table from aisResponseHtml
+   * Update Table from aisResponse
    *
-   * @param DOMDocument $aisResponseHtml AIS2 html parsed reply
+   * @param DOMDocument $aisResponse AIS2 html parsed reply
    */
-  public function initComponentFromResponse($aisResponseHtml)
-  {
-   
-  }
-
-  /**
-   * Update Table from aisResponseHtml
-   *
-   * @param DOMDocument $aisResponseHtml AIS2 html parsed reply
-   */
-  public function updateComponentFromResponse($aisResponseHtml)
+  public function updateComponentFromResponse(DOMDocument $aisResponse)
   {
   
   }
 
   /**
-   * Return data in Table
+   * Return data in the Table
    *
-   * @returns array(array(string=>string)) all rows of Table
+   * @returns array(array(string=>string)) all rows of the Table
    */
   public function getData()
   {
@@ -88,7 +95,7 @@ class DataTable implements ComponentInterface
    * Return one record from table
    *
    * @param integer $index number of row, which we want to get
-   * @returns array(string) data in row $data[$num].
+   * @returns array(string=>string) data in row $data[$index].
    */
   public function getRow($index)
   {
@@ -96,19 +103,23 @@ class DataTable implements ComponentInterface
   }
 
   /**
-   * Returns ids of rows which were selected
+   * Returns changes on this table (selected rows)
    *
-   * @return array(string)
+   * @return DOMDocument
    */
   public function getStateChanges()
   {
-    $result = array();
+    $this->selectedRows = array_unique($this->selectedRows);   
+  }
 
-    foreach($this->change as $index){
-      $result[] = $data[$index]['id'];
-    }
-    
-    return $result;
+  /**
+   * Add one row to selection
+   *
+   * @param integer $index number of row, which we want to select
+   */
+  public function selectRow($index)
+  {
+    $this->selectedRows = $index;
   }
 
  /**
@@ -118,8 +129,8 @@ class DataTable implements ComponentInterface
    */
   public function selectSingleRow($index)
   {
-    $this->selectedRows = array();
-    $this->selectedRows = $index;
+    $this->clearSelection();
+    $this->selectRow($index);
   }
 
   /**
@@ -128,6 +139,6 @@ class DataTable implements ComponentInterface
    */
   public function clearSelection()
   {
-    $this->change = array();
+    $this->selectedRows = array();
   }
 }

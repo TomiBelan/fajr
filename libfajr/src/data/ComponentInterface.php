@@ -11,7 +11,7 @@ interface ComponentInterface {
    *
    * @param DOMDocument $aisResponse AIS2 html parsed reply
    */
-  public function initComponentFromResponse(DOMDocument $aisResponseHtml);
+  public function initComponentFromResponse(DOMDocument $aisResponse);
 
   /**
    * Update component if there is some change
@@ -23,7 +23,7 @@ interface ComponentInterface {
   /**
    * Return the changes in component
    *
-   * @returns array(string) returns ids of what was changed.
+   * @returns DOMDocument returns what was changed in DOMDocument format.
    */
   public function getStateChanges();
 }
