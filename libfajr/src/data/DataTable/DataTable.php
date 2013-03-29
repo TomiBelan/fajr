@@ -29,12 +29,6 @@ class DataTable implements ComponentInterface
   private $definition = null;
 
   /**
-   * Definition which the table must have
-   * @var array(string)
-   */
-  private $controlDefinition = null;
-
-  /**
    * Samotné dáta poparsované pri konštrukcii objektu.
    * @var array(array(string=>string))
    */
@@ -50,20 +44,10 @@ class DataTable implements ComponentInterface
    * Create a Table and set its dataViewName and definition
    *
    * @param string $dataViewName name of Table which we want to store here
-   * @param Window $parent window where this component is used
-   * @param array(string) $definition name of columns which table must have
-   *                                  if not defined, no control on that will
-   *                                  be done during updating the table and 
-   *                                  definition will load from aisHTMLCode.
    */
-  public function __construct($dataViewName, $definition = null)
+  public function __construct($dataViewName)
   {
     $this->dataViewName = $dataViewName;
-    if($definition != null){
-      $this->controlDefinition = $definition;
-    }else{
-      $this->controlDefinition = array();
-    }
     $this->selectedRows = array();
   }
 
@@ -89,18 +73,14 @@ class DataTable implements ComponentInterface
     //ak sa jedna len o scroll tak tam definicia tabulky nie je
     if($element2->getAttribute("dataSendType") == "update"){
       $this->definition = $this->getDefinitionFromDom($dom);
-      $control = array_diff($this->controlDefinition,$this->definition);
-      if($control != null){
-        throw new ParseException("Table definition isn`t a subset of controlDefinition");
-      }
     }
 
-    $TData = $this->getTableDataFromDom($dom);
+    $tdata = $this->getTableDataFromDom($dom);
     
-    // modifying data to better format
-    assert(is_array($TData));
+    // use column name as array key instead of column index
+    assert(is_array($tdata));
     $this->data = array();
-    foreach ($TData as $rowKey=>$tableRow) {
+    foreach ($tdata as $rowKey=>$tableRow) {
       $myRow = array();
       $myRow['index'] = $rowKey;
       assert(count($this->definition) == count($tableRow));
@@ -140,18 +120,19 @@ class DataTable implements ComponentInterface
   /**
    * Return one record from table
    *
-   * @param string $index rowId of row, which we want to get
+   * @param integer $index rowId of row, which we want to get
    * @returns array(string=>string) data in row $data[$index].
    */
   public function getRow($index)
   {
+    if ($index < 0 || $index >= count($this->data)) return null;
     return $this->data[$index];
   }
 
   /**
    * Returns changes on this table (selected rows)
    *
-   * @return DOMDocument
+   * @return string XML in string
    */
   public function getStateChanges()
   {
@@ -161,17 +142,17 @@ class DataTable implements ComponentInterface
   /**
    * Add one row to selection
    *
-   * @param string $index rowId of row, which we want to select
+   * @param integer $index rowId of row, which we want to select
    */
   public function selectRow($index)
   {
-    $this->selectedRows = $index;
+    $this->selectedRows[] = $index;
   }
 
  /**
    * Select one record of table
    *
-   * @param string $index rowId of row, which we want to select
+   * @param integer $index rowId of row, which we want to select
    */
   public function selectSingleRow($index)
   {
@@ -180,7 +161,7 @@ class DataTable implements ComponentInterface
   }
 
   /**
-   * Unselect actually selected row
+   * Unselect every selected row.
    *
    */
   public function clearSelection()
