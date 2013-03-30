@@ -5,9 +5,14 @@
 
 namespace libfajr\data;
 
-use libfajr\data\AIS2TableParser;
-use libfajr\data\ComponentInterface;
+use DOMElement;
+use DOMDocument;
 use libfajr\trace\Trace;
+use libfajr\util\StrUtil;
+use libfajr\base\Preconditions;
+use libfajr\data\ComponentInterface;
+use libfajr\exceptions\ParseException;
+
 
 /**
  * Trieda zastrešujúca tabuľku dát.
@@ -43,10 +48,12 @@ class DataTable implements ComponentInterface
   /**
    * Create a Table and set its dataViewName and definition
    *
+   * @param Trace $trace for creating logs, tracking activity
    * @param string $dataViewName name of Table which we want to store here
    */
-  public function __construct($dataViewName)
+  public function __construct(Trace $trace, $dataViewName)
   {
+    Preconditions::checkIsString($dataViewName);
     $this->dataViewName = $dataViewName;
     $this->selectedRows = array();
   }
@@ -54,28 +61,40 @@ class DataTable implements ComponentInterface
   /**
    * Update Table from aisResponse
    *
+   * @param Trace $trace for creating logs, tracking activity
    * @param DOMDocument $aisResponse AIS2 html parsed reply
    */
-  public function updateComponentFromResponse(DOMDocument $aisResponse)
+  public function updateComponentFromResponse(Trace $trace, DOMDocument $aisResponse)
   {
+    Preconditions::checkNotNull($aisResponse);
+    $trace->tlog("Finding element with id '$dataViewName'");
     $element = $aisResponse->getElementById($dataViewName);
+    if ($element === null) {
+      throw new ParseException("Problem parsing ais2 response: Element '$dataViewName' not found");
+    }
+    $trace->tlog("Element found");
+
     $dom = new DOMDocument();
     $dom->appendChild($dom->importNode($element, true));
     // ok, now we have restricted document
 
     //informacia ci sa jedna o update, append...
+    $trace->tlog("Finding element with id dataTabBodies");
     $element2 = $dom->getElementById("dataTabBodies");
-    if ($element === null || $element2 === null) {
-      throw new ParseException("Problem parsing ais2 response: Element not found");
+    if ($element2 === null) {
+      throw new ParseException("Problem parsing ais2 response: Element dataTabBodies not found");
     }
+    $trace->tlog("Element found");
     
 
     //ak sa jedna len o scroll tak tam definicia tabulky nie je
+    $trace->tlog("Finding attribute dataSendType");
     if($element2->getAttribute("dataSendType") == "update"){
-      $this->definition = $this->getDefinitionFromDom($dom);
+      $this->definition = $this->getDefinitionFromDom($trace->addChild("Getting table definition from DOM."), $dom);
     }
+    $trace->tlog("Attribute found");
 
-    $tdata = $this->getTableDataFromDom($dom);
+    $tdata = $this->getTableDataFromDom($trace->addChild("Getting table data from DOM."), $dom);
     
     // use column name as array key instead of column index
     assert(is_array($tdata));
@@ -125,6 +144,7 @@ class DataTable implements ComponentInterface
    */
   public function getRow($index)
   {
+    Preconditions::checkIsNumber($index);
     if ($index < 0 || $index >= count($this->data)) return null;
     return $this->data[$index];
   }
@@ -146,6 +166,7 @@ class DataTable implements ComponentInterface
    */
   public function selectRow($index)
   {
+    Preconditions::checkIsNumber($index);
     $this->selectedRows[] = $index;
   }
 
@@ -156,6 +177,7 @@ class DataTable implements ComponentInterface
    */
   public function selectSingleRow($index)
   {
+    Preconditions::checkIsNumber($index);
     $this->clearSelection();
     $this->selectRow($index);
   }
@@ -172,15 +194,19 @@ class DataTable implements ComponentInterface
   /**
    * Get table definitions from DOMDocument
    *
+   * @param Trace $trace for creating logs, tracking activity
    * @param $dom DOMDocument from ais2ResponseHtml
    * @returns array(string) Definition of table
    */
-  private function getDefinitionFromDom(DOMDocument $dom)
+  private function getDefinitionFromDom(Trace $trace, DOMDocument $dom)
   {
+    Preconditions::checkNotNull($dom);
+    $trace->tlog("Finding element with id dataTabColGroup");
     $element = $dom->getElementById('dataTabColGroup');
     if ($element == null) {
       throw new ParseException("Can't find table headers");
     }
+    $trace->tlog("Element found");
     $list = $element->getElementsByTagName('col');
     $columns = array();
     foreach ($list as $node) {
@@ -193,16 +219,20 @@ class DataTable implements ComponentInterface
   /**
    * Extract Table data from DOMDocument
    *
+   * @param Trace $trace for creating logs, tracking activity
    * @param $dom DOMDocument part of ais2ResponseHTML which contain Table
    * @returns array(string=>array(string)) Returns rows of Table, where index is rowId
    */
-  private function getTableDataFromDom(DOMDocument $dom)
+  private function getTableDataFromDom(Trace $trace, DOMDocument $dom)
   {
-    $Tdata = array();
+    Preconditions::checkNotNull($dom);
+    $tdata = array();
+    $trace->tlog("Finding element with id dataTabBody0");
     $element = $dom->getElementById('dataTabBody0');
     if ($element == null) {
       throw new ParseException("Can't find table data");
     }
+    $trace->tlog("Element found");
 
     foreach ($element->childNodes as $aisRow) {
       assert($aisRow->tagName == "tr");
@@ -210,11 +240,15 @@ class DataTable implements ComponentInterface
       assert($aisRow->hasChildNodes());
       // TODO: asserty prerobit na exceptiony
       $row = array();
+      $trace->tlog("Extracting row id.");
       $rowId = $aisRow->getAttribute("id");
       $index = StrUtil::match('@^row_([0-9]+)$@', $rowId);
       if ($index === false) {
         throw new ParseException("Unexpected row id format");
       }
+      $trace->tlog("Extraction is correct.");
+      $index = intval($index);
+
       foreach ($aisRow->childNodes as $ais_td) {
         assert($ais_td->tagName == "td");
         // get a text content of <td>
@@ -230,8 +264,8 @@ class DataTable implements ComponentInterface
         assert($value != ''); // probably there is some inner element which we don't know about
         $row[] = $value;
       }
-      $Tdata[$index] = $row;
+      $tdata[$index] = $row;
     }
-    return $Tdata;
+    return $tdata;
   }
 }
