@@ -7,23 +7,17 @@ namespace libfajr\data;
 
 interface ComponentInterface {
   /**
-   * Initialize a component
+   * Update component if there is some change or initialize component
    *
+   * @param Trace $trace for creating logs, tracking activity
    * @param DOMDocument $aisResponse AIS2 html parsed reply
    */
-  public function initComponentFromResponse(DOMDocument $aisResponse);
-
-  /**
-   * Update component if there is some change
-   *
-   * @param DOMDocument $aisResponse AIS2 html parsed reply
-   */
-  public function updateComponentFromResponse(DOMDocument $aisResponse);
+  public function updateComponentFromResponse(Trace $trace, DOMDocument $aisResponse);
 
   /**
    * Return the changes in component
    *
-   * @returns DOMDocument returns what was changed in DOMDocument format.
+   * @returns string XML in string.
    */
   public function getStateChanges();
 }

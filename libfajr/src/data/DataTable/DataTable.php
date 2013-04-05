@@ -40,18 +40,29 @@ class DataTable implements ComponentInterface
   private $data = null;
 
   /**
+   * Active row
+   * @var integer
+   */
+  private $activeRow = null;
+
+  /**
    * Selected rows
    * @var array(integer)
    */
   private $selectedRows = null;
 
   /**
+   * Old selected rows
+   * @var array(integer)
+   */
+  private $oldSelectedRows = null;
+
+  /**
    * Create a Table and set its dataViewName and definition
    *
-   * @param Trace $trace for creating logs, tracking activity
    * @param string $dataViewName name of Table which we want to store here
    */
-  public function __construct(Trace $trace, $dataViewName)
+  public function __construct($dataViewName)
   {
     Preconditions::checkIsString($dataViewName);
     $this->dataViewName = $dataViewName;
@@ -67,35 +78,31 @@ class DataTable implements ComponentInterface
   public function updateComponentFromResponse(Trace $trace, DOMDocument $aisResponse)
   {
     Preconditions::checkNotNull($aisResponse);
-    $trace->tlog("Finding element with id '$dataViewName'");
     $element = $aisResponse->getElementById($dataViewName);
     if ($element === null) {
       throw new ParseException("Problem parsing ais2 response: Element '$dataViewName' not found");
     }
-    $trace->tlog("Element found");
 
     $dom = new DOMDocument();
     $dom->appendChild($dom->importNode($element, true));
     // ok, now we have restricted document
 
     //informacia ci sa jedna o update, append...
-    $trace->tlog("Finding element with id dataTabBodies");
     $element2 = $dom->getElementById("dataTabBodies");
     if ($element2 === null) {
       throw new ParseException("Problem parsing ais2 response: Element dataTabBodies not found");
     }
-    $trace->tlog("Element found");
-    
+
 
     //ak sa jedna len o scroll tak tam definicia tabulky nie je
-    $trace->tlog("Finding attribute dataSendType");
-    if($element2->getAttribute("dataSendType") == "update"){
+    $dataSendType = $element2->getAttribute("dataSendType");
+    if($dataSendType == "update"){
       $this->definition = $this->getDefinitionFromDom($trace->addChild("Getting table definition from DOM."), $dom);
     }
-    $trace->tlog("Attribute found");
+    $trace->tlog("Attribute dataSendType found with value: ".$dataSendType);
 
     $tdata = $this->getTableDataFromDom($trace->addChild("Getting table data from DOM."), $dom);
-    
+
     // use column name as array key instead of column index
     assert(is_array($tdata));
     $this->data = array();
@@ -113,7 +120,7 @@ class DataTable implements ComponentInterface
       $this->data[$rowKey] = $myRow;
 
     }
-  
+
   }
 
   /**
@@ -150,13 +157,33 @@ class DataTable implements ComponentInterface
   }
 
   /**
-   * Returns changes on this table (selected rows)
+   * Returns changes on this table (selected rows and which is active)
    *
    * @return string XML in string
    */
   public function getStateChanges()
   {
-    $this->selectedRows = array_unique($this->selectedRows);   
+    $this->selectedRows = array_unique($this->selectedRows);
+
+    $xml_spec = '';
+
+    if ($this->oldSelectedRows != $this->selectedRows) {
+      // je mozne ze format dataViewName sa bude menit
+      $splittedName = preg_split("/_/",$this->dataViewName);
+      $xml_spec .= '<changedProperties><objName>'.$splittedName[count($splittedName)-2].'</objName><propertyValues>';
+      $xml_spec .= '<nameValue><name>dataView</name><isXml>true</isXml>'.'<value><![CDATA[<root><selection>';
+      $xml_spec .= '<activeIndex>'.$this->activeRow.'</activeIndex>';
+      foreach($this->selectedRows as $index){
+        $xml_spec .= '<selectedIndexes>'.$index.'</selectedIndexes>';
+      }
+      $xml_spec .= '</selection></root>]]></value></nameValue>';
+      $xml_spec .= '<nameValue><name>editMode</name><isXml>false</isXml><value>false</value></nameValue></propertyValues>';
+      $xml_spec .= '<embObjChProps isNull=\'true\'/></changedProperties>';
+
+      $this->captureSelectionState();
+    }
+
+    return $xml_spec;
   }
 
   /**
@@ -168,6 +195,17 @@ class DataTable implements ComponentInterface
   {
     Preconditions::checkIsNumber($index);
     $this->selectedRows[] = $index;
+  }
+
+  /**
+   * Set row as active
+   *
+   * @param integer $index rowId of row, which we want to set as active
+   */
+  public function setActiveRow($index)
+  {
+    Preconditions::checkIsNumber($index);
+    $this->activeRow = $index;
   }
 
  /**
@@ -189,6 +227,11 @@ class DataTable implements ComponentInterface
   public function clearSelection()
   {
     $this->selectedRows = array();
+  }
+
+  private function captureSelectionState()
+  {
+    $this->oldSelectedRows = $this->selectedRows;
   }
 
   /**
