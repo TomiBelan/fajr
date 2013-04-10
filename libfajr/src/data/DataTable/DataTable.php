@@ -191,7 +191,7 @@ class DataTable implements ComponentInterface
       }
       $root->appendChild($selection);
 
-      $CDATA = $xml_spec->createCDATASection($root->saveXML());
+      $CDATA = $xml_spec->createCDATASection($xml_spec->saveXML($root));
       $nameValue2 = $xml_spec->createElement('nameValue');
       $name2 = $xml_spec->createElement('name', 'editMode');
       $isXML2 = $xml_spec->createElement('isXml', 'false');

@@ -8,7 +8,7 @@ use libfajr\data\ComponentInterface;
 
 class AIS2Window
 {
-  protected ComponentInterface $components = null;
+  protected $components = null;
   protected $actions = null;
   protected $trace = null;
 
@@ -27,7 +27,7 @@ class AIS2Window
    */
   public function openWindow()
   {
-   
+
   }
 
   /**
@@ -35,7 +35,7 @@ class AIS2Window
    *
    * @param string $action name, id of action
    */
-  public doAction($action)
+  public function doAction($action)
   {
 
   }
@@ -45,7 +45,7 @@ class AIS2Window
    *
    * @param DOMDocument $dom response on some action
    */
-  private updateComponents($dom)
+  private function updateComponents($dom)
   {
 
   }
@@ -55,7 +55,7 @@ class AIS2Window
    *
    * @param ???
    */
-  private executeRequest($action)
+  private function executeRequest($action)
   {
 
   }
