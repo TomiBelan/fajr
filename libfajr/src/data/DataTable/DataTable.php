@@ -181,14 +181,17 @@ class DataTable implements ComponentInterface
       $value = $xml_spec->createElement('value');
 
       //Creating content for CDATA section
-      $xml_string = '<root><selection>';
-      $xml_string .= '<activeIndex>'.$this->activeRow.'</activeIndex>';
+      $root = $xml_spec->createElement('root');
+      $selection = $xml_spec->createElement('selection');
+      $activeIndex = $xml_spec->createElement('activeIndex', $this->activeIndex);
+      $selection->appendChild($activeIndex);
       foreach($this->selectedRows as $index){
-          $xml_string .= '<selectedIndexes>'.$index.'</selectedIndexes>';
+          $selectedIndexes = $xml_spec->createElement('selectedIndexes', $index);
+          $selection->appendChild($selectedIndexes);
       }
-      $xml_string .= '</selection></root>';
+      $root->appendChild($selection);
 
-      $CDATA = $xml_spec->createCDATASection($xml_string);
+      $CDATA = $xml_spec->createCDATASection($root->saveXML());
       $nameValue2 = $xml_spec->createElement('nameValue');
       $name2 = $xml_spec->createElement('name', 'editMode');
       $isXML2 = $xml_spec->createElement('isXml', 'false');
