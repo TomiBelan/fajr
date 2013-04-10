@@ -159,26 +159,59 @@ class DataTable implements ComponentInterface
   /**
    * Returns changes on this table (selected rows and which is active)
    *
-   * @return string XML in string
+   * @return DOMDocument XML object
    */
   public function getStateChanges()
   {
     $this->selectedRows = array_unique($this->selectedRows);
 
-    $xml_spec = '';
+    $xml_spec = new DOMDocument();
 
     if ($this->oldSelectedRows != $this->selectedRows) {
-      // je mozne ze format dataViewName sa bude menit
+      // it possible that dataViewName will change in future
       $splittedName = preg_split("/_/",$this->dataViewName);
-      $xml_spec .= '<changedProperties><objName>'.$splittedName[count($splittedName)-2].'</objName><propertyValues>';
-      $xml_spec .= '<nameValue><name>dataView</name><isXml>true</isXml>'.'<value><![CDATA[<root><selection>';
-      $xml_spec .= '<activeIndex>'.$this->activeRow.'</activeIndex>';
+
+      //creating nodes for final xml
+      $changedProperties = $xml_spec->createElement("changedProperties");
+      $objName =$xml_spec->createElement('objName', $splittedName[count($splittedName)-2]);
+      $propertyValues = $xml_spec->createElement('propertyValues');
+      $nameValue = $xml_spec->createElement('nameValue');
+      $name = $xml_spec->createElement('name', 'dataView');
+      $isXML = $xml_spec->createElement('isXml', 'true');
+      $value = $xml_spec->createElement('value');
+
+      //Creating content for CDATA section
+      $xml_string = '<root><selection>';
+      $xml_string .= '<activeIndex>'.$this->activeRow.'</activeIndex>';
       foreach($this->selectedRows as $index){
-        $xml_spec .= '<selectedIndexes>'.$index.'</selectedIndexes>';
+          $xml_string .= '<selectedIndexes>'.$index.'</selectedIndexes>';
       }
-      $xml_spec .= '</selection></root>]]></value></nameValue>';
-      $xml_spec .= '<nameValue><name>editMode</name><isXml>false</isXml><value>false</value></nameValue></propertyValues>';
-      $xml_spec .= '<embObjChProps isNull=\'true\'/></changedProperties>';
+      $xml_string .= '</selection></root>';
+
+      $CDATA = $xml_spec->createCDATASection($xml_string);
+      $nameValue2 = $xml_spec->createElement('nameValue');
+      $name2 = $xml_spec->createElement('name', 'editMode');
+      $isXML2 = $xml_spec->createElement('isXml', 'false');
+      $value2 = $xml_spec->createElement('value', 'false');
+      $embObjChProps = $xml_spec->createElement("embObjChProps");
+      $atr = $xml_spec->createAttribute("isNull");
+      $atr->value = 'true';
+
+      //constructing final xml from Nodes
+      $value->appendChild($CDATA);
+      $nameValue2->appendChild($name2);
+      $nameValue2->appendChild($isXML2);
+      $nameValue2->appendChild($value2);
+      $changedProperties->appendChild($objName);
+      $nameValue->appendChild($name);
+      $nameValue->appendChild($isXML);
+      $nameValue->appendChild($value);
+      $propertyValues->appendChild($nameValue);
+      $propertyValues->appendChild($nameValue2);
+      $changedProperties->appendChild($propertyValues);
+      $embObjChProps->appendChild($atr);
+      $changedProperties->appendChild($embObjChProps);
+      $xml_spec->appendChild($changedProperties);
 
       $this->captureSelectionState();
     }
@@ -229,6 +262,13 @@ class DataTable implements ComponentInterface
     $this->selectedRows = array();
   }
 
+  /**
+   * This is for detection of changes...
+   * it helps in getStateChanges() function
+   * there it compare old selection with new
+   * if were some changes.
+   *
+   */
   private function captureSelectionState()
   {
     $this->oldSelectedRows = $this->selectedRows;

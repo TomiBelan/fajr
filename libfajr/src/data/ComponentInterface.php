@@ -17,7 +17,7 @@ interface ComponentInterface {
   /**
    * Return the changes in component
    *
-   * @returns string XML in string.
+   * @returns DOMDocument XML object
    */
   public function getStateChanges();
 }
