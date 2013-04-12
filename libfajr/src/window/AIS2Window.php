@@ -71,7 +71,14 @@ class AIS2Window
    */
   public function doAction($action)
   {
+    $changes = new DOMDocument();
+    $event = $this->action[$action]->getStateChanges();
 
+    foreach($this->components as $component){
+      $changes->appendChild($component->getStateChanges);
+    }
+
+    $this->executor->doRequest2($this->trace, $event, $changes);
   }
 
   /**
@@ -84,16 +91,6 @@ class AIS2Window
       foreach($this->components as $component){
           $component->updateComponentFromResponse($this->response, $dom);
       }
-  }
-
-  /**
-   * Execute a request, send a request to server...
-   *
-   * @param ???
-   */
-  private function executeRequest($action)
-  {
-
   }
 
   /**
