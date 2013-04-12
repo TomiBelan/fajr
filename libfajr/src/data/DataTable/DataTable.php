@@ -159,6 +159,34 @@ class DataTable implements ComponentInterface
   /**
    * Returns changes on this table (selected rows and which is active)
    *
+   * Sample of xml:
+   *
+   * <changedProperties>
+   *   <objName>studiaTable</objName>
+   *   <propertyValues>
+   *     <nameValue>
+   *       <name>dataView</name>
+   *       <isXml>true</isXml>
+   *       <value>
+   *         <![CDATA[
+   *           <root>
+   *             <selection>
+   *               <activeIndex>0</activeIndex>
+   *               <selectedIndexes>0</selectedIndexes>
+   *             </selection>
+   *           </root>
+   *         ]]>
+   *       </value>
+   *     </nameValue>
+   *     <nameValue>
+   *       <name>editMode</name>
+   *       <isXml>false</isXml>
+   *       <value>false</value>
+   *     </nameValue>
+   *   </propertyValues>
+   *   <embObjChProps isNull='true'/>
+   * </changedProperties>
+   *
    * @return DOMDocument XML object
    */
   public function getStateChanges()
