@@ -5,6 +5,9 @@
 
 namespace libfajr\data;
 
+use libfajr\trace\Trace;
+use DOMDocument;
+
 interface ComponentInterface {
   /**
    * Update component if there is some change or initialize component
