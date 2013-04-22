@@ -29,31 +29,107 @@ use libfajr\window\LazyDialog;
 abstract class AIS2AbstractScreen extends DisableEvilCallsObject
     implements DialogParent, LazyDialog
 {
-  protected $inUse = false;
+  /**
+   * So we know if window was opened already
+   *
+   * @var bool
+   */
+  protected $isOpen = false;
+
+  /**
+   * All data components which are in Window and we
+   * want to use them..., where key is an ID of that
+   * component
+   *
+   * @var array(string => ComponentInterface object)
+   */
+  protected $components = null;
+
+  /**
+   * All action components which are in Window and we
+   * want to use them..., where key is an ID of that
+   * component
+   *
+   * @var array(string => ComponentInterface object)
+   */
+  protected $actions = null;
 
   protected $openedDialog = null;
   protected $trace = null;
+
+  /**
+   * Data information about this window (className...)
+   *
+   * @var ScreenData
+   */
   protected $data = null;
   protected $executor = null;
 
   /**
-   * Konštruktor.
+   * Create window object and set some necessary information about it
    *
+   * @param Trace $trace tracing tool for logs
+   * @param ScreenRequestExecutor $executor execute requests and return response
+   * @param ScreenData $data className....
+   * @param array('dataComponents' => ComponentInterface      //eg.: DataTable
+   *              'actionComponents' => ComponentInterface)  //eg.: actionButton
    */
-  public function __construct(Trace $trace, ScreenRequestExecutor $executor, ScreenData $data)
+  public function __construct(Trace $trace, ScreenRequestExecutor $executor, ScreenData $data, $components)
   {
     $this->executor = $executor;
     $this->trace = $trace;
     $this->data = $data;
+    $this->components = $components['dataCompomonents'];
+    $this->actions = $components['actionComponents'];
   }
 
-  public function openIfNotAlready(Trace $trace)
+  /**
+   * Open window when we want to work with its
+   * and initialize all components.
+   *
+   */
+  public function openWindow()
   {
-    if ($this->inUse) {
+    if ($this->isOpen) {
       return;
     }
-    $this->executor->requestOpen($trace, $this->data);
-    $this->inUse = true;
+    $this->executor->requestOpen($this->trace->addChild("Opening window ".$this->data->appClassName), $this->data);
+    $this->isOpen = true;
+
+    $response = $this->executor->requestContent($this->trace->addChild("get content"));
+    $response = $this->prepareResponse($this->trace->addChild("Converting response from HTML to DOMDocument"), $response);
+
+    $this->updateComponents($response);
+
+  }
+
+  /**
+   * Basicly it make a request definied by component action with id $action
+   *
+   * @param string $action name, id of action
+   */
+  public function doAction($action)
+  {
+    $changes = new DOMDocument();
+    $event = $this->action[$action]->getStateChanges();
+
+    foreach($this->components as $component){
+      $changes->appendChild($component->getStateChanges);
+    }
+
+    $this->executor->doRequest($this->trace, $event, $changes);
+  }
+
+  /**
+   * Update all components after some action
+   *
+   * @param DOMDocument $dom response on some action
+   */
+  private function updateComponents($dom)
+  {
+      foreach($this->components as $component){
+          $component->updateComponentFromResponse($this->trace->addChild("updatujem"), $dom);
+      }
   }
 
   /**
@@ -61,24 +137,65 @@ abstract class AIS2AbstractScreen extends DisableEvilCallsObject
    */
   public function closeIfNeeded(Trace $trace)
   {
-    if (!$this->inUse) {
+    if (!$this->isOpen) {
       return;
     }
     assert($this->openedDialog == null);
     $this->executor->requestClose($trace);
-    $this->inUse = false;
+    $this->isOpen = false;
   }
 
   /**
-   * Deštruktor.
-   * Zatvorí danú "aplikáciu" v AISe,
-   * aby sa nevyčerpal limit otvorených aplikácii na session.
+   * Close window, because we won`t run out of Open windows limit
+   *
    */
-  public function  __destruct()
+  public function closeWindow()
   {
-    $this->closeIfNeeded($this->trace->addChild("Screen close"));
+    if (!$this->isOpen) {
+      return;
+    }
+    $this->executor->requestClose($this->trace);
+    $this->isOpen = false;
   }
 
+  /**
+   * From HTML response make a DOMDocument
+   *
+   * @param Trace $trace trace for logging
+   * @param string $html html response from AIS
+   * @returns DOMDocument AIS response in DOMDocument
+   */
+  private function prepareResponse(Trace $trace, $html)
+  {
+    // fixing html code, so DOMDocumet it can parse
+    Preconditions::checkIsString($html);
+    $html = str_replace("<!--", "", $html);
+    $html = str_replace("-->", "", $html);
+    $html = str_replace("script", "div", $html);
+    $trace->tlogVariable("Fixed html", $html);
+
+    // creating DOMDocument
+    $dom = new DOMDocument();
+    $trace->tlog("Loading html to DOM");
+    $loaded = @$dom->loadHTML($html);
+    if (!$loaded) {
+      throw new ParseException("Problem parsing html to DOM.");
+    }
+
+    //fixing id atributes
+    $trace->tlog('Fixing id attributes in the DOM');
+    $xpath = new DOMXPath($dom);
+    $nodes = $xpath->query("//*[@id]");
+    foreach ($nodes as $node) {
+      // Note: do not erase next line. @see
+      // http://www.navioo.com/php/docs/function.dom-domelement-setidattribute.php
+      // for explanation!
+      $node->setIdAttribute('id', false);
+      $node->setIdAttribute('id', true);
+    }
+
+    return $dom;
+  }
 
   public function openDialogAndGetExecutor(Trace $trace, $dialogUid, DialogData $data)
   {
