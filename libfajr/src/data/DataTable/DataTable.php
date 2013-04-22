@@ -78,7 +78,7 @@ class DataTable implements ComponentInterface
   public function updateComponentFromResponse(Trace $trace, DOMDocument $aisResponse)
   {
     Preconditions::checkNotNull($aisResponse);
-    $element = $aisResponse->getElementById($dataViewName);
+    $element = $aisResponse->getElementById($this->dataViewName);
     if ($element === null) {
       throw new ParseException("Problem parsing ais2 response: Element '$dataViewName' not found");
     }
@@ -95,10 +95,14 @@ class DataTable implements ComponentInterface
 
 
     //ak sa jedna len o scroll tak tam definicia tabulky nie je
+    /* TODO toto tak nefunguje, musim odpozorovat ako sa to sprava....
     $dataSendType = $element2->getAttribute("dataSendType");
     if($dataSendType == "update"){
       $this->definition = $this->getDefinitionFromDom($trace->addChild("Getting table definition from DOM."), $dom);
     }
+    */
+
+    $this->definition = $this->getDefinitionFromDom($trace->addChild("Getting table definition from DOM."), $dom);
     $trace->tlog("Attribute dataSendType found with value: ".$dataSendType);
 
     $tdata = $this->getTableDataFromDom($trace->addChild("Getting table data from DOM."), $dom);
@@ -372,10 +376,11 @@ class DataTable implements ComponentInterface
         $nbsp = chr(0xC2).chr(0xA0);
         $value = str_replace($nbsp, ' ', $value);
 
-        if ($value == ' ') {
-          $row[] = '';
-        }
         assert($value != ''); // probably there is some inner element which we don't know about
+        if ($value == ' ') {
+          $value = '';
+        }
+
         $row[] = $value;
       }
       $tdata[$index] = $row;
