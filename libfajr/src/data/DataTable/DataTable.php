@@ -103,7 +103,6 @@ class DataTable implements ComponentInterface
     */
 
     $this->definition = $this->getDefinitionFromDom($trace->addChild("Getting table definition from DOM."), $dom);
-    $trace->tlog("Attribute dataSendType found with value: ".$dataSendType);
 
     $tdata = $this->getTableDataFromDom($trace->addChild("Getting table data from DOM."), $dom);
 
@@ -369,22 +368,77 @@ class DataTable implements ComponentInterface
 
       foreach ($aisRow->childNodes as $ais_td) {
         assert($ais_td->tagName == "td");
-        // get a text content of <td>
-        $value = $ais_td->textContent;
-        Preconditions::checkIsString($value);
-        // special fix for &nbsp;
-        $nbsp = chr(0xC2).chr(0xA0);
-        $value = str_replace($nbsp, ' ', $value);
-
-        assert($value != ''); // probably there is some inner element which we don't know about
-        if ($value == ' ') {
-          $value = '';
-        }
-
-        $row[] = $value;
+        $row[] = $this->getCellContent($ais_td);
       }
       $tdata[$index] = $row;
     }
     return $tdata;
+  }
+
+ /**
+  * Extract data from table cells
+  *
+  * This is for special cells, where are also important atributes
+  * of the cell...
+  *
+  * @param $element DOMDocument
+  * @returns string Returns content of cell
+  */
+ public function getCellContent(DOMElement $element)
+  {
+    // special fix for checkboxes
+    if ($element->hasAttribute('datatype')) {
+      switch ($element->getAttribute('datatype')) {
+        case 'image':
+          assert($element->getAttribute('datatype') == 'image');
+          foreach ($element->getElementsByTagName('img') as $img) {
+            assert($img->hasAttribute('src'));
+            $src = $img->getAttribute('src');
+            if (preg_match('@checked\.(?:gif|png)@', $src)) return "TRUE";
+            if (preg_match('@removeFlag\.(?:gif|png)@', $src)) return "FALSE";
+            throw new \Exception("Neznámy názov obrázku pre logickú hodnotu: " . $src);
+          }
+          assert(false);
+        case 'boolean':
+          foreach ($element->getElementsByTagName('div') as $div) {
+            assert($div->hasAttribute('class'));
+            assert($div->getAttribute('class') === 'booleanCellChecked');
+            return 'TRUE';
+          }
+          foreach ($element->getElementsByTagName('img') as $img) {
+            assert($img->hasAttribute('class'));
+            assert($img->getAttribute('class') === 'checkedImg');
+            return "TRUE";
+          }
+          assert($this->fixNbsp($element->textContent) === ' ');
+          return 'FALSE';
+        default:
+        assert(false);
+      }
+    }
+    $value = $this->fixNbsp($element->textContent);
+
+    if ($value == ' ') {
+      return '';
+    }
+    assert($value != ''); // probably there is some inner element which we don't know about
+    return $value;
+  }
+
+/**
+   * Fix non-breakable spaces which were converted to special character furing parsing.
+   *
+   * @param string $str string to fix
+   *
+   * @returns string fixed string
+   */
+  public function fixNbsp($str)
+  {
+    Preconditions::checkIsString($str);
+    // special fix for &nbsp;
+    // xml decoder decodes &nbsp; into special utf-8 character
+    // TODO(ppershing): nehodili by sa tie &nbsp; niekedy dalej v aplikacii niekedy?
+    $nbsp = chr(0xC2).chr(0xA0);
+    return str_replace($nbsp, ' ', $str);
   }
 }
