@@ -12,12 +12,16 @@
  */
 namespace libfajr\window;
 
-use libfajr\trace\Trace;
-use libfajr\base\IllegalStateException;
-use libfajr\login\AIS2LoginException;
+use DOMXPath;
 use AIS2Utils;
-use libfajr\base\DisableEvilCallsObject;
+use DOMElement;
+use DOMDocument;
+use libfajr\trace\Trace;
 use libfajr\window\LazyDialog;
+use libfajr\base\Preconditions;
+use libfajr\login\AIS2LoginException;
+use libfajr\base\IllegalStateException;
+use libfajr\base\DisableEvilCallsObject;
 
 /**
  * Abstraktná trieda reprezentujúca jednu obrazovku v AISe.
@@ -79,7 +83,7 @@ abstract class AIS2AbstractScreen extends DisableEvilCallsObject
     $this->executor = $executor;
     $this->trace = $trace;
     $this->data = $data;
-    $this->components = $components['dataCompomonents'];
+    $this->components = $components['dataComponents'];
     $this->actions = $components['actionComponents'];
   }
 
@@ -88,7 +92,7 @@ abstract class AIS2AbstractScreen extends DisableEvilCallsObject
    * and initialize all components.
    *
    */
-  public function openWindow()
+  public function openIfNotAlready(Trace $trace)
   {
     if ($this->isOpen) {
       return;
@@ -127,6 +131,7 @@ abstract class AIS2AbstractScreen extends DisableEvilCallsObject
    */
   private function updateComponents($dom)
   {
+      if(empty($this->components)) return;
       foreach($this->components as $component){
           $component->updateComponentFromResponse($this->trace->addChild("updatujem"), $dom);
       }
