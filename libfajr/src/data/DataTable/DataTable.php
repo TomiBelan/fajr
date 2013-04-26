@@ -381,10 +381,12 @@ class DataTable implements ComponentInterface
   * This is for special cells, where are also important atributes
   * of the cell...
   *
+  * TODO prerobit aby metoda vracala namiesto retzcov TRUE boolean
+  *
   * @param $element DOMDocument
   * @returns string Returns content of cell
   */
- public function getCellContent(DOMElement $element)
+ private function getCellContent(DOMElement $element)
   {
     // special fix for checkboxes
     if ($element->hasAttribute('datatype')) {
@@ -432,7 +434,7 @@ class DataTable implements ComponentInterface
    *
    * @returns string fixed string
    */
-  public function fixNbsp($str)
+  private function fixNbsp($str)
   {
     Preconditions::checkIsString($str);
     // special fix for &nbsp;

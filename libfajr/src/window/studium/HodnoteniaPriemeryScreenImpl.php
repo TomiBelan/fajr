@@ -55,8 +55,6 @@ class HodnoteniaPriemeryScreenImpl extends AIS2AbstractScreen
     $this->parser = $parser;
   }
 
-  // TODO(ppershing): Maybe cache data between getHodnotenia && getPriemery
-
   public function getHodnotenia(Trace $trace)
   {
     return $this->components['hodnoteniaTable_dataView'];

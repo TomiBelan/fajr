@@ -138,6 +138,14 @@ abstract class AIS2AbstractScreen extends DisableEvilCallsObject
   }
 
   /**
+   * Close a window
+   */
+  public function  __destruct()
+  {
+    $this->closeIfNeeded($this->trace->addChild("Screen close"));
+  }
+
+  /**
    * Zatvorí danú "aplikáciu" v AISe,
    */
   public function closeIfNeeded(Trace $trace)

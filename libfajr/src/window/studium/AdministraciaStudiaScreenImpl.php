@@ -87,7 +87,6 @@ class AdministraciaStudiaScreenImpl extends AIS2AbstractScreen
 
   public function getParamNameFromZapisnyListIndex(Trace $trace, $zapisnyListIndex, $action)
   {
-    $this->openIfNotAlready($trace);
 
     $response = $this->executor->doRequest(
         $trace->addChild("Requesting data:"),
