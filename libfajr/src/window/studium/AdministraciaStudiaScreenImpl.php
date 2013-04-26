@@ -24,6 +24,7 @@ use libfajr\window\ScreenRequestExecutor;
 use libfajr\window\DialogData;
 use libfajr\window\ScreenData;
 use libfajr\data\AIS2TableParser;
+use libfajr\data\DataTable;
 use libfajr\util\StrUtil;
 use libfajr\util\MiscUtil;
 use libfajr\exceptions\ParseException;
@@ -51,19 +52,22 @@ class AdministraciaStudiaScreenImpl extends AIS2AbstractScreen
     $data = new ScreenData();
     $data->appClassName = 'ais.gui.vs.es.VSES017App';
     $data->additionalParams = array('kodAplikacie' => 'VSES017');
-    parent::__construct($trace, $executor, $data);
+    $components['dataComponents']['studiaTable_dataView'] = new DataTable("studiaTable_dataView");
+    $components['dataComponents']['zapisneListyTable_dataView'] = new DataTable("zapisneListyTable_dataView");
+    $components['actionComponents'] = null;
+    parent::__construct($trace, $executor, $data, $components);
+    $this->openIfNotAlready($trace);
     $this->parser = $parser;
   }
 
   public function getZoznamStudii(Trace $trace)
   {
-    $this->openIfNotAlready($trace);
-    $response = $this->executor->requestContent($trace->addChild("get content"));
-    return $this->parser->createTableFromHtml($trace->addChild("Parsing table"), $response, 'studiaTable_dataView');
+    return $this->components['studiaTable_dataView'];
   }
 
   public function getZapisneListy(Trace $trace, $studiumIndex)
   {
+    /* TODO toto bude action button
     $this->openIfNotAlready($trace);
     $data = $this->executor->doRequest(
         $trace->addChild("Requesting data:"),
@@ -77,8 +81,8 @@ class AdministraciaStudiaScreenImpl extends AIS2AbstractScreen
                 ),
               ),
             ));
-    return $this->parser->createTableFromHtml($trace->addChild("Parsing table"),
-        $data, 'VSES017_StudentZapisneListyDlg0_zapisneListyTable_dataView');
+    */
+    return $this->components['zapisneListyTable_dataView'];
   }
 
   public function getParamNameFromZapisnyListIndex(Trace $trace, $zapisnyListIndex, $action)

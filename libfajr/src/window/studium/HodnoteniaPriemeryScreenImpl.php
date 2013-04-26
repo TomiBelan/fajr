@@ -20,6 +20,7 @@ use libfajr\window\AIS2AbstractScreen;
 use libfajr\window\ScreenData;
 use libfajr\window\ScreenRequestExecutor;
 use libfajr\window\RequestBuilderImpl;
+use libfajr\data\DataTable;
 use libfajr\trace\Trace;
 use libfajr\connection\SimpleConnection;
 use libfajr\data\AIS2TableParser;
@@ -46,7 +47,11 @@ class HodnoteniaPriemeryScreenImpl extends AIS2AbstractScreen
     $data->appClassName = 'ais.gui.vs.es.VSES212App';
     $data->additionalParams = array('kodAplikacie' => 'VSES212',
         'paramName' => $paramName);
-    parent::__construct($trace, $executor, $data);
+    $components['dataComponents']['hodnoteniaTable_dataView'] = new DataTable("hodnoteniaTable_dataView");
+    $components['dataComponents']['priemeryTable_dataView'] = new DataTable("priemeryTable_dataView");
+    $components['actionComponents'] = null;
+    parent::__construct($trace, $executor, $data, $components);
+    $this->openIfNotAlready($trace);
     $this->parser = $parser;
   }
 
@@ -54,20 +59,12 @@ class HodnoteniaPriemeryScreenImpl extends AIS2AbstractScreen
 
   public function getHodnotenia(Trace $trace)
   {
-    $this->openIfNotAlready($trace);
-    $data = $this->executor->requestContent($trace);
-    return $this->parser->createTableFromHtml($trace->addChild("Parsing table"),
-                $data, 'hodnoteniaTable_dataView');
+    return $this->components['hodnoteniaTable_dataView'];
   }
 
   public function getPriemery(Trace $trace)
   {
-    $this->openIfNotAlready($trace);
-    $data = $this->executor->requestContent($trace);
-    return $this->parser->createTableFromHtml($trace->addChild("Parsing table"),
-                $data, 'priemeryTable_dataView');
+    return $this->components['priemeryTable_dataView'];
   }
-
 }
-
 ?>

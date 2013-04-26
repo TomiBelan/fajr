@@ -426,7 +426,7 @@ class DataTable implements ComponentInterface
   }
 
 /**
-   * Fix non-breakable spaces which were converted to special character furing parsing.
+   * Fix non-breakable spaces which were converted to special character during parsing.
    *
    * @param string $str string to fix
    *
