@@ -14,8 +14,9 @@ interface ComponentInterface {
    *
    * @param Trace $trace for creating logs, tracking activity
    * @param DOMDocument $aisResponse AIS2 html parsed reply
+   * @param boolean $init if init is true, component must find necessary data
    */
-  public function updateComponentFromResponse(Trace $trace, DOMDocument $aisResponse);
+  public function updateComponentFromResponse(Trace $trace, DOMDocument $aisResponse, $init = null);
 
   /**
    * Return the changes in component

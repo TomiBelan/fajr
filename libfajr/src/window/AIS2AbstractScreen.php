@@ -34,6 +34,13 @@ abstract class AIS2AbstractScreen extends DisableEvilCallsObject
     implements DialogParent, LazyDialog
 {
   /**
+   * The name of this dialog
+   *
+   * @var string
+   */
+  private $dialogName = null;
+
+  /**
    * So we know if window was opened already
    *
    * @var bool
@@ -92,18 +99,19 @@ abstract class AIS2AbstractScreen extends DisableEvilCallsObject
    * and initialize all components.
    *
    */
-  public function openIfNotAlready(Trace $trace)
+  public function openWindow()
   {
     if ($this->isOpen) {
       return;
     }
     $this->executor->requestOpen($this->trace->addChild("Opening window ".$this->data->appClassName), $this->data);
     $this->isOpen = true;
+    $this->dialogName = $this->executor->formName;
 
     $response = $this->executor->requestContent($this->trace->addChild("get content"));
     $response = $this->prepareResponse($this->trace->addChild("Converting response from HTML to DOMDocument"), $response);
 
-    $this->updateComponents($response);
+    $this->updateComponents($response, true);
 
   }
 
@@ -128,34 +136,14 @@ abstract class AIS2AbstractScreen extends DisableEvilCallsObject
    * Update all components after some action
    *
    * @param DOMDocument $dom response on some action
+   * @param boolean $init if this is called from openWindow()
    */
-  private function updateComponents($dom)
+  private function updateComponents($dom, $init = null)
   {
       if(empty($this->components)) return;
       foreach($this->components as $component){
-          $component->updateComponentFromResponse($this->trace->addChild("updatujem"), $dom);
+          $component->updateComponentFromResponse($this->trace->addChild("updatujem"), $dom, $init);
       }
-  }
-
-  /**
-   * Close a window
-   */
-  public function  __destruct()
-  {
-    $this->closeIfNeeded($this->trace->addChild("Screen close"));
-  }
-
-  /**
-   * Zatvorí danú "aplikáciu" v AISe,
-   */
-  public function closeIfNeeded(Trace $trace)
-  {
-    if (!$this->isOpen) {
-      return;
-    }
-    assert($this->openedDialog == null);
-    $this->executor->requestClose($trace);
-    $this->isOpen = false;
   }
 
   /**
@@ -167,6 +155,8 @@ abstract class AIS2AbstractScreen extends DisableEvilCallsObject
     if (!$this->isOpen) {
       return;
     }
+
+    assert($this->openedDialog == null);
     $this->executor->requestClose($this->trace);
     $this->isOpen = false;
   }
@@ -212,7 +202,7 @@ abstract class AIS2AbstractScreen extends DisableEvilCallsObject
 
   public function openDialogAndGetExecutor(Trace $trace, $dialogUid, DialogData $data)
   {
-    $this->openIfNotAlready($trace->addChild("opening dialog parent"));
+    $this->openWindow();
     if ($this->openedDialog != null) {
       throw new IllegalStateException('V AIS2 screene "'.$this->data->appClassName.
           '" už existuje otvorený dialog. Pre otvorenie nového treba pôvodný zatvoriť.');

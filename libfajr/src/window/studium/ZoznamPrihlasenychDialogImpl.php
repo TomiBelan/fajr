@@ -47,7 +47,7 @@ class ZoznamPrihlasenychDialogImpl extends AIS2AbstractDialog
 
   public function getZoznamPrihlasenych(Trace $trace)
   {
-  $this->openIfNotAlready($trace);
+    $this->openWindow();
     $response = $this->executor->requestContent($trace);
     return $this->parser->createTableFromHtml($trace->addChild("Parsing table"), $response,
         'prihlaseniTable_dataView');

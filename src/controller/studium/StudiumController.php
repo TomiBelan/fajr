@@ -106,6 +106,16 @@ class StudiumController extends BaseController
   }
 
   /**
+   * Close a window
+   */
+  public function  __destruct()
+  {
+    $this->terminyHodnoteniaScreen->closeWindow();
+    $this->hodnoteniaScreen->closeWindow();
+    $this->administraciaStudiaScreen->closeWindow();
+  }
+
+  /**
    * Invoke an action given its name
    *
    * This function requests information necessary to operate on
@@ -138,6 +148,7 @@ class StudiumController extends BaseController
     $adminStudia = $screenFactory->newAdministraciaStudiaScreen($trace);
     
     $this->administraciaStudiaScreen = $adminStudia;
+    $this->administraciaStudiaScreen->openWindow();
 
     $this->studium = $request->getParameter('studium', '0');
 
@@ -192,6 +203,7 @@ class StudiumController extends BaseController
                 $trace,
                 $adminStudia->getParamNameFromZapisnyListIndex($trace, $this->zapisnyList,
                     VSES017\AdministraciaStudiaScreen::ACTION_TERMINY_HODNOTENIA));
+        $this->terminyHodnoteniaScreen->openWindow();
       } catch (ParseException $e) {
         $this->terminyHodnoteniaScreen = null;
       }
@@ -202,6 +214,7 @@ class StudiumController extends BaseController
             $trace,
             $adminStudia->getParamNameFromZapisnyListIndex($trace, $this->zapisnyList,
                 VSES017\AdministraciaStudiaScreen::ACTION_HODNOTENIA_PRIEMERY));
+      $this->hodnoteniaScreen->openWindow();
     }
 
     $this->templateParams['currentTab'] = '';
@@ -233,7 +246,7 @@ class StudiumController extends BaseController
     
     $predmety = $prehladKreditovDialog->getPredmety($trace);
     
-    $prehladKreditovDialog->closeIfNeeded($trace);
+    $prehladKreditovDialog->closeWindow();
     
     $this->warnings->warnWrongTableStructure($trace, 'prehlad kreditov',
         regression\PrehladKreditovRegression::get(),
@@ -703,7 +716,7 @@ class StudiumController extends BaseController
           regression\TerminyKPredmetuRegression::get(),
           $terminy->getTableDefinition());
       // explicitly close this dialog otherwise we will be blocked for next iteration!
-      $dialog->closeIfNeeded($childTrace);
+      $dialog->closeWindow();
 
       foreach($terminy->getData() as $row) {
         $prihlasTerminyRow = $row;

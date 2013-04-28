@@ -60,13 +60,13 @@ class AIS2AbstractDialog extends DisableEvilCallsObject
    * Nadviaže spojenie, spustí danú "aplikáciu" v AISe
    * a natiahne prvotné dáta do atribútu $data.
    */
-  public function openIfNotAlready(Trace $trace)
+  public function openWindow()
   {
     if ($this->inUse) {
       return;
     }
-    $this->executor = $this->parent->openDialogAndGetExecutor($trace, $this->uid, $this->data);
-    $this->formName = $this->executor->requestOpen($trace);
+    $this->executor = $this->parent->openDialogAndGetExecutor($this->trace, $this->uid, $this->data);
+    $this->formName = $this->executor->requestOpen($this->trace);
     $this->inUse = true;
     $this->terminated = false;
   }
@@ -74,13 +74,13 @@ class AIS2AbstractDialog extends DisableEvilCallsObject
   /**
    * Zatvorí danú "aplikáciu" v AISe
    */
-  public function closeIfNeeded(Trace $trace)
+  public function closeWindow()
   {
     if (!$this->inUse) {
       return;
     }
     if (!$this->terminated) {
-      $this->executor->requestClose($trace);
+      $this->executor->requestClose($this->trace);
     }
     $this->inUse = false;
     $this->parent->closeDialog($this->uid);
@@ -94,12 +94,12 @@ class AIS2AbstractDialog extends DisableEvilCallsObject
    */
   public function  __destruct()
   {
-    $this->closeIfNeeded($this->trace);
+    $this->closeWindow();
   }
 
   public function openDialogAndGetExecutor(Trace $trace, $dialogUid, DialogData $data)
   {
-    $this->openIfNotAlready($trace->addChild("opening dialog parent"));
+    $this->openWindow();
     if ($this->openedDialog !== null) {
       throw new IllegalStateException('V AIS2 screene "' . $this->formName .
           '" už existuje otvorený dialog. Pre otvorenie nového treba pôvodný zatvoriť.');

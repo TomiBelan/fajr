@@ -47,7 +47,7 @@ class TerminyDialogImpl extends AIS2AbstractDialog
   
   public function getZoznamTerminov(Trace $trace)
   {
-    $this->openIfNotAlready($trace);
+    $this->openWindow();
     $response = $this->executor->requestContent($trace);
     return $this->parser->createTableFromHtml($trace->addChild("Parsing table"), $response,
         'zoznamTerminovTable_dataView');
@@ -55,7 +55,7 @@ class TerminyDialogImpl extends AIS2AbstractDialog
   
   public function prihlasNaTermin(Trace $trace, $terminIndex)
   {
-    $this->openIfNotAlready($trace);
+    $this->openWindow();
     $data = $this->executor->doRequest($trace, array(
       'compName' => 'enterAction',
       'eventClass' => 'avc.ui.event.AVCActionEvent',
@@ -80,7 +80,7 @@ class TerminyDialogImpl extends AIS2AbstractDialog
           "Neočakávaná odozva od AISu");
     }
     
-    $this->closeIfNeeded($trace);
+    $this->closeWindow();
     return true;
   }
   

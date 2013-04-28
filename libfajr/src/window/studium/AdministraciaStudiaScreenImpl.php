@@ -56,7 +56,6 @@ class AdministraciaStudiaScreenImpl extends AIS2AbstractScreen
     $components['dataComponents']['zapisneListyTable_dataView'] = new DataTable("zapisneListyTable_dataView");
     $components['actionComponents'] = null;
     parent::__construct($trace, $executor, $data, $components);
-    $this->openIfNotAlready($trace);
     $this->parser = $parser;
   }
 

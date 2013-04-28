@@ -53,18 +53,54 @@ class TerminyHodnoteniaScreenImpl extends AIS2AbstractScreen
     $components['dataComponents']['predmetyTable_dataView'] = new DataTable("predmetyTable_dataView");
     $components['actionComponents'] = null;
     parent::__construct($trace, $executor, $data, $components);
-    $this->openIfNotAlready($trace);
     $this->parser = $parser;
   }
 
   public function getPredmetyZapisnehoListu(Trace $trace)
   {
+    /* TODO nahradit to pouzitim action button
+    $this->openIfNotAlready($trace);
+    $data = $this->executor->doRequest($trace,
+      array('eventClass' => 'avc.ui.event.AVCActionEvent',
+        'compName' => 'filterAction',
+        'embObj' => array('semesterComboBox' => array(
+            'dataView' => array(
+              'selectedIndexes' => 0,
+              'activeIndex' => 0,
+            ),
+            'editMode' => 'false',
+          ),
+        ),
+    ));
+
+    return $this->parser->createTableFromHtml($trace->addChild("Parsing table"), $data,
+        'VSES007_StudentZoznamPrihlaseniNaSkuskuDlg0_predmetyTable_dataView');
+    */
+
     return $this->components['predmetyTable_dataView'];
   }
 
   public function getTerminyHodnotenia(Trace $trace)
   {
-        return $this->components['terminyTable_dataView'];
+    /* TODO nahradit to pouzitim actionButton
+    $this->openIfNotAlready($trace);
+    $data = $this->executor->doRequest($trace,
+      array('eventClass' => 'avc.ui.event.AVCActionEvent',
+        'compName' => 'zobrazitTerminyAction',
+        'embObj' => array('zobrazitTerminyComboBox' => array(
+            'dataView' => array(
+              'selectedIndexes' => 0,
+            ),
+            'editMode' => 'false',
+          ),
+        ),
+    ));
+
+    return $this->parser->createTableFromHtml($trace->addChild("Parsing table"),
+                $data, 'VSES007_StudentZoznamPrihlaseniNaSkuskuDlg0_terminyTable_dataView');
+    */
+
+    return $this->components['terminyTable_dataView'];
   }
 
   public function getZoznamTerminovDialog(Trace $trace, $predmetIndex)
@@ -88,7 +124,7 @@ class TerminyHodnoteniaScreenImpl extends AIS2AbstractScreen
 
   public function odhlasZTerminu(Trace $trace, $terminIndex)
   {
-    $this->openIfNotAlready($trace);
+    $this->openWindow();
     // Posleme request ze sa chceme odhlasit.
     $data = $this->executor->doRequest($trace, array(
       'compName' => 'odstranitTerminAction',

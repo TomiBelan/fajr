@@ -74,13 +74,18 @@ class DataTable implements ComponentInterface
    *
    * @param Trace $trace for creating logs, tracking activity
    * @param DOMDocument $aisResponse AIS2 html parsed reply
+   * @param boolean $init if init is true, table must find data and definition
    */
-  public function updateComponentFromResponse(Trace $trace, DOMDocument $aisResponse)
+  public function updateComponentFromResponse(Trace $trace, DOMDocument $aisResponse, $init = null)
   {
     Preconditions::checkNotNull($aisResponse);
     $element = $aisResponse->getElementById($this->dataViewName);
     if ($element === null) {
-      throw new ParseException("Problem parsing ais2 response: Element '$dataViewName' not found");
+      if ($init) {
+        throw new ParseException("Problem parsing ais2 response: Element '$dataViewName' not found");
+      } else {
+        return;
+      }
     }
 
     $dom = new DOMDocument();
@@ -94,15 +99,9 @@ class DataTable implements ComponentInterface
     }
 
 
-    //ak sa jedna len o scroll tak tam definicia tabulky nie je
-    /* TODO toto tak nefunguje, musim odpozorovat ako sa to sprava....
-    $dataSendType = $element2->getAttribute("dataSendType");
-    if($dataSendType == "update"){
+    if ($init) {
       $this->definition = $this->getDefinitionFromDom($trace->addChild("Getting table definition from DOM."), $dom);
     }
-    */
-
-    $this->definition = $this->getDefinitionFromDom($trace->addChild("Getting table definition from DOM."), $dom);
 
     $tdata = $this->getTableDataFromDom($trace->addChild("Getting table data from DOM."), $dom);
 

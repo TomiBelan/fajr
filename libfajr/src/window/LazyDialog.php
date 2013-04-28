@@ -18,15 +18,14 @@ use libfajr\trace\Trace;
 interface LazyDialog
 {
   /**
-   * Opens the ais screen/dialog. Note that this will be called
-   * automatically on first object request.
+   * Opens the ais screen/dialog. Note that this will have to be called
+   * before first object request.
    */
-  public function openIfNotAlready(Trace $trace);
+  public function openWindow();
 
   /**
-   * Close screen/dialog. This will be automatically called at the destructor,
-   * but you may find it handy to terminate dialog earlier. Note hovewer, that
-   * you must close child dialog first!.
+   * Close screen/dialog. Remember to close screen when you end with it.
+   * Note hovewer, that you must close child dialog first!.
    */
-  public function closeIfNeeded(Trace $trace);
+  public function closeWindow();
 }

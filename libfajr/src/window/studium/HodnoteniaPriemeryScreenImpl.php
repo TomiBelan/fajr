@@ -51,7 +51,6 @@ class HodnoteniaPriemeryScreenImpl extends AIS2AbstractScreen
     $components['dataComponents']['priemeryTable_dataView'] = new DataTable("priemeryTable_dataView");
     $components['actionComponents'] = null;
     parent::__construct($trace, $executor, $data, $components);
-    $this->openIfNotAlready($trace);
     $this->parser = $parser;
   }
 

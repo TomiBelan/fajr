@@ -20,10 +20,10 @@ use libfajr\connection\SimpleConnection;
 class ScreenRequestExecutorImpl extends DisableEvilCallsObject
     implements ScreenRequestExecutor
 {
+  public $formName;
   protected $data;
   protected $requestBuilder;
   protected $appId;
-  protected $formName;
   protected $connection;
 
   /**
