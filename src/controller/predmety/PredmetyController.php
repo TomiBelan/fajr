@@ -95,11 +95,11 @@ class PredmetyController extends BaseController
     $content = $this->registerPredmetovScreen->getInformacnyList($trace, $searchCode, $akadRok);
     
     // Docasny fix, stiahne PDF s informacnym listom
-    $download_me = $content;
-    header("Content-type:  application/pdf");
-    header("Content-Disposition: attachment; filename=".$searchCode.".pdf");
-    echo $download_me;
- 
+    $response = new \Symfony\Component\HttpFoundation\Response($content, 200);
+    $response->headers->set('Content-Type', 'application/pdf');
+    $response->headers->set('Content-Disposition', 'attachment');
+    return $response;
+
     $ip = new InformacnyListParser();
     $list = $ip->parse($trace, $content);
     
