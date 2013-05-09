@@ -119,9 +119,9 @@ class RegisterPredmetovScreenImpl extends AIS2AbstractScreen
         $trace->addChild("Requesting data:"),
         array('compName' => 'enterAction',
               'dlgName' => 'CM017_SpravaSablonDlg1',
-              'embObj' => array('typZostavyComboBox' => array(
+              'embObj' => array('sablonyTable' => array(
                   'dataView' => array(
-                    'selectedIndexes' => 1,
+                    'selectedIndexes' => 0,
                   ),                  
                   'editMode' => 'false',
                 ),
