@@ -27,6 +27,7 @@ use libfajr\data\AIS2TableParser;
 use libfajr\data\AIS2ComboBoxParser;
 use libfajr\util\StrUtil;
 use libfajr\util\MiscUtil;
+use Exception;
 use libfajr\exceptions\ParseException;
 // TODO checknut ci vsetky hentie use stale treba (su skopcene z VSES017)
 
@@ -75,7 +76,7 @@ class RegisterPredmetovScreenImpl extends AIS2AbstractScreen
       foreach ($options as $k => $v) {
         $akRokIndex = array_search($akRok, $options);
         if ($akRokIndex === false) {
-          throw new \Exception("Zadaný akad. rok sa v zozname nenachádza");
+          throw new Exception("Zadaný akad. rok sa v zozname nenachádza");
         }
       }
     }
