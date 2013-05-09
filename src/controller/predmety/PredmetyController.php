@@ -94,6 +94,12 @@ class PredmetyController extends BaseController
     $akadRok = FajrUtils::getAcademicYear();
     $content = $this->registerPredmetovScreen->getInformacnyList($trace, $searchCode, $akadRok);
     
+    // Docasny fix, stiahne PDF s informacnym listom
+    $download_me = $content;
+    header("Content-type:  application/pdf");
+    header("Content-Disposition: attachment; filename=".$searchCode.".pdf");
+    echo $download_me;
+ 
     $ip = new InformacnyListParser();
     $list = $ip->parse($trace, $content);
     

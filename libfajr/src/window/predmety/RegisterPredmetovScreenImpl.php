@@ -109,7 +109,7 @@ class RegisterPredmetovScreenImpl extends AIS2AbstractScreen
         array('compName' => 'informacnyListAction')
     );
     if (!preg_match("@dm\(\)\.openDialog\("
-          ."\"CM024_InformListVyberMoznostiDlg1\"@", $data)) {
+          ."\"CM017_SpravaSablonDlg1\"@", $data)) {
       throw new Exception("Problém pri sťahovaní: ".
           "Neočakávaná odozva od AISu");
     }
@@ -117,7 +117,7 @@ class RegisterPredmetovScreenImpl extends AIS2AbstractScreen
     $data = $this->executor->doRequest(
         $trace->addChild("Requesting data:"),
         array('compName' => 'enterAction',
-              'dlgName' => 'CM024_InformListVyberMoznostiDlg1',
+              'dlgName' => 'CM017_SpravaSablonDlg1',
               'embObj' => array('typZostavyComboBox' => array(
                   'dataView' => array(
                     'selectedIndexes' => 1,
@@ -127,7 +127,7 @@ class RegisterPredmetovScreenImpl extends AIS2AbstractScreen
               ),
             ));
     if (!preg_match("@dm\(\)\.closeDialog\("
-          ."\"CM024_InformListVyberMoznostiDlg1\"\);@", $data)) {
+          ."\"CM017_SpravaSablonDlg1\"\);@", $data)) {
       throw new Exception("Problém pri sťahovaní: ".
           "Neočakávaná odozva od AISu");
     }
