@@ -67,6 +67,10 @@ class DataTable implements ComponentInterface
     Preconditions::checkIsString($dataViewName);
     $this->dataViewName = $dataViewName;
     $this->selectedRows = array();
+
+    //default active row is 0.
+    $this->selectSingleRow(0);
+    $this->setActiveRow(0);
   }
 
   /**
@@ -213,7 +217,7 @@ class DataTable implements ComponentInterface
       //Creating content for CDATA section
       $root = $xml_spec->createElement('root');
       $selection = $xml_spec->createElement('selection');
-      $activeIndex = $xml_spec->createElement('activeIndex', $this->activeIndex);
+      $activeIndex = $xml_spec->createElement('activeIndex', $this->activeRow);
       $selection->appendChild($activeIndex);
       foreach($this->selectedRows as $index){
           $selectedIndexes = $xml_spec->createElement('selectedIndexes', $index);

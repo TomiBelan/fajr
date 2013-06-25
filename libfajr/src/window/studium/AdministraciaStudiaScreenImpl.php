@@ -25,6 +25,7 @@ use libfajr\window\DialogData;
 use libfajr\window\ScreenData;
 use libfajr\data\AIS2TableParser;
 use libfajr\data\DataTable;
+use libfajr\data\ActionButton;
 use libfajr\util\StrUtil;
 use libfajr\util\MiscUtil;
 use libfajr\exceptions\ParseException;
@@ -54,7 +55,7 @@ class AdministraciaStudiaScreenImpl extends AIS2AbstractScreen
     $data->additionalParams = array('kodAplikacie' => 'VSES017');
     $components['dataComponents']['studiaTable_dataView'] = new DataTable("studiaTable_dataView");
     $components['dataComponents']['zapisneListyTable_dataView'] = new DataTable("zapisneListyTable_dataView");
-    $components['actionComponents'] = null;
+    $components['actionComponents']['nacitatDataAction'] = new ActionButton("nacitatDataAction");
     parent::__construct($trace, $executor, $data, $components);
     $this->parser = $parser;
   }
@@ -66,21 +67,10 @@ class AdministraciaStudiaScreenImpl extends AIS2AbstractScreen
 
   public function getZapisneListy(Trace $trace, $studiumIndex)
   {
-    /* TODO toto bude action button
-    $this->openIfNotAlready($trace);
-    $data = $this->executor->doRequest(
-        $trace->addChild("Requesting data:"),
-        array('compName' => 'nacitatDataAction',
-              'embObj' => array('studiaTable' => array(
-                  'dataView' => array(
-                    'activeIndex' => $studiumIndex,
-                    'selectedIndexes' => $studiumIndex,
-                  ),
-                  'editMode' => 'false',
-                ),
-              ),
-            ));
-    */
+    $table = $this->components['studiaTable_dataView'];
+    $table->selectSingleRow((integer)$studiumIndex);
+    $this->doAction('nacitatDataAction');
+
     return $this->components['zapisneListyTable_dataView'];
   }
 

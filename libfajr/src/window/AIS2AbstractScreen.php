@@ -18,6 +18,7 @@ use DOMElement;
 use DOMDocument;
 use libfajr\trace\Trace;
 use libfajr\window\LazyDialog;
+use libfajr\data\ActionButton;
 use libfajr\base\Preconditions;
 use libfajr\login\AIS2LoginException;
 use libfajr\base\IllegalStateException;
@@ -54,7 +55,7 @@ abstract class AIS2AbstractScreen extends DisableEvilCallsObject
    *
    * @var array(string => ComponentInterface object)
    */
-  protected $components = null;
+  public $components = null;
 
   /**
    * All action components which are in Window and we
@@ -122,14 +123,38 @@ abstract class AIS2AbstractScreen extends DisableEvilCallsObject
    */
   public function doAction($action)
   {
-    $changes = new DOMDocument();
-    $event = $this->action[$action]->getStateChanges();
+    $button = $this->actions[$action];
+    $action = new DOMDocument();
 
+    //get part of xml action request
+    $actionComponent = $button->getActionXML($this->dialogName);
+    $actionComponent = $actionComponent->documentElement;
+
+    $action->appendChild($action->importNode($actionComponent, true));
+
+    $changedProps = new DOMDocument();
+    $props = $changedProps->createElement("changedProps");
+    $changedProps->appendChild($props);
+
+    //get a changed properites from data components
     foreach($this->components as $component){
-      $changes->appendChild($component->getStateChanges);
+      $change = $component->getStateChanges();
+      $change = $change->documentElement;
+      if($change){
+        $changedProps->documentElement->appendChild($changedProps->importNode($change, true));
+      }
     }
 
-    $this->executor->doRequest($this->trace, $event, $changes);
+    $changedProps = $changedProps->documentElement;
+    $action->appendChild($action->importNode($changedProps, true));
+
+    //make a request
+    $response = $this->executor->doActionRequest($this->trace, $action);
+
+    $response = $this->prepareResponse($this->trace->addChild("Converting response from HTML to DOMDocument"), $response);
+
+    //update component from response
+    $this->updateComponents($response);
   }
 
   /**
@@ -138,7 +163,7 @@ abstract class AIS2AbstractScreen extends DisableEvilCallsObject
    * @param DOMDocument $dom response on some action
    * @param boolean $init if this is called from openWindow()
    */
-  private function updateComponents($dom, $init = null)
+  public function updateComponents($dom, $init = null)
   {
       if(empty($this->components)) return;
       foreach($this->components as $component){
