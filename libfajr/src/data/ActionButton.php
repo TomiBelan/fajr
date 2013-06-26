@@ -15,7 +15,7 @@ use libfajr\exceptions\ParseException;
 
 
 /**
- * Trieda zastrešujúca tabuľku dát.
+ * Trieda zastrešujúca jednoduche tlacitko v AISe.
  *
  * @package    Libfajr
  */

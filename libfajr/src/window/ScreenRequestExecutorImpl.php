@@ -133,18 +133,13 @@ class ScreenRequestExecutorImpl extends DisableEvilCallsObject
     $finalRequest = new DOMDocument();
 
     $request = $finalRequest->createElement('request');
-
     $serialNumber = $this->requestBuilder->newSerial();
-
     $serial = $finalRequest->createElement('serial', $serialNumber);
-
     $request->appendChild($serial);
-
     $finalRequest->appendChild($request);
 
     foreach($action->childNodes as $element){
       $element = $finalRequest->importNode($element, true);
-
       $finalRequest->documentElement->appendChild($element);
     }
 

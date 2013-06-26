@@ -123,6 +123,7 @@ abstract class AIS2AbstractScreen extends DisableEvilCallsObject
    */
   public function doAction($action)
   {
+    assert(isset($this->actions[$action]));
     $button = $this->actions[$action];
     $action = new DOMDocument();
 
