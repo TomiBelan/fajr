@@ -96,7 +96,7 @@ class AdministraciaStudiaScreenImpl extends AIS2AbstractScreen
 
   private function parseParamNameFromResponse($response)
   {
-      $data = $response->getElementById("application/javadiv");
+      $data = $response->getElementById("init-data");
       $data = $data->textContent;
 
       $data = StrUtil::match(self::APP_LOCATION_PATTERN, $data, 'params');

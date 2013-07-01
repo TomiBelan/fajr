@@ -202,8 +202,12 @@ abstract class AIS2AbstractScreen extends DisableEvilCallsObject
     Preconditions::checkIsString($html);
     $html = str_replace("<!--", "", $html);
     $html = str_replace("-->", "", $html);
+
+    // just first javascript code contain data which we want
+    $count = 1;
+    $html = str_replace("type='application/javascript'", "id='init-data'", $html, $count);
     $html = str_replace("script", "div", $html);
-    $html = str_replace("type='application/javadiv'", "id='application/javadiv'", $html);
+
     $trace->tlogVariable("Fixed html", $html);
 
     // creating DOMDocument
