@@ -55,7 +55,11 @@ class AdministraciaStudiaScreenImpl extends AIS2AbstractScreen
     $data->additionalParams = array('kodAplikacie' => 'VSES017');
     $components['dataComponents']['studiaTable_dataView'] = new DataTable("studiaTable_dataView");
     $components['dataComponents']['zapisneListyTable_dataView'] = new DataTable("zapisneListyTable_dataView");
+
     $components['actionComponents']['nacitatDataAction'] = new ActionButton("nacitatDataAction");
+    $components['actionComponents']['terminyHodnoteniaAction'] = new ActionButton("terminyHodnoteniaAction");
+    $components['actionComponents']['hodnoteniaPriemeryAction'] = new ActionButton("hodnoteniaPriemeryAction");
+    
     parent::__construct($trace, $executor, $data, $components);
     $this->parser = $parser;
   }
@@ -76,19 +80,11 @@ class AdministraciaStudiaScreenImpl extends AIS2AbstractScreen
 
   public function getParamNameFromZapisnyListIndex(Trace $trace, $zapisnyListIndex, $action)
   {
+    $table = $this->components['zapisneListyTable_dataView'];
+    $table->selectSingleRow((integer)$zapisnyListIndex);
+    $table->setActiveRow((integer)$zapisnyListIndex);
 
-    $response = $this->executor->doRequest(
-        $trace->addChild("Requesting data:"),
-        array('compName' => $action,
-              'embObj' => array('zapisneListyTable' => array(
-                  'dataView' => array(
-                    'activeIndex' => $zapisnyListIndex,
-                    'selectedIndexes' => $zapisnyListIndex,
-                  ),
-                  'editMode' => 'false',
-                ),
-              ),
-            ));
+    $response = $this->doAction($action);
 
     try {
       return $this->parseParamNameFromResponse($response);
@@ -100,7 +96,10 @@ class AdministraciaStudiaScreenImpl extends AIS2AbstractScreen
 
   private function parseParamNameFromResponse($response)
   {
-      $data = StrUtil::match(self::APP_LOCATION_PATTERN, $response, 'params');
+      $data = $response->getElementById("application/javadiv");
+      $data = $data->textContent;
+
+      $data = StrUtil::match(self::APP_LOCATION_PATTERN, $data, 'params');
       if ($data === false) {
         throw new ParseException("Location of APP_PATTERN failed.");
       };

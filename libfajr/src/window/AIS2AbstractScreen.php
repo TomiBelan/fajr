@@ -120,6 +120,7 @@ abstract class AIS2AbstractScreen extends DisableEvilCallsObject
    * Basicly it make a request definied by component action with id $action
    *
    * @param string $action name, id of action
+   * @return DOMDocument returns an response to that request
    */
   public function doAction($action)
   {
@@ -151,11 +152,12 @@ abstract class AIS2AbstractScreen extends DisableEvilCallsObject
 
     //make a request
     $response = $this->executor->doActionRequest($this->trace, $action);
-
     $response = $this->prepareResponse($this->trace->addChild("Converting response from HTML to DOMDocument"), $response);
 
     //update component from response
     $this->updateComponents($response);
+
+    return $response;
   }
 
   /**
@@ -201,6 +203,7 @@ abstract class AIS2AbstractScreen extends DisableEvilCallsObject
     $html = str_replace("<!--", "", $html);
     $html = str_replace("-->", "", $html);
     $html = str_replace("script", "div", $html);
+    $html = str_replace("type='application/javadiv'", "id='application/javadiv'", $html);
     $trace->tlogVariable("Fixed html", $html);
 
     // creating DOMDocument
