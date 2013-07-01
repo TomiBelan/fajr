@@ -59,7 +59,7 @@ class AdministraciaStudiaScreenImpl extends AIS2AbstractScreen
     $components['actionComponents']['nacitatDataAction'] = new ActionButton("nacitatDataAction");
     $components['actionComponents']['terminyHodnoteniaAction'] = new ActionButton("terminyHodnoteniaAction");
     $components['actionComponents']['hodnoteniaPriemeryAction'] = new ActionButton("hodnoteniaPriemeryAction");
-    
+
     parent::__construct($trace, $executor, $data, $components);
     $this->parser = $parser;
   }
