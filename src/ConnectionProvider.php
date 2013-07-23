@@ -38,8 +38,6 @@ class ConnectionProvider
         CURLOPT_FORBID_REUSE => false, // Keepalive konekcie
         CURLOPT_FOLLOWLOCATION => true, // Redirecty pri prihlasovani/odhlasovani
         CURLOPT_VERBOSE => false,
-        CURLOPT_SSL_VERIFYPEER => true,
-        CURLOPT_SSL_VERIFYHOST => true,
         CURLOPT_USERAGENT => $config->get(FajrConfigOptions::USER_AGENT),
         CURLOPT_ENCODING => 'gzip',
         );
