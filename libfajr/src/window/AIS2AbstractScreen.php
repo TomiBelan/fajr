@@ -207,6 +207,7 @@ abstract class AIS2AbstractScreen extends DisableEvilCallsObject
     $count = 1;
     $html = str_replace("type='application/javascript'", "id='init-data'", $html, $count);
     $html = str_replace("script", "div", $html);
+    $html = $this->fixNbsp($html);
 
     $trace->tlogVariable("Fixed html", $html);
 
@@ -250,6 +251,23 @@ abstract class AIS2AbstractScreen extends DisableEvilCallsObject
       throw new IllegalStateException("Zatváram zlý dialóg!");
     }
     $this->openedDialog = null;
+  }
+
+  /**
+   * Fix non-breakable spaces which were converted to special character during parsing.
+   *
+   * @param string $str string to fix
+   *
+   * @returns string fixed string
+   */
+  private function fixNbsp($str)
+  {
+    Preconditions::checkIsString($str);
+    // special fix for &nbsp;
+    // xml decoder decodes &nbsp; into special utf-8 character
+    // TODO(ppershing): nehodili by sa tie &nbsp; niekedy dalej v aplikacii niekedy?
+    $nbsp = chr(0xC2).chr(0xA0);
+    return str_replace($nbsp, ' ', $str);
   }
 }
 ?>

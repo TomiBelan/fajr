@@ -7,6 +7,7 @@ namespace libfajr\data;
 
 use DOMElement;
 use DOMDocument;
+use Exception;
 use libfajr\trace\Trace;
 use libfajr\util\StrUtil;
 use libfajr\base\Preconditions;
@@ -46,6 +47,11 @@ class ComboBox implements ComponentInterface
   private $oldSelectedOption = null;
 
   /**
+   * Indicates if component was loaded
+   */
+  private $initialized = false;
+
+  /**
    * Create a comboBox and set its comboBoxName
    *
    * @param string $comboBoxName name of comboBox which we want to store here
@@ -55,23 +61,17 @@ class ComboBox implements ComponentInterface
     Preconditions::checkIsString($comboBoxName);
     $this->comboBoxName = $comboBoxName;
     $this->selectedOptions = array();
-
-    //default active option is 0.
-    $this->selectOption(0);
   }
 
   /**
-   * Update Table from aisResponse
+   * Update comboBox from aisResponse
    *
    * @param Trace $trace for creating logs, tracking activity
    * @param DOMDocument $aisResponse AIS2 html parsed reply
-   * @param boolean $init if init is true, table must find data and definition
+   * @param boolean $init if it is first opening of window
    */
   public function updateComponentFromResponse(Trace $trace, DOMDocument $aisResponse, $init = null)
   {
-    //in comboBox we don`t have what to update
-    if (!$init) return;
-
     Preconditions::checkNotNull($aisResponse);
     $element = $aisResponse->getElementById($this->comboBoxName);
     if ($element === null) {
@@ -88,6 +88,10 @@ class ComboBox implements ComponentInterface
 
     $this->options = $this->getOptionsFromDom($trace->addChild("Getting comboBox options from DOM."), $dom);
 
+    $this->initialized = true;
+
+    //default option is 0
+    if($init) $this->selectOption(0);
   }
 
   /**
@@ -97,6 +101,7 @@ class ComboBox implements ComponentInterface
    */
   public function getOptions()
   {
+    if(!$this->initialized) throw new Exception("ComboBox(".$this->comboBoxName.") wasn`t initialized yet!");
     return $this->options;
   }
 
@@ -108,6 +113,7 @@ class ComboBox implements ComponentInterface
    */
   public function getOption($index)
   {
+    if(!$this->initialized) throw new Exception("ComboBox(".$this->comboBoxName.") wasn`t initialized yet!");
     Preconditions::checkIsNumber($index);
     if ($index < 0 || $index >= count($this->options)) return null;
     return $this->options[$index];
@@ -194,6 +200,7 @@ class ComboBox implements ComponentInterface
    */
   public function selectOption($index)
   {
+    if(!$this->initialized) throw new Exception("ComboBox wasn`t initialized yet!");
     Preconditions::checkIsNumber($index);
     $this->selectedOption = $index;
   }
@@ -227,25 +234,8 @@ class ComboBox implements ComponentInterface
 
     $options = array();
     foreach ($optionElements as $option) {
-      $options[] = $this->fixNbsp($option->nodeValue);
+      $options[] = $option->nodeValue;
     }
     return $options;
-  }
-
-/**
-   * Fix non-breakable spaces which were converted to special character during parsing.
-   *
-   * @param string $str string to fix
-   *
-   * @returns string fixed string
-   */
-  private function fixNbsp($str)
-  {
-    Preconditions::checkIsString($str);
-    // special fix for &nbsp;
-    // xml decoder decodes &nbsp; into special utf-8 character
-    // TODO(ppershing): nehodili by sa tie &nbsp; niekedy dalej v aplikacii niekedy?
-    $nbsp = chr(0xC2).chr(0xA0);
-    return str_replace($nbsp, ' ', $str);
   }
 }
