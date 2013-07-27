@@ -115,7 +115,7 @@ class ComboBox implements ComponentInterface
   {
     if(!$this->initialized) throw new Exception("ComboBox(".$this->comboBoxName.") wasn`t initialized yet!");
     Preconditions::checkIsNumber($index);
-    if ($index < 0 || $index >= count($this->options)) return null;
+    if ($index < 0 || $index >= count($this->options)) throw new Exception($this->comboBoxName.": option is out of range!");
     return $this->options[$index];
   }
 
