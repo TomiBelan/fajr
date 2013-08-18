@@ -64,14 +64,15 @@ class TerminyHodnoteniaScreenImpl extends AIS2AbstractScreen
 
   public function getPredmetyZapisnehoListu(Trace $trace)
   {
+    $this->openWindow();
     // zatial to tu je zbytocne dokym sa nemenia moznosti v comboBoxe
     $this->doAction('filterAction');
-
     return $this->components['predmetyTable_dataView'];
   }
 
   public function getTerminyHodnotenia(Trace $trace)
   {
+    $this->openWindow();
     // zatial to tu je zbytocne dokym sa nemenia moznosti v comboBoxe
     $this->doAction('zobrazitTerminyAction');
 

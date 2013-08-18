@@ -165,7 +165,7 @@ class ComboBox implements ComponentInterface
       //Creating content for CDATA section
       $root = $xml_spec->createElement('root');
       $selection = $xml_spec->createElement('selection');
-      $selectedIndexes = $xml_spec->createElement('selectedIndexes', $this->selectedOptions);
+      $selectedIndexes = $xml_spec->createElement('selectedIndexes', 1);
       $selection->appendChild($selectedIndexes);
       $root->appendChild($selection);
 
@@ -176,9 +176,6 @@ class ComboBox implements ComponentInterface
 
       //constructing final xml from Nodes
       $value->appendChild($CDATA);
-      $nameValue2->appendChild($name2);
-      $nameValue2->appendChild($isXML2);
-      $nameValue2->appendChild($value2);
       $changedProperties->appendChild($objName);
       $nameValue->appendChild($name);
       $nameValue->appendChild($isXML);

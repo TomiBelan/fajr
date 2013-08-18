@@ -145,6 +145,7 @@ class ScreenRequestExecutorImpl extends DisableEvilCallsObject
 
     $data = array('xml_spec' => $finalRequest->saveXML($finalRequest->documentElement));
 
+    $trace->tlogVariable('xml req', $data['xml_spec']);
     return $this->connection->request($trace, $this->getRequestUrl(), $data);
   }
 

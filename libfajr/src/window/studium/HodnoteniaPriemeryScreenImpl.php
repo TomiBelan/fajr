@@ -56,11 +56,13 @@ class HodnoteniaPriemeryScreenImpl extends AIS2AbstractScreen
 
   public function getHodnotenia(Trace $trace)
   {
+    $this->openWindow();
     return $this->components['hodnoteniaTable_dataView'];
   }
 
   public function getPriemery(Trace $trace)
   {
+    $this->openWindow();
     return $this->components['priemeryTable_dataView'];
   }
 }
