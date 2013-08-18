@@ -138,15 +138,47 @@ abstract class AIS2AbstractScreen extends DisableEvilCallsObject
     $props = $changedProps->createElement("changedProps");
     $changedProps->appendChild($props);
 
+    $changedProperties = $changedProps->createElement("changedProperties");
+    $objName = $changedProps->createElement("objName", "app");
+    $propertyValues = $changedProps->createElement("propertyValues");
+    $nameValue = $changedProps->createElement("nameValue");
+    $name = $changedProps->createElement("name", "activeDlgName");
+    $value = $changedProps->createElement("value", $this->dialogName);
+
+    $nameValue->appendChild($name);
+    $nameValue->appendChild($value);
+    $propertyValues->appendChild($nameValue);
+    $changedProperties->appendChild($objName);
+    $changedProperties->appendChild($propertyValues);
+
+    $props->appendChild($changedProperties);
+
+    $changedProperties2 = $changedProps->createElement("changedProperties");
+    $objName2 = $changedProps->createElement("objName", $this->dialogName);
+    $propertyValues2 = $changedProps->createElement("propertyValues");
+
+    $props->appendChild($changedProperties);
+
+    $changedProperties2 = $changedProps->createElement("changedProperties");
+    $objName2 = $changedProps->createElement("objName", $this->dialogName);
+    $propertyValues2 = $changedProps->createElement("propertyValues");
+
+    $changedProperties2->appendChild($objName2);
+    $changedProperties2->appendChild($propertyValues2);
+
+    $embObjChProps = $changedProps->createElement("embObjChProps");
+
     //get a changed properites from data components
     foreach($this->components as $component){
       $change = $component->getStateChanges();
       $change = $change->documentElement;
       if($change){
-        $changedProps->documentElement->appendChild($changedProps->importNode($change, true));
+        $embObjChProps->appendChild($changedProps->importNode($change, true));
       }
     }
 
+    $changedProperties2->appendChild($embObjChProps);
+    $props->appendChild($changedProperties2);
     $changedProps = $changedProps->documentElement;
     $action->appendChild($action->importNode($changedProps, true));
 
