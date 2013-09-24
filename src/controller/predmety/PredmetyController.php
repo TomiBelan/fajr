@@ -94,10 +94,9 @@ class PredmetyController extends BaseController
     $akadRok = FajrUtils::getAcademicYear();
     $content = $this->registerPredmetovScreen->getInformacnyList($trace, $searchCode, $akadRok);
     
-    // Docasny fix, stiahne PDF s informacnym listom
+    // Docasny fix, vrati PDF s informacnym listom
     $response = new \Symfony\Component\HttpFoundation\Response($content, 200);
     $response->headers->set('Content-Type', 'application/pdf');
-    $response->headers->set('Content-Disposition', 'attachment');
     return $response;
 
     $ip = new InformacnyListParser();
