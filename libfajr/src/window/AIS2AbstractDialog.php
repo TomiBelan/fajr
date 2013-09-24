@@ -116,17 +116,6 @@ class AIS2AbstractDialog extends DisableEvilCallsObject
     $this->parent->closeDialog($this->uid);
   }
 
-  /**
-   * Deštruktor.
-   * Zatvorí danú "aplikáciu" v AISe,
-   * aby sa nevyčerpal limit otvorených aplikácii na session.
-   * Toto správenie nebolo pozorované pri dialógoch, ale pre istotu to tu je.
-   */
-  public function  __destruct()
-  {
-    $this->closeWindow();
-  }
-
   public function openDialogAndGetExecutor(Trace $trace, $dialogUid, DialogData $data)
   {
     $this->openWindow();

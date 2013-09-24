@@ -106,16 +106,6 @@ class StudiumController extends BaseController
   }
 
   /**
-   * Close a window
-   */
-  public function  __destruct()
-  {
-    $this->terminyHodnoteniaScreen->closeWindow();
-    $this->hodnoteniaScreen->closeWindow();
-    $this->administraciaStudiaScreen->closeWindow();
-  }
-
-  /**
    * Invoke an action given its name
    *
    * This function requests information necessary to operate on
@@ -235,7 +225,11 @@ class StudiumController extends BaseController
       }
     }
 
-    return parent::invokeAction($trace, $action, $request);
+    $result = parent::invokeAction($trace, $action, $request);
+    if ($this->terminyHodnoteniaScreen) $this->terminyHodnoteniaScreen->closeWindow();
+    if ($this->hodnoteniaScreen) $this->hodnoteniaScreen->closeWindow();
+    if ($this->administraciaStudiaScreen) $this->administraciaStudiaScreen->closeWindow();
+    return $result;
   }
   
   public function runPrehladKreditov(Trace $trace, Request $request) {
