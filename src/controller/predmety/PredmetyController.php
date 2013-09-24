@@ -81,7 +81,9 @@ class PredmetyController extends BaseController
     
     $this->registerPredmetovScreen = $register;
 
-    return parent::invokeAction($trace, $action, $request);
+    $result = parent::invokeAction($trace, $action, $request);
+    if ($this->registerPredmetovScreen) $this->registerPredmetovScreen->closeWindow();
+    return $result;
   }
 
   public function runInformacnyList(Trace $trace, Request $request) {

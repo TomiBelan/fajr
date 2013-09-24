@@ -206,11 +206,6 @@ abstract class AIS2AbstractScreen extends DisableEvilCallsObject
       }
   }
 
-  public function __destruct()
-  {
-    $this->closeWindow();
-  }
-
   /**
    * Close window, because we won`t run out of Open windows limit
    *
