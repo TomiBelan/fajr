@@ -54,7 +54,6 @@ class TerminyHodnoteniaScreenImpl extends AIS2AbstractScreen
     $components['dataComponents']['terminyTable_dataView'] = new DataTable("terminyTable_dataView");
     $components['dataComponents']['predmetyTable_dataView'] = new DataTable("predmetyTable_dataView");
     $components['dataComponents']['semesterComboBox'] = new ComboBox("semesterComboBox");
-    $components['dataComponents']['zobrazitTerminyComboBox'] = new ComboBox("zobrazitTerminyComboBox");
 
     $components['actionComponents']['filterAction'] = new ActionButton("filterAction");
     $components['actionComponents']['zobrazitTerminyAction'] = new ActionButton("zobrazitTerminyAction");
@@ -65,6 +64,7 @@ class TerminyHodnoteniaScreenImpl extends AIS2AbstractScreen
   public function getPredmetyZapisnehoListu(Trace $trace)
   {
     // zatial to tu je zbytocne dokym sa nemenia moznosti v comboBoxe
+    $this->components['semesterComboBox']->selectOption(1);
     $this->doAction('filterAction');
     return $this->components['predmetyTable_dataView'];
   }
@@ -72,6 +72,7 @@ class TerminyHodnoteniaScreenImpl extends AIS2AbstractScreen
   public function getTerminyHodnotenia(Trace $trace)
   {
     // zatial to tu je zbytocne dokym sa nemenia moznosti v comboBoxe
+    $this->components['semesterComboBox']->selectOption(1);
     $this->doAction('zobrazitTerminyAction');
 
     return $this->components['terminyTable_dataView'];
