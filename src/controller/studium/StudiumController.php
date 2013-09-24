@@ -202,7 +202,6 @@ class StudiumController extends BaseController
                 $trace,
                 $adminStudia->getParamNameFromZapisnyListIndex($trace, $this->zapisnyList,
                     VSES017\AdministraciaStudiaScreen::ACTION_TERMINY_HODNOTENIA));
-        $this->terminyHodnoteniaScreen->openWindow();
       } catch (ParseException $e) {
         $this->terminyHodnoteniaScreen = null;
       }
@@ -213,7 +212,6 @@ class StudiumController extends BaseController
             $trace,
             $adminStudia->getParamNameFromZapisnyListIndex($trace, $this->zapisnyList,
                 VSES017\AdministraciaStudiaScreen::ACTION_HODNOTENIA_PRIEMERY));
-      $this->hodnoteniaScreen->openWindow();
     }
 
     $this->templateParams['currentTab'] = '';
