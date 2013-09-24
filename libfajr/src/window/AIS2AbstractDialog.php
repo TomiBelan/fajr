@@ -77,6 +77,7 @@ class AIS2AbstractDialog extends DisableEvilCallsObject
     $this->uid = MiscUtil::random();
     $this->components = $components['dataComponents'];
     $this->actions = $components['actionComponents'];
+    $this->openWindow();
   }
 
   /**

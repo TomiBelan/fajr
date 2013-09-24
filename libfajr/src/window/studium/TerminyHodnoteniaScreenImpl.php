@@ -64,7 +64,6 @@ class TerminyHodnoteniaScreenImpl extends AIS2AbstractScreen
 
   public function getPredmetyZapisnehoListu(Trace $trace)
   {
-    $this->openWindow();
     // zatial to tu je zbytocne dokym sa nemenia moznosti v comboBoxe
     $this->doAction('filterAction');
     return $this->components['predmetyTable_dataView'];
@@ -72,7 +71,6 @@ class TerminyHodnoteniaScreenImpl extends AIS2AbstractScreen
 
   public function getTerminyHodnotenia(Trace $trace)
   {
-    $this->openWindow();
     // zatial to tu je zbytocne dokym sa nemenia moznosti v comboBoxe
     $this->doAction('zobrazitTerminyAction');
 
@@ -100,7 +98,6 @@ class TerminyHodnoteniaScreenImpl extends AIS2AbstractScreen
 
   public function odhlasZTerminu(Trace $trace, $terminIndex)
   {
-    $this->openWindow();
     // Posleme request ze sa chceme odhlasit.
     $data = $this->executor->doRequest($trace, array(
       'compName' => 'odstranitTerminAction',

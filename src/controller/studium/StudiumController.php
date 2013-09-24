@@ -148,7 +148,6 @@ class StudiumController extends BaseController
     $adminStudia = $screenFactory->newAdministraciaStudiaScreen($trace);
     
     $this->administraciaStudiaScreen = $adminStudia;
-    $this->administraciaStudiaScreen->openWindow();
 
     $this->studium = $request->getParameter('studium', '0');
 

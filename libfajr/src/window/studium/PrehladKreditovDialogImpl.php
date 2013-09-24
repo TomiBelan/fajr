@@ -52,7 +52,6 @@ class PrehladKreditovDialogImpl extends AIS2AbstractDialog
 
   public function getPredmety(Trace $trace)
   {
-  $this->openWindow();
     return $this->components['predmetyTable_dataView'];
   }
 }

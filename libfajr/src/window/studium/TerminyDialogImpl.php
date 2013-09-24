@@ -51,13 +51,11 @@ class TerminyDialogImpl extends AIS2AbstractDialog
   
   public function getZoznamTerminov(Trace $trace)
   {
-    $this->openWindow();
     return $this->components['zoznamTerminovTable_dataView'];
   }
   
   public function prihlasNaTermin(Trace $trace, $terminIndex)
   {
-    $this->openWindow();
     $table = $this->components['zoznamTerminovTable_dataView'];
     $table->selectSingleRow((integer)$terminIndex);
     $table->setActiveRow((integer)$terminIndex);

@@ -66,13 +66,11 @@ class AdministraciaStudiaScreenImpl extends AIS2AbstractScreen
 
   public function getZoznamStudii(Trace $trace)
   {
-    $this->openWindow();
     return $this->components['studiaTable_dataView'];
   }
 
   public function getZapisneListy(Trace $trace, $studiumIndex)
   {
-    $this->openWindow();
     $table = $this->components['studiaTable_dataView'];
     $table->selectSingleRow((integer)$studiumIndex);
     $table->setActiveRow((integer)$studiumIndex);
@@ -84,7 +82,6 @@ class AdministraciaStudiaScreenImpl extends AIS2AbstractScreen
 
   public function getParamNameFromZapisnyListIndex(Trace $trace, $zapisnyListIndex, $action)
   {
-    $this->openWindow();
     $table = $this->components['zapisneListyTable_dataView'];
     $table->selectSingleRow((integer)$zapisnyListIndex);
     $table->setActiveRow((integer)$zapisnyListIndex);

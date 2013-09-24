@@ -35,11 +35,11 @@ abstract class AIS2AbstractScreen extends DisableEvilCallsObject
     implements DialogParent, LazyDialog
 {
   /**
-   * The name of this dialog
+   * String which identifies the screen
    *
    * @var string
    */
-  private $dialogName = null;
+  private $formName = null;
 
   /**
    * So we know if window was opened already
@@ -93,6 +93,7 @@ abstract class AIS2AbstractScreen extends DisableEvilCallsObject
     $this->data = $data;
     $this->components = $components['dataComponents'];
     $this->actions = $components['actionComponents'];
+    $this->openWindow();
   }
 
   /**
@@ -107,7 +108,7 @@ abstract class AIS2AbstractScreen extends DisableEvilCallsObject
     }
     $this->executor->requestOpen($this->trace->addChild("Opening window ".$this->data->appClassName), $this->data);
     $this->isOpen = true;
-    $this->dialogName = $this->executor->formName;
+    $this->formName = $this->executor->formName;
 
     $response = $this->executor->requestContent($this->trace->addChild("get content"));
     $response = $this->prepareResponse($this->trace->addChild("Converting response from HTML to DOMDocument"), $response);
@@ -129,7 +130,7 @@ abstract class AIS2AbstractScreen extends DisableEvilCallsObject
     $action = new DOMDocument();
 
     //get part of xml action request
-    $actionComponent = $button->getActionXML($this->dialogName);
+    $actionComponent = $button->getActionXML($this->formName);
     $actionComponent = $actionComponent->documentElement;
 
     $action->appendChild($action->importNode($actionComponent, true));
@@ -143,7 +144,7 @@ abstract class AIS2AbstractScreen extends DisableEvilCallsObject
     $propertyValues = $changedProps->createElement("propertyValues");
     $nameValue = $changedProps->createElement("nameValue");
     $name = $changedProps->createElement("name", "activeDlgName");
-    $value = $changedProps->createElement("value", $this->dialogName);
+    $value = $changedProps->createElement("value", $this->formName);
 
     $nameValue->appendChild($name);
     $nameValue->appendChild($value);
@@ -154,13 +155,13 @@ abstract class AIS2AbstractScreen extends DisableEvilCallsObject
     $props->appendChild($changedProperties);
 
     $changedProperties2 = $changedProps->createElement("changedProperties");
-    $objName2 = $changedProps->createElement("objName", $this->dialogName);
+    $objName2 = $changedProps->createElement("objName", $this->formName);
     $propertyValues2 = $changedProps->createElement("propertyValues");
 
     $props->appendChild($changedProperties);
 
     $changedProperties2 = $changedProps->createElement("changedProperties");
-    $objName2 = $changedProps->createElement("objName", $this->dialogName);
+    $objName2 = $changedProps->createElement("objName", $this->formName);
     $propertyValues2 = $changedProps->createElement("propertyValues");
 
     $changedProperties2->appendChild($objName2);
