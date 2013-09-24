@@ -47,11 +47,6 @@ class ComboBox implements ComponentInterface
   private $oldSelectedOption = null;
 
   /**
-   * Indicates if component was loaded
-   */
-  private $initialized = false;
-
-  /**
    * Create a comboBox and set its comboBoxName
    *
    * @param string $comboBoxName name of comboBox which we want to store here
@@ -88,8 +83,6 @@ class ComboBox implements ComponentInterface
 
     $this->options = $this->getOptionsFromDom($trace->addChild("Getting comboBox options from DOM."), $dom);
 
-    $this->initialized = true;
-
     //default option is 0
     if($init) $this->selectOption(0);
   }
@@ -112,7 +105,6 @@ class ComboBox implements ComponentInterface
    */
   public function getOption($index)
   {
-    if(!$this->initialized) throw new Exception("ComboBox(".$this->comboBoxName.") wasn`t initialized yet!");
     Preconditions::checkIsNumber($index);
     if ($index < 0 || $index >= count($this->options)) throw new Exception($this->comboBoxName.": option is out of range!");
     return $this->options[$index];
@@ -196,7 +188,6 @@ class ComboBox implements ComponentInterface
    */
   public function selectOption($index)
   {
-    if(!$this->initialized) throw new Exception("ComboBox wasn`t initialized yet!");
     Preconditions::checkIsNumber($index);
     $this->selectedOption = $index;
   }
