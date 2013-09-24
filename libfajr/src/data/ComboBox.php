@@ -101,7 +101,6 @@ class ComboBox implements ComponentInterface
    */
   public function getOptions()
   {
-    if(!$this->initialized) throw new Exception("ComboBox(".$this->comboBoxName.") wasn`t initialized yet!");
     return $this->options;
   }
 
