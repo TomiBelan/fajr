@@ -44,7 +44,6 @@ class FakeHodnoteniaPriemeryScreenImpl extends FakeAbstractScreen
 
   public function getHodnotenia(Trace $trace)
   {
-    $this->openIfNotAlready($trace);
     $data = $this->executor->readTable(
         array('list' => $this->idZapisnyList),
         'hodnotenia');
@@ -54,7 +53,6 @@ class FakeHodnoteniaPriemeryScreenImpl extends FakeAbstractScreen
 
   public function getPriemery(Trace $trace)
   {
-    $this->openIfNotAlready($trace);
     $data = $this->executor->readTable(
         array('list' => $this->idZapisnyList),
         'priemery');

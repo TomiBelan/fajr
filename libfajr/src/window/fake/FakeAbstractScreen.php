@@ -82,7 +82,6 @@ abstract class FakeAbstractScreen extends DisableEvilCallsObject
 
   public function openDialogAndGetExecutor(Trace $trace, $dialogUid, array $data)
   {
-    $this->openIfNotAlready($trace->addChild("opening dialog parent"));
     if ($this->openedDialog != null) {
       throw new IllegalStateException('Vo fake screene "'.get_class($this).
           '" už existuje otvorený dialóg. Pre otvorenie nového treba pôvodný zatvoriť.');

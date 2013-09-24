@@ -38,7 +38,6 @@ class FakeTerminyDialogImpl extends FakeAbstractDialog
   
   public function getZoznamTerminov(Trace $trace)
   {
-    $this->openIfNotAlready($trace);
     $data = $this->executor->readTable(array(), 'terminy');
     $result = array();
     foreach ($data as $index => $value) {
