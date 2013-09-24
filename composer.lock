@@ -1,4 +1,8 @@
 {
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+    ],
     "hash": "1ebd9da57de8fd72024b3af779a20f15",
     "packages": [
         {
@@ -238,7 +242,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fmfi-svt/linters.git",
-                "reference": "7b2890406163d6f47c426f23952b5bd786d10ed9"
+                "reference": "eaa2b21fc170f13c9ffc81bdef00d36af1f113b5"
             },
             "require": {
                 "php": ">=5.2"
@@ -248,7 +252,7 @@
                 "MIT"
             ],
             "description": "Collection of useful linters.",
-            "time": "2013-03-25 11:46:48"
+            "time": "2013-05-04 12:42:09"
         }
     ],
     "aliases": [
