@@ -50,7 +50,9 @@ class PrehladKreditovRegression
         18 => 'dovezene',
         19 => 'mozePrihlasit',
         20 => 'popisSposUkon',
-        21 => 'priebHodn',
+        21 => 'doplnText',
+        22 => 'rozsahSemestralny',
+        23 => 'priebHodn',
       );
   }
 }

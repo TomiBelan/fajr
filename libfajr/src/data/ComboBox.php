@@ -69,13 +69,15 @@ class ComboBox implements ComponentInterface
   {
     Preconditions::checkNotNull($aisResponse);
     if($init) {
-      $element = $aisResponse->getElementById($this->dataViewName);
+      $element = $aisResponse->getElementById($this->comboBoxName);
     }else{
-      $element = $aisResponse->getElementById($formName.$this->dataViewName);
+      $element = $aisResponse->getElementById($formName.$this->comboBoxName);
     }
     if ($element === null) {
       if ($init) {
-        throw new ParseException("Problem parsing ais2 response: Element '$dataViewName' not found");
+        throw new ParseException("Problem parsing ais2 response: Element '$comboBoxName' not found");
+      }else{
+        return;
       }
     }
 
