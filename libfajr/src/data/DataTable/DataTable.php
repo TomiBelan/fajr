@@ -80,15 +80,17 @@ class DataTable implements ComponentInterface
    * @param DOMDocument $aisResponse AIS2 html parsed reply
    * @param boolean $init if init is true, table must find data and definition
    */
-  public function updateComponentFromResponse(Trace $trace, DOMDocument $aisResponse, $init = null)
+  public function updateComponentFromResponse(Trace $trace, DOMDocument $aisResponse, $formName, $init = null)
   {
     Preconditions::checkNotNull($aisResponse);
-    $element = $aisResponse->getElementById($this->dataViewName);
+    if($init) {
+      $element = $aisResponse->getElementById($this->dataViewName);
+    }else{
+      $element = $aisResponse->getElementById($formName.$this->dataViewName);
+    }
     if ($element === null) {
       if ($init) {
         throw new ParseException("Problem parsing ais2 response: Element '$dataViewName' not found");
-      } else {
-        return;
       }
     }
 

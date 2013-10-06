@@ -177,7 +177,7 @@ class AIS2AbstractDialog extends DisableEvilCallsObject
   {
       if(empty($this->components)) return;
       foreach($this->components as $component){
-          $component->updateComponentFromResponse($this->trace->addChild("updatujem"), $dom, $init);
+          $component->updateComponentFromResponse($this->trace->addChild("updatujem"), $dom, $this->formName, $init);
       }
   }
 

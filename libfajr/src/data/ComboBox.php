@@ -65,15 +65,17 @@ class ComboBox implements ComponentInterface
    * @param DOMDocument $aisResponse AIS2 html parsed reply
    * @param boolean $init if it is first opening of window
    */
-  public function updateComponentFromResponse(Trace $trace, DOMDocument $aisResponse, $init = null)
+  public function updateComponentFromResponse(Trace $trace, DOMDocument $aisResponse, $formName, $init = null)
   {
     Preconditions::checkNotNull($aisResponse);
-    $element = $aisResponse->getElementById($this->comboBoxName);
+    if($init) {
+      $element = $aisResponse->getElementById($this->dataViewName);
+    }else{
+      $element = $aisResponse->getElementById($formName.$this->dataViewName);
+    }
     if ($element === null) {
       if ($init) {
-        throw new ParseException("Problem parsing ais2 response: Element '$comboBoxName' not found");
-      } else {
-        return;
+        throw new ParseException("Problem parsing ais2 response: Element '$dataViewName' not found");
       }
     }
 
