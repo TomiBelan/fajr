@@ -571,7 +571,7 @@ class StudiumController extends BaseController
     $priemeryCalculator = new PriemeryCalculator();
 
     $predmetyZapisnehoListuData = Sorter::sort($predmetyZapisnehoListu->getData(),
-          array("kodSemester"=>-1, "nazov"=>1));
+          array("semester"=>-1, "nazov"=>1));
 
     foreach ($predmetyZapisnehoListuData as $predmetyRow) {
       $semester = $predmetyRow[PredmetyFields::SEMESTER] == 'L' ?

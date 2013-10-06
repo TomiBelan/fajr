@@ -34,10 +34,10 @@ class ZapisanePredmetyRegression
           2 => 'skratka',
           3 => 'nazov',
           4 => 'kredit',
-          5 => 'kodSemester',
-          6 => 'kodSposUkon',
-          7 => 'pocetTerminov',
-          8 => 'pocetAktualnychTerminov',
+          5 => 'kodSposUkon',
+          6 => 'pocetTerminov',
+          7 => 'pocetAktualnychTerminov',
+          8 => 'semester',
           9 => 'aktualnost',
           );
   }

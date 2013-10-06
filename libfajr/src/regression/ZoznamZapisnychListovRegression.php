@@ -54,7 +54,8 @@ class ZoznamZapisnychListovRegression
           22 => 'rokyStudiaStupen',
           23 => 'potvrdenieVysledky',
           24 => 'studProgramIdProgramCRS2',
-          25 => 'ez',
+          25 => 'stavCRSNazov',
+          26 => 'ez',
           );
   }
 }

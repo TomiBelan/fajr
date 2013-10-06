@@ -91,6 +91,8 @@ class DataTable implements ComponentInterface
     if ($element === null) {
       if ($init) {
         throw new ParseException("Problem parsing ais2 response: Element '$dataViewName' not found");
+      }else{
+        return;
       }
     }
 
