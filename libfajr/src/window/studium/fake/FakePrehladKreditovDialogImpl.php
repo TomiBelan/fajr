@@ -35,7 +35,6 @@ class FakePrehladKreditovDialogImpl extends FakeAbstractDialog
   
   public function getPredmety(Trace $trace)
   {
-    $this->openIfNotAlready($trace);
     $data = $this->executor->readTable(
           array(),
           'prehladKreditov');

@@ -43,7 +43,6 @@ class FakeTerminyHodnoteniaScreenImpl extends FakeAbstractScreen
 
   public function getPredmetyZapisnehoListu(Trace $trace)
   {
-    $this->openIfNotAlready($trace);
     $data = $this->executor->readTable(array(), 'zapisanePredmety');
     $table = new DataTableImpl(ZapisanePredmetyRegression::get(), $data);
     return $table;
@@ -52,8 +51,6 @@ class FakeTerminyHodnoteniaScreenImpl extends FakeAbstractScreen
   public function getTerminyHodnotenia(Trace $trace)
   {
     $result = array();
-
-    $this->openIfNotAlready($trace);
     $predmety = $this->executor->readTable(array(), 'zapisanePredmety');
     foreach($predmety as $predmetIndex=>$unused) {
       $terminy = $this->executor->readTable(
@@ -118,8 +115,6 @@ class FakeTerminyHodnoteniaScreenImpl extends FakeAbstractScreen
   
   public function odhlasZTerminu(Trace $trace, $terminIndex)
   {
-    $this->openIfNotAlready($trace);
-  
     $indexy = $this->getPredmetTerminInternalIndex($terminIndex);
 
     $info = $this->executor->readTable(
