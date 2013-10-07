@@ -51,6 +51,8 @@ class MojeTerminyRegression
           19 => 'predmetNazov',
           20 => 'hodnPredmetu',
           21 => 'moznostPrihlasenia',
+          22 => 'modifikator',
+          23 => 'poslModif',
           );
   }
   

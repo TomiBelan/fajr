@@ -64,7 +64,6 @@ class RegisterPredmetovScreenImpl extends AIS2AbstractScreen
 
   public function getInformacnyList(Trace $trace, $kodPredmetu, $akRok=null)
   {
-    $this->openIfNotAlready($trace);
     // TODO(anty): moze sa tu robit aj tento request? (t.j. ten pri otvoreni okna???)
     $response = $this->executor->requestContent($trace->addChild("get content"));
     $options = $this->cbParser->getOptionsFromHtml($trace, $response, 'akRokComboBox');

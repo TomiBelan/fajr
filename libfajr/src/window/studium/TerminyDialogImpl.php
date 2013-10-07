@@ -17,6 +17,8 @@ namespace libfajr\window\studium;
 
 use libfajr\window\studium\TerminyDialog;
 use libfajr\trace\Trace;
+use libfajr\data\DataTable;
+use libfajr\data\ActionButton;
 use libfajr\window\DialogData;
 use libfajr\window\DialogParent;
 use libfajr\window\AIS2AbstractDialog;
@@ -41,33 +43,26 @@ class TerminyDialogImpl extends AIS2AbstractDialog
   public function __construct(Trace $trace, DialogParent $parent,
       DialogData $data, AIS2TableParser $parser = null)
   {
-    parent::__construct($trace, $parent, $data);
+    $components['dataComponents']['zoznamTerminovTable_dataView'] = new DataTable("zoznamTerminovTable_dataView");
+    $components['actionComponents']['enterAction'] = new ActionButton("enterAction");
+    parent::__construct($trace, $parent, $data, $components);
     $this->parser = ($parser !== null) ? $parser :  new AIS2TableParser;
   }
   
   public function getZoznamTerminov(Trace $trace)
   {
-    $this->openIfNotAlready($trace);
-    $response = $this->executor->requestContent($trace);
-    return $this->parser->createTableFromHtml($trace->addChild("Parsing table"), $response,
-        'zoznamTerminovTable_dataView');
+    return $this->components['zoznamTerminovTable_dataView'];
   }
   
   public function prihlasNaTermin(Trace $trace, $terminIndex)
   {
-    $this->openIfNotAlready($trace);
-    $data = $this->executor->doRequest($trace, array(
-      'compName' => 'enterAction',
-      'eventClass' => 'avc.ui.event.AVCActionEvent',
-      'embObj' => array('zoznamTerminovTable' => array(
-          'dataView' => array(
-            'activeIndex' => $terminIndex,
-            'selectedIndexes' => $terminIndex,
-          ),
-          'editMode' => 'false',
-        ),
-      ),
-    ));
+    $table = $this->components['zoznamTerminovTable_dataView'];
+    $table->selectSingleRow((integer)$terminIndex);
+    $table->setActiveRow((integer)$terminIndex);
+    $data = $this->doAction('enterAction');
+
+    $data = $data->getElementById("init-data");
+    $data = $data->textContent;
     
     $error = StrUtil::match('@webui\(\)\.messageBox\("([^"]*)",@', $data);
     if ($error) {
@@ -80,7 +75,7 @@ class TerminyDialogImpl extends AIS2AbstractDialog
           "Neočakávaná odozva od AISu");
     }
     
-    $this->closeIfNeeded($trace);
+    $this->closeWindow();
     return true;
   }
   

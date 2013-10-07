@@ -24,6 +24,8 @@ use libfajr\window\ScreenRequestExecutor;
 use libfajr\window\DialogData;
 use libfajr\window\ScreenData;
 use libfajr\data\AIS2TableParser;
+use libfajr\data\DataTable;
+use libfajr\data\ActionButton;
 use libfajr\util\StrUtil;
 use libfajr\util\MiscUtil;
 use libfajr\exceptions\ParseException;
@@ -51,52 +53,40 @@ class AdministraciaStudiaScreenImpl extends AIS2AbstractScreen
     $data = new ScreenData();
     $data->appClassName = 'ais.gui.vs.es.VSES017App';
     $data->additionalParams = array('kodAplikacie' => 'VSES017');
-    parent::__construct($trace, $executor, $data);
+    $components['dataComponents']['studiaTable_dataView'] = new DataTable("studiaTable_dataView");
+    $components['dataComponents']['zapisneListyTable_dataView'] = new DataTable("zapisneListyTable_dataView");
+
+    $components['actionComponents']['nacitatDataAction'] = new ActionButton("nacitatDataAction");
+    $components['actionComponents']['terminyHodnoteniaAction'] = new ActionButton("terminyHodnoteniaAction");
+    $components['actionComponents']['hodnoteniaPriemeryAction'] = new ActionButton("hodnoteniaPriemeryAction");
+
+    parent::__construct($trace, $executor, $data, $components);
     $this->parser = $parser;
   }
 
   public function getZoznamStudii(Trace $trace)
   {
-    $this->openIfNotAlready($trace);
-    $response = $this->executor->requestContent($trace->addChild("get content"));
-    return $this->parser->createTableFromHtml($trace->addChild("Parsing table"), $response, 'studiaTable_dataView');
+    return $this->components['studiaTable_dataView'];
   }
 
   public function getZapisneListy(Trace $trace, $studiumIndex)
   {
-    $this->openIfNotAlready($trace);
-    $data = $this->executor->doRequest(
-        $trace->addChild("Requesting data:"),
-        array('compName' => 'nacitatDataAction',
-              'embObj' => array('studiaTable' => array(
-                  'dataView' => array(
-                    'activeIndex' => $studiumIndex,
-                    'selectedIndexes' => $studiumIndex,
-                  ),
-                  'editMode' => 'false',
-                ),
-              ),
-            ));
-    return $this->parser->createTableFromHtml($trace->addChild("Parsing table"),
-        $data, 'VSES017_StudentZapisneListyDlg0_zapisneListyTable_dataView');
+    $table = $this->components['studiaTable_dataView'];
+    $table->selectSingleRow((integer)$studiumIndex);
+    $table->setActiveRow((integer)$studiumIndex);
+
+    $this->doAction('nacitatDataAction');
+
+    return $this->components['zapisneListyTable_dataView'];
   }
 
   public function getParamNameFromZapisnyListIndex(Trace $trace, $zapisnyListIndex, $action)
   {
-    $this->openIfNotAlready($trace);
+    $table = $this->components['zapisneListyTable_dataView'];
+    $table->selectSingleRow((integer)$zapisnyListIndex);
+    $table->setActiveRow((integer)$zapisnyListIndex);
 
-    $response = $this->executor->doRequest(
-        $trace->addChild("Requesting data:"),
-        array('compName' => $action,
-              'embObj' => array('zapisneListyTable' => array(
-                  'dataView' => array(
-                    'activeIndex' => $zapisnyListIndex,
-                    'selectedIndexes' => $zapisnyListIndex,
-                  ),
-                  'editMode' => 'false',
-                ),
-              ),
-            ));
+    $response = $this->doAction($action);
 
     try {
       return $this->parseParamNameFromResponse($response);
@@ -108,7 +98,10 @@ class AdministraciaStudiaScreenImpl extends AIS2AbstractScreen
 
   private function parseParamNameFromResponse($response)
   {
-      $data = StrUtil::match(self::APP_LOCATION_PATTERN, $response, 'params');
+      $data = $response->getElementById("init-data");
+      $data = $data->textContent;
+
+      $data = StrUtil::match(self::APP_LOCATION_PATTERN, $data, 'params');
       if ($data === false) {
         throw new ParseException("Location of APP_PATTERN failed.");
       };

@@ -14,16 +14,17 @@
 namespace libfajr\window;
 use libfajr\trace\Trace;
 use Exception;
+use DOMDocument;
 use libfajr\base\DisableEvilCallsObject;
 use libfajr\connection\SimpleConnection;
 
 class ScreenRequestExecutorImpl extends DisableEvilCallsObject
     implements ScreenRequestExecutor
 {
+  public $formName;
   protected $data;
   protected $requestBuilder;
   protected $appId;
-  protected $formName;
   protected $connection;
 
   /**
@@ -119,6 +120,32 @@ class ScreenRequestExecutorImpl extends DisableEvilCallsObject
   public function doRequest(Trace $trace, $options)
   {
     $data = $this->requestBuilder->buildRequestData($this->formName, $options);
+    return $this->connection->request($trace, $this->getRequestUrl(), $data);
+  }
+
+  /**
+   * Add a serial number to the xml request and make this requset happen
+   *
+   * @param DOMDocument $action xml request withou serial number
+   */
+  public function doActionRequest(Trace $trace, $action)
+  {
+    $finalRequest = new DOMDocument();
+
+    $request = $finalRequest->createElement('request');
+    $serialNumber = $this->requestBuilder->newSerial();
+    $serial = $finalRequest->createElement('serial', $serialNumber);
+    $request->appendChild($serial);
+    $finalRequest->appendChild($request);
+
+    foreach($action->childNodes as $element){
+      $element = $finalRequest->importNode($element, true);
+      $finalRequest->documentElement->appendChild($element);
+    }
+
+    $data = array('xml_spec' => $finalRequest->saveXML($finalRequest->documentElement));
+
+    $trace->tlogVariable('xml req', $data['xml_spec']);
     return $this->connection->request($trace, $this->getRequestUrl(), $data);
   }
 

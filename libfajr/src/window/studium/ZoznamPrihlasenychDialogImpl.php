@@ -18,6 +18,8 @@ namespace libfajr\window\studium;
 use libfajr\window\studium\ZoznamPrihlasenychDialog;
 
 use libfajr\trace\Trace;
+use libfajr\data\DataTable;
+use libfajr\data\ActionButton;
 use libfajr\window\AIS2AbstractDialog;
 use libfajr\data\AIS2TableParser;
 use libfajr\window\DialogParent;
@@ -41,15 +43,14 @@ class ZoznamPrihlasenychDialogImpl extends AIS2AbstractDialog
   public function __construct(Trace $trace, DialogParent $parent,
       DialogData $data, AIS2TableParser $parser = null)
   {
-    parent::__construct($trace, $parent, $data);
+    $components['dataComponents']['prihlaseniTable_dataView'] = new DataTable("prihlaseniTable_dataView");
+    $components['actionComponents'] = null;
+    parent::__construct($trace, $parent, $data, $components);
     $this->parser = ($parser !== null) ? $parser :  new AIS2TableParser;
   }
 
   public function getZoznamPrihlasenych(Trace $trace)
   {
-  $this->openIfNotAlready($trace);
-    $response = $this->executor->requestContent($trace);
-    return $this->parser->createTableFromHtml($trace->addChild("Parsing table"), $response,
-        'prihlaseniTable_dataView');
+    return $this->components['prihlaseniTable_dataView'];
   }
 }

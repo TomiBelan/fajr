@@ -34,7 +34,6 @@ class FakeZoznamPrihlasenychDialogImpl extends FakeAbstractDialog
 
   public function getZoznamPrihlasenych(Trace $trace)
   {
-    $this->openIfNotAlready($trace);
     $data = $this->executor->readTable(array(), 'prihlaseni');
     return new DataTableImpl(PrihlaseniNaTerminRegression::get(), $data);
   }

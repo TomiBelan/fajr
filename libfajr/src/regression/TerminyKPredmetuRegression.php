@@ -41,6 +41,8 @@ class TerminyKPredmetuRegression
         10 => 'poznamka',
         11 => 'zaevidoval',
         12 => 'moznostPrihlasenia',
+        13 => 'modifikator',
+        14 => 'poslModif',
       );
   }
 }

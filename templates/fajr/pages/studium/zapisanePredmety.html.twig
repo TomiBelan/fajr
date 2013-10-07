@@ -23,15 +23,15 @@
 
 {% set body %}
   {% for row in predmetyZapisnehoListu %}
-    {% if row.kodSemester == 'L' %}
+    {% if row.semester == 'L' %}
       {% set rowClass = 'leto' %}
-    {% elseif row.kodSemester == 'Z' %}
+    {% elseif row.semester == 'Z' %}
       {% set rowClass = 'zima' %}
     {% else %}
       {% set rowClass = 'rok' %}
     {% endif %}
     {{ table.row(rowClass) }}
-      <td>{{ row.kodSemester }}</td>
+      <td>{{ row.semester }}</td>
       <td>{{ row.nazov }}</td>
       <td>{{ row.kredit }}</td>
       <td>{{ row.kodTypVyucby }}</td>

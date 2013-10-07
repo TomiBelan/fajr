@@ -9,6 +9,8 @@ DirectoryIndex index.php
 	RewriteEngine On
 	
 	# Ak je fajr v podadresari, treba nastavit
+	# teda ak v browseri je http://localhost/svt/fajr/web/
+	# sem treba dat /svt/fajr/web/
 	#RewriteBase /cesta
 
 	# presmerovanie na https

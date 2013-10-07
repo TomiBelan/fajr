@@ -18,6 +18,9 @@ use libfajr\trace\Trace;
 use libfajr\connection\SimpleConnection;
 use libfajr\window\DialogData;
 use libfajr\window\ScreenData;
+use libfajr\data\DataTable;
+use libfajr\data\ComboBox;
+use libfajr\data\ActionButton;
 use libfajr\window\RequestBuilderImpl;
 use libfajr\window\ScreenRequestExecutor;
 use libfajr\window\AIS2AbstractScreen;
@@ -48,46 +51,31 @@ class TerminyHodnoteniaScreenImpl extends AIS2AbstractScreen
     $data->appClassName = 'ais.gui.vs.es.VSES007App';
     $data->additionalParams = array('kodAplikacie' => 'VSES007',
         'paramName' => $paramName);
-    parent::__construct($trace, $executor, $data);
+    $components['dataComponents']['terminyTable_dataView'] = new DataTable("terminyTable_dataView");
+    $components['dataComponents']['predmetyTable_dataView'] = new DataTable("predmetyTable_dataView");
+    $components['dataComponents']['semesterComboBox'] = new ComboBox("semesterComboBox");
+
+    $components['actionComponents']['filterAction'] = new ActionButton("filterAction");
+    $components['actionComponents']['zobrazitTerminyAction'] = new ActionButton("zobrazitTerminyAction");
+    parent::__construct($trace, $executor, $data, $components);
     $this->parser = $parser;
   }
 
   public function getPredmetyZapisnehoListu(Trace $trace)
   {
-    $this->openIfNotAlready($trace);
-    $data = $this->executor->doRequest($trace,
-      array('eventClass' => 'avc.ui.event.AVCActionEvent',
-        'compName' => 'filterAction',
-        'embObj' => array('semesterComboBox' => array(
-            'dataView' => array(
-              'selectedIndexes' => 0,
-            ),
-            'editMode' => 'false',
-          ),
-        ),
-    ));
-
-    return $this->parser->createTableFromHtml($trace->addChild("Parsing table"), $data,
-        'VSES007_StudentZoznamPrihlaseniNaSkuskuDlg0_predmetyTable_dataView');
+    // zatial to tu je zbytocne dokym sa nemenia moznosti v comboBoxe
+    $this->components['semesterComboBox']->selectOption(1);
+    $this->doAction('filterAction');
+    return $this->components['predmetyTable_dataView'];
   }
 
   public function getTerminyHodnotenia(Trace $trace)
   {
-    $this->openIfNotAlready($trace);
-    $data = $this->executor->doRequest($trace,
-      array('eventClass' => 'avc.ui.event.AVCActionEvent',
-        'compName' => 'zobrazitTerminyAction',
-        'embObj' => array('zobrazitTerminyComboBox' => array(
-            'dataView' => array(
-              'selectedIndexes' => 0,
-            ),
-            'editMode' => 'false',
-          ),
-        ),
-    ));
+    // zatial to tu je zbytocne dokym sa nemenia moznosti v comboBoxe
+    $this->components['semesterComboBox']->selectOption(1);
+    $this->doAction('zobrazitTerminyAction');
 
-    return $this->parser->createTableFromHtml($trace->addChild("Parsing table"),
-                $data, 'VSES007_StudentZoznamPrihlaseniNaSkuskuDlg0_terminyTable_dataView');
+    return $this->components['terminyTable_dataView'];
   }
 
   public function getZoznamTerminovDialog(Trace $trace, $predmetIndex)
@@ -111,7 +99,6 @@ class TerminyHodnoteniaScreenImpl extends AIS2AbstractScreen
 
   public function odhlasZTerminu(Trace $trace, $terminIndex)
   {
-    $this->openIfNotAlready($trace);
     // Posleme request ze sa chceme odhlasit.
     $data = $this->executor->doRequest($trace, array(
       'compName' => 'odstranitTerminAction',
@@ -152,5 +139,4 @@ class TerminyHodnoteniaScreenImpl extends AIS2AbstractScreen
     
     return true;
   }
-
 }

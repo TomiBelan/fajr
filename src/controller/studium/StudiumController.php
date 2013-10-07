@@ -222,7 +222,11 @@ class StudiumController extends BaseController
       }
     }
 
-    return parent::invokeAction($trace, $action, $request);
+    $result = parent::invokeAction($trace, $action, $request);
+    if ($this->terminyHodnoteniaScreen) $this->terminyHodnoteniaScreen->closeWindow();
+    if ($this->hodnoteniaScreen) $this->hodnoteniaScreen->closeWindow();
+    if ($this->administraciaStudiaScreen) $this->administraciaStudiaScreen->closeWindow();
+    return $result;
   }
   
   public function runPrehladKreditov(Trace $trace, Request $request) {
@@ -233,7 +237,7 @@ class StudiumController extends BaseController
     
     $predmety = $prehladKreditovDialog->getPredmety($trace);
     
-    $prehladKreditovDialog->closeIfNeeded($trace);
+    $prehladKreditovDialog->closeWindow();
     
     $this->warnings->warnWrongTableStructure($trace, 'prehlad kreditov',
         regression\PrehladKreditovRegression::get(),
@@ -567,7 +571,7 @@ class StudiumController extends BaseController
     $priemeryCalculator = new PriemeryCalculator();
 
     $predmetyZapisnehoListuData = Sorter::sort($predmetyZapisnehoListu->getData(),
-          array("kodSemester"=>-1, "nazov"=>1));
+          array("semester"=>-1, "nazov"=>1));
 
     foreach ($predmetyZapisnehoListuData as $predmetyRow) {
       $semester = $predmetyRow[PredmetyFields::SEMESTER] == 'L' ?
@@ -703,7 +707,7 @@ class StudiumController extends BaseController
           regression\TerminyKPredmetuRegression::get(),
           $terminy->getTableDefinition());
       // explicitly close this dialog otherwise we will be blocked for next iteration!
-      $dialog->closeIfNeeded($childTrace);
+      $dialog->closeWindow();
 
       foreach($terminy->getData() as $row) {
         $prihlasTerminyRow = $row;

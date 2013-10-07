@@ -300,7 +300,7 @@ class FajrUtils
    *                   When ommited or null, the current system date is used.
    * @return string
    */
-  public function getAcademicYear($splitAt=8, $date=null)
+  public static function getAcademicYear($splitAt=8, $date=null)
   {
     if ($date === null) {
       $date = time();
