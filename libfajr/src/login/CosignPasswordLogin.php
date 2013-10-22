@@ -30,14 +30,14 @@ use libfajr\connection\AIS2ServerUrlMap;
 class CosignPasswordLogin extends CosignAbstractLogin
 {
   private $username = null;
-  private $krbpwd = null;
+  private $password = null;
 
-  public function __construct($username, $krbpwd)
+  public function __construct($username, $password)
   {
     assert($username != null);
-    assert($krbpwd != null);
+    assert($password != null);
     $this->username = $username;
-    $this->krbpwd = $krbpwd;
+    $this->password = $password;
   }
 
   const COSIGN_ERROR_PATTERN1 =
@@ -53,20 +53,20 @@ class CosignPasswordLogin extends CosignAbstractLogin
   {
     $connection = $serverConnection->getHttpConnection();
     $login = $this->username;
-    $krbpwd = $this->krbpwd;
+    $password = $this->password;
 
-    if ($login === null && $krbpwd === null) {
+    if ($login === null && $password === null) {
       throw new Exception("S týmto objektom nie je možné sa prihlásiť 2x. " .
           "Meno a heslo boli vymazané pri prvom prihlásení.");
     }
 
     // Username a password si nebudeme pamatat dlhsie ako treba
     $this->username = null;
-    $this->krbpwd = null;
+    $this->password = null;
     // TODO(ppershing): why is there this line? Needed for some cookies?
     $this->isLoggedIn($serverConnection);
     $data = $connection->post(new NullTrace(), self::COSIGN_LOGIN,
-                              array('ref' => '', 'login'=> $login, 'krbpwd' => $krbpwd));
+                              array('ref' => '', 'login'=> $login, 'password' => $password));
     if (!preg_match(parent::LOGGED_ALREADY_PATTERN, $data)) {
       if (($reason = StrUtil::match(self::COSIGN_ERROR_PATTERN1, $data)) ||
           ($reason = StrUtil::match(self::COSIGN_ERROR_PATTERN2, $data)) ||

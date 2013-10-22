@@ -60,7 +60,7 @@ class CurlConnectionTest extends PHPUnit_Framework_TestCase
   {
     $response = $connection->post(new NullTrace, 'https://login.uniba.sk/cosign.cgi',
                                   array('login' => 'fajr_curl_connection_test_username',
-                                        'krbpwd' => 'password',
+                                        'password' => 'password',
                                         'submit' => 'Prihlásiť'));
 
     $this->assertEquals($shouldSucceed,
