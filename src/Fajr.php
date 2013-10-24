@@ -195,7 +195,7 @@ class Fajr {
     $serverList = $this->config->get(FajrConfigOptions::AIS_SERVERLIST);
     $params['availableServers'] = $serverList;
     $params['currentServer'] = $server;
-    $params['backendType'] = $this->config->get(FajrConfigOptions::BACKEND);
+    $params['backendType'] = $server->getBackendType();
 
     $params['aisVersion'] = null;
     $params['aisVersionIncompatible'] = false;

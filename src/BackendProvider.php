@@ -13,9 +13,7 @@
 
 namespace fajr;
 
-use fajr\config\FajrConfig;
-use fajr\config\FajrConfigOptions;
-use fajr\config\FajrConfigLoader;
+use fajr\config\ServerConfig;
 use libfajr\BackendFactory;
 use libfajr\FakeBackendFactory;
 use libfajr\LibfajrBackendFactory;
@@ -28,13 +26,13 @@ class BackendProvider
   public static function getInstance()
   {
     if (!isset(self::$instance)) {
-      $config = FajrConfigLoader::getConfiguration();
-      switch ($config->get(FajrConfigOptions::BACKEND)) {
-        case FajrConfigOptions::BACKEND_FAKE:
+      $server = ServerManager::getInstance()->getActiveServer();
+      switch ($server->getBackendType()) {
+        case ServerConfig::BACKEND_FAKE:
           self::$instance = new FakeBackendFactory(SessionStorageProvider::getInstance());
           break;
 
-        case FajrConfigOptions::BACKEND_LIBFAJR:
+        case ServerConfig::BACKEND_LIBFAJR:
           self::$instance = new LibfajrBackendFactory(LazyServerConnection::getInstance());
           break;
 
