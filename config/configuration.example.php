@@ -197,6 +197,7 @@ return array(
         'Server.Name' => 'fajr.demo',
         'Login.Type' => 'nologin',
         'Server.Beta' => false,
+        'Backend' => ServerConfig::BACKEND_FAKE,
         )),
     ),
 
@@ -204,16 +205,6 @@ return array(
    * Je toto development verzia? (Obsahuje novú funkcionalitu, ktorá je zatiaľ v testovaní)
    */
   // 'Features.Devel' => false,
-  
-  /*
-   * Aky backend sa ma pouzit.
-   * 
-   * Mozne hodnoty:
-   *  libfajr - pouzije sa skutocne pripojenie na AIS
-   *  fake - data sa budu nacitavat zo suborov
-   * 
-   */
-  // 'Backend' => 'libfajr',
   
   /*
    * Warningy, ktore sa maju zobrazit. (Zoznam HTML stringov)
