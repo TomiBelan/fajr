@@ -112,7 +112,7 @@ class Router
    */
   public function generateUrlForCurrentPage($parameters=array(), $absolute=false)
   {
-    if ($this->currentRoute['_route'] === null) {
+    if ($this->currentRoute === null) {
       throw new IllegalStateException('Current route has not been set yet');
     }
     
