@@ -29,6 +29,7 @@ class PriemeryInternal
   protected $sucetVah = 0;
   protected $pocetPredmetovOhodnotenych = 0;
   protected $pocetKreditovOhodnotenych = 0;
+  protected $pocetKreditovZiskanych = 0;
   protected $pocetPredmetovNeohodnotenych = 0;
   protected $pocetKreditovNeohodnotenych = 0;
 
@@ -56,6 +57,15 @@ class PriemeryInternal
   }
 
   /**
+   * Zarata kredity, ktore su uz ziskane (vieme znamku a nie je to Fx)
+   * @param float $kredity ziskana kreditova hodnota
+   */
+  private function addZiskane($kredity)
+  {
+    $this->pocetKreditovZiskanych += $kredity;
+  }
+
+  /**
    * Zarata predmet s danou znamkou
    * @param float $kredity pocet kreditov, ktore sa maju zaratat
    * @param Znamka $znamka znamka, ktora sa ma zarat, NULL sa rata ako
@@ -73,6 +83,9 @@ class PriemeryInternal
     }
 
     $this->addOhodnotene($znamka->getNumerickaHodnota(), $kredity);
+    if (!Znamka::isSame($znamka->getNazov(), "Fx")) {
+      $this->addZiskane($kredity);
+    }
   }
 
   /**
@@ -137,6 +150,15 @@ class PriemeryInternal
   }
 
   /**
+   * Vrati sucet ziskanych a neohodnotenych kreditov (teda vsetkych okrem tych,
+   * ktore su ohodnotene znamkou Fx)
+   * @returns int sucet ziskanych a neohodnotenych kreditov
+   */
+  public function kreditovZiskatelnych() {
+    return $this->pocetKreditovZiskanych + $this->pocetKreditovNeohodnotenych;
+  }
+
+  /**
    * Vrati celkovy pocet predmetov
    * @returns int pocet predmetov celkom
    */
@@ -188,7 +210,7 @@ class PriemeryCalculator
     if ($znamkaText !== '') {
       $znamka = Znamka::fromString($znamkaText);
     }
-    
+
     $this->obdobia[$castRoka]->add($kredity, $znamka);
     // Ak pridavame do akademickeho roka, tak hodnotu nechceme zaratat dvakrat
     if ($castRoka !== self::AKADEMICKY_ROK) {
