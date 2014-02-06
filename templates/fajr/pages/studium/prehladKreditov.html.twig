@@ -33,15 +33,14 @@
     {% else %}
       {% set rowClass = 'rok' %}
     {% endif %}
+    {%if row.znamka == 'FX' %}
+      {% set rowClass = rowClass ~ ' fx' %}
+    {% endif %}
     {{ table.row(rowClass) }}
       <td>{{ row.akRok }}</td>
       <td>{{ row.semester }}</td>
       <td>{{ row.nazov }}</td>
-      <td>{% if row.znamka == 'Fx' -%}
-          <strike>{{ row.kredit }}</strike>
-        {%- else -%}
-          {{ row.kredit }}
-        {%- endif %}</td>
+      <td>{{ row.kredit }}</td>
       <td>{{ row.znamka }}</td>
       <td>{{ row.datum }}</td>
       <td>{{ row.termin }}</td>
