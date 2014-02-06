@@ -34,6 +34,9 @@
     {% else %}
       {% set rowClass = 'rok' %}
     {% endif %}
+    {%if row.znamka == 'FX' %}
+      {% set rowClass = rowClass ~ ' fx' %}
+    {% endif %}
     {{ table.row(rowClass) }}
       <td>{{ row.semester }}</td>
       <td>{{ row.nazov }}</td>
@@ -45,16 +48,16 @@
     {{ table.endrow() }}
   {% endfor %}
 {% endset %}
-      
+
 {% set foot %}
   {{ table.row(none, false) }}
     <td></td>
     <td>Celkom {{ priemeryCalculator.obdobia.rok.predmetovCelkom() }} predmetov
       ({{ priemeryCalculator.obdobia.zima.predmetovCelkom() }} v zime,
        {{ priemeryCalculator.obdobia.leto.predmetovCelkom() }} v lete)</td>
-    <td>{{ priemeryCalculator.obdobia.rok.kreditovCelkom() }}
-      ({{ priemeryCalculator.obdobia.zima.kreditovCelkom() }}+{{
-          priemeryCalculator.obdobia.leto.kreditovCelkom() }})</td>
+    <td>{{ priemeryCalculator.obdobia.rok.kreditovZiskatelnych() }}
+      ({{ priemeryCalculator.obdobia.zima.kreditovZiskatelnych() }}+{{
+          priemeryCalculator.obdobia.leto.kreditovZiskatelnych() }})</td>
     <td>{% if priemeryCalculator.obdobia.rok.hasPriemer -%}
         <abbr title="Váž. priemer z doteraz ohodnotených predmetov (neoficálny)"
               >{{ priemeryCalculator.obdobia.rok.vazenyPriemer(false) }}</abbr>

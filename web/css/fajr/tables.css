@@ -91,6 +91,11 @@ tr.rok:hover {
   background-color: #75FF75;
 }
 
+tr.fx td {
+  color: red;
+  text-decoration: line-through;
+}
+
 /* table footer */
 
 tfoot tr {

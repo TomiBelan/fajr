@@ -33,6 +33,9 @@
     {% else %}
       {% set rowClass = 'rok' %}
     {% endif %}
+    {%if row.znamka == 'FX' %}
+      {% set rowClass = rowClass ~ ' fx' %}
+    {% endif %}
     {{ table.row(rowClass) }}
       <td>{{ row.akRok }}</td>
       <td>{{ row.semester }}</td>
@@ -45,14 +48,14 @@
     {{ table.endrow() }}
   {% endfor %}
 {% endset %}
-      
+
 {% set foot %}
   {{ table.row(none, false) }}
     <td></td>
     <td></td>
     <td>Celkom {{ predmetyStatistika.obdobia.rok.predmetovCelkom() }} predmetov
     </td>
-    <td>{{ predmetyStatistika.obdobia.rok.kreditovCelkom() }}</td>
+    <td>{{ predmetyStatistika.obdobia.rok.kreditovZiskatelnych() }}</td>
     <td>{% if predmetyStatistika.obdobia.rok.hasPriemer -%}
         <abbr title="Váž. priemer z doteraz ohodnotených predmetov (neoficálny)"
               >{{ predmetyStatistika.obdobia.rok.vazenyPriemer(false) }}</abbr>
