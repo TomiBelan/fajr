@@ -29,7 +29,7 @@ class DisableEvilCallsObject
         . get_called_class() . " --> $name");
   }
 
-  public static function __invoke($name, $arguments)
+  public function __invoke($name, $arguments)
   {
     throw new Exception("Evil __invoke() in "
         . get_called_class() . " --> $name");
