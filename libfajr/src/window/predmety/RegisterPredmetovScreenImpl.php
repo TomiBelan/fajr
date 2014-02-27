@@ -108,8 +108,8 @@ class RegisterPredmetovScreenImpl extends AIS2AbstractScreen
         $trace->addChild("Requesting data:"),
         array('compName' => 'informacnyListAction')
     );
-    if (!preg_match("@webui\(\)\.abortBox\("
-          ."\"Prebieha transformácia údajov \.\.\.\"\)@", $data)) {
+    if (!preg_match("@dm\(\)\.openDialog\("
+          ."\"CM017_SpravaSablonDlg1\"@", $data)) {
       throw new Exception("Problém pri sťahovaní: ".
           "Neočakávaná odozva od AISu");
     }
@@ -139,7 +139,7 @@ class RegisterPredmetovScreenImpl extends AIS2AbstractScreen
               'dlgName' => false,
               'changedProperties' => array('confirmResult' => '-1')
             ));
-    if(!preg_match('@webui\(\)\.enableApplication\(\)@', $data)) {
+    if(!preg_match('@shellExec@', $data)) {
       throw new Exception("Problém pri sťahovaní: ".
           "Neočakávaná odozva od AISu");
     }
