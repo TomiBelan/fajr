@@ -86,7 +86,7 @@ class DataTable implements ComponentInterface
     if($init) {
       $element = $aisResponse->getElementById($this->dataViewName);
     }else{
-      $element = $aisResponse->getElementById($formName.$this->dataViewName);
+      $element = $aisResponse->getElementById($formName.'_'.$this->dataViewName);
     }
     if ($element === null) {
       if ($init) {
