@@ -64,7 +64,7 @@ class TerminyHodnoteniaScreenImpl extends AIS2AbstractScreen
   public function getPredmetyZapisnehoListu(Trace $trace)
   {
     // zatial to tu je zbytocne dokym sa nemenia moznosti v comboBoxe
-    $this->components['semesterComboBox']->selectOption(1);
+    $this->components['semesterComboBox']->selectOption(0);
     $this->doAction('filterAction');
     return $this->components['predmetyTable_dataView'];
   }
@@ -72,7 +72,7 @@ class TerminyHodnoteniaScreenImpl extends AIS2AbstractScreen
   public function getTerminyHodnotenia(Trace $trace)
   {
     // zatial to tu je zbytocne dokym sa nemenia moznosti v comboBoxe
-    $this->components['semesterComboBox']->selectOption(1);
+    $this->components['semesterComboBox']->selectOption(0);
     $this->doAction('zobrazitTerminyAction');
 
     return $this->components['terminyTable_dataView'];
