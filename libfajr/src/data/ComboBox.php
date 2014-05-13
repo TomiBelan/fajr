@@ -55,7 +55,6 @@ class ComboBox implements ComponentInterface
   {
     Preconditions::checkIsString($comboBoxName);
     $this->comboBoxName = $comboBoxName;
-    $this->selectedOptions = array();
   }
 
   /**
@@ -87,8 +86,8 @@ class ComboBox implements ComponentInterface
 
     $this->options = $this->getOptionsFromDom($trace->addChild("Getting comboBox options from DOM."), $dom);
 
-    //default option is 0
-    if($init) $this->selectOption(0);
+    // we don't know what's selected. the first call to selectOption() should always cause sending XML.
+    if($init) $this->oldSelectedOption = $this->selectedOption = -1;
   }
 
   /**
