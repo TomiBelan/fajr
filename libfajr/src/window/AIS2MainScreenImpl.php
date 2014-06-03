@@ -119,6 +119,7 @@ class AIS2MainScreenImpl extends DisableEvilCallsObject implements AIS2MainScree
   private function convertEncoding($html)
   {
     Preconditions::checkIsString($html);
+    if (strpos($html, 'UTF-8') !== false) return $html;
     return @iconv("WINDOWS-1250", "UTF-8", $html);
   }
 }
