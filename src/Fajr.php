@@ -93,6 +93,7 @@ class Fajr {
     // stacktrace for template rendering, because
     // it can hold cyclic dependency to Context
     // and thus makes order of destruction unpredictable.
+    error_log($ex);
     $info = FajrUtils::extractExceptionInfo($ex);
     $params = array(
       'exception' => $info,
